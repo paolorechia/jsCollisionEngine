@@ -11,23 +11,71 @@ Point = function(x, y){
 	this.y=y;
 }
 
-Vertices = function(n){
-	this.list = [];
-	for (var i = 0; i < n; i++){
-		list.push(new Point(0, 0));
+Polygon = function(list){
+	this.vertices = [];
+	if (list.length % 2 != 0){
+		console.log("Error: list is not a valid set of coordinates.");
+	}
+	for (var i = 0; i < list.length; i+=2){
+		this.vertices[i/2]= new Point(list[i], list[i+1]);
 	}
 }
+
+function test(a){
+	return a * 2;
+}
+
+function drawPolygon(polygon){
+	ctx.beginPath();
+	ctx.strokeStyle="#000000";
+	ctx.moveTo(polygon.vertices[0].x,
+			   polygon.vertices[0].y);
+
+	for (var i =0; i < polygon.vertices.length; i++){
+		ctx.lineTo(polygon.vertices[i].x,
+				   polygon.vertices[i].y);		
+	}
+	ctx.lineTo(polygon.vertices[0].x,
+			   polygon.vertices[0].y);
+			   
+	ctx.stroke();
+	ctx.fillStyle="#0000FF";
+	for (var i = 0; i < polygon.vertices.length; i++){
+		ctx.beginPath();
+		ctx.arc(polygon.vertices[i].x,
+		polygon.vertices[i].y,
+		3, 0, 2*Math.PI);
+		ctx.fill();
+	}
+	
+
+	
+}	
+
+console.log(test);
+var tuple = [100,200,100,300,50,300, 50, 200];
+var tuple2 = [30, 80, 40, 40, 50, 60];
+console.log(tuple);
+poligono = new Polygon(tuple);
+poligono2 = new Polygon(tuple2);
+console.log(poligono);
+
 
 Rect = function(x, y, width, height, vx, vy, velocity, spin){
 	this.position = new Point(x, y);
 	this.width = width;
 	this.height = height;
+	this.vertices = [];
 	this.center = new Point(x + width/2, y + height/2);
 	this.hit=false;
 	this.versor = new Versor(vx, vy);
 	this.velocity = velocity;
 	this.spin = spin;
 }
+var inheritsFrom = function(child, parent){
+	child.prototype = Object.create(parent.prototype);
+};
+inheritsFrom(Rect, Polygon);
 
 function updateRect(rect){
 	rect.position.x += rect.versor.x * rect.velocity;
@@ -125,7 +173,7 @@ var i = 0;
 var maxSize = c.width/10;
 var minSize = c.width/100;
 var maxSpeed = 2;
-var numberObjects = 200;
+var numberObjects = 5;
 var objects = [];
 
 for (i = 0; i < numberObjects; i++){
@@ -140,10 +188,9 @@ function mainLoop(){
 	for (i = 0; i < objects.length; i++){
 	updateRect(objects[i]);
 	drawRect(objects[i]);
-
-
 	}
-
+	drawPolygon(poligono);
+	drawPolygon(poligono2);
 	requestAnimationFrame(mainLoop);
 }
 
