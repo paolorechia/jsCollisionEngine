@@ -28,7 +28,7 @@ function rotatePolygon(polygon, theta){
 var angle = 1 * Math.PI / 180;
 var cos = Math.cos(angle);
 var sin = Math.sin(angle);
-function quickRotate(polygon){
+function simpleRotate(polygon){
 		for (i = 0; i < polygon.vertices.length; i++){
 			polygon.vertices[i].x -= polygon.center.x;
 			polygon.vertices[i].y -= polygon.center.y;
@@ -134,17 +134,15 @@ function updateRect(rect){
 	checkBorder(rect);
 }
 function checkBorder(rect){
-	if (rect.position.x + rect.width >= c.width){
-		rect.versor.x *= -1;
-	}
-	if (rect.position.y + rect.height >= c.height){
-		rect.versor.y *= -1;
-	}
-	if (rect.position.x < 0){
-		rect.versor.x *= -1;
-	}
-	if (rect.position.y < 0){
-		rect.versor.y *= -1;
+	for (var i = 0; i < rect.vertices.length; i++){
+		if (rect.vertices[i].x < 0 || rect.vertices[i].x >= c.width){
+					rect.versor.x *= -1;
+					break;
+		}
+		if (rect.vertices[i].y < 0 || rect.vertices[i].y >= c.height){
+					rect.versor.y *= -1;
+					break;
+		}
 	}
 }
 
@@ -200,13 +198,14 @@ var j = 0;
 var maxSize = c.width/10;
 var minSize = c.width/100;
 var maxSpeed = 2;
-var numberObjects = 100;
+var numberObjects = 30;
 var objects = [];
 
 for (i = 0; i < numberObjects; i++){
 	objects.push(new randomRect(maxSize, minSize, maxSpeed));
 	
 }
+objects[0].spin=0;
 
 function mainLoop(){
 
@@ -222,7 +221,7 @@ function mainLoop(){
 
 	for (j = 0; j < objects.length; j++){
 		rotatePolygon(objects[j], objects[j].spin);
-//		quickRotate(objects[j]);
+//		simpleRotate(objects[j]);
 	}
 
 	requestAnimationFrame(mainLoop);
