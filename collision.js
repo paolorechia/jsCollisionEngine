@@ -11,6 +11,20 @@ Point = function(x, y){
 	this.y=y;
 }
 
+
+// theta should come in degrees
+function rotatePolygon(polygon, theta){
+		theta *= theta * Math.PI / 180;
+		for (i = 0; i < polygon.vertices.length; i++){
+			polygon.vertices[i].x -= polygon.center.x;
+			polygon.vertices[i].y -= polygon.center.y;
+			x = polygon.vertices[i].x * Math.cos(theta) - polygon.vertices[i].y * Math.sin(theta);
+			y = polygon.vertices[i].x * Math.sin(theta) + polygon.vertices[i].y * Math.cos(theta);
+			polygon.vertices[i].x = x + polygon.center.x;
+			polygon.vertices[i].y = y + polygon.center.y;
+		}
+}
+
 function listToVertices(list){
 	vertices = [];
 	if (list.length % 2 != 0){
@@ -46,6 +60,14 @@ function drawPolygon(polygon){
 		ctx.arc(polygon.vertices[i].x,
 		polygon.vertices[i].y,
 		3, 0, 2*Math.PI);
+		ctx.fill();
+	}
+	if (polygon.center != undefined){
+		ctx.fillStyle="#00F0FF";
+		ctx.beginPath();
+		ctx.arc(polygon.center.x,
+				polygon.center.y,
+				3, 0, 2*Math.PI);
 		ctx.fill();
 	}
 }	
@@ -96,6 +118,7 @@ function updateRect(rect){
 	rect.center.x = rect.position.x + rect.width * 0.5;
 	rect.center.y = rect.position.y + rect.height * 0.5;
 	checkBorder(rect);
+
 }
 function checkBorder(rect){
 	if (rect.position.x + rect.width >= c.width){
@@ -139,32 +162,6 @@ function testSTA(objA, objB){
 
 }
 
-function drawRect(rect){
-	ctx.beginPath();
-	if (rect.hit == false){
-		ctx.fillStyle="#000000";
-	}
-	else{
-		ctx.fillStyle="#FF0000";
-	}
-	ctx.save();
-	ctx.translate(rect.center.x, rect.center.y);
-	ctx.rotate(rect.spin * Math.PI/180);
-	ctx.fillRect(-rect.width/2,
-		     -rect.height/2,
-		     rect.width,
-		     rect.height);
-	ctx.stroke();
-	ctx.fillStyle="#00FF00";
-	ctx.fill();
-	ctx.arc(0, 0, 
-		smallest(rect.width, rect.height)/10,
-		0, 2*Math.PI);
-	ctx.restore();
-
-
-}
-
 function randomRect(maxSize, minSize, maxSpeed){
 
 	var xpos = Math.ceil(Math.random() * c.width/2) + maxSize;
@@ -173,7 +170,7 @@ function randomRect(maxSize, minSize, maxSpeed){
 	var height = Math.ceil(Math.random() * maxSize) + minSize;
 	var direction = Math.round(Math.random() + 1);
 	direction = Math.pow(-1, direction);
-	var spin = Math.ceil(Math.random() * 360 * direction);
+	var spin = Math.round(Math.random() * 4 * direction);
 	rect = new Rect(xpos, ypos, 	// x, y
 			width, height,	
 			Math.random(), Math.random(),	// vx, vy 
@@ -186,21 +183,21 @@ var tuple = [100,200,100,300,50,300, 50, 200];
 var tuple2 = [30, 80, 40, 40, 50, 60];
 console.log(tuple);
 
-var i = 0;
+var j = 0;
 var maxSize = c.width/10;
 var minSize = c.width/100;
 var maxSpeed = 2;
-var numberObjects = 5;
+var numberObjects = 1;
 var objects = [];
 
-var retangulo = new randomRect(maxSize, minSize, maxSpeed);
-console.log(retangulo);
-i
-console.log(retangulo);
 for (i = 0; i < numberObjects; i++){
 	objects.push(new randomRect(maxSize, minSize, maxSpeed));
 	
 }
+console.log(objects[0].vertices[0]);
+rotatePolygon(objects[0], 3);
+
+console.log(objects[0].vertices[0]);
 function mainLoop(){
 
 	ctx.fillStyle="#FFFF00";
@@ -210,6 +207,8 @@ function mainLoop(){
 		updateRect(objects[i]);
 		drawPolygon(objects[i]);
 	}
+	rotatePolygon(objects[0], 1);
+
 	requestAnimationFrame(mainLoop);
 }
 
