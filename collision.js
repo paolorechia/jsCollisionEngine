@@ -11,17 +11,18 @@ Point = function(x, y){
 	this.y=y;
 }
 
-Polygon = function(list){
-	this.vertices = [];
+function listToVertices(list){
+	vertices = [];
 	if (list.length % 2 != 0){
 		console.log("Error: list is not a valid set of coordinates.");
 	}
 	for (var i = 0; i < list.length; i+=2){
 		this.vertices[i/2]= new Point(list[i], list[i+1]);
 	}
+	return vertices;
 }
 
-function test(a){
+function times2(a){
 	return a * 2;
 }
 
@@ -47,39 +48,51 @@ function drawPolygon(polygon){
 		3, 0, 2*Math.PI);
 		ctx.fill();
 	}
-	
-
-	
 }	
-
-console.log(test);
-var tuple = [100,200,100,300,50,300, 50, 200];
-var tuple2 = [30, 80, 40, 40, 50, 60];
-console.log(tuple);
-poligono = new Polygon(tuple);
-poligono2 = new Polygon(tuple2);
-console.log(poligono);
 
 
 Rect = function(x, y, width, height, vx, vy, velocity, spin){
+	var list = [];
+	// ponto1
+	list.push(x);
+	list.push(y);
+	
+	//ponto2
+	list.push(x + width);
+	list.push(y);
+	
+	//ponto3
+	list.push(x + width);
+	list.push(y + height);
+	
+	//ponto4
+	list.push(x);
+	list.push(y + height);
+
+	this.vertices = listToVertices(list);
 	this.position = new Point(x, y);
 	this.width = width;
 	this.height = height;
-	this.vertices = [];
 	this.center = new Point(x + width/2, y + height/2);
 	this.hit=false;
 	this.versor = new Versor(vx, vy);
 	this.velocity = velocity;
 	this.spin = spin;
 }
-var inheritsFrom = function(child, parent){
-	child.prototype = Object.create(parent.prototype);
-};
-inheritsFrom(Rect, Polygon);
 
+function incrementVertices(vertices, xIncrement, yIncrement){
+		for (var i = 0; i < vertices.length; i++){
+			vertices[i].x += xIncrement;
+			vertices[i].y += yIncrement;
+		}
+}
 function updateRect(rect){
-	rect.position.x += rect.versor.x * rect.velocity;
-	rect.position.y += rect.versor.y * rect.velocity;
+	xIncrement = rect.versor.x * rect.velocity;
+	yIncrement = rect.versor.y * rect.velocity;
+
+	incrementVertices(rect.vertices, xIncrement, yIncrement);
+	rect.position.x += xIncrement
+	rect.position.y += yIncrement;
 	rect.center.x = rect.position.x + rect.width * 0.5;
 	rect.center.y = rect.position.y + rect.height * 0.5;
 	checkBorder(rect);
@@ -169,6 +182,10 @@ function randomRect(maxSize, minSize, maxSpeed){
 	return rect;
 }
 
+var tuple = [100,200,100,300,50,300, 50, 200];
+var tuple2 = [30, 80, 40, 40, 50, 60];
+console.log(tuple);
+
 var i = 0;
 var maxSize = c.width/10;
 var minSize = c.width/100;
@@ -176,6 +193,10 @@ var maxSpeed = 2;
 var numberObjects = 5;
 var objects = [];
 
+var retangulo = new randomRect(maxSize, minSize, maxSpeed);
+console.log(retangulo);
+i
+console.log(retangulo);
 for (i = 0; i < numberObjects; i++){
 	objects.push(new randomRect(maxSize, minSize, maxSpeed));
 	
@@ -186,11 +207,9 @@ function mainLoop(){
 	ctx.fillRect(0,0,c.width,c.height);
 
 	for (i = 0; i < objects.length; i++){
-	updateRect(objects[i]);
-	drawRect(objects[i]);
+		updateRect(objects[i]);
+		drawPolygon(objects[i]);
 	}
-	drawPolygon(poligono);
-	drawPolygon(poligono2);
 	requestAnimationFrame(mainLoop);
 }
 
