@@ -118,7 +118,6 @@ function updateRect(rect){
 	rect.center.x = rect.position.x + rect.width * 0.5;
 	rect.center.y = rect.position.y + rect.height * 0.5;
 	checkBorder(rect);
-
 }
 function checkBorder(rect){
 	if (rect.position.x + rect.width >= c.width){
@@ -187,17 +186,15 @@ var j = 0;
 var maxSize = c.width/10;
 var minSize = c.width/100;
 var maxSpeed = 2;
-var numberObjects = 1;
+var numberObjects = 2;
 var objects = [];
 
 for (i = 0; i < numberObjects; i++){
 	objects.push(new randomRect(maxSize, minSize, maxSpeed));
 	
 }
-console.log(objects[0].vertices[0]);
 rotatePolygon(objects[0], 3);
-
-console.log(objects[0].vertices[0]);
+console.log(objects[0].spin);
 function mainLoop(){
 
 	ctx.fillStyle="#FFFF00";
@@ -207,7 +204,9 @@ function mainLoop(){
 		updateRect(objects[i]);
 		drawPolygon(objects[i]);
 	}
-	rotatePolygon(objects[0], 1);
+	for (i = 0; i <objects.length; i++){
+		rotatePolygon(objects[i], objects[i].spin);
+	}
 
 	requestAnimationFrame(mainLoop);
 }
