@@ -11,7 +11,38 @@ Point = function(x, y){
 	this.y=y;
 }
 
+function Distance(pointA, pointB){
+	var x =  pointA.x - pointB.x;
+	x = x * x;
+	var y = pointA.y - pointB.y;
+	y = y * y;
+	return Math.sqrt(x - y);
+}
 
+Vector = function(pointA, pointB){
+	this.x=pointA.x - pointB.x;
+	this.y=pointA.y - pointB.y;
+}
+
+NormalVector = function(pointA, pointB){
+	
+}
+
+UnitVector = function(pointA, pointB){
+	var magnitude = distance(pointA, pointB);
+	this.x=(pointA.x - pointB.x) / magnitude;
+	this.y=(pointA.y - pointB.y) / magnitude;
+}
+
+
+function dotProduct(vectorA, vectorB){
+	return vectorA.x*vectorB.x + vectorA.y*vectorB.y;
+}
+
+function projection(vectorA){
+	var b;
+	dotProduct(vectorA, b);
+}
 // theta should come in degrees
 function rotatePolygon(polygon, theta){
 		theta *= theta * Math.PI / 180;
@@ -173,7 +204,7 @@ function testSTA(objA, objB){
 
 }
 
-function randomRect(maxSize, minSize, maxSpeed){
+function randomRect(maxSize, minSize, maxSpeed, maxSpin){
 
 	var xpos = Math.ceil(Math.random() * c.width/2) + maxSize;
 	var ypos = Math.ceil(Math.random() * c.height/2) + maxSize;
@@ -181,7 +212,7 @@ function randomRect(maxSize, minSize, maxSpeed){
 	var height = Math.ceil(Math.random() * maxSize) + minSize;
 	var direction = Math.round(Math.random() + 1);
 	direction = Math.pow(-1, direction);
-	var spin = Math.ceil(Math.random() * 4 * direction);
+	var spin = Math.ceil(Math.random() * maxSpin * direction);
 	rect = new Rect(xpos, ypos, 	// x, y
 			width, height,	
 			Math.random(), Math.random(),	// vx, vy 
@@ -198,11 +229,12 @@ var j = 0;
 var maxSize = c.width/10;
 var minSize = c.width/100;
 var maxSpeed = 2;
-var numberObjects = 30;
+var maxSpin = 2;
+var numberObjects = 2;
 var objects = [];
 
 for (i = 0; i < numberObjects; i++){
-	objects.push(new randomRect(maxSize, minSize, maxSpeed));
+	objects.push(new randomRect(maxSize, minSize, maxSpeed, maxSpin));
 	
 }
 objects[0].spin=0;
