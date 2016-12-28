@@ -143,7 +143,6 @@ midPoint = function(pointA, pointB){
 	vector.y = vector.y * 0.5;
 	this.x = pointA.x - vector.x;
 	this.y = pointA.y - vector.y;
-
 }	
 
 function drawVector(origin, vector){
@@ -154,17 +153,34 @@ function drawVector(origin, vector){
 	ctx.stroke();
 }
 
-function drawNormals(polygon){
-	var normal = new Vector(0,0);
+function calculateAxes(polygon){
+	for (var i = 0; i < polygon.vertices.length-1; i++){
+		normalVector1(polygon.vertices[i], polygon.vertices[i+1], polygon.axes[i]);
+		unitVector(polygon.axes[i], polygon.axes[i]);
+		
+	}
+	normalVector1(polygon.vertices[i], polygon.vertices[0], polygon.axes[i]);
+	unitVector(polygon.axes[i], polygon.axes[i]);
+
+}
+function drawAxes(polygon, length){
+	
+	var axis = new Vector(0, 0);
 	for (var i = 0; i < polygon.vertices.length-1; i++){
 		var midpoint = new midPoint(polygon.vertices[i], polygon.vertices[i+1]);
-		normalVector1(polygon.vertices[i], polygon.vertices[i+1], normal);
-		drawVector(midpoint, normal);
+		axis = polygon.axes[i];
+		axis.x *= length;
+		axis.y *= length;
+		drawVector(midpoint, axis);
 	}
 	var midpoint = new midPoint(polygon.vertices[i], polygon.vertices[0]);
-		normalVector1(polygon.vertices[i], polygon.vertices[0], normal);
-		drawVector(midpoint, normal);
+		axis = polygon.axes[i];
+		axis.x *= length;
+		axis.y *= length;
+		drawVector(midpoint, axis); 
+	
 }
+
 
 
 Rect = function(x, y, width, height, vx, vy, velocity, spin){
@@ -194,6 +210,11 @@ Rect = function(x, y, width, height, vx, vy, velocity, spin){
 	this.versor = new Versor(vx, vy);
 	this.velocity = velocity;
 	this.spin = spin;
+	this.sides = 4;
+	this.axes = [];
+	for (var i = 0; i < this.sides; i ++){
+		this.axes[i] = new Vector(0, 0);
+	}
 }
 
 function incrementVertices(vertices, xIncrement, yIncrement){
@@ -279,7 +300,7 @@ var maxSize = c.width/10;
 var minSize = c.width/100;
 var maxSpeed = 2;
 var maxSpin = 2;
-var numberObjects = 1;
+var numberObjects = 2;
 var objects = [];
 
 for (i = 0; i < numberObjects; i++){
@@ -290,6 +311,7 @@ objects[0].spin=0;
 vector = new Vector(0, 0);
 normal = new Vector(0, 0);
 unit = new Vector(0, 0);
+var axis_length = 20;
 function mainLoop(){
 
 	ctx.fillStyle="#FFFF00";
@@ -305,12 +327,16 @@ function mainLoop(){
 	for (j = 0; j < objects.length; j++){
 //		rotatePolygon(objects[j], objects[j].spin);
 		simpleRotate(objects[j]);
+		calculateAxes(objects[j]);
+		drawAxes(objects[j], axis_length);
 	}
 	calculateVector(objects[0].vertices[0], objects[0].vertices[1], vector);
 	normalVector1(objects[0].vertices[0], objects[0].vertices[1], normal);
 	normalVector2(objects[0].vertices[0], objects[0].vertices[1], normal);
 	unitVector(normal, unit);
-	drawNormals(objects[0]);
+	//console.log(unit);
+
+//	console.log(objects[0].axes[0]);
 	requestAnimationFrame(mainLoop);
 }
 
