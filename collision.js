@@ -63,12 +63,6 @@ function dotProduct(vectorA, vectorB){
 	return vectorA.x*vectorB.x + vectorA.y*vectorB.y;
 }
 
-function calculateProjections(polygon){
-	for (var i = 0; i < polygon.axes.length; i++){
-			polygon.projections[i] = projection(vertices, polygon.axes[i]);
-	}
-}
-
 function projection(vertices, axis){
 	min = 99999;
 	max = -99999; 
@@ -86,9 +80,31 @@ function projection(vertices, axis){
 	return projection;
 }
 
+function collisionSTA(polygonA, polygonB){
+	for (var i = 0; i < polygonA.axes.length; i++){
+		projA = projection(polygonA.vertices, polygonA.axes[i]);
+		projB = projection(polygonB.vertices, polygonA.axes[i]);
+		if (overlap(projA, projB)){
+			return false;
+		}
+	}
+	for (var i = 0; i < polygonB.axes.length; i++){
+		projA = projection(polygonA.vertices, polygonB.axes[i]);
+		projB = projection(polygonB.vertices, polygonB.axes[i]);
+		if (overlap(projA, projB)){
+			return false;
+		}
+	}
+	polygonA.hit=true;
+	polygonB.hit=true;
+	return true;
+}
 
-function overlap(objA, objB){
-
+function overlap(projA, projB){
+	if (projA.max < projB.min || projA.min > projB.max){
+		return true;
+	}
+	else return false;
 }
 
 // theta should be in degrees
@@ -135,7 +151,12 @@ function times2(a){
 
 function drawPolygon(polygon){
 	ctx.beginPath();
-	ctx.strokeStyle="#000000";
+	if (polygon.hit == true){
+		ctx.strokeStyle="#FF0000";
+	}
+	else{
+		ctx.strokeStyle="#000000";
+	}
 	ctx.moveTo(polygon.vertices[0].x,
 			   polygon.vertices[0].y);
 
@@ -260,6 +281,7 @@ function updateRect(rect){
 	rect.position.y += yIncrement;
 	rect.center.x = rect.position.x + rect.width * 0.5;
 	rect.center.y = rect.position.y + rect.height * 0.5;
+	rect.hit=false;
 	checkBorder(rect);
 }
 function checkBorder(rect){
@@ -279,10 +301,7 @@ function checkColisionsNaive(array){
 	var i, j;
 	for (i = 0; i < array.length; i++){
 		for (j=i+1; j < array.length; j++){
-			if (overlap(array[i], array[j])){
-				array[i].hit=true;
-				array[j].hit=true;
-			}
+			collisionSTA(array[i], array[j]);
 		}
 	}
 }
@@ -292,10 +311,6 @@ function smallest(width, height){
 		return width;
 	}
 	return height;	
-}
-
-function testSTA(objA, objB){
-
 }
 
 function randomRect(maxSize, minSize, maxSpeed, maxSpin){
@@ -324,7 +339,7 @@ var maxSize = c.width/10;
 var minSize = c.width/100;
 var maxSpeed = 2;
 var maxSpin = 2;
-var numberObjects = 2;
+var numberObjects = 10;
 var objects = [];
 
 for (i = 0; i < numberObjects; i++){
@@ -345,7 +360,7 @@ function mainLoop(){
 
 	for (i = 0; i < objects.length; i++){
 		updateRect(objects[i]);
-		drawPolygon(objects[i]);
+
 
 	}
 
@@ -355,14 +370,16 @@ function mainLoop(){
 //		simpleRotate(objects[j]);
 		calculateAxes(objects[j]);
 		drawAxes(objects[j], axis_length);
+
 	}
 	calculateVector(objects[0].vertices[0], objects[0].vertices[1], vector);
 	normalVector1(objects[0].vertices[0], objects[0].vertices[1], normal);
 	normalVector2(objects[0].vertices[0], objects[0].vertices[1], normal);
 	unitVector(normal, unit);
-	calculateProjections(objects[0]);
-//	console.log(objects[0].projections[2]);
-//	console.log(objects[0].axes[0]);
+	checkColisionsNaive(objects);
+	for (k = 0; k < objects.length; k++){
+			drawPolygon(objects[k]);
+	}
 	requestAnimationFrame(mainLoop);
 }
 
