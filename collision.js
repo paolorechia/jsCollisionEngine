@@ -60,7 +60,6 @@ function unitVector(vector, unit){;
 }
 
 function dotProduct(vectorA, vectorB){
-//	console.log(vectorA);
 	return vectorA.x*vectorB.x + vectorA.y*vectorB.y;
 }
 
@@ -71,10 +70,10 @@ function calculateProjections(polygon){
 }
 
 function projection(vertices, axis){
-	min = -c.width;
-	max = c.width * 2;
+	min = 99999;
+	max = -99999; 
 	var product;
-	for (var i = 0; vertices.length - 1; i++){
+	for (var i = 0; i < vertices.length; i++){
 		product = dotProduct(vertices[i], axis);
 		if (product > max){
 			max = product;
@@ -86,6 +85,12 @@ function projection(vertices, axis){
 	var projection = new Projection(min, max);
 	return projection;
 }
+
+
+function overlap(objA, objB){
+
+}
+
 // theta should be in degrees
 function rotatePolygon(polygon, theta){
 		theta *= theta * Math.PI / 180;
@@ -185,16 +190,14 @@ function calculateAxes(polygon){
 	}
 	normalVector1(polygon.vertices[i], polygon.vertices[0], polygon.axes[i]);
 	unitVector(polygon.axes[i], polygon.axes[i]);
-
 }
 function drawAxes(polygon, length){
 	
 	var axis = new Vector(0, 0);
 	for (var i = 0; i < polygon.vertices.length-1; i++){
 		var midpoint = new midPoint(polygon.vertices[i], polygon.vertices[i+1]);
-		axis = polygon.axes[i];
-		axis.x *= length;
-		axis.y *= length;
+		axis.x = polygon.axes[i].x * length;
+		axis.y = polygon.axes[i].y * length;
 		drawVector(midpoint, axis);
 	}
 	var midpoint = new midPoint(polygon.vertices[i], polygon.vertices[0]);
@@ -202,7 +205,6 @@ function drawAxes(polygon, length){
 		axis.x *= length;
 		axis.y *= length;
 		drawVector(midpoint, axis); 
-	
 }
 
 
@@ -292,10 +294,6 @@ function smallest(width, height){
 	return height;	
 }
 
-function overlap(objA, objB){
-
-}
-
 function testSTA(objA, objB){
 
 }
@@ -334,6 +332,8 @@ for (i = 0; i < numberObjects; i++){
 	
 }
 objects[0].spin=0;
+objects[1].spin=1;
+
 vector = new Vector(0, 0);
 normal = new Vector(0, 0);
 unit = new Vector(0, 0);
@@ -360,10 +360,8 @@ function mainLoop(){
 	normalVector1(objects[0].vertices[0], objects[0].vertices[1], normal);
 	normalVector2(objects[0].vertices[0], objects[0].vertices[1], normal);
 	unitVector(normal, unit);
-	objects[0].projections[0]=projection(objects[0].vertices, objects[0].axes[0]);
-	console.log(objects[0].projections[0]);
-	//calculateProjections(objects[0]);
-
+	calculateProjections(objects[0]);
+//	console.log(objects[0].projections[2]);
 //	console.log(objects[0].axes[0]);
 	requestAnimationFrame(mainLoop);
 }
