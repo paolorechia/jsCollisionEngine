@@ -136,16 +136,34 @@ function drawPolygon(polygon){
 	}
 }
 
-function midPoint(pointA, pointB){
-	pointA.x - pointB.x
+midPoint = function(pointA, pointB){
+	vector = new Vector(0, 0);
+	calculateVector(pointA, pointB, vector);
+	vector.x = vector.x * 0.5;
+	vector.y = vector.y * 0.5;
+	this.x = pointA.x - vector.x;
+	this.y = pointA.y - vector.y;
 
 }	
 
 function drawVector(origin, vector){
 	ctx.beginPath();
+	ctx.strokeStyle="#00FF00"
 	ctx.moveTo(origin.x, origin.y);
-	ctx.lineTo(vector.x, vector.y);
+	ctx.lineTo(origin.x + vector.x, origin.y + vector.y);
 	ctx.stroke();
+}
+
+function drawNormals(polygon){
+	var normal = new Vector(0,0);
+	for (var i = 0; i < polygon.vertices.length-1; i++){
+		var midpoint = new midPoint(polygon.vertices[i], polygon.vertices[i+1]);
+		normalVector1(polygon.vertices[i], polygon.vertices[i+1], normal);
+		drawVector(midpoint, normal);
+	}
+	var midpoint = new midPoint(polygon.vertices[i], polygon.vertices[0]);
+		normalVector1(polygon.vertices[i], polygon.vertices[0], normal);
+		drawVector(midpoint, normal);
 }
 
 
@@ -292,7 +310,7 @@ function mainLoop(){
 	normalVector1(objects[0].vertices[0], objects[0].vertices[1], normal);
 	normalVector2(objects[0].vertices[0], objects[0].vertices[1], normal);
 	unitVector(normal, unit);
-//	console.log(unit);
+	drawNormals(objects[0]);
 	requestAnimationFrame(mainLoop);
 }
 
