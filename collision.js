@@ -16,6 +16,11 @@ Vector = function(x, y){
 	this.y=y;
 }
 
+Projection = function(min, max){
+	this.min = min;
+	this.max = max;
+}
+
 function distance(pointA, pointB){
 	var x =  pointA.x - pointB.x;
 	x = x * x;
@@ -55,12 +60,31 @@ function unitVector(vector, unit){;
 }
 
 function dotProduct(vectorA, vectorB){
+//	console.log(vectorA);
 	return vectorA.x*vectorB.x + vectorA.y*vectorB.y;
 }
 
-function projection(vectorA){
-	var b;
-	dotProduct(vectorA, b);
+function calculateProjections(polygon){
+	for (var i = 0; i < polygon.axes.length; i++){
+			polygon.projections[i] = projection(vertices, polygon.axes[i]);
+	}
+}
+
+function projection(vertices, axis){
+	min = -c.width;
+	max = c.width * 2;
+	var product;
+	for (var i = 0; vertices.length - 1; i++){
+		product = dotProduct(vertices[i], axis);
+		if (product > max){
+			max = product;
+		}
+		if (product < min){
+			min = product;
+		}
+	}
+	var projection = new Projection(min, max);
+	return projection;
 }
 // theta should be in degrees
 function rotatePolygon(polygon, theta){
@@ -212,8 +236,10 @@ Rect = function(x, y, width, height, vx, vy, velocity, spin){
 	this.spin = spin;
 	this.sides = 4;
 	this.axes = [];
+	this.projections = [];
 	for (var i = 0; i < this.sides; i ++){
 		this.axes[i] = new Vector(0, 0);
+		this.projections[i] = new Projection(0, 0);
 	}
 }
 
@@ -325,8 +351,8 @@ function mainLoop(){
 
 
 	for (j = 0; j < objects.length; j++){
-//		rotatePolygon(objects[j], objects[j].spin);
-		simpleRotate(objects[j]);
+		rotatePolygon(objects[j], objects[j].spin);
+//		simpleRotate(objects[j]);
 		calculateAxes(objects[j]);
 		drawAxes(objects[j], axis_length);
 	}
@@ -334,7 +360,9 @@ function mainLoop(){
 	normalVector1(objects[0].vertices[0], objects[0].vertices[1], normal);
 	normalVector2(objects[0].vertices[0], objects[0].vertices[1], normal);
 	unitVector(normal, unit);
-	//console.log(unit);
+	objects[0].projections[0]=projection(objects[0].vertices, objects[0].axes[0]);
+	console.log(objects[0].projections[0]);
+	//calculateProjections(objects[0]);
 
 //	console.log(objects[0].axes[0]);
 	requestAnimationFrame(mainLoop);
