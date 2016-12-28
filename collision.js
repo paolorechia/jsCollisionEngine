@@ -11,7 +11,12 @@ Point = function(x, y){
 	this.y=y;
 }
 
-function Distance(pointA, pointB){
+Vector = function(x, y){
+	this.x=x;
+	this.y=y;
+}
+
+function distance(pointA, pointB){
 	var x =  pointA.x - pointB.x;
 	x = x * x;
 	var y = pointA.y - pointB.y;
@@ -19,21 +24,35 @@ function Distance(pointA, pointB){
 	return Math.sqrt(x - y);
 }
 
-Vector = function(pointA, pointB){
-	this.x=pointA.x - pointB.x;
-	this.y=pointA.y - pointB.y;
+function calculateVector(pointA, pointB, vector){
+	vector.x = pointA.x - pointB.x;
+	vector.y = pointA.y - pointB.y;
 }
 
-NormalVector = function(pointA, pointB){
-	
+function norm(vector){
+	var x1 = vector.x * vector.x;
+	var y1 = vector.y * vector.y;
+	return Math.sqrt(x1 + y1);
 }
 
-UnitVector = function(pointA, pointB){
-	var magnitude = distance(pointA, pointB);
-	this.x=(pointA.x - pointB.x) / magnitude;
-	this.y=(pointA.y - pointB.y) / magnitude;
+function normalVector1(pointA, pointB, vector){
+	x = pointA.x - pointB.x;
+	y = pointA.y - pointB.y;
+	vector.x = -y
+	vector.y =  x;
+}
+function normalVector2(pointA, pointB, vector){
+	x = pointA.x - pointB.x;
+	y = pointA.y - pointB.y;
+	vector.x =  y
+	vector.y = -x;
 }
 
+function unitVector(vector, unit){;
+	var denom = norm(vector);
+	unit.x = vector.x / denom;
+	unit.y = vector.y / denom;
+}
 
 function dotProduct(vectorA, vectorB){
 	return vectorA.x*vectorB.x + vectorA.y*vectorB.y;
@@ -43,7 +62,7 @@ function projection(vectorA){
 	var b;
 	dotProduct(vectorA, b);
 }
-// theta should come in degrees
+// theta should be in degrees
 function rotatePolygon(polygon, theta){
 		theta *= theta * Math.PI / 180;
 		for (i = 0; i < polygon.vertices.length; i++){
@@ -115,7 +134,19 @@ function drawPolygon(polygon){
 				3, 0, 2*Math.PI);
 		ctx.fill();
 	}
+}
+
+function midPoint(pointA, pointB){
+	pointA.x - pointB.x
+
 }	
+
+function drawVector(origin, vector){
+	ctx.beginPath();
+	ctx.moveTo(origin.x, origin.y);
+	ctx.lineTo(vector.x, vector.y);
+	ctx.stroke();
+}
 
 
 Rect = function(x, y, width, height, vx, vy, velocity, spin){
@@ -230,7 +261,7 @@ var maxSize = c.width/10;
 var minSize = c.width/100;
 var maxSpeed = 2;
 var maxSpin = 2;
-var numberObjects = 2;
+var numberObjects = 1;
 var objects = [];
 
 for (i = 0; i < numberObjects; i++){
@@ -238,7 +269,9 @@ for (i = 0; i < numberObjects; i++){
 	
 }
 objects[0].spin=0;
-
+vector = new Vector(0, 0);
+normal = new Vector(0, 0);
+unit = new Vector(0, 0);
 function mainLoop(){
 
 	ctx.fillStyle="#FFFF00";
@@ -252,10 +285,14 @@ function mainLoop(){
 
 
 	for (j = 0; j < objects.length; j++){
-		rotatePolygon(objects[j], objects[j].spin);
-//		simpleRotate(objects[j]);
+//		rotatePolygon(objects[j], objects[j].spin);
+		simpleRotate(objects[j]);
 	}
-
+	calculateVector(objects[0].vertices[0], objects[0].vertices[1], vector);
+	normalVector1(objects[0].vertices[0], objects[0].vertices[1], normal);
+	normalVector2(objects[0].vertices[0], objects[0].vertices[1], normal);
+	unitVector(normal, unit);
+//	console.log(unit);
 	requestAnimationFrame(mainLoop);
 }
 
