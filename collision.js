@@ -123,6 +123,7 @@ function rotatePolygon(polygon, theta){
 var angle = 1 * Math.PI / 180;
 var cos = Math.cos(angle);
 var sin = Math.sin(angle);
+
 function simpleRotate(polygon){
 		for (i = 0; i < polygon.vertices.length; i++){
 			polygon.vertices[i].x -= polygon.center.x;
@@ -337,8 +338,8 @@ console.log(tuple);
 var j = 0;
 var maxSize = c.width/10;
 var minSize = c.width/100;
-var maxSpeed = 2;
-var maxSpin = 2;
+var maxSpeed = 4;
+var maxSpin = 3;
 var numberObjects = 10;
 var objects = [];
 
@@ -346,12 +347,6 @@ for (i = 0; i < numberObjects; i++){
 	objects.push(new randomRect(maxSize, minSize, maxSpeed, maxSpin));
 	
 }
-objects[0].spin=0;
-objects[1].spin=1;
-
-vector = new Vector(0, 0);
-normal = new Vector(0, 0);
-unit = new Vector(0, 0);
 var axis_length = 20;
 function mainLoop(){
 
@@ -363,19 +358,12 @@ function mainLoop(){
 
 
 	}
-
-
 	for (j = 0; j < objects.length; j++){
 		rotatePolygon(objects[j], objects[j].spin);
-//		simpleRotate(objects[j]);
 		calculateAxes(objects[j]);
 		drawAxes(objects[j], axis_length);
 
 	}
-	calculateVector(objects[0].vertices[0], objects[0].vertices[1], vector);
-	normalVector1(objects[0].vertices[0], objects[0].vertices[1], normal);
-	normalVector2(objects[0].vertices[0], objects[0].vertices[1], normal);
-	unitVector(normal, unit);
 	checkColisionsNaive(objects);
 	for (k = 0; k < objects.length; k++){
 			drawPolygon(objects[k]);
