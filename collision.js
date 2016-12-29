@@ -106,7 +106,6 @@ function collisionSTA(polygonA, polygonB){
 			smallestOverlap=over;
 			smallestAxis = polygonB.axes[i];
 		}
-		
 	}
 	polygonA.hit=true;
 	polygonB.hit=true;
@@ -232,7 +231,6 @@ function calculateAxes(polygon){
 	}
 	normalVector1(polygon.vertices[i], polygon.vertices[0], polygon.axes[i]);
 	unitVector(polygon.axes[i], polygon.axes[i]);
-	
 }
 function drawAxes(polygon, length){
 	
@@ -273,6 +271,7 @@ Rect = function(x, y, width, height, vx, vy, velocity, spin){
 	this.position = new Point(x, y);
 	this.width = width;
 	this.height = height;
+	this.mass = width * height;
 	this.center = new Point(x + width/2, y + height/2);
 	this.hit=false;
 	this.versor = new Versor(vx, vy);
@@ -356,8 +355,14 @@ function checkColisionsNaive(array){
 		for (j=i+1; j < array.length; j++){
 			mtv = collisionSTA(array[i], array[j]);
 			if (mtv != false){
-				array[i].versor.x = mtv.x;
-				array[i].versor.y = mtv.y;
+				if (array[i].mass < array[j].mass){
+					array[i].versor.x = mtv.x;
+					array[i].versor.y = mtv.y;
+				}
+				else{
+					array[j].versor.x = -mtv.x;
+					array[j].versor.y = -mtv.y;
+				}
 			}
 		}
 	}
