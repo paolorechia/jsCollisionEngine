@@ -288,24 +288,25 @@ function updateRect(rect){
 	rect.hit=false;
 	checkBorder(rect);
 }
-function checkBorder(rect){
-	for (var i = 0; i < rect.vertices.length; i++){
-		if (rect.vertices[i].x < 0 || rect.vertices[i].x >= c.width){
-					rect.versor.x *= -1;
-					xIncrement = rect.versor.x * 10;
-					incrementVertices(rect.vertices, xIncrement, 0);
-					incrementRect(rect, xIncrement, 0);
-					break;
-		}
-		if (rect.vertices[i].y < 0 || rect.vertices[i].y >= c.height){
-					rect.versor.y *= -1;
-					yIncrement = rect.versor.y * 10;
-					incrementVertices(rect.vertices, 0, yIncrement);
-					incrementRect(rect, 0, yIncrement);
-					break;
-		}
+function checkBorder(polygon){
+	yAxis = new Vector(0, 1);
+	xAxis = new Vector(1, 0);
+	
+	for (var i = 0; i < polygon.axes.length; i++){
+		projX = projection(polygon.vertices, xAxis);
+	}
+	for (var i = 0; i < polygon.axes.length; i++){
+		projY = projection(polygon.vertices, yAxis);
+	}
+	if (projX.max > c.width || projX.min < 0){
+		polygon.versor.x *= -1;
+	}
+	if (projY.max > c.height || projY.min < 0){
+		polygon.versor.y *= -1;
 	}
 }
+
+
 
 function checkColisionsNaive(array){
 	var i, j;
