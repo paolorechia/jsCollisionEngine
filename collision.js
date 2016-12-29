@@ -273,15 +273,18 @@ function incrementVertices(vertices, xIncrement, yIncrement){
 			vertices[i].y += yIncrement;
 		}
 }
+function incrementRect(rect, xIncrement, yIncrement){
+	rect.position.x += xIncrement
+	rect.position.y += yIncrement;
+	rect.center.x = rect.position.x + rect.width * 0.5;
+	rect.center.y = rect.position.y + rect.height * 0.5;
+}
 function updateRect(rect){
 	xIncrement = rect.versor.x * rect.velocity;
 	yIncrement = rect.versor.y * rect.velocity;
 
 	incrementVertices(rect.vertices, xIncrement, yIncrement);
-	rect.position.x += xIncrement
-	rect.position.y += yIncrement;
-	rect.center.x = rect.position.x + rect.width * 0.5;
-	rect.center.y = rect.position.y + rect.height * 0.5;
+	incrementRect(rect, xIncrement, yIncrement);
 	rect.hit=false;
 	checkBorder(rect);
 }
@@ -289,10 +292,16 @@ function checkBorder(rect){
 	for (var i = 0; i < rect.vertices.length; i++){
 		if (rect.vertices[i].x < 0 || rect.vertices[i].x >= c.width){
 					rect.versor.x *= -1;
+					xIncrement = rect.versor.x * 10;
+					incrementVertices(rect.vertices, xIncrement, 0);
+					incrementRect(rect, xIncrement, 0);
 					break;
 		}
 		if (rect.vertices[i].y < 0 || rect.vertices[i].y >= c.height){
 					rect.versor.y *= -1;
+					yIncrement = rect.versor.y * 10;
+					incrementVertices(rect.vertices, 0, yIncrement);
+					incrementRect(rect, 0, yIncrement);
 					break;
 		}
 	}
