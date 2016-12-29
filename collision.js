@@ -113,7 +113,6 @@ function collisionSTA(polygonA, polygonB){
 	var x = smallestAxis.x;
 	var y = smallestAxis.y;
 	var mtv = new Vector(x, y);
-//	console.log(mtv);
 	return mtv;
 }
 
@@ -357,12 +356,8 @@ function checkColisionsNaive(array){
 		for (j=i+1; j < array.length; j++){
 			mtv = collisionSTA(array[i], array[j]);
 			if (mtv != false){
-				applyVectorToRect(array[j], mtv);
-				/*
-				mtv.x = -mtv.x;
-				mtv.y = -mtv.y;
-				*/
-				applyVectorToRect(array[i], mtv);
+				array[i].versor.x = mtv.x;
+				array[i].versor.y = mtv.y;
 			}
 		}
 	}
@@ -388,7 +383,6 @@ function randomRect(maxSize, minSize, maxSpeed, maxSpin){
 			width, height,	
 			Math.random(), Math.random(),	// vx, vy 
 			maxSpeed, spin);
-
 	return rect;
 }
 
@@ -399,9 +393,9 @@ console.log(tuple);
 var j = 0;
 var maxSize = c.width/10;
 var minSize = c.width/100;
-var maxSpeed = 4;
-var maxSpin = 3;
-var numberObjects = 20;
+var maxSpeed = 6;
+var maxSpin = 4;
+var numberObjects = 4;
 var objects = [];
 
 for (i = 0; i < numberObjects; i++){
@@ -424,7 +418,7 @@ function mainLoop(){
 		drawAxes(objects[j], axis_length);
 
 	}
-//	checkColisionsNaive(objects);
+	checkColisionsNaive(objects);
 	for (k = 0; k < objects.length; k++){
 			drawPolygon(objects[k]);
 	}
