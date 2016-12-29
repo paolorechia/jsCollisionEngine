@@ -81,30 +81,51 @@ function projection(vertices, axis){
 }
 
 function collisionSTA(polygonA, polygonB){
+	var smallestOverlap = 999999;
+	var smallestAxis = null;
 	for (var i = 0; i < polygonA.axes.length; i++){
 		projA = projection(polygonA.vertices, polygonA.axes[i]);
 		projB = projection(polygonB.vertices, polygonA.axes[i]);
-		if (overlap(projA, projB)){
+		over = (overlap(projA, projB));
+		if (over == 0){
 			return false;
 		}
+		if (over < smallestOverlap){
+			smallestOverlap = over;
+			smallestAxis = polygonA.axes[i];
+		}
+		
 	}
 	for (var i = 0; i < polygonB.axes.length; i++){
 		projA = projection(polygonA.vertices, polygonB.axes[i]);
 		projB = projection(polygonB.vertices, polygonB.axes[i]);
-		if (overlap(projA, projB)){
+		if (over == 0){
 			return false;
 		}
+		if (over < smallestOverlap){
+			smallestOverlap=over;
+			smallestAxis = polygonB.axes[i];
+		}
+		
 	}
 	polygonA.hit=true;
 	polygonB.hit=true;
-	return true;
+	var x = smallestAxis.x;
+	var y = smallestAxis.y;
+	var mtv = new Vector(x, y);
+//	console.log(mtv);
+	return mtv;
 }
 
 function overlap(projA, projB){
-	if (projA.max < projB.min || projA.min > projB.max){
-		return true;
+	var overlap = 0;
+	if (projB.min < projA.max){
+		overlap = projB.min - projA.max;
 	}
-	else return false;
+	else if(projA.min > projB.max){
+		overlap = projA.min - projB.max;
+	}
+	return overlap;
 }
 
 // theta should be in degrees
@@ -212,6 +233,7 @@ function calculateAxes(polygon){
 	}
 	normalVector1(polygon.vertices[i], polygon.vertices[0], polygon.axes[i]);
 	unitVector(polygon.axes[i], polygon.axes[i]);
+	
 }
 function drawAxes(polygon, length){
 	
@@ -223,9 +245,8 @@ function drawAxes(polygon, length){
 		drawVector(midpoint, axis);
 	}
 	var midpoint = new midPoint(polygon.vertices[i], polygon.vertices[0]);
-		axis = polygon.axes[i];
-		axis.x *= length;
-		axis.y *= length;
+		axis.x = polygon.axes[i].x * length;
+		axis.y = polygon.axes[i].y * length;
 		drawVector(midpoint, axis); 
 }
 
@@ -267,6 +288,17 @@ Rect = function(x, y, width, height, vx, vy, velocity, spin){
 	}
 }
 
+function applyVectorToRect(rect, vector){
+	for (var i = 0; i < rect.vertices.length; i++){
+			rect.vertices[i].x += vector.x;
+			rect.vertices[i].y += vector.y;
+		}
+	rect.position.x += vector.x;
+	rect.position.y += vector.y;
+	rect.center.x = rect.position.x + rect.width * 0.5;
+	rect.center.y = rect.position.y + rect.height * 0.5;
+}
+
 function incrementVertices(vertices, xIncrement, yIncrement){
 		for (var i = 0; i < vertices.length; i++){
 			vertices[i].x += xIncrement;
@@ -286,7 +318,6 @@ function updateRect(rect){
 	incrementVertices(rect.vertices, xIncrement, yIncrement);
 	incrementRect(rect, xIncrement, yIncrement);
 	rect.hit=false;
-	checkBorder(rect);
 }
 function checkBorder(polygon){
 	yAxis = new Vector(0, 1);
@@ -298,21 +329,41 @@ function checkBorder(polygon){
 	for (var i = 0; i < polygon.axes.length; i++){
 		projY = projection(polygon.vertices, yAxis);
 	}
-	if (projX.max > c.width || projX.min < 0){
+	if (projX.max > c.width){
 		polygon.versor.x *= -1;
+		diff = new Vector(-(projX.max - c.width), 0);
+		applyVectorToRect(polygon, diff);
 	}
-	if (projY.max > c.height || projY.min < 0){
+	else if (projX.min < 0){
+		polygon.versor.x *= -1;
+		diff = new Vector(-projX.min, 0);
+		applyVectorToRect(polygon, diff);
+	}
+	if (projY.max > c.height){
 		polygon.versor.y *= -1;
+		diff = new Vector(0, -(projY.max - c.height));
+		applyVectorToRect(polygon, diff);
+	}
+	if (projY.min < 0){
+		polygon.versor.y *= -1;
+		diff = new Vector(0, -projY.min);
+		applyVectorToRect(polygon, diff);
 	}
 }
 
-
-
 function checkColisionsNaive(array){
-	var i, j;
+	var i, j, mtv;
 	for (i = 0; i < array.length; i++){
 		for (j=i+1; j < array.length; j++){
-			collisionSTA(array[i], array[j]);
+			mtv = collisionSTA(array[i], array[j]);
+			if (mtv != false){
+				applyVectorToRect(array[j], mtv);
+				/*
+				mtv.x = -mtv.x;
+				mtv.y = -mtv.y;
+				*/
+				applyVectorToRect(array[i], mtv);
+			}
 		}
 	}
 }
@@ -350,7 +401,7 @@ var maxSize = c.width/10;
 var minSize = c.width/100;
 var maxSpeed = 4;
 var maxSpin = 3;
-var numberObjects = 10;
+var numberObjects = 20;
 var objects = [];
 
 for (i = 0; i < numberObjects; i++){
@@ -365,8 +416,7 @@ function mainLoop(){
 
 	for (i = 0; i < objects.length; i++){
 		updateRect(objects[i]);
-
-
+		checkBorder(objects[i]);
 	}
 	for (j = 0; j < objects.length; j++){
 		rotatePolygon(objects[j], objects[j].spin);
@@ -374,7 +424,7 @@ function mainLoop(){
 		drawAxes(objects[j], axis_length);
 
 	}
-	checkColisionsNaive(objects);
+//	checkColisionsNaive(objects);
 	for (k = 0; k < objects.length; k++){
 			drawPolygon(objects[k]);
 	}
