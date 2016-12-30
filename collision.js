@@ -247,7 +247,13 @@ function drawAxes(polygon, length){
 		drawVector(midpoint, axis); 
 }
 
-
+function drawFPS(number){
+	ctx.beginPath();
+	ctx.font="20px Arial";
+	string = "FPS: " + number;
+	ctx.fillText(string, 10, 20);
+	ctx.stroke();
+}
 
 Rect = function(x, y, width, height, vx, vy, velocity, spin){
 	var list = [];
@@ -368,13 +374,34 @@ function elasticCollision(polygonA, mtv, polygonB){
 	changeDirection(polygonB, mtv);
 }
 
-function ineslaticCollision(polygonA, mtv, polygonB){
-	
-	
+function inelasticCollision(polygonA, mtv, polygonB){
+	inertiaA = new Vector(0, 0);
+	inertiaB = new Vector(0, 0);
+	result = new Vector(0, 0);
+	inertiaA.x = polygonA.velocity * polygonA.versor.x;
+	inertiaA.y = polygonA.velocity * polygonA.versor.y;
+
+	inertiaB.x = polygonB.velocity * polygonB.versor.x;
+	inertiaB.y = polygonB.velocity * polygonB.versor.y;
+	/*
+	inertiaA.x = polygonA.mass * polygonA.velocity * polygonA.versor.x;
+	inertiaA.y = polygonA.mass * polygonA.velocity * polygonA.versor.y;
+
+	inertiaB.x = polygonB.mass * polygonB.velocity * polygonB.versor.x;
+	inertiaB.y = polygonB.mass * polygonB.velocity * polygonB.versor.y;
+*/
+	result.x = inertiaA.x + inertiaB.x;
+	result.y = inertiaA.y + inertiaA.y;
+//	polygonA.velocity = norm(result);
+//	polygonB.velocity = norm(result);
+	unitVector(result, result);
+	polygonA.versor = result;
+
+	polygonB.versor = result;
 }
 
 
-function parciallyElasticCollision(polygonA, mtv, polygonB){
+function partiallyElasticCollision(polygonA, mtv, polygonB){
 	var direction = new Vector(0, 0);
 	if (polygonB.mass > polygonA.mass){
 		bigger = polygonB;
@@ -422,6 +449,25 @@ function smallest(width, height){
 	return height;	
 }
 
+Fps = function(){
+	this.index = 0;
+	this.array = [];
+	this.maxSize = 24;
+	this.add = function(n){
+		this.array[this.index] = n;
+		this.index = (this.index  + 1) % this.maxSize;
+	}
+	this.mean = function(){
+		var sum = 0;
+		for (var i = 0; i < this.array.length; i++){
+			sum += this.array[i];
+
+		}
+		return sum/this.array.length;
+	}
+};
+
+
 function randomRect(maxSize, minSize, maxSpeed, maxSpin){
 
 	var xpos = Math.ceil(Math.random() * c.width/2) + maxSize;
@@ -442,7 +488,7 @@ var maxSize = c.width/10;
 var minSize = c.width/100;
 var maxSpeed = 6;
 var maxSpin = 4;
-var numberObjects = 20;
+var numberObjects = 10;
 var objects = [];
 
 for (i = 0; i < numberObjects; i++){
@@ -450,7 +496,14 @@ for (i = 0; i < numberObjects; i++){
 	
 }
 var axis_length = 20;
+var lastDate = new Date();
+var fps = new Fps();
+
 function mainLoop(){
+	newDate = new Date();
+	elapsedTime = newDate - lastDate;
+	lastDate = new Date();
+	fps.add(elapsedTime);
 
 	ctx.fillStyle="#FFFF00";
 	ctx.fillRect(0,0,c.width,c.height);
@@ -469,7 +522,7 @@ function mainLoop(){
 	for (k = 0; k < objects.length; k++){
 			drawPolygon(objects[k]);
 	}
-
+	drawFPS(fps.mean());
 	requestAnimationFrame(mainLoop);
 
 }
