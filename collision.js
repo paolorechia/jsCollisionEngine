@@ -356,7 +356,25 @@ function checkBorder(polygon){
 	}
 }
 
-function applyMTV(polygonA, mtv, polygonB){
+function changeDirection(polygon, mtv){
+	polygon.versor.x = mtv.x;
+	polygon.versor.y = mtv.y;
+}
+
+function elasticCollision(polygonA, mtv, polygonB){
+	changeDirection(polygonA, mtv);
+	mtv.x = - mtv.x;
+	mtv.y = - mtv.y;
+	changeDirection(polygonB, mtv);
+}
+
+function ineslaticCollision(polygonA, mtv, polygonB){
+	
+	
+}
+
+
+function parciallyElasticCollision(polygonA, mtv, polygonB){
 	var direction = new Vector(0, 0);
 	if (polygonB.mass > polygonA.mass){
 		bigger = polygonB;
@@ -375,6 +393,14 @@ function applyMTV(polygonA, mtv, polygonB){
 		direction.y -= sign * (mtv.y * massDiff);
 		unitVector(direction, direction);
 		smaller.versor = direction;
+		/*
+		direction.x = bigger.versor.x * bigger.velocity;
+		direction.y = bigger.versor.y * bigger.velocity;
+		direction.x -= sign * (mtv.x)
+		direction.y -= sign * (mtv.y);
+		unitVector(direction, direction);
+		bigger.versor = direction;
+		*/
 }
 
 function checkColisionsNaive(array){
@@ -383,7 +409,7 @@ function checkColisionsNaive(array){
 		for (j=i+1; j < array.length; j++){
 			mtv = collisionSTA(array[i], array[j]);
 			if (mtv != false){
-					applyMTV(array[i], mtv, array[j]);
+					elasticCollision(array[i], mtv, array[j]);
 			}
 		}
 	}
