@@ -249,7 +249,8 @@ function drawAxes(polygon, length){
 
 function drawFPS(number){
 	ctx.beginPath();
-	ctx.font="20px Arial";
+	ctx.fillStyle="#000FFF";
+	ctx.font="14px Arial";
 	string = "FPS: " + number;
 	ctx.fillText(string, 10, 20);
 	ctx.stroke();
@@ -454,6 +455,8 @@ Fps = function(){
 	this.array = [];
 	this.maxSize = 24;
 	this.add = function(n){
+		n /= 1000;
+		n = 1 / n;
 		this.array[this.index] = n;
 		this.index = (this.index  + 1) % this.maxSize;
 	}
