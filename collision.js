@@ -286,6 +286,13 @@ Rect = function(x, y, width, height, vx, vy, velocity, spin){
 	}
 }
 
+Triangle = function(x, y, alfa, beta, l1){
+	var list = [];
+	// ponto1
+	list.push(x);
+	list.push(y);
+}
+
 function applyVectorToRect(rect, vector){
 	for (var i = 0; i < rect.vertices.length; i++){
 			rect.vertices[i].x += vector.x;
@@ -349,20 +356,35 @@ function checkBorder(polygon){
 	}
 }
 
+function applyMTV(polygonA, mtv, polygonB){
+	var direction = new Vector(0, 0);
+	direction.x = polygonA.versor.x * polygonA.velocity;
+	direction.y = polygonA.versor.y * polygonA.velocity;
+	if (polygonB.mass > polygonA.mass){
+		bigger = polygonB;
+		smaller = polygonA;
+		sign = -1;
+	}
+	else{
+		bigger = polygonA;
+		smaller = polygonB;
+		sign = 1;
+	}
+	
+		var massDiff = bigger.mass - smaller.mass;
+		direction.x -= sign * (mtv.x * massDiff);
+		direction.y -= sign * (mtv.y * massDiff);
+		unitVector(direction, direction);
+		smaller.versor = direction;
+}
+
 function checkColisionsNaive(array){
 	var i, j, mtv;
 	for (i = 0; i < array.length; i++){
 		for (j=i+1; j < array.length; j++){
 			mtv = collisionSTA(array[i], array[j]);
 			if (mtv != false){
-				if (array[i].mass < array[j].mass){
-					array[i].versor.x = mtv.x;
-					array[i].versor.y = mtv.y;
-				}
-				else{
-					array[j].versor.x = -mtv.x;
-					array[j].versor.y = -mtv.y;
-				}
+					applyMTV(array[i], mtv, array[j]);
 			}
 		}
 	}
@@ -390,17 +412,12 @@ function randomRect(maxSize, minSize, maxSpeed, maxSpin){
 			maxSpeed, spin);
 	return rect;
 }
-
-var tuple = [100,200,100,300,50,300, 50, 200];
-var tuple2 = [30, 80, 40, 40, 50, 60];
-console.log(tuple);
-
 var j = 0;
 var maxSize = c.width/10;
 var minSize = c.width/100;
 var maxSpeed = 6;
 var maxSpin = 4;
-var numberObjects = 4;
+var numberObjects = 5;
 var objects = [];
 
 for (i = 0; i < numberObjects; i++){
@@ -427,7 +444,9 @@ function mainLoop(){
 	for (k = 0; k < objects.length; k++){
 			drawPolygon(objects[k]);
 	}
+
 	requestAnimationFrame(mainLoop);
+
 }
 
 mainLoop();
