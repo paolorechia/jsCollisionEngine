@@ -358,8 +358,6 @@ function checkBorder(polygon){
 
 function applyMTV(polygonA, mtv, polygonB){
 	var direction = new Vector(0, 0);
-	direction.x = polygonA.versor.x * polygonA.velocity;
-	direction.y = polygonA.versor.y * polygonA.velocity;
 	if (polygonB.mass > polygonA.mass){
 		bigger = polygonB;
 		smaller = polygonA;
@@ -370,7 +368,8 @@ function applyMTV(polygonA, mtv, polygonB){
 		smaller = polygonB;
 		sign = 1;
 	}
-	
+		direction.x = smaller.versor.x * smaller.velocity;
+		direction.y = smaller.versor.y * smaller.velocity;
 		var massDiff = bigger.mass - smaller.mass;
 		direction.x -= sign * (mtv.x * massDiff);
 		direction.y -= sign * (mtv.y * massDiff);
@@ -417,7 +416,7 @@ var maxSize = c.width/10;
 var minSize = c.width/100;
 var maxSpeed = 6;
 var maxSpin = 4;
-var numberObjects = 5;
+var numberObjects = 20;
 var objects = [];
 
 for (i = 0; i < numberObjects; i++){
