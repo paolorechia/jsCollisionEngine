@@ -379,26 +379,30 @@ function inelasticCollision(polygonA, mtv, polygonB){
 	inertiaA = new Vector(0, 0);
 	inertiaB = new Vector(0, 0);
 	result = new Vector(0, 0);
-	inertiaA.x = polygonA.velocity * polygonA.versor.x;
-	inertiaA.y = polygonA.velocity * polygonA.versor.y;
 
-	inertiaB.x = polygonB.velocity * polygonB.versor.x;
-	inertiaB.y = polygonB.velocity * polygonB.versor.y;
-	/*
-	inertiaA.x = polygonA.mass * polygonA.velocity * polygonA.versor.x;
-	inertiaA.y = polygonA.mass * polygonA.velocity * polygonA.versor.y;
+	partialA = polygonA.mass * polygonA.velocity 
+	inertiaA.x = partialA * polygonA.versor.x;
+	inertiaA.y = partialA * polygonA.versor.y;
 
-	inertiaB.x = polygonB.mass * polygonB.velocity * polygonB.versor.x;
-	inertiaB.y = polygonB.mass * polygonB.velocity * polygonB.versor.y;
-*/
+	partialB = polygonA.mass * polygonA.velocity 
+	inertiaB.x = partialB * polygonB.versor.x;
+	inertiaB.y = partialB * polygonB.versor.y ;
+
 	result.x = inertiaA.x + inertiaB.x;
 	result.y = inertiaA.y + inertiaA.y;
-//	polygonA.velocity = norm(result);
-//	polygonB.velocity = norm(result);
+	
 	unitVector(result, result);
 	polygonA.versor = result;
-
 	polygonB.versor = result;
+	
+	polygonA.spin = 0;
+	polygonB.spin = 0;
+	if (polygonA.velocity > 2){
+		polygonA.velocity -= 1;
+	}
+	if (polygonB.velocity > 2){
+		polygonB.velocity -= 1;
+	}
 }
 
 
@@ -437,7 +441,7 @@ function checkColisionsNaive(array){
 		for (j=i+1; j < array.length; j++){
 			mtv = collisionSTA(array[i], array[j]);
 			if (mtv != false){
-					elasticCollision(array[i], mtv, array[j]);
+					inelasticCollision(array[i], mtv, array[j]);
 			}
 		}
 	}
@@ -455,8 +459,7 @@ Fps = function(){
 	this.array = [];
 	this.maxSize = 24;
 	this.add = function(n){
-		n /= 1000;
-		n = 1 / n;
+		n = 1000 / n;
 		this.array[this.index] = n;
 		this.index = (this.index  + 1) % this.maxSize;
 	}
@@ -466,7 +469,7 @@ Fps = function(){
 			sum += this.array[i];
 
 		}
-		return sum/this.array.length;
+		return Math.round(sum/this.array.length);
 	}
 };
 
@@ -501,6 +504,8 @@ for (i = 0; i < numberObjects; i++){
 var axis_length = 20;
 var lastDate = new Date();
 var fps = new Fps();
+var maxFPS = 40;
+var interval = 1000/maxFPS;
 
 function mainLoop(){
 	newDate = new Date();
@@ -526,8 +531,9 @@ function mainLoop(){
 			drawPolygon(objects[k]);
 	}
 	drawFPS(fps.mean());
-	requestAnimationFrame(mainLoop);
-
+	setTimeout(function(){
+		requestAnimationFrame(mainLoop)
+	}, interval);
 }
 
 mainLoop();
