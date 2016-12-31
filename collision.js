@@ -368,11 +368,31 @@ function changeDirection(polygon, mtv){
 	polygon.versor.y = mtv.y;
 }
 
-function unilateralElasticCollision(polygonA, polygonB){
+
+function smartCollision(polygonA, polygonB){
 	var mtv = collisionSTA(polygonA, polygonB);
 	if (mtv == false){
 		return;
 	}
+	var massDiff = polygonA.mass - polygonB.mass;
+	massDiff = Math.abs(massDiff);
+	smaller = Math.min(polygonA.mass, polygonB.mass);
+	if (massDiff <  smaller*2){
+		elasticCollision(polygonA, mtv, polygonB);
+		console.log("Elastic colision");
+	}
+	else if (massDiff < smaller*4){
+		partiallyElasticCollision(polygonA, mtv, polygonB);
+		console.log("Partial");
+
+	}
+	else{
+		unilateralElasticCollision(polygonA, mtv, polygonB);
+		console.log("unilateral colision");
+	}
+}
+
+function unilateralElasticCollision(polygonA, mtv, polygonB){
 	if (polygonA.mass > polygonB.mass){
 		mtv.x = - mtv.x;
 		mtv.y = - mtv.y;
@@ -381,7 +401,7 @@ function unilateralElasticCollision(polygonA, polygonB){
 	else
 		changeDirection(polygonA, mtv);
 }
-function elasticCollision(polygonA, polygonB, speedCap){
+function elasticCollision(polygonA, mtv, polygonB){
 	var mtv = collisionSTA(polygonA, polygonB);
 	if (mtv == false){
 		return;
@@ -395,7 +415,6 @@ function elasticCollision(polygonA, polygonB, speedCap){
 function getInertiaNorm(polygon){
 	return polygon.mass * polygon.velocity;
 }
-
 function inelasticCollision(polygonA, polygonB){
 	inertiaA = new Vector(0, 0);
 	inertiaB = new Vector(0, 0);
@@ -426,7 +445,7 @@ function inelasticCollision(polygonA, polygonB){
 	}
 }
 
-function partiallyElasticCollision(polygonA, polygonB){
+function partiallyElasticCollision(polygonA, mtv, polygonB){
 	var mtv = collisionSTA(polygonA, polygonB);
 	if (mtv == false){
 		return;
@@ -462,10 +481,11 @@ function partiallyElasticCollision(polygonA, polygonB){
 	result.y = inertiaBig.y + inertiaSmaller.y;
 	bigger.x = result.x;
 	bigger.y = result.y;
+	/*
 	if (smaller.velocity > 2){
 		smaller.velocity -= 1;
 	}
-	
+	*/
 	if (smaller.spin < 0){
 		smaller.spin += 1;
 	}
@@ -479,7 +499,7 @@ function checkColisionsNaive(array){
 	var i, j, mtv;
 	for (i = 0; i < array.length; i++){
 		for (j=i+1; j < array.length; j++){
-			partiallyElasticCollision(array[j], array[i]);
+			smartCollision(array[j], array[i]);
 		}
 	}
 }
