@@ -368,7 +368,7 @@ function changeDirection(polygon, mtv){
 	polygon.versor.y = mtv.y;
 }
 
-function elasticCollision(polygonA, mtv, polygonB){
+function elasticCollision(polygonA, mtv, polygonB, speedCap){
 	changeDirection(polygonA, mtv);
 	mtv.x = - mtv.x;
 	mtv.y = - mtv.y;
@@ -446,11 +446,11 @@ function partiallyElasticCollision(polygonA, mtv, polygonB){
 		smaller.velocity -= 1;
 	}
 	
-	if (smaller.spin < 0 && smaller.x > 0){
-		smaller.spin *= - 1;
+	if (smaller.spin < 0){
+		smaller.spin += 1;
 	}
-	else if (smaller.spin > 0 && smaller.x < 0){
-		smaller.spin *= -1;
+	else{
+		smaller.spin -=1;
 	}
 }
 
