@@ -344,7 +344,16 @@ Triangle = function(x, y, l1, vx, vy, velocity, spin){
 		this.projections[i] = new Projection(0, 0);
 	}
 	this.applyVector = function(vector){
-		
+		var x = 0;
+		var y = 0;
+		for (var i = 0; i < this.vertices.length; i++){
+			this.vertices[i].x += vector.x;
+			this.vertices[i].y += vector.y;
+			x += vertices[i].x;
+			y += vertices[i].y;
+		}
+		triangle.center.x = x/3;
+		triangle.center.y = y/3;
 	}
 }
 
@@ -423,7 +432,6 @@ function checkBorder(polygon){
 		polygon.versor.y *= -1;
 		diff = new Vector(0, -projY.min);
 		polygon.applyVector(diff);
-
 	}
 }
 
@@ -640,7 +648,8 @@ var lastDate = new Date();
 var fps = new Fps();
 var maxFPS = 40;
 var interval = 1000/maxFPS;
-var triangle = randomTriangle(maxSize, minSize, maxSpin);
+var triangle = randomTriangle(maxSize, minSize, maxSpeed, maxSpin);
+//objects.push(triangle);
 function mainLoop(){
 	newDate = new Date();
 	elapsedTime = newDate - lastDate;
@@ -664,13 +673,14 @@ function mainLoop(){
 	for (k = 0; k < objects.length; k++){
 			drawPolygon(objects[k]);
 	}
+	
 	rotatePolygon(triangle, 1);
 	updateTriangle(triangle);
 	drawPolygon(triangle);
 	calculateAxes(triangle);
 	drawAxes(triangle, axis_length);
 	checkBorder(triangle);
-
+	
 	drawFPS(fps.mean());
 	setTimeout(function(){
 		requestAnimationFrame(mainLoop)
