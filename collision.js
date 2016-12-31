@@ -312,7 +312,15 @@ Rect = function(x, y, width, height, vx, vy, velocity, spin){
 		this.position.y += vector.y;
 		this.center.x = this.position.x + this.width * 0.5;
 		this.center.y = this.position.y + this.height * 0.5;
-}
+	}
+	this.update = function(){
+		xIncrement = this.versor.x * this.velocity;
+		yIncrement = this.versor.y * this.velocity;
+
+		incrementVertices(this.vertices, xIncrement, yIncrement);
+		incrementRect(this, xIncrement, yIncrement);
+		this.hit=false;
+	}
 
 }
 
@@ -355,6 +363,20 @@ Triangle = function(x, y, l1, vx, vy, velocity, spin){
 		triangle.center.x = x/3;
 		triangle.center.y = y/3;
 	}
+	this.update = function(){
+		xIncrement = this.versor.x * this.velocity;
+		yIncrement = this.versor.y * this.velocity;
+		incrementVertices(this.vertices, xIncrement, yIncrement);
+		var x = 0;
+		var y = 0;
+		for (var i = 0; i < this.vertices.length; i++){
+			x += this.vertices[i].x;
+			y += this.vertices[i].y;
+		}
+		this.center.x = x/3;
+		this.center.y = y/3;
+		this.hit = false;
+}
 }
 
 function applyVectorToRect(rect, vector){
@@ -380,27 +402,8 @@ function incrementRect(rect, xIncrement, yIncrement){
 	rect.center.x = rect.position.x + rect.width * 0.5;
 	rect.center.y = rect.position.y + rect.height * 0.5;
 }
-function updateRect(rect){
-	xIncrement = rect.versor.x * rect.velocity;
-	yIncrement = rect.versor.y * rect.velocity;
 
-	incrementVertices(rect.vertices, xIncrement, yIncrement);
-	incrementRect(rect, xIncrement, yIncrement);
-	rect.hit=false;
-}
-function updateTriangle(triangle){
-		xIncrement = triangle.versor.x * triangle.velocity;
-		yIncrement = triangle.versor.y * triangle.velocity;
-		incrementVertices(triangle.vertices, xIncrement, yIncrement);
-		var x = 0;
-		var y = 0;
-		for (var i = 0; i < triangle.vertices.length; i++){
-			x += triangle.vertices[i].x;
-			y += triangle.vertices[i].y;
-		}
-		triangle.center.x = x/3;
-		triangle.center.y = y/3;
-}
+
 function checkBorder(polygon){
 	yAxis = new Vector(0, 1);
 	xAxis = new Vector(1, 0);
@@ -635,21 +638,23 @@ var maxSize = c.width/10;
 var minSize = c.width/100;
 var maxSpeed = 6;
 var maxSpin = 4;
-var numberObjects = 4;
+var numberRectangles = 0;
+var numberTriangles = 4;
 var objects = [];
 
-for (i = 0; i < numberObjects; i++){
-	if (i < numberObjects){
-		objects.push(new randomRect(maxSize, minSize, maxSpeed, maxSpin));
-	}
+for (i = 0; i < numberRectangles; i++){
+	objects.push(new randomRect(maxSize, minSize, maxSpeed, maxSpin));
+
+}
+for (i = 0; i < numberTriangles; i++){
+	objects.push(new randomTriangle(maxSize, minSize, maxSpeed, maxSpin));
 }
 var axis_length = 20;
 var lastDate = new Date();
 var fps = new Fps();
 var maxFPS = 40;
 var interval = 1000/maxFPS;
-var triangle = randomTriangle(maxSize, minSize, maxSpeed, maxSpin);
-//objects.push(triangle);
+
 function mainLoop(){
 	newDate = new Date();
 	elapsedTime = newDate - lastDate;
@@ -660,7 +665,7 @@ function mainLoop(){
 	ctx.fillRect(0,0,c.width,c.height);
 
 	for (i = 0; i < objects.length; i++){
-		updateRect(objects[i]);
+		objects[i].update();
 		checkBorder(objects[i]);
 	}
 	for (j = 0; j < objects.length; j++){
@@ -674,13 +679,14 @@ function mainLoop(){
 			drawPolygon(objects[k]);
 	}
 	
+	/*
 	rotatePolygon(triangle, 1);
-	updateTriangle(triangle);
+	triangle.update();
 	drawPolygon(triangle);
 	calculateAxes(triangle);
 	drawAxes(triangle, axis_length);
 	checkBorder(triangle);
-	
+	*/
 	drawFPS(fps.mean());
 	setTimeout(function(){
 		requestAnimationFrame(mainLoop)
