@@ -375,16 +375,20 @@ function elasticCollision(polygonA, mtv, polygonB){
 	changeDirection(polygonB, mtv);
 }
 
-function inelasticCollision(polygonA, mtv, polygonB){
+function getInertiaNorm(polygon){
+	return polygon.mass * polygon.velocity;
+}
+
+function inelasticCollision(polygonA, polygonB){
 	inertiaA = new Vector(0, 0);
 	inertiaB = new Vector(0, 0);
 	result = new Vector(0, 0);
 
-	partialA = polygonA.mass * polygonA.velocity 
+	partialA = getInertiaNorm(polygonA);
 	inertiaA.x = partialA * polygonA.versor.x;
 	inertiaA.y = partialA * polygonA.versor.y;
 
-	partialB = polygonA.mass * polygonA.velocity 
+	partialB = getInertiaNorm(polygonB);
 	inertiaB.x = partialB * polygonB.versor.x;
 	inertiaB.y = partialB * polygonB.versor.y ;
 
@@ -405,35 +409,51 @@ function inelasticCollision(polygonA, mtv, polygonB){
 	}
 }
 
-
 function partiallyElasticCollision(polygonA, mtv, polygonB){
 	var direction = new Vector(0, 0);
 	if (polygonB.mass > polygonA.mass){
 		bigger = polygonB;
 		smaller = polygonA;
 		sign = -1;
+
+		changeDirection(polygonA, mtv);
 	}
 	else{
 		bigger = polygonA;
 		smaller = polygonB;
 		sign = 1;
+		mtv.x = - mtv.x;
+		mtv.y = - mtv.y;
+		changeDirection(polygonB, mtv);
 	}
-		direction.x = smaller.versor.x * smaller.velocity;
-		direction.y = smaller.versor.y * smaller.velocity;
-		var massDiff = bigger.mass - smaller.mass;
-		direction.x -= sign * (mtv.x * massDiff);
-		direction.y -= sign * (mtv.y * massDiff);
-		unitVector(direction, direction);
-		smaller.versor = direction;
-		/*
-		direction.x = bigger.versor.x * bigger.velocity;
-		direction.y = bigger.versor.y * bigger.velocity;
-		direction.x -= sign * (mtv.x)
-		direction.y -= sign * (mtv.y);
-		unitVector(direction, direction);
-		bigger.versor = direction;
-		*/
+	inertiaBig = new Vector(0, 0);
+	inertiaSmaller = new Vector(0, 0);
+	result = new Vector(0, 0);
+
+	partialBig = getInertiaNorm(bigger); 
+	inertiaBig.x = partialBig * polygonA.versor.x;
+	inertiaBig.y = partialBig * polygonA.versor.y;
+
+	partialSmaller = getInertiaNorm(smaller); 
+	inertiaSmaller.x = partialSmaller * polygonB.versor.x;
+	inertiaSmaller.y = partialSmaller * polygonB.versor.y ;
+
+	result.x = inertiaBig.x + inertiaSmaller.x;
+	result.y = inertiaBig.y + inertiaSmaller.y;
+	bigger.x = result.x;
+	bigger.y = result.y;
+	if (smaller.velocity > 2){
+		smaller.velocity -= 1;
+	}
+	
+	if (smaller.spin < 0 && smaller.x > 0){
+		smaller.spin *= - 1;
+	}
+	else if (smaller.spin > 0 && smaller.x < 0){
+		smaller.spin *= -1;
+	}
 }
+
 
 function checkColisionsNaive(array){
 	var i, j, mtv;
@@ -441,7 +461,7 @@ function checkColisionsNaive(array){
 		for (j=i+1; j < array.length; j++){
 			mtv = collisionSTA(array[i], array[j]);
 			if (mtv != false){
-					inelasticCollision(array[i], mtv, array[j]);
+					partiallyElasticCollision(array[i], mtv, array[j]);
 			}
 		}
 	}
