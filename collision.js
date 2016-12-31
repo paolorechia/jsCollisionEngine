@@ -224,13 +224,24 @@ function drawVector(origin, vector){
 }
 
 function calculateAxes(polygon){
-	for (var i = 0; i < polygon.vertices.length-1; i++){
-		normalVector1(polygon.vertices[i], polygon.vertices[i+1], polygon.axes[i]);
+	if (polygon.sides == 4){
+		for (var i = 0; i < polygon.vertices.length-1; i++){
+			normalVector1(polygon.vertices[i], polygon.vertices[i+1], polygon.axes[i]);
+			unitVector(polygon.axes[i], polygon.axes[i]);
+			
+		}
+		normalVector1(polygon.vertices[i], polygon.vertices[0], polygon.axes[i]);
 		unitVector(polygon.axes[i], polygon.axes[i]);
-		
 	}
-	normalVector1(polygon.vertices[i], polygon.vertices[0], polygon.axes[i]);
-	unitVector(polygon.axes[i], polygon.axes[i]);
+	else{
+	for (var i = 0; i < polygon.vertices.length-1; i++){
+			normalVector2(polygon.vertices[i], polygon.vertices[i+1], polygon.axes[i]);
+			unitVector(polygon.axes[i], polygon.axes[i]);
+			
+		}
+		normalVector2(polygon.vertices[i], polygon.vertices[0], polygon.axes[i]);
+		unitVector(polygon.axes[i], polygon.axes[i]);
+	}
 }
 function drawAxes(polygon, length){
 	
@@ -291,13 +302,50 @@ Rect = function(x, y, width, height, vx, vy, velocity, spin){
 		this.axes[i] = new Vector(0, 0);
 		this.projections[i] = new Projection(0, 0);
 	}
+	
+	this.applyVector = function(vector){
+		for (var i = 0; i < this.vertices.length; i++){
+				this.vertices[i].x += vector.x;
+				this.vertices[i].y += vector.y;
+			}
+		this.position.x += vector.x;
+		this.position.y += vector.y;
+		this.center.x = this.position.x + this.width * 0.5;
+		this.center.y = this.position.y + this.height * 0.5;
 }
 
-Triangle = function(x, y, alfa, beta, l1){
+}
+
+Triangle = function(x, y, l1, vx, vy, velocity, spin){
 	var list = [];
 	// ponto1
 	list.push(x);
 	list.push(y);
+	list.push(x + l1);
+	list.push(y);
+	list.push(x + (l1 * 0.5));
+	list.push(y - l1);
+	this.vertices = listToVertices(list);
+	this.position = new Point(x, y);
+	this.side = l1;
+	this.mass = l1;
+	var x = x + l1/2;
+	var y = y -l1/3;
+	this.center = new Point(x, y);
+	this.hit=false;
+	this.versor = new Versor(vx, vy);
+	this.velocity = velocity;
+	this.spin = spin;
+	this.sides = 3;
+	this.axes = [];
+	this.projections = [];
+	for (var i = 0; i < this.sides; i ++){
+		this.axes[i] = new Vector(0, 0);
+		this.projections[i] = new Projection(0, 0);
+	}
+	this.applyVector = function(vector){
+		
+	}
 }
 
 function applyVectorToRect(rect, vector){
@@ -331,6 +379,19 @@ function updateRect(rect){
 	incrementRect(rect, xIncrement, yIncrement);
 	rect.hit=false;
 }
+function updateTriangle(triangle){
+		xIncrement = triangle.versor.x * triangle.velocity;
+		yIncrement = triangle.versor.y * triangle.velocity;
+		incrementVertices(triangle.vertices, xIncrement, yIncrement);
+		var x = 0;
+		var y = 0;
+		for (var i = 0; i < triangle.vertices.length; i++){
+			x += triangle.vertices[i].x;
+			y += triangle.vertices[i].y;
+		}
+		triangle.center.x = x/3;
+		triangle.center.y = y/3;
+}
 function checkBorder(polygon){
 	yAxis = new Vector(0, 1);
 	xAxis = new Vector(1, 0);
@@ -344,22 +405,25 @@ function checkBorder(polygon){
 	if (projX.max > c.width){
 		polygon.versor.x *= -1;
 		diff = new Vector(-(projX.max - c.width), 0);
-		applyVectorToRect(polygon, diff);
+		polygon.applyVector(diff);
 	}
 	else if (projX.min < 0){
 		polygon.versor.x *= -1;
 		diff = new Vector(-projX.min, 0);
-		applyVectorToRect(polygon, diff);
+		polygon.applyVector(diff);
+
 	}
 	if (projY.max > c.height){
 		polygon.versor.y *= -1;
 		diff = new Vector(0, -(projY.max - c.height));
-		applyVectorToRect(polygon, diff);
+		polygon.applyVector(diff);
+;
 	}
 	if (projY.min < 0){
 		polygon.versor.y *= -1;
 		diff = new Vector(0, -projY.min);
-		applyVectorToRect(polygon, diff);
+		polygon.applyVector(diff);
+
 	}
 }
 
@@ -367,7 +431,6 @@ function changeDirection(polygon, mtv){
 	polygon.versor.x = mtv.x;
 	polygon.versor.y = mtv.y;
 }
-
 
 function smartCollision(polygonA, polygonB){
 	var mtv = collisionSTA(polygonA, polygonB);
@@ -379,16 +442,16 @@ function smartCollision(polygonA, polygonB){
 	smaller = Math.min(polygonA.mass, polygonB.mass);
 	if (massDiff <  smaller){
 		elasticCollision(polygonA, mtv, polygonB);
-		console.log("Elastic colision");
+//		console.log("Elastic colision");
 	}
 	if (massDiff < smaller*4){
 		partiallyElasticCollision(polygonA, mtv, polygonB);
-		console.log("Partial");
+//		console.log("Partial");
 
 	}
 	else{
 		unilateralElasticCollision(polygonA, mtv, polygonB);
-		console.log("unilateral colision");
+//		console.log("unilateral colision");
 	}
 }
 
@@ -547,24 +610,37 @@ function randomRect(maxSize, minSize, maxSpeed, maxSpin){
 			maxSpeed, spin);
 	return rect;
 }
+function randomTriangle(maxSize, minSize, maxSpeed, maxSpin){
+	var xpos = Math.ceil(Math.random() * c.width/2) + maxSize;
+	var ypos = Math.ceil(Math.random() * c.height/2) + maxSize;
+	var sideSize = Math.ceil(Math.random() * maxSize) + minSize;
+	var direction = Math.round(Math.random() + 1);
+	direction = Math.pow(-1, direction);
+	var spin = Math.ceil(Math.random() * maxSpin * direction);
+	triangle = new Triangle(xpos, ypos, sideSize,
+							Math.random(), Math.random(),
+							maxSpeed, spin);
+	return triangle;
+}
 var j = 0;
 var maxSize = c.width/10;
 var minSize = c.width/100;
 var maxSpeed = 6;
 var maxSpin = 4;
-var numberObjects = 12;
+var numberObjects = 4;
 var objects = [];
 
 for (i = 0; i < numberObjects; i++){
-	objects.push(new randomRect(maxSize, minSize, maxSpeed, maxSpin));
-	
+	if (i < numberObjects){
+		objects.push(new randomRect(maxSize, minSize, maxSpeed, maxSpin));
+	}
 }
 var axis_length = 20;
 var lastDate = new Date();
 var fps = new Fps();
 var maxFPS = 40;
 var interval = 1000/maxFPS;
-
+var triangle = randomTriangle(maxSize, minSize, maxSpin);
 function mainLoop(){
 	newDate = new Date();
 	elapsedTime = newDate - lastDate;
@@ -588,6 +664,13 @@ function mainLoop(){
 	for (k = 0; k < objects.length; k++){
 			drawPolygon(objects[k]);
 	}
+	rotatePolygon(triangle, 1);
+	updateTriangle(triangle);
+	drawPolygon(triangle);
+	calculateAxes(triangle);
+	drawAxes(triangle, axis_length);
+	checkBorder(triangle);
+
 	drawFPS(fps.mean());
 	setTimeout(function(){
 		requestAnimationFrame(mainLoop)
