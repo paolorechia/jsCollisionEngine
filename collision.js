@@ -368,7 +368,24 @@ function changeDirection(polygon, mtv){
 	polygon.versor.y = mtv.y;
 }
 
-function elasticCollision(polygonA, mtv, polygonB, speedCap){
+function unilateralElasticCollision(polygonA, polygonB){
+	var mtv = collisionSTA(polygonA, polygonB);
+	if (mtv == false){
+		return;
+	}
+	if (polygonA.mass > polygonB.mass){
+		mtv.x = - mtv.x;
+		mtv.y = - mtv.y;
+		changeDirection(polygonB, mtv);
+	}
+	else
+		changeDirection(polygonA, mtv);
+}
+function elasticCollision(polygonA, polygonB, speedCap){
+	var mtv = collisionSTA(polygonA, polygonB);
+	if (mtv == false){
+		return;
+	}
 	changeDirection(polygonA, mtv);
 	mtv.x = - mtv.x;
 	mtv.y = - mtv.y;
@@ -409,13 +426,16 @@ function inelasticCollision(polygonA, polygonB){
 	}
 }
 
-function partiallyElasticCollision(polygonA, mtv, polygonB){
+function partiallyElasticCollision(polygonA, polygonB){
+	var mtv = collisionSTA(polygonA, polygonB);
+	if (mtv == false){
+		return;
+	}
 	var direction = new Vector(0, 0);
 	if (polygonB.mass > polygonA.mass){
 		bigger = polygonB;
 		smaller = polygonA;
 		sign = -1;
-
 		changeDirection(polygonA, mtv);
 	}
 	else{
@@ -459,10 +479,7 @@ function checkColisionsNaive(array){
 	var i, j, mtv;
 	for (i = 0; i < array.length; i++){
 		for (j=i+1; j < array.length; j++){
-			mtv = collisionSTA(array[i], array[j]);
-			if (mtv != false){
-					partiallyElasticCollision(array[i], mtv, array[j]);
-			}
+			partiallyElasticCollision(array[j], array[i]);
 		}
 	}
 }
