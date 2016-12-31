@@ -377,11 +377,11 @@ function smartCollision(polygonA, polygonB){
 	var massDiff = polygonA.mass - polygonB.mass;
 	massDiff = Math.abs(massDiff);
 	smaller = Math.min(polygonA.mass, polygonB.mass);
-	if (massDiff <  smaller*2){
+	if (massDiff <  smaller){
 		elasticCollision(polygonA, mtv, polygonB);
 		console.log("Elastic colision");
 	}
-	else if (massDiff < smaller*4){
+	if (massDiff < smaller*4){
 		partiallyElasticCollision(polygonA, mtv, polygonB);
 		console.log("Partial");
 
@@ -398,8 +398,9 @@ function unilateralElasticCollision(polygonA, mtv, polygonB){
 		mtv.y = - mtv.y;
 		changeDirection(polygonB, mtv);
 	}
-	else
+	else{
 		changeDirection(polygonA, mtv);
+	}
 }
 function elasticCollision(polygonA, mtv, polygonB){
 	var mtv = collisionSTA(polygonA, polygonB);
@@ -551,7 +552,7 @@ var maxSize = c.width/10;
 var minSize = c.width/100;
 var maxSpeed = 6;
 var maxSpin = 4;
-var numberObjects = 10;
+var numberObjects = 12;
 var objects = [];
 
 for (i = 0; i < numberObjects; i++){
