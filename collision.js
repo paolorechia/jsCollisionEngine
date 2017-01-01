@@ -40,10 +40,10 @@ function norm(vector){
 	return Math.sqrt(x1 + y1);
 }
 function radiansToDegrees(theta){
-	return theta *= theta* 180 / Math.PI;
+	return theta = theta* 180 / Math.PI;
 }
 function degreesToRadians(theta){
-	return theta *= theta * Math.PI / 180;
+	return theta = theta * Math.PI / 180;
 }
 function angleVectors(vectorA, vectorB){
 	var cosTheta = dotProduct(vectorA, vectorB);
@@ -378,9 +378,23 @@ Circle = function(x, y, r, vx, vy, velocity, spin){
 		this.hit = false;
 		this.center.x += this.versor.x * this.velocity;
 		this.center.y += this.versor.y * this.velocity;
-		this.angle += spin % 360;
-		this.front.x = this.center.x + Math.cos(degreesToRadians(angle)) * this.radius;
-		this.front.y = this.center.y + Math.sin(degreesToRadians(angle)) * this.radius;
+		this.angle += this.spin;
+		this.angle %= 360;
+		console.log(this.angle);
+		cos = Math.cos(degreesToRadians(this.angle));
+		sin = Math.sin(degreesToRadians(this.angle));
+		if (this.angle > 90 && this.angle < 180){
+			cos *= -1;
+		}
+		else if (this.angle > 180 && this.angle < 270){
+			sin *= -1;
+			cos *= -1;
+		}
+		else if (this.angle > 270){
+				sin *= -1;
+		}
+		this.front.x = this.center.x + cos  * this.radius;
+		this.front.y = this.center.y + sin  * this.radius;
 	}
 }
 
@@ -725,7 +739,7 @@ var fps = new Fps();
 var maxFPS = 40;
 var interval = 1000/maxFPS;
 var circle = new randomCircle(maxSize, minSize, maxSpeed, maxSpin);
-circle.spin=2;
+circle.spin=1;
 function mainLoop(){
 	newDate = new Date();
 	elapsedTime = newDate - lastDate;
