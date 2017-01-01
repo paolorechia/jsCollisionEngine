@@ -265,13 +265,7 @@ function drawVector(origin, vector){
 
 function calculateAxes(polygon){
 	if (polygon.sides == 1){
-		for (var i = 0; i < polygon.vertices.length-1; i++){
-			normalVector1(polygon.vertices[i], polygon.vertices[i+1], polygon.axes[i]);
-			unitVector(polygon.axes[i], polygon.axes[i]);
-			
-		}
-		normalVector1(polygon.vertices[i], polygon.vertices[0], polygon.axes[i]);
-		unitVector(polygon.axes[i], polygon.axes[i]);
+		return;
 	}
 	else if (polygon.sides == 4){
 		for (var i = 0; i < polygon.vertices.length-1; i++){
@@ -295,7 +289,7 @@ function calculateAxes(polygon){
 function drawAxes(polygon, length){
 	var axis = new Vector(0, 0);
 	if (polygon.sides == 1){ //circle
-		for (var i = 0; i < polygon.vertices.length-1; i++){
+		for (var i = 0; i < polygon.vertices.length; i++){
 			axis.x = polygon.axes[i].x * polygon.radius;
 			axis.y = polygon.axes[i].y * polygon.radius;
 			drawVector(polygon.center, axis);
@@ -408,9 +402,12 @@ Circle = function(x, y, r, vx, vy, velocity, spin){
 	this.axes = [];
 	this.projections = [];
 	for (var i = 0; i < 4; i ++){
-		this.axes[i] = new Vector(0, 0);
 		this.projections[i] = new Projection(0, 0);
 	}
+	this.axes[0] = new Vector(0,1);
+	this.axes[1] = new Vector(1,0);
+	this.axes[2] = new Vector(0, -1);
+	this.axes[3] = new Vector(-1, 0);
 	this.applyVector = function(vector){
 		this.center.x += vector.x;
 		this.center.y += vector.y;
@@ -509,6 +506,7 @@ function checkBorder(polygon){
 	yAxis = new Vector(0, 1);
 	xAxis = new Vector(1, 0);
 	
+	//this is wrong, needs a fix
 	for (var i = 0; i < polygon.axes.length; i++){
 		projX = projection(polygon.vertices, xAxis);
 	}
@@ -769,7 +767,7 @@ var maxFPS = 40;
 var interval = 1000/maxFPS;
 var circle = new randomCircle(maxSize, minSize, maxSpeed, maxSpin);
 circle.spin=3;
-//objects.push(circle);
+objects.push(circle);
 function mainLoop(){
 	newDate = new Date();
 	elapsedTime = newDate - lastDate;
@@ -794,14 +792,14 @@ function mainLoop(){
 			drawPolygon(objects[k]);
 	}
 
-
+/*
 	circle.update();
 	checkBorder(circle);
 	rotatePolygon(circle);
 	calculateAxes(circle);
 	drawAxes(circle);
 	drawPolygon(circle);
-	
+	*/
 	drawFPS(fps.mean());
 	setTimeout(function(){
 		requestAnimationFrame(mainLoop)
