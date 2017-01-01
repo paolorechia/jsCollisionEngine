@@ -39,6 +39,17 @@ function norm(vector){
 	var y1 = vector.y * vector.y;
 	return Math.sqrt(x1 + y1);
 }
+function radiansToDegrees(theta){
+	return theta *= theta* 180 / Math.PI;
+}
+function degreesToRadians(theta){
+	return theta *= theta * Math.PI / 180;
+}
+function angleVectors(vectorA, vectorB){
+	var cosTheta = dotProduct(vectorA, vectorB);
+	cosTheta = cosTheta / norm(vectorA) * norm(vectorB);
+	return Math.acos(cosTheta);
+}
 
 function normalVector1(pointA, pointB, vector){
 	x = pointA.x - pointB.x;
@@ -62,6 +73,8 @@ function unitVector(vector, unit){;
 function dotProduct(vectorA, vectorB){
 	return vectorA.x*vectorB.x + vectorA.y*vectorB.y;
 }
+
+
 
 function projection(vertices, axis){
 	min = 99999;
@@ -126,9 +139,8 @@ function overlap(projA, projB){
 	return overlap;
 }
 
-// theta should be in degrees
 function rotatePolygon(polygon, theta){
-		theta *= theta * Math.PI / 180;
+		theta = degreesToRadians(theta);
 		for (i = 0; i < polygon.vertices.length; i++){
 			polygon.vertices[i].x -= polygon.center.x;
 			polygon.vertices[i].y -= polygon.center.y;
@@ -176,6 +188,29 @@ function drawPolygon(polygon){
 	}
 	else{
 		ctx.strokeStyle="#000000";
+	}
+	if (polygon.sides == 1){	// it's a circle, special case
+		ctx.arc(polygon.center.x,
+				polygon.center.y,
+				polygon.radius,
+				0, 2*Math.PI);
+
+		ctx.stroke();
+		ctx.fillStyle="#00F0FF";
+
+		ctx.beginPath();
+		ctx.arc(polygon.center.x,
+				polygon.center.y,
+				3, 0, 2*Math.PI);
+		ctx.fill();
+		
+		ctx.fillStyle="#FF00FF";
+		ctx.beginPath();
+		ctx.arc(polygon.front.x,
+				polygon.front.y,
+				3, 0, 2*Math.PI);
+		ctx.fill();
+		return;
 	}
 	ctx.moveTo(polygon.vertices[0].x,
 			   polygon.vertices[0].y);
@@ -324,6 +359,31 @@ Rect = function(x, y, width, height, vx, vy, velocity, spin){
 
 }
 
+Circle = function(x, y, r, vx, vy, velocity, spin){
+	this.center = new Point(x, y);
+	this.hit=false;
+	this.versor = new Versor(vx, vy);
+	this.velocity = velocity;
+	this.radius=r;
+	this.angle = 0;
+	this.front = new Point(this.center.x, this.center.y - this.radius);
+	this.sides = 1;
+	this.axes = [];
+	this.projections = [];
+	this.applyVector = function(vector){
+		this.center.x += vector.x;
+		this.center.y += vector.y;
+	}
+	this.update = function(){
+		this.hit = false;
+		this.center.x += this.versor.x * this.velocity;
+		this.center.y += this.versor.y * this.velocity;
+		this.angle += spin % 360;
+		this.front.x = this.center.x + Math.cos(degreesToRadians(angle)) * this.radius;
+		this.front.y = this.center.y + Math.sin(degreesToRadians(angle)) * this.radius;
+	}
+}
+
 Triangle = function(x, y, l1, vx, vy, velocity, spin){
 	var list = [];
 	// ponto1
@@ -336,7 +396,7 @@ Triangle = function(x, y, l1, vx, vy, velocity, spin){
 	this.vertices = listToVertices(list);
 	this.position = new Point(x, y);
 	this.side = l1;
-	this.mass = l1;
+	this.mass = l1*l1*0.5;
 	var x = x + l1/2;
 	var y = y -l1/3;
 	this.center = new Point(x, y);
@@ -360,8 +420,6 @@ Triangle = function(x, y, l1, vx, vy, velocity, spin){
 			x += vertices[i].x;
 			y += vertices[i].y;
 		}
-		triangle.center.x = x/3;
-		triangle.center.y = y/3;
 	}
 	this.update = function(){
 		xIncrement = this.versor.x * this.velocity;
@@ -633,12 +691,24 @@ function randomTriangle(maxSize, minSize, maxSpeed, maxSpin){
 							maxSpeed, spin);
 	return triangle;
 }
+function randomCircle(maxSize, minSize, maxSpeed, maxSpin){
+	var xpos = Math.ceil(Math.random() * c.width/2) + maxSize;
+	var ypos = Math.ceil(Math.random() * c.height/2) + maxSize;
+	var radius = Math.ceil(Math.random() * maxSize) + minSize;
+	var direction = Math.round(Math.random() + 1);	
+	direction = Math.pow(-1, direction);
+	var spin = Math.ceil(Math.random() * maxSpin * direction);
+	circle = new Circle(xpos, ypos, radius,
+						Math.random(), Math.random(),
+						maxSpeed, spin);
+	return circle;
+}
 var j = 0;
 var maxSize = c.width/10;
 var minSize = c.width/100;
 var maxSpeed = 6;
 var maxSpin = 4;
-var numberRectangles = 0;
+var numberRectangles = 4;
 var numberTriangles = 4;
 var objects = [];
 
@@ -654,7 +724,8 @@ var lastDate = new Date();
 var fps = new Fps();
 var maxFPS = 40;
 var interval = 1000/maxFPS;
-
+var circle = new randomCircle(maxSize, minSize, maxSpeed, maxSpin);
+circle.spin=2;
 function mainLoop(){
 	newDate = new Date();
 	elapsedTime = newDate - lastDate;
@@ -678,15 +749,8 @@ function mainLoop(){
 	for (k = 0; k < objects.length; k++){
 			drawPolygon(objects[k]);
 	}
-	
-	/*
-	rotatePolygon(triangle, 1);
-	triangle.update();
-	drawPolygon(triangle);
-	calculateAxes(triangle);
-	drawAxes(triangle, axis_length);
-	checkBorder(triangle);
-	*/
+	circle.update();
+	drawPolygon(circle);
 	drawFPS(fps.mean());
 	setTimeout(function(){
 		requestAnimationFrame(mainLoop)
