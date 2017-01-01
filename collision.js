@@ -139,6 +139,13 @@ function overlap(projA, projB){
 
 function rotatePolygon(polygon, theta){
 		theta = degreesToRadians(theta);
+		if (polygon.sides == 1){ // special case: circle;
+			cos = Math.cos(degreesToRadians(polygon.angle));
+			sin = Math.sin(degreesToRadians(polygon.angle));
+			polygon.front.x = polygon.center.x + cos * polygon.radius;
+			polygon.front.y = polygon.center.y + sin * polygon.radius;
+			return
+		}
 		for (i = 0; i < polygon.vertices.length; i++){
 			polygon.vertices[i].x -= polygon.center.x;
 			polygon.vertices[i].y -= polygon.center.y;
@@ -258,7 +265,6 @@ function drawVector(origin, vector){
 
 function calculateAxes(polygon){
 	if (polygon.sides == 1){
-		/*
 		for (var i = 0; i < polygon.vertices.length-1; i++){
 			normalVector1(polygon.vertices[i], polygon.vertices[i+1], polygon.axes[i]);
 			unitVector(polygon.axes[i], polygon.axes[i]);
@@ -266,7 +272,6 @@ function calculateAxes(polygon){
 		}
 		normalVector1(polygon.vertices[i], polygon.vertices[0], polygon.axes[i]);
 		unitVector(polygon.axes[i], polygon.axes[i]);
-		*/
 	}
 	else if (polygon.sides == 4){
 		for (var i = 0; i < polygon.vertices.length-1; i++){
@@ -289,6 +294,14 @@ function calculateAxes(polygon){
 }
 function drawAxes(polygon, length){
 	var axis = new Vector(0, 0);
+	if (polygon.sides == 1){ //circle
+		for (var i = 0; i < polygon.vertices.length-1; i++){
+			axis.x = polygon.axes[i].x * polygon.radius;
+			axis.y = polygon.axes[i].y * polygon.radius;
+			drawVector(polygon.center, axis);
+		}	
+		return;
+	}
 	for (var i = 0; i < polygon.vertices.length-1; i++){
 		var midpoint = new midPoint(polygon.vertices[i], polygon.vertices[i+1]);
 		axis.x = polygon.axes[i].x * length;
@@ -368,23 +381,27 @@ Rect = function(x, y, width, height, vx, vy, velocity, spin){
 }
 
 Circle = function(x, y, r, vx, vy, velocity, spin){
-
-
+	
 	this.center = new Point(x, y);
-
+	this.radius=r;
 	list = [];
-	var x = this.center.x - radius;
-	var y = this.center.y;
-	list.push(x);
-	list.push(y);
+	list.push(this.center.x - this.radius);
+	list.push(this.center.y - this.radius);
+
+	list.push(this.center.x + this.radius);
+	list.push(this.center.y - this.radius);
 	
-	/*and so on...*/
+	list.push(this.center.x - this.radius);
+	list.push(this.center.y + this.radius);
 	
-	
+	list.push(this.center.x + this.radius);
+	list.push(this.center.y + this.radius);
+
+	this.vertices = listToVertices(list);
 	this.hit=false;
 	this.versor = new Versor(vx, vy);
 	this.velocity = velocity;
-	this.radius=r;
+
 	this.angle = 0;
 	this.front = new Point(this.center.x, this.center.y - this.radius);
 	this.sides = 1;
@@ -400,24 +417,13 @@ Circle = function(x, y, r, vx, vy, velocity, spin){
 	}
 	this.update = function(){
 		this.hit = false;
-		this.center.x += this.versor.x * this.velocity;
-		this.center.y += this.versor.y * this.velocity;
+		xIncrement = this.versor.x * this.velocity;
+		yIncrement = this.versor.y * this.velocity;
+		incrementVertices(this.vertices, xIncrement, yIncrement);
+		this.center.x += xIncrement;
+		this.center.y += yIncrement;
 		this.angle += this.spin;
 		this.angle %= 360;
-		cos = Math.cos(degreesToRadians(this.angle));
-		sin = Math.sin(degreesToRadians(this.angle));
-		if (this.angle > 90 && this.angle < 180){
-			cos *= -1;
-		}
-		else if (this.angle > 180 && this.angle < 270){
-			sin *= -1;
-			cos *= -1;
-		}
-		else if (this.angle > 270){
-				sin *= -1;
-		}
-		this.front.x = this.center.x + cos  * this.radius;
-		this.front.y = this.center.y + sin  * this.radius;
 	}
 }
 
@@ -762,7 +768,8 @@ var fps = new Fps();
 var maxFPS = 40;
 var interval = 1000/maxFPS;
 var circle = new randomCircle(maxSize, minSize, maxSpeed, maxSpin);
-circle.spin=1;
+circle.spin=3;
+//objects.push(circle);
 function mainLoop(){
 	newDate = new Date();
 	elapsedTime = newDate - lastDate;
@@ -786,8 +793,15 @@ function mainLoop(){
 	for (k = 0; k < objects.length; k++){
 			drawPolygon(objects[k]);
 	}
+
+
 	circle.update();
+	checkBorder(circle);
+	rotatePolygon(circle);
+	calculateAxes(circle);
+	drawAxes(circle);
 	drawPolygon(circle);
+	
 	drawFPS(fps.mean());
 	setTimeout(function(){
 		requestAnimationFrame(mainLoop)
