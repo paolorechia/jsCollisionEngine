@@ -74,8 +74,6 @@ function dotProduct(vectorA, vectorB){
 	return vectorA.x*vectorB.x + vectorA.y*vectorB.y;
 }
 
-
-
 function projection(vertices, axis){
 	min = 99999;
 	max = -99999; 
@@ -259,7 +257,18 @@ function drawVector(origin, vector){
 }
 
 function calculateAxes(polygon){
-	if (polygon.sides == 4){
+	if (polygon.sides == 1){
+		/*
+		for (var i = 0; i < polygon.vertices.length-1; i++){
+			normalVector1(polygon.vertices[i], polygon.vertices[i+1], polygon.axes[i]);
+			unitVector(polygon.axes[i], polygon.axes[i]);
+			
+		}
+		normalVector1(polygon.vertices[i], polygon.vertices[0], polygon.axes[i]);
+		unitVector(polygon.axes[i], polygon.axes[i]);
+		*/
+	}
+	else if (polygon.sides == 4){
 		for (var i = 0; i < polygon.vertices.length-1; i++){
 			normalVector1(polygon.vertices[i], polygon.vertices[i+1], polygon.axes[i]);
 			unitVector(polygon.axes[i], polygon.axes[i]);
@@ -279,7 +288,6 @@ function calculateAxes(polygon){
 	}
 }
 function drawAxes(polygon, length){
-	
 	var axis = new Vector(0, 0);
 	for (var i = 0; i < polygon.vertices.length-1; i++){
 		var midpoint = new midPoint(polygon.vertices[i], polygon.vertices[i+1]);
@@ -360,7 +368,19 @@ Rect = function(x, y, width, height, vx, vy, velocity, spin){
 }
 
 Circle = function(x, y, r, vx, vy, velocity, spin){
+
+
 	this.center = new Point(x, y);
+
+	list = [];
+	var x = this.center.x - radius;
+	var y = this.center.y;
+	list.push(x);
+	list.push(y);
+	
+	/*and so on...*/
+	
+	
 	this.hit=false;
 	this.versor = new Versor(vx, vy);
 	this.velocity = velocity;
@@ -370,6 +390,10 @@ Circle = function(x, y, r, vx, vy, velocity, spin){
 	this.sides = 1;
 	this.axes = [];
 	this.projections = [];
+	for (var i = 0; i < 4; i ++){
+		this.axes[i] = new Vector(0, 0);
+		this.projections[i] = new Projection(0, 0);
+	}
 	this.applyVector = function(vector){
 		this.center.x += vector.x;
 		this.center.y += vector.y;
@@ -380,7 +404,6 @@ Circle = function(x, y, r, vx, vy, velocity, spin){
 		this.center.y += this.versor.y * this.velocity;
 		this.angle += this.spin;
 		this.angle %= 360;
-		console.log(this.angle);
 		cos = Math.cos(degreesToRadians(this.angle));
 		sin = Math.sin(degreesToRadians(this.angle));
 		if (this.angle > 90 && this.angle < 180){
