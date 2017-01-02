@@ -505,14 +505,10 @@ function incrementRect(rect, xIncrement, yIncrement){
 function checkBorder(polygon){
 	yAxis = new Vector(0, 1);
 	xAxis = new Vector(1, 0);
-	
-	//this is wrong, needs a fix
-	for (var i = 0; i < polygon.axes.length; i++){
-		projX = projection(polygon.vertices, xAxis);
-	}
-	for (var i = 0; i < polygon.axes.length; i++){
-		projY = projection(polygon.vertices, yAxis);
-	}
+
+	projX = projection(polygon.vertices, xAxis);
+	projY = projection(polygon.vertices, yAxis);
+
 	if (projX.max > c.width){
 		polygon.versor.x *= -1;
 		diff = new Vector(-(projX.max - c.width), 0);
