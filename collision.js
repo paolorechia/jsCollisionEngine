@@ -374,56 +374,6 @@ Rect = function(x, y, width, height, vx, vy, velocity, spin){
 
 }
 
-Circle = function(x, y, r, vx, vy, velocity, spin){
-	
-	this.center = new Point(x, y);
-	this.radius=r;
-	list = [];
-	list.push(this.center.x - this.radius);
-	list.push(this.center.y - this.radius);
-
-	list.push(this.center.x + this.radius);
-	list.push(this.center.y - this.radius);
-	
-	list.push(this.center.x - this.radius);
-	list.push(this.center.y + this.radius);
-	
-	list.push(this.center.x + this.radius);
-	list.push(this.center.y + this.radius);
-
-	this.vertices = listToVertices(list);
-	this.hit=false;
-	this.versor = new Versor(vx, vy);
-	this.velocity = velocity;
-
-	this.angle = 0;
-	this.front = new Point(this.center.x, this.center.y - this.radius);
-	this.sides = 1;
-	this.axes = [];
-	this.projections = [];
-	for (var i = 0; i < 4; i ++){
-		this.projections[i] = new Projection(0, 0);
-	}
-	this.axes[0] = new Vector(0,1);
-	this.axes[1] = new Vector(1,0);
-	this.axes[2] = new Vector(0, -1);
-	this.axes[3] = new Vector(-1, 0);
-	this.applyVector = function(vector){
-		this.center.x += vector.x;
-		this.center.y += vector.y;
-	}
-	this.update = function(){
-		this.hit = false;
-		xIncrement = this.versor.x * this.velocity;
-		yIncrement = this.versor.y * this.velocity;
-		incrementVertices(this.vertices, xIncrement, yIncrement);
-		this.center.x += xIncrement;
-		this.center.y += yIncrement;
-		this.angle += this.spin;
-		this.angle %= 360;
-	}
-}
-
 Triangle = function(x, y, l1, vx, vy, velocity, spin){
 	var list = [];
 	// ponto1
@@ -474,7 +424,7 @@ Triangle = function(x, y, l1, vx, vy, velocity, spin){
 		this.center.x = x/3;
 		this.center.y = y/3;
 		this.hit = false;
-}
+	}
 }
 
 function applyVectorToRect(rect, vector){
@@ -728,18 +678,7 @@ function randomTriangle(maxSize, minSize, maxSpeed, maxSpin){
 							maxSpeed, spin);
 	return triangle;
 }
-function randomCircle(maxSize, minSize, maxSpeed, maxSpin){
-	var xpos = Math.ceil(Math.random() * c.width/2) + maxSize;
-	var ypos = Math.ceil(Math.random() * c.height/2) + maxSize;
-	var radius = Math.ceil(Math.random() * maxSize) + minSize;
-	var direction = Math.round(Math.random() + 1);	
-	direction = Math.pow(-1, direction);
-	var spin = Math.ceil(Math.random() * maxSpin * direction);
-	circle = new Circle(xpos, ypos, radius,
-						Math.random(), Math.random(),
-						maxSpeed, spin);
-	return circle;
-}
+
 var j = 0;
 var maxSize = c.width/10;
 var minSize = c.width/100;
@@ -761,9 +700,7 @@ var lastDate = new Date();
 var fps = new Fps();
 var maxFPS = 40;
 var interval = 1000/maxFPS;
-var circle = new randomCircle(maxSize, minSize, maxSpeed, maxSpin);
-circle.spin=3;
-objects.push(circle);
+
 function mainLoop(){
 	newDate = new Date();
 	elapsedTime = newDate - lastDate;
@@ -788,14 +725,6 @@ function mainLoop(){
 			drawPolygon(objects[k]);
 	}
 
-/*
-	circle.update();
-	checkBorder(circle);
-	rotatePolygon(circle);
-	calculateAxes(circle);
-	drawAxes(circle);
-	drawPolygon(circle);
-	*/
 	drawFPS(fps.mean());
 	setTimeout(function(){
 		requestAnimationFrame(mainLoop)
