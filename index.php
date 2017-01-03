@@ -1,10 +1,6 @@
 <html>
-<body>
-<canvas id="umCanvas" width="800" height="600">
-<script src="collision.js"> </script>
-<script src="input.js"> </script>
-<script src="main.js"> </script>
-</body>
-</body>
+<a href=sandbox/index.php>sandbox</href>
+<br>
+<a href=pong/index.php>pong</href>
 
 </html>
