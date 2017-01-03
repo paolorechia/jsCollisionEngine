@@ -1,6 +1,6 @@
 <html>
 <a href=sandbox/index.php>sandbox</href>
 <br>
-<a href=pong/index.php>pong</href>
+<a href=pongGame/index.php>pong</href>
 
 </html>
