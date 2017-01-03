@@ -49,13 +49,12 @@ var ship = function(x, y, l1){
 						0, 0,			// vx, vy
 						0, 0);			// velocity, spin
 						
-	this.currentAccel = 0;
-	this.alfaAccel = 0.1;
-	this.maxAccel = 1;
-	this.minAccel = 0;
+	this.engineOn = false;
+	this.acceleration = 0.01;
+	this.maxSpeed = 3;
 	
-	
-	this.front = new Point(x + l1 *0.5, y + l1);
+	this.front = new Point(this.hitbox.vertices[2].x,
+						   this.hitbox.vertices[2].y);
 	
 	this.inertiaVersor = new Vector(0, 0);
 	this.inertiaVector = new Vector(0, 0);
@@ -65,14 +64,25 @@ var ship = function(x, y, l1){
 	this.directionVector = new Vector(0, 0);
 	
 	this.updateDirection = function(){
+
+		if (!this.engineOn){
+			return;
+		}
 		calculateVector(this.front, this.hitbox.center, this.engineVersor);
 		unitVector(this.engineVersor, this.engineVersor);
 		this.engineVector.x += this.engineVersor.x * this.acceleration;
 		this.engineVector.y += this.engineVersor.y * this.acceleration;
 
-		this.directionVector.x = this.engineVector.x + this.inertiaVector.x;
-		this.directionVector.y = this.engineVector.y + this.inertiaVector.y;
-		unitVector(this.directionVector, this.directionVersor);
+		var aux = new Vector(this.engineVector.x + this.inertiaVector.x,
+							 this.engineVector.y + this.inertiaVector.y);
+		var calculatedSpeed = norm(aux);
+		if (calculatedSpeed <= this.maxSpeed){
+			this.velocity = calculatedSpeed;
+			this.directionVector.x = aux.x;
+			this.directionVector.y = aux.y;
+			unitVector(this.directionVector, this.directionVersor);
+			this.engineOn = false;
+		}
 	}
 	
 	this.updatePosition = function(){
@@ -80,23 +90,17 @@ var ship = function(x, y, l1){
 		this.hitbox.update();
 		this.inertiaVector.x = this.directionVector.x;
 		this.inertiaVector.y = this.directionVector.y;
-		
-		if (this.currentAccel > this.minAccel){
-			this.currentAccel -= this.alfaAccel;
-		}
+		this.front.x = this.hitbox.vertices[2].x
+		this.front.y = this.hitbox.vertices[2].y
 		
 	}
-	
 	this.rotate = function(){
 		
 		
 	}
-	
 	this.throttle = function(pressed){
 		if (pressed){
-			if (this.currentAccel < this.maxAccel){
-				this.currentAccel += this.alfaAccel;
-			}
+				this.engineOn = true;
 		}
 	}
 }
@@ -114,8 +118,10 @@ function mainLoop(){
 	ctx.fillStyle="#FFFF00";
 	ctx.fillRect(0,0,c.width,c.height);
 
+	
 	player.updateDirection();
 	player.updatePosition();
+	
 	for (var i = 0; i < objects.length; i++){
 //		objects[i].hitbox.update;
 
@@ -124,8 +130,8 @@ function mainLoop(){
 		drawPolygon(objects[i].hitbox);
 		
 	}
-
-	console.log(player.currentAccel);
+	console.log(player.velocity);
+	console.log(player.engineOn);
 //	checkColisionsNaive(objects);
 	drawFPS(fps.mean());
 	setTimeout(function(){
