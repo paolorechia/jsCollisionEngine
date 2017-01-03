@@ -9,12 +9,13 @@ var coord = new Point(c.width/2, c.height/2);
         coord.x = event.touches[0].clientX;
         coord.y = event.touches[0].clientY;
    }
-   function keyboard(event){
-	   console.log("ahh");
+	keyboard = function(event){
         if (event.key == 'w'){
-			console.log('w');
-//			player.throttle(true);
+			player.throttle(true);
         }
+		else{
+			player.throttle(false);
+		}
         if (event.key == 's'){
 			console.log('s');
         }
@@ -30,12 +31,11 @@ var coord = new Point(c.width/2, c.height/2);
         if (event.key == 'Escape'){
         }
     }
-
     mousePress = function(state){
  // //      console.log(state);
     };
 
-    c.addEventListener("keydown", function(event){ keyboard(event)}, false);
+    window.addEventListener("keydown", function(event){ keyboard(event)}, false);
 	c.addEventListener("mousemove", pegaCoordenadas, false);
 //	c.addEventListener("touchstart", pegaCoordenadasMobile, false);
     c.addEventListener("mousedown", function(){ mousePress(1); 

@@ -45,4 +45,4 @@ var coord = new Point(c.width/2, c.height/2);
     c.addEventListener("click", function(){
                                                 console.log("click!");},
                                                 false);
-    c.addEventListener("keydown", function(event){ keyboard(event)}, false);
+    window.addEventListener("keydown", function(event){ keyboard(event)}, false);

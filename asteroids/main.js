@@ -1,13 +1,5 @@
-// redefining checkBorder to count points
-// 
 updateResEvent = function(canvas) {
           window.addEventListener('resize', function(event) {
-
-            //--- Para alterar a resolução mantendo a res. do jogo (buga a mira)
-            //$(canvas).css('width', window.innerWidth-3)
-            //$(canvas).css('height', window.innerHeight-3)
-            //-------------------------
-            
             canvas.width = window.innerWidth-20;
             canvas.height = window.innerHeight-20;
 		  });
@@ -57,9 +49,10 @@ var ship = function(x, y, l1){
 						0, 0,			// vx, vy
 						0, 0);			// velocity, spin
 						
-	this.acceleration = 0;
-	this.maxSpeed = 10;
-	this.minSpeed = -4;
+	this.currentAccel = 0;
+	this.alfaAccel = 0.1;
+	this.maxAccel = 1;
+	this.minAccel = 0;
 	
 	
 	this.front = new Point(x + l1 *0.5, y + l1);
@@ -85,17 +78,24 @@ var ship = function(x, y, l1){
 	this.updatePosition = function(){
 		this.hitbox.applyVector(this.directionVector);
 		this.hitbox.update();
+		this.inertiaVector.x = this.directionVector.x;
+		this.inertiaVector.y = this.directionVector.y;
+		
+		if (this.currentAccel > this.minAccel){
+			this.currentAccel -= this.alfaAccel;
+		}
+		
 	}
 	
-	this.rotate = new function(){
+	this.rotate = function(){
 		
 		
 	}
 	
-	this.throttle = new function(pressed){
+	this.throttle = function(pressed){
 		if (pressed){
-			if (this.acceleration < this.maxSpeed){
-				this.acceleration += 1;
+			if (this.currentAccel < this.maxAccel){
+				this.currentAccel += this.alfaAccel;
 			}
 		}
 	}
@@ -114,7 +114,7 @@ function mainLoop(){
 	ctx.fillStyle="#FFFF00";
 	ctx.fillRect(0,0,c.width,c.height);
 
-
+	player.updateDirection();
 	player.updatePosition();
 	for (var i = 0; i < objects.length; i++){
 //		objects[i].hitbox.update;
@@ -125,7 +125,7 @@ function mainLoop(){
 		
 	}
 
-
+	console.log(player.currentAccel);
 //	checkColisionsNaive(objects);
 	drawFPS(fps.mean());
 	setTimeout(function(){
