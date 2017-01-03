@@ -169,7 +169,6 @@ function mainLoop(){
 		
 	}
 	drawScore(score);
-	console.log(score);
 	if (score.player >= maxScore || score.enemy >= maxScore){
 		endGame(score);
 	}	
