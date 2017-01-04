@@ -14,7 +14,7 @@ var coord = new Point(c.width/2, c.height/2);
 			player.throttle(true);
         }
         if (event.key == 's'){
-			player.throttle(false);
+			player.reverseThrottle(true);
         }
         if (event.key == 'd'){
 			player.turn('r');

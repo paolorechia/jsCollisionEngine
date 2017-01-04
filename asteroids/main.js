@@ -66,10 +66,14 @@ var ship = function(x, y, l1){
 	
 	this.updateDirection = function(){
 
-		if (!this.engineOn){
+		if (!this.engineOn && !this.reverseEngineOn){
 			return;
 		}
 		calculateVector(this.front, this.hitbox.center, this.engineVersor);
+		if (this.reverseEngineOn){
+			this.engineVersor.x *= -1;
+			this.engineVersor.y *= -1;
+		}
 		unitVector(this.engineVersor, this.engineVersor);
 		this.engineVector.x = this.engineVersor.x * this.acceleration;
 		this.engineVector.y = this.engineVersor.y * this.acceleration;
@@ -95,6 +99,7 @@ var ship = function(x, y, l1){
 			}				
 		}
 		this.engineOn = false;
+		this.reverseEngineOn = false;
 	}
 	this.updatePosition = function(){
 		this.hitbox.update(); 
@@ -124,6 +129,11 @@ var ship = function(x, y, l1){
 				this.engineOn = true;
 		}
 	}
+	this.reverseThrottle = function(pressed){
+		if (pressed){
+				this.reverseEngineOn = true;
+		}
+	}
 }
 
 var player = new ship(c.width/2, c.height/2, 20);
@@ -138,6 +148,7 @@ var numberRectangles = 4;
 var numberTriangles = 4;
 var objects = [];
 objects.push(player.hitbox);
+
 for (i = 0; i < numberRectangles; i++){
 	objects.push(new randomRect(maxSize, minSize, maxSpeed, maxSpin));
 
@@ -145,6 +156,7 @@ for (i = 0; i < numberRectangles; i++){
 for (i = 0; i < numberTriangles; i++){
 	objects.push(new randomTriangle(maxSize, minSize, maxSpeed, maxSpin));
 }
+
 var axis_length = 20;
 function mainLoop(){
 	newDate = new Date();
