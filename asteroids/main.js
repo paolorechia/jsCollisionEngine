@@ -48,11 +48,15 @@ var ship = function(x, y, l1){
 	this.hitbox = new Triangle(x, y, l1,
 						0, 0,			// vx, vy
 						0, 0);			// velocity, spin
-						
+	
+
+		
 	this.engineOn = false;
 	this.acceleration = 1;
 	this.maxSpeed = 3;
-	
+	this.turnRate = 5;
+	this.turning = false;
+	this.rotate = 0;
 	this.front = new Point(this.hitbox.vertices[2].x,
 						   this.hitbox.vertices[2].y);
 	
@@ -97,9 +101,21 @@ var ship = function(x, y, l1){
 		this.front.y = this.hitbox.vertices[2].y
 		
 	}
-	this.rotate = function(){
-		
-		
+	this.updateTurn = function(){
+		if (!this.turning){
+			return;
+		}
+		rotatePolygon(this.hitbox, this.rotate);
+		this.turning = false;
+	}
+	this.turn = function(side){
+		this.turning = true;
+		if (side == 'l'){
+			this.rotate = - this.turnRate;
+		}
+		else{
+			this.rotate = this.turnRate;
+		}
 	}
 	this.throttle = function(pressed){
 		if (pressed){
@@ -124,15 +140,16 @@ function mainLoop(){
 	
 	player.updateDirection();
 	player.updatePosition();
-	
+	player.updateTurn();
 	for (var i = 0; i < objects.length; i++){
 //		objects[i].hitbox.update;
 
 		checkBorder(objects[i].hitbox);
 		calculateAxes(objects[i].hitbox);
 		drawPolygon(objects[i].hitbox);
-		
+//		rotatePolygon(objects[i].hitbox, 5);
 	}
+
 	console.log(player.hitbox.velocity);
 	console.log(player.hitbox.versor);
 	console.log(player.inertiaVector);

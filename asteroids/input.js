@@ -13,17 +13,14 @@ var coord = new Point(c.width/2, c.height/2);
         if (event.key == 'w'){
 			player.throttle(true);
         }
-		else{
-			player.throttle(false);
-		}
         if (event.key == 's'){
-			console.log('s');
+			player.throttle(false);
         }
         if (event.key == 'd'){
- 
+			player.turn('r');
         }
         if (event.key == 'a'){
-
+			player.turn('l');
         }
         if (event.key == ' '){
 
