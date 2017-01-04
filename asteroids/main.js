@@ -52,9 +52,9 @@ var ship = function(x, y, l1){
 
 		
 	this.engineOn = false;
-	this.acceleration = 3;
+	this.acceleration = 2.5;
 	this.maxSpeed = 10;
-	this.turnRate = 5;
+	this.turnRate = 15;
 	this.turning = false;
 	this.rotate = 0;
 	this.front = new Point(this.hitbox.vertices[2].x,
