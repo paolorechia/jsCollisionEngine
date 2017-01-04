@@ -69,17 +69,43 @@ var ship = function(x, y, l1){
 		if (!this.engineOn && !this.reverseEngineOn){
 			return;
 		}
-		calculateVector(this.front, this.hitbox.center, this.engineVersor);
-		if (this.reverseEngineOn){
-			this.engineVersor.x *= -1;
-			this.engineVersor.y *= -1;
-		}
-		unitVector(this.engineVersor, this.engineVersor);
-		this.engineVector.x = this.engineVersor.x * this.acceleration;
-		this.engineVector.y = this.engineVersor.y * this.acceleration;
-
+		
 		this.inertiaVector.x = this.hitbox.versor.x * this.hitbox.velocity;
 		this.inertiaVector.y = this.hitbox.versor.y * this.hitbox.velocity;
+		
+		if (this.engineOn){
+			calculateVector(this.front, this.hitbox.center, this.engineVersor);
+			unitVector(this.engineVersor, this.engineVersor);
+			this.engineVector.x = this.engineVersor.x * this.acceleration;
+			this.engineVector.y = this.engineVersor.y * this.acceleration;
+		}
+		else{ //Advanced Braking System
+			if (this.hitbox.velocity == 0){ // Already stopped, use it to reverse
+				calculateVector(this.front, this.hitbox.center, this.engineVersor);
+				if (this.reverseEngineOn){
+					this.engineVersor.x *= -1;
+					this.engineVersor.y *= -1;
+				unitVector(this.engineVersor, this.engineVersor);
+				this.engineVector.x = this.engineVersor.x * this.acceleration;
+				this.engineVector.y = this.engineVersor.y * this.acceleration;
+				}
+			}
+			else {
+				unitVector(this.inertiaVector, this.engineVersor);
+				this.engineVersor.x *= -1;
+				this.engineVersor.y *= -1;
+				if (this.acceleration > this.hitbox.velocity){
+					this.engineVector.x = this.engineVersor.x * this.hitbox.velocity;
+					this.engineVector.y = this.engineVersor.y * this.hitbox.velocity;
+				}
+				else{
+					this.engineVector.x = this.engineVersor.x * this.acceleration;
+					this.engineVector.y = this.engineVersor.y * this.acceleration;	
+				}
+			}
+		}
+
+
 
 		var aux = new Vector(this.engineVector.x + this.inertiaVector.x,
 							 this.engineVector.y + this.inertiaVector.y);
