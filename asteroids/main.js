@@ -52,8 +52,8 @@ var ship = function(x, y, l1){
 
 		
 	this.engineOn = false;
-	this.acceleration = 1;
-	this.maxSpeed = 3;
+	this.acceleration = 3;
+	this.maxSpeed = 10;
 	this.turnRate = 5;
 	this.turning = false;
 	this.rotate = 0;
@@ -86,14 +86,15 @@ var ship = function(x, y, l1){
 				this.hitbox.velocity = calculatedSpeed;
 				this.hitbox.versor.x = 0;
 				this.hitbox.versor.y = 0;
-				return;
 			}
-			unitVector(aux, aux);
-			this.engineOn = false;
-			this.hitbox.velocity = calculatedSpeed;
-			this.hitbox.versor.x = aux.x;
-			this.hitbox.versor.y = aux.y;			
+			else{
+				unitVector(aux, aux);
+				this.hitbox.velocity = calculatedSpeed;
+				this.hitbox.versor.x = aux.x;
+				this.hitbox.versor.y = aux.y;
+			}				
 		}
+		this.engineOn = false;
 	}
 	this.updatePosition = function(){
 		this.hitbox.update(); 
@@ -150,10 +151,12 @@ function mainLoop(){
 //		rotatePolygon(objects[i].hitbox, 5);
 	}
 
+	/*
 	console.log(player.hitbox.velocity);
 	console.log(player.hitbox.versor);
 	console.log(player.inertiaVector);
 	console.log(player.engineVector);
+	*/
 //	checkColisionsNaive(objects);
 	drawFPS(fps.mean());
 	setTimeout(function(){
