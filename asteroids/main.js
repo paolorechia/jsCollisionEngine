@@ -50,18 +50,15 @@ var ship = function(x, y, l1){
 						0, 0);			// velocity, spin
 						
 	this.engineOn = false;
-	this.acceleration = 0.01;
+	this.acceleration = 1;
 	this.maxSpeed = 3;
 	
 	this.front = new Point(this.hitbox.vertices[2].x,
 						   this.hitbox.vertices[2].y);
 	
-	this.inertiaVersor = new Vector(0, 0);
 	this.inertiaVector = new Vector(0, 0);
 	this.engineVersor = new Vector(0, 0);
 	this.engineVector = new Vector(0, 0);
-	this.directionVersor = new Vector(0, 0);
-	this.directionVector = new Vector(0, 0);
 	
 	this.updateDirection = function(){
 
@@ -70,26 +67,32 @@ var ship = function(x, y, l1){
 		}
 		calculateVector(this.front, this.hitbox.center, this.engineVersor);
 		unitVector(this.engineVersor, this.engineVersor);
-		this.engineVector.x += this.engineVersor.x * this.acceleration;
-		this.engineVector.y += this.engineVersor.y * this.acceleration;
+		this.engineVector.x = this.engineVersor.x * this.acceleration;
+		this.engineVector.y = this.engineVersor.y * this.acceleration;
+
+		this.inertiaVector.x = this.hitbox.versor.x * this.hitbox.velocity;
+		this.inertiaVector.y = this.hitbox.versor.y * this.hitbox.velocity;
 
 		var aux = new Vector(this.engineVector.x + this.inertiaVector.x,
 							 this.engineVector.y + this.inertiaVector.y);
 		var calculatedSpeed = norm(aux);
 		if (calculatedSpeed <= this.maxSpeed){
-			this.velocity = calculatedSpeed;
-			this.directionVector.x = aux.x;
-			this.directionVector.y = aux.y;
-			unitVector(this.directionVector, this.directionVersor);
+			if (calculatedSpeed == 0){
+				this.engineOn = false;
+				this.hitbox.velocity = calculatedSpeed;
+				this.hitbox.versor.x = 0;
+				this.hitbox.versor.y = 0;
+				return;
+			}
+			unitVector(aux, aux);
 			this.engineOn = false;
+			this.hitbox.velocity = calculatedSpeed;
+			this.hitbox.versor.x = aux.x;
+			this.hitbox.versor.y = aux.y;			
 		}
 	}
-	
 	this.updatePosition = function(){
-		this.hitbox.applyVector(this.directionVector);
-		this.hitbox.update();
-		this.inertiaVector.x = this.directionVector.x;
-		this.inertiaVector.y = this.directionVector.y;
+		this.hitbox.update(); 
 		this.front.x = this.hitbox.vertices[2].x
 		this.front.y = this.hitbox.vertices[2].y
 		
@@ -130,8 +133,10 @@ function mainLoop(){
 		drawPolygon(objects[i].hitbox);
 		
 	}
-	console.log(player.velocity);
-	console.log(player.engineOn);
+	console.log(player.hitbox.velocity);
+	console.log(player.hitbox.versor);
+	console.log(player.inertiaVector);
+	console.log(player.engineVector);
 //	checkColisionsNaive(objects);
 	drawFPS(fps.mean());
 	setTimeout(function(){
