@@ -103,6 +103,7 @@ var ship = function(x, y, l1){
 		
 	}
 	this.updateTurn = function(){
+		this.hitbox.spin = 0;
 		if (!this.turning){
 			return;
 		}
@@ -126,9 +127,25 @@ var ship = function(x, y, l1){
 }
 
 var player = new ship(c.width/2, c.height/2, 20);
-objects.push(player);
+
 player.updateDirection();
 
+var maxSize = c.width/10;
+var minSize = c.width/300;
+var maxSpeed = 6;
+var maxSpin = 4;
+var numberRectangles = 4;
+var numberTriangles = 4;
+var objects = [];
+objects.push(player.hitbox);
+for (i = 0; i < numberRectangles; i++){
+	objects.push(new randomRect(maxSize, minSize, maxSpeed, maxSpin));
+
+}
+for (i = 0; i < numberTriangles; i++){
+	objects.push(new randomTriangle(maxSize, minSize, maxSpeed, maxSpin));
+}
+var axis_length = 20;
 function mainLoop(){
 	newDate = new Date();
 	elapsedTime = newDate - lastDate;
@@ -143,12 +160,16 @@ function mainLoop(){
 	player.updatePosition();
 	player.updateTurn();
 	for (var i = 0; i < objects.length; i++){
-//		objects[i].hitbox.update;
 
-		checkBorder(objects[i].hitbox);
-		calculateAxes(objects[i].hitbox);
-		drawPolygon(objects[i].hitbox);
-//		rotatePolygon(objects[i].hitbox, 5);
+		objects[i].update();
+		checkBorder(objects[i]);
+		calculateAxes(objects[i]);
+		rotatePolygon(objects[i], objects[i].spin);
+
+	}
+	checkColisionsNaive(objects);
+	for (var j = 0; j < objects.length; j++){
+		drawPolygon(objects[j]);
 	}
 
 	/*
