@@ -52,6 +52,8 @@ var ship = function(x, y, l1){
 
 		
 	this.engineOn = false;
+	this.reverseEngine = false;
+	this.braking = false;
 	this.acceleration = 0.5;
 	this.maxSpeed = 6;
 	this.turnRate = 10;
@@ -66,7 +68,7 @@ var ship = function(x, y, l1){
 	
 	this.updateDirection = function(){
 
-		if (!this.engineOn && !this.reverseEngineOn){
+		if (!this.engineOn && !this.reverseEngineOn && this.braking == false){
 			return;
 		}
 		
@@ -79,20 +81,9 @@ var ship = function(x, y, l1){
 			this.engineVector.x = this.engineVersor.x * this.acceleration;
 			this.engineVector.y = this.engineVersor.y * this.acceleration;
 		}
-		else{ 
-			/* // reverse engine
-			if (this.hitbox.velocity == 0){ // Already stopped, use it to reverse
-				calculateVector(this.front, this.hitbox.center, this.engineVersor);
-				if (this.reverseEngineOn){
-					this.engineVersor.x *= -1;
-					this.engineVersor.y *= -1;
-				unitVector(this.engineVersor, this.engineVersor);
-				this.engineVector.x = this.engineVersor.x * this.acceleration;
-				this.engineVector.y = this.engineVersor.y * this.acceleration;
-				}
-			}
-			*/
-			//else { //Advanced Braking System
+		else{
+			if (this.braking){
+	//else { //Advanced Braking System
 				unitVector(this.inertiaVector, this.engineVersor);
 				this.engineVersor.x *= -1;
 				this.engineVersor.y *= -1;
@@ -104,7 +95,19 @@ var ship = function(x, y, l1){
 					this.engineVector.x = this.engineVersor.x * this.acceleration;
 					this.engineVector.y = this.engineVersor.y * this.acceleration;	
 				}
-			//}
+			}
+	
+			//}		
+			else { // Already stopped, use it to reverse
+				calculateVector(this.front, this.hitbox.center, this.engineVersor);
+				if (this.reverseEngineOn){
+					this.engineVersor.x *= -1;
+					this.engineVersor.y *= -1;
+				unitVector(this.engineVersor, this.engineVersor);
+				this.engineVector.x = this.engineVersor.x * this.acceleration;
+				this.engineVector.y = this.engineVersor.y * this.acceleration;
+				}
+			}
 		}
 
 		var aux = new Vector(this.engineVector.x + this.inertiaVector.x,
@@ -132,14 +135,6 @@ var ship = function(x, y, l1){
 		this.front.y = this.hitbox.vertices[2].y
 		
 	}
-	this.updateTurn = function(){
-		this.hitbox.spin = 0;
-		if (!this.turning){
-			return;
-		}
-		rotatePolygon(this.hitbox, this.rotate);
-		//this.turning = false;
-	}
 	this.turn = function(side, isTurning){
 		this.turning = isTurning;
 		if (!isTurning){
@@ -157,12 +152,10 @@ var ship = function(x, y, l1){
 		this.engineOn = pressed;
 	}
 	this.brake = function(pressed){
-		this.brakingEngine = pressed;
+		this.braking = pressed;
 	}
 	this.reverseThrottle = function(pressed){
-		if (pressed){
-				this.reverseEngineOn = true;
-		}
+		this.reverseEngineOn = pressed;
 	}
 }
 
@@ -202,7 +195,7 @@ function mainLoop(){
 	
 	player.updateDirection();
 	player.updatePosition();
-	player.updateTurn();
+
 	for (var i = 0; i < objects.length; i++){
 
 		objects[i].update();
