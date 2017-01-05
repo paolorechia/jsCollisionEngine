@@ -25,6 +25,34 @@ function drawScore(score){
 	ctx.stroke();
 }
 
+function buildInstructions(){
+	var instructions = [];
+	
+	var string;
+	string = "W: Main Engine Throttle";
+	instructions.push(string);
+	string = "S: Reverse Engine Throttle";
+	instructions.push(string);
+	string = "A: Left turning";
+	instructions.push(string);
+	string = "D: Right turning";
+	instructions.push(string);
+	string = "Space: Advanced Braking System";
+	instructions.push(string);
+	
+	return instructions;
+}
+function drawInstructions(instructions){
+	ctx.beginPath();
+	ctx.fillStyle="#000FFF";
+	ctx.font="14px Arial";
+
+	for (var i = 0; i < instructions.length; i++){
+		ctx.fillText(instructions[i], c.width/2 - 100, 40 + i * 20);
+	}
+	ctx.stroke();
+}
+
 
 var j = 0;
 var maxSize = c.width/10;
@@ -43,7 +71,7 @@ var interval = 1000/maxFPS;
 
 var score = new Score();
 maxScore = 5;
-
+var instructions = buildInstructions();
 var ship = function(x, y, l1){
 	this.hitbox = new Triangle(x, y, l1,
 						0, 0,			// vx, vy
@@ -208,7 +236,7 @@ function mainLoop(){
 	for (var j = 0; j < objects.length; j++){
 		drawPolygon(objects[j]);
 	}
-
+	drawInstructions(instructions);
 	/*
 	console.log(player.hitbox.velocity);
 	console.log(player.hitbox.versor);
