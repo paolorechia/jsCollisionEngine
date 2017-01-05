@@ -9,18 +9,37 @@ var coord = new Point(c.width/2, c.height/2);
         coord.x = event.touches[0].clientX;
         coord.y = event.touches[0].clientY;
    }
-	keyboard = function(event){
+	keyboardDown = function(event){
         if (event.key == 'w'){
 			player.throttle(true);
         }
         if (event.key == 's'){
-			player.reverseThrottle(true);
+			player.brake(true);
         }
         if (event.key == 'd'){
-			player.turn('r');
+			player.turn('r', true);
         }
         if (event.key == 'a'){
-			player.turn('l');
+			player.turn('l', true);
+        }
+        if (event.key == ' '){
+
+        }
+        if (event.key == 'Escape'){
+        }
+    }
+	keyboardUp = function(event){
+        if (event.key == 'w'){
+			player.throttle(false);
+        }
+        if (event.key == 's'){
+			player.brake(false);
+        }
+        if (event.key == 'd'){
+			player.turn('r', false);
+        }
+        if (event.key == 'a'){
+			player.turn('l', false);
         }
         if (event.key == ' '){
 
@@ -32,7 +51,9 @@ var coord = new Point(c.width/2, c.height/2);
  // //      console.log(state);
     };
 
-    window.addEventListener("keydown", function(event){ keyboard(event)}, false);
+    window.addEventListener("keydown", function(event){ keyboardDown(event)}, false);
+    window.addEventListener("keyup", function(event){ keyboardUp(event)}, false);
+
 	c.addEventListener("mousemove", pegaCoordenadas, false);
 //	c.addEventListener("touchstart", pegaCoordenadasMobile, false);
     c.addEventListener("mousedown", function(){ mousePress(1); 
