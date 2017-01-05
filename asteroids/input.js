@@ -55,11 +55,16 @@ var coord = new Point(c.width/2, c.height/2);
         }
     }
 	mouseClick = function(){
-		console.log("System locked!");
-		if (player.lock)
+
+		if (player.lock){
+			console.log("System unlocked!");
 			player.lock = false;
-		else
+		}
+		else{
+			console.log("System locked!");
 			player.lock = true;
+			player.autoPilot(coord);
+		}
 	}
     mousePress = function(state){
  // //      console.log(state);

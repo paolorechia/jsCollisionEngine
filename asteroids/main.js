@@ -78,7 +78,7 @@ var ship = function(x, y, l1){
 						0, 0);			// velocity, spin
 	
 
-		
+	this.lock = false;
 	this.engineOn = false;
 	this.reverseEngine = false;
 	this.braking = false;
@@ -93,6 +93,8 @@ var ship = function(x, y, l1){
 	this.inertiaVector = new Vector(0, 0);
 	this.engineVersor = new Vector(0, 0);
 	this.engineVector = new Vector(0, 0);
+	
+	this.autoPath = new Point(0, 0);
 	
 	this.updateDirection = function(){
 
@@ -181,6 +183,18 @@ var ship = function(x, y, l1){
 	this.reverseThrottle = function(pressed){
 		this.reverseEngineOn = pressed;
 	}
+	this.autoPilot = function(coord){	// auto-pilot function to move to click coordinates
+		this.autoPath = new Point(coord.x, coord.y);
+	}
+	this.drawAutoPath = function(){
+		if (!this.lock){
+			return;
+		}
+		ctx.beginPath();
+		ctx.moveTo(this.hitbox.center.x, this.hitbox.center.y);
+		ctx.lineTo(this.autoPath.x, this.autoPath.y);
+		ctx.stroke();
+	}
 }
 
 var player = new ship(c.width/2, c.height/2, 20);
@@ -233,6 +247,7 @@ function mainLoop(){
 		drawPolygon(objects[j]);
 	}
 
+	player.drawAutoPath();
 //	checkColisionsNaive(objects);
 	drawFPS(fps.mean());
 	setTimeout(function(){
