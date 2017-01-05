@@ -55,7 +55,6 @@ var coord = new Point(c.width/2, c.height/2);
         }
     }
 	mouseClick = function(){
-
 		if (player.lock){
 			console.log("System unlocked!");
 			player.lock = false;
@@ -66,22 +65,27 @@ var coord = new Point(c.width/2, c.height/2);
 			player.autoPilot(coord);
 		}
 	}
-    mousePress = function(state){
- // //      console.log(state);
+    mouseDown = function(state){
+//		console.log(state);
     };
-
+	mouseUp = function(state){
+//		console.log(state);
+    };
     window.addEventListener("keydown", function(event){ keyboardDown(event)}, false);
     window.addEventListener("keyup", function(event){ keyboardUp(event)}, false);
 
 	c.addEventListener("mousemove", pegaCoordenadas, false);
 //	c.addEventListener("touchstart", pegaCoordenadasMobile, false);
-    c.addEventListener("mousedown", function(){ mousePress(1); 
+/*
+    c.addEventListener("mousedown", function(){ mouseDown(true); 
                                                      },
                                                      false);
-    c.addEventListener("mouseup", function(){ mousePress(0);
+    c.addEventListener("mouseup", function(){ mouseUp(false);
                                                    }, 
                                                    false);
-    c.addEventListener("click", function(){ mouseClick();
+*/
+												   
+    c.addEventListener("click", function(event){ mouseClick(event);
                                                 },
                                                 false);
  

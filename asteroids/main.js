@@ -183,8 +183,15 @@ var ship = function(x, y, l1){
 	this.reverseThrottle = function(pressed){
 		this.reverseEngineOn = pressed;
 	}
-	this.autoPilot = function(coord){	// auto-pilot function to move to click coordinates
+	this.autoPilot = function(coord){	// auto-pilot function to move to coordinates
 		this.autoPath = new Point(coord.x, coord.y);
+		pathVector = new Vector(0, 0);
+		calculateVector(coord, this.hitbox.center, pathVector);
+		var angle = angleVectors(this.engineVector, pathVector);
+		console.log(pathVector);
+		console.log(this.engineVersor);
+
+		console.log(radiansToDegrees(angle));
 	}
 	this.drawAutoPath = function(){
 		if (!this.lock){
