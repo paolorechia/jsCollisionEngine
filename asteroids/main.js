@@ -82,7 +82,7 @@ var ship = function(x, y, l1){
 	this.engineOn = false;
 	this.reverseEngine = false;
 	this.braking = false;
-	this.acceleration = 0.5;
+	this.acceleration = 0.25;
 	this.maxSpeed = 6;
 	this.turnRate = 10;
 	this.turning = false;
@@ -110,8 +110,7 @@ var ship = function(x, y, l1){
 			this.engineVector.y = this.engineVersor.y * this.acceleration;
 		}
 		else{
-			if (this.braking){
-	//else { //Advanced Braking System
+			if (this.braking){ //Advanced Braking System
 				unitVector(this.inertiaVector, this.engineVersor);
 				this.engineVersor.x *= -1;
 				this.engineVersor.y *= -1;
@@ -124,14 +123,12 @@ var ship = function(x, y, l1){
 					this.engineVector.y = this.engineVersor.y * this.acceleration;	
 				}
 			}
-	
-			//}		
-			else { // Already stopped, use it to reverse
+			else { // reverseEngine
 				calculateVector(this.front, this.hitbox.center, this.engineVersor);
+				unitVector(this.engineVersor, this.engineVersor);
 				if (this.reverseEngineOn){
 					this.engineVersor.x *= -1;
 					this.engineVersor.y *= -1;
-				unitVector(this.engineVersor, this.engineVersor);
 				this.engineVector.x = this.engineVersor.x * this.acceleration;
 				this.engineVector.y = this.engineVersor.y * this.acceleration;
 				}
@@ -143,7 +140,6 @@ var ship = function(x, y, l1){
 		var calculatedSpeed = norm(aux);
 		if (calculatedSpeed <= this.maxSpeed){
 			if (calculatedSpeed == 0){
-				this.engineOn = false;
 				this.hitbox.velocity = calculatedSpeed;
 				this.hitbox.versor.x = 0;
 				this.hitbox.versor.y = 0;
@@ -220,7 +216,7 @@ function mainLoop(){
 	ctx.fillStyle="#FFFF00";
 	ctx.fillRect(0,0,c.width,c.height);
 
-	
+	drawInstructions(instructions);
 	player.updateDirection();
 	player.updatePosition();
 
@@ -236,13 +232,7 @@ function mainLoop(){
 	for (var j = 0; j < objects.length; j++){
 		drawPolygon(objects[j]);
 	}
-	drawInstructions(instructions);
-	/*
-	console.log(player.hitbox.velocity);
-	console.log(player.hitbox.versor);
-	console.log(player.inertiaVector);
-	console.log(player.engineVector);
-	*/
+
 //	checkColisionsNaive(objects);
 	drawFPS(fps.mean());
 	setTimeout(function(){

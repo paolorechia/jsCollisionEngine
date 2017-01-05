@@ -10,6 +10,9 @@ var coord = new Point(c.width/2, c.height/2);
         coord.y = event.touches[0].clientY;
    }
 	keyboardDown = function(event){
+		if (player.lock){
+			return;
+		}
         if (event.key == 'w'){
 			player.throttle(true);
         }
@@ -29,6 +32,9 @@ var coord = new Point(c.width/2, c.height/2);
         }
     }
 	keyboardUp = function(event){
+		if (player.lock){
+			return;
+		}
         if (event.key == 'w'){
 			player.throttle(false);
         }
@@ -48,6 +54,13 @@ var coord = new Point(c.width/2, c.height/2);
         if (event.key == 'Escape'){
         }
     }
+	mouseClick = function(){
+		console.log("System locked!");
+		if (player.lock)
+			player.lock = false;
+		else
+			player.lock = true;
+	}
     mousePress = function(state){
  // //      console.log(state);
     };
@@ -63,7 +76,7 @@ var coord = new Point(c.width/2, c.height/2);
     c.addEventListener("mouseup", function(){ mousePress(0);
                                                    }, 
                                                    false);
-    c.addEventListener("click", function(){
-                                                console.log("click!");},
+    c.addEventListener("click", function(){ mouseClick();
+                                                },
                                                 false);
  
