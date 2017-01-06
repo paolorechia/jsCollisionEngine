@@ -174,7 +174,8 @@ function mainLoop(){
 	}	
 	rotatePolygon(ball, ball.spin);
 	checkColisionsNaive(objects);
-	drawFPS(fps.mean());
+	fps.calculateMean();
+	drawFPS(fps.mean);
 	setTimeout(function(){
 		requestAnimationFrame(mainLoop)
 	}, interval);

@@ -45,7 +45,8 @@ function mainLoop(){
 			drawPolygon(objects[k]);
 	}
 
-	drawFPS(fps.mean());
+	fps.calculateMean();
+	drawFPS(fps.mean);
 	setTimeout(function(){
 		requestAnimationFrame(mainLoop)
 	}, interval);

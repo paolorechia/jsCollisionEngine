@@ -69,6 +69,11 @@ var Phases = function(){
 		this.phase6 = false;
 		this.current = 0;
 }
+
+var Weapon = function(){
+	this.firing=false;
+	this.rateOfFire = 1/fps;
+}
 var Ship = function(x, y, l1){
 	this.hitbox = new Triangle(x, y, l1,
 						0, 0,			// vx, vy
@@ -288,7 +293,7 @@ var Ship = function(x, y, l1){
 			var dist = distance(this.hitbox.center, this.autoPath);
 //			console.log(this.hitbox.center);
 //			console.log(this.autoPath);
-//			console.log(dist);
+			console.log(dist);
 			var timeToStop = this.hitbox.velocity / this.acceleration;
 			var ETA = dist / this.hitbox.velocity;
 			if (ETA > timeToStop){
@@ -397,7 +402,8 @@ function mainLoop(){
 	player.autoPilot();
 	player.drawAutoPath();
 //	checkColisionsNaive(objects);
-	drawFPS(fps.mean());
+	fps.calculateMean();
+	drawFPS(fps.mean);
 	setTimeout(function(){
 		requestAnimationFrame(mainLoop)
 	}, interval);

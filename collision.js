@@ -653,13 +653,14 @@ Fps = function(){
 		this.array[this.index] = n;
 		this.index = (this.index  + 1) % this.maxSize;
 	}
-	this.mean = function(){
+	this.mean = 0;
+	this.calculateMean = function(){
 		var sum = 0;
 		for (var i = 0; i < this.array.length; i++){
 			sum += this.array[i];
 
 		}
-		return Math.round(sum/this.array.length);
+		this.mean=Math.round(sum/this.array.length);
 	}
 };
 
