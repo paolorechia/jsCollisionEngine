@@ -72,14 +72,50 @@ var Phases = function(){
 
 var Weapon = function(){
 	this.firing=false;
-	this.rateOfFire = 1/fps;
+	this.rateOfFire = 1;
+	this.position = new Point(0, 0);
+	this.center = new Point(0, 0);
+	this.direction = new Vector(0, 0);
+	this.projectileVelocity = 12;
+	this.projectileWidth = 2;
+	this.projectileHeight = 10;
+	this.projectiles = [];
+	
+	this.setPosition = function(point){
+		this.position = point; // creates a reference to the variable, not a copy (usually the ship's location)
+	}
+	this.setCenter = function(point){
+		this.center = point;
+	}
+	this.updateDirection = function(){
+		calculateVector(this.position, this.center, this.direction);
+		unitVector(this.direction, this.direction);
+	}
+	
+	this.fire = function(){
+		console.log("fire!");
+		var projectile = new Rect(this.position.x, this.position.y, this.projectileWidth, this.projectileHeight,
+									   this.direction.x, this.direction.y,
+									   this.projectileVelocity, 0);
+		projectile.hit = false;
+		yAxis = new Vector(0, 1);
+		var angle = angleVectors(this.direction, yAxis);
+		if (this.position.x > this.center.x){
+			angle *= -1;
+		}
+		rotatePolygon(projectile,radiansToDegrees(angle));
+		this.projectiles.push(projectile);
+	}
 }
+
+
 var Ship = function(x, y, l1){
 	this.hitbox = new Triangle(x, y, l1,
 						0, 0,			// vx, vy
 						0, 0);			// velocity, spin
 	
 
+	this.weapon = new Weapon();
 	this.lock = false;
 	this.engineOn = false;
 	this.reverseEngine = false;
@@ -293,7 +329,7 @@ var Ship = function(x, y, l1){
 			var dist = distance(this.hitbox.center, this.autoPath);
 //			console.log(this.hitbox.center);
 //			console.log(this.autoPath);
-			console.log(dist);
+//			console.log(dist);
 			var timeToStop = this.hitbox.velocity / this.acceleration;
 			var ETA = dist / this.hitbox.velocity;
 			if (ETA > timeToStop){
@@ -328,6 +364,7 @@ var Ship = function(x, y, l1){
 		this.autoStatus.phase6 = true;
 		this.autoStatus.current = 0;
 	}
+
 }
 
 
@@ -359,7 +396,8 @@ var objects = [];
 
 var player = new Ship(c.width/2, c.height/2, 20);
 player.updateDirection();
-
+player.weapon.setPosition(player.front);
+player.weapon.setCenter(player.hitbox.center);
 objects.push(player.hitbox);
 
 /*
@@ -386,6 +424,7 @@ function mainLoop(){
 	player.updateDirection();
 	player.updatePosition();
 	player.updateTurn();
+	player.weapon.updateDirection(player.hitbox.center);
 
 	for (var i = 0; i < objects.length; i++){
 
@@ -401,6 +440,12 @@ function mainLoop(){
 	}
 	player.autoPilot();
 	player.drawAutoPath();
+	for (var k = 0; k < player.weapon.projectiles.length; k++){
+		player.weapon.projectiles[k].update();
+		checkBorder(player.weapon.projectiles[k]);
+		drawPolygon(player.weapon.projectiles[k]);
+		
+	}
 //	checkColisionsNaive(objects);
 	fps.calculateMean();
 	drawFPS(fps.mean);

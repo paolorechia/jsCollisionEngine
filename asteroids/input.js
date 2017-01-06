@@ -31,7 +31,7 @@ var coord = new Point(c.width/2, c.height/2);
 			player.turn('l', true);
 		}
         if (event.key == ' '){
-
+			player.weapon.fire();
         }
         if (event.key == 'Escape'){
         }
