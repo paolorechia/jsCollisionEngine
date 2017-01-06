@@ -67,7 +67,7 @@ var objects = [];
 var axis_length = 20;
 var lastDate = new Date();
 var fps = new Fps();
-var maxFPS = 40;
+var maxFPS = 500;
 var interval = 1000/maxFPS;
 
 var score = new Score();
@@ -298,6 +298,9 @@ var Ship = function(x, y, l1){
 		}
 		if (this.autoStatus.phase5){
 			var dist = distance(this.hitbox.center, this.autoPath);
+//			console.log(this.hitbox.center);
+//			console.log(this.autoPath);
+//			console.log(dist);
 			var timeToStop = this.hitbox.velocity / this.acceleration;
 			var ETA = dist / this.hitbox.velocity;
 			if (ETA > timeToStop){

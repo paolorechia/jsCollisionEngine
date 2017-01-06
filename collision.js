@@ -26,7 +26,7 @@ function distance(pointA, pointB){
 	x = x * x;
 	var y = pointA.y - pointB.y;
 	y = y * y;
-	return Math.sqrt(x - y);
+	return Math.sqrt(Math.abs(x - y));
 }
 
 function calculateVector(pointA, pointB, vector){
