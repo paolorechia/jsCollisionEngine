@@ -94,6 +94,7 @@ var Ship = function(x, y, l1){
 	this.engineOn = false;
 	this.reverseEngine = false;
 	this.braking = false;
+	this.isTurning = false;
 	this.acceleration = 0.25;
 	this.maxSpeed = 6;
 	this.turnRate = 10;
@@ -173,18 +174,20 @@ var Ship = function(x, y, l1){
 		this.front.y = this.hitbox.vertices[2].y
 		
 	}
-	this.turn = function(side, isTurning){
-		this.turning = isTurning;
-		if (!isTurning){
-			return;
+	this.updateTurn = function(){
+		if (this.isTurning){
+			rotatePolygon(this.hitbox, this.rotate);
 		}
+	}
+	this.turn = function(side, isTurning){
+		this.isTurning = isTurning;
 		if (side == 'l'){
 			this.rotate = -this.turnRate;
 		}
 		else{
 			this.rotate = this.turnRate;
 		}
-		rotatePolygon(this.hitbox, this.rotate);
+
 	}
 	this.throttle = function(pressed){
 		this.engineOn = pressed;
@@ -373,6 +376,7 @@ function mainLoop(){
 	drawInstructions(instructions);
 	player.updateDirection();
 	player.updatePosition();
+	player.updateTurn();
 
 	for (var i = 0; i < objects.length; i++){
 
