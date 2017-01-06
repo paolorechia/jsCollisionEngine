@@ -195,8 +195,7 @@ var Ship = function(x, y, l1){
 	this.reverseThrottle = function(pressed){
 		this.reverseEngineOn = pressed;
 	}
-	this.calculateAngle = function(coord){
-		this.autoPath = new Point(coord.x, coord.y);
+	this.calculateAngle = function(autoPath){
 		pathVector = new Vector(0, 0);
 		frontVector = new Vector(0, 0);
 		calculateVector(coord, this.hitbox.center, pathVector);
@@ -264,7 +263,7 @@ var Ship = function(x, y, l1){
 			return;
 		}
 		if (this.autoStatus.phase1){
-			this.calculateAngle(coord);
+			this.calculateAngle(this.autoPath);
 			this.autoStatus.phase1 = false;
 			this.autoStatus.current++;
 			return;
@@ -284,7 +283,7 @@ var Ship = function(x, y, l1){
 		}
 		
 		if (this.autoStatus.phase3){
-			this.calculateAngle(coord);
+			this.calculateAngle(this.autoPath);
 			this.autoStatus.phase3 = false;
 			return;
 
@@ -324,7 +323,8 @@ var Ship = function(x, y, l1){
 		}
 	}
 	this.autoStatus = new Phases();
-	this.setupAutoPilot = function(){
+	this.setupAutoPilot = function(coord){
+		this.autoPath = new Point(coord.x, coord.y);
 		this.autoStatus.phase1 = true;
 		this.autoStatus.phase2 = true;		
 		this.autoStatus.phase3 = true;
