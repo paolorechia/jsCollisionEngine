@@ -204,15 +204,14 @@ var ship = function(x, y, l1){
 		var theta = degreesToRadians(90);
 		rotatedVector.x = frontVector.x * Math.cos(theta) - frontVector.y * Math.sin(theta);
 		rotatedVector.y = frontVector.x * Math.sin(theta) + frontVector.y * Math.cos(theta);
-
 		myProjection = projection(list, rotatedVector);
 		console.log(myProjection);
-		var angle = angleVectors(frontVector, pathVector);
+		this.pathAngle = angleVectors(frontVector, pathVector);
+		this.pathAngle = radiansToDegrees(this.pathAngle);
 			if (myProjection.min > 0){
-				angle *= -1;
+				this.pathAngle *= -1;
 			}
-		console.log(radiansToDegrees(angle));
-		rotatePolygon(this.hitbox, angle);
+		console.log(this.pathAngle);
 	}
 	this.drawAutoPath = function(){
 		if (!this.lock){
@@ -222,6 +221,37 @@ var ship = function(x, y, l1){
 		ctx.moveTo(this.hitbox.center.x, this.hitbox.center.y);
 		ctx.lineTo(this.autoPath.x, this.autoPath.y);
 		ctx.stroke();
+	}
+	this.autoRotate = function(){
+		if (this.pathAngle == 0){
+			return;
+		}
+		if (this.pathAngle > 0){
+			if (this.pathAngle >= this.turnRate){
+				this.pathAngle -= this.turnRate;
+				rotatePolygon(this.hitbox, this.turnRate);
+			}
+			else{
+				rotatePolygon(this.hitbox, this.pathAngle);
+				this.pathAngle = 0;				
+			}
+		}
+		else{
+			if (this.pathAngle < this.turnRate){
+				this.pathAngle += this.turnRate;
+				rotatePolygon(this.hitbox, -this.turnRate);
+			}
+			else{
+				rotatePolygon(this.hitbox, this.pathAngle);
+				this.pathAngle = 0;
+			}
+		}
+	}
+	this.autoPilot = function(){
+		if (!this.lock){
+			return;
+		}
+		this.autoRotate();
 	}
 }
 
@@ -274,7 +304,7 @@ function mainLoop(){
 	for (var j = 0; j < objects.length; j++){
 		drawPolygon(objects[j]);
 	}
-
+	player.autoPilot();
 	player.drawAutoPath();
 //	checkColisionsNaive(objects);
 	drawFPS(fps.mean());
