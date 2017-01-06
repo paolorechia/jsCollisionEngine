@@ -82,6 +82,7 @@ var Phases = function(){
 		this.phase4 = false;
 		this.phase5 = false;
 		this.phase6 = false;
+		this.current = 0;
 }
 var Ship = function(x, y, l1){
 	this.hitbox = new Triangle(x, y, l1,
@@ -216,13 +217,13 @@ var Ship = function(x, y, l1){
 		rotatedVector.x = frontVector.x * Math.cos(theta) - frontVector.y * Math.sin(theta);
 		rotatedVector.y = frontVector.x * Math.sin(theta) + frontVector.y * Math.cos(theta);
 		myProjection = projection(list, rotatedVector);
-		console.log(myProjection);
+//		console.log(myProjection);
 		this.pathAngle = angleVectors(frontVector, pathVector);
 		this.pathAngle = radiansToDegrees(this.pathAngle);
 			if (myProjection.min > 0){
 				this.pathAngle *= -1;
 			}
-		console.log(this.pathAngle);
+//		console.log(this.pathAngle);
 	}
 	this.drawAutoPath = function(){
 		if (!this.lock){
@@ -262,29 +263,33 @@ var Ship = function(x, y, l1){
 		if (!this.lock){
 			return;
 		}
-		
 		if (this.autoStatus.phase1){
 			this.calculateAngle(coord);
 			this.autoStatus.phase1 = false;
+			this.autoStatus.current++;
 			return;
 		}
 
 
 		if (this.autoStatus.phase2){
+			this.throttle(false);
 			this.brake(true);
 			if (this.hitbox.velocity == 0){
 				this.autoStatus.phase2 = false;
 				this.brake(false);
+				this.autoStatus.current++;
 			}
 			return;
 
 		}
+		
 		if (this.autoStatus.phase3){
 			this.calculateAngle(coord);
 			this.autoStatus.phase3 = false;
 			return;
 
 		}
+		
 		if (this.autoStatus.phase4){
 			this.autoRotate();
 			if (this.pathAngle == 0){
@@ -314,6 +319,7 @@ var Ship = function(x, y, l1){
 				this.brake(false);
 			}
 			this.lock = false;
+			console.log("System unlocked!");
 			return;
 		}
 	}
@@ -325,6 +331,7 @@ var Ship = function(x, y, l1){
 		this.autoStatus.phase4 = true;
 		this.autoStatus.phase5 = true;
 		this.autoStatus.phase6 = true;
+		this.autoStatus.current = 0;
 	}
 }
 
@@ -377,6 +384,9 @@ function mainLoop(){
 	for (var j = 0; j < objects.length; j++){
 		drawPolygon(objects[j]);
 	}
+//	console.log(player.autoStatus.current);
+	console.log(player.autoStatus);
+//	console.log(player.pathAngle);
 	player.autoPilot();
 	player.drawAutoPath();
 //	checkColisionsNaive(objects);

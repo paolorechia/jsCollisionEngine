@@ -32,6 +32,12 @@ var coord = new Point(c.width/2, c.height/2);
         }
     }
 	keyboardUp = function(event){
+       if (event.key == 'Escape'){
+		   if (player.lock){
+				console.log("System unlocked!");
+				player.lock = false;
+		   }
+        }
 		if (player.lock){
 			return;
 		}
@@ -51,19 +57,12 @@ var coord = new Point(c.width/2, c.height/2);
         if (event.key == ' '){
 			player.brake(false);
         }
-        if (event.key == 'Escape'){
-        }
+ 
     }
 	mouseClick = function(){
-		if (player.lock){
-			console.log("System unlocked!");
-			player.lock = false;
-		}
-		else{
-			console.log("System locked!");
-			player.lock = true;
-			player.setupAutoPilot(coord);
-		}
+		console.log("System locked!");
+		player.lock = true;
+		player.setupAutoPilot();
 	}
     mouseDown = function(state){
 //		console.log(state);
