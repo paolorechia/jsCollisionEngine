@@ -34,7 +34,7 @@ var coord = new Point(c.width/2, c.height/2);
 	keyboardUp = function(event){
        if (event.key == 'Escape'){
 		   if (player.lock){
-				console.log("System unlocked!");
+	//			console.log("System unlocked!");
 				player.lock = false;
 		   }
         }
@@ -60,7 +60,7 @@ var coord = new Point(c.width/2, c.height/2);
  
     }
 	mouseClick = function(){
-		console.log("System locked!");
+	//	console.log("System locked!");
 		player.lock = true;
 		player.setupAutoPilot(coord);
 	}

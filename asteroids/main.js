@@ -216,13 +216,13 @@ var Ship = function(x, y, l1){
 		rotatedVector.x = frontVector.x * Math.cos(theta) - frontVector.y * Math.sin(theta);
 		rotatedVector.y = frontVector.x * Math.sin(theta) + frontVector.y * Math.cos(theta);
 		myProjection = projection(list, rotatedVector);
-//		console.log(myProjection);
+	//	console.log(myProjection);
 		this.pathAngle = angleVectors(frontVector, pathVector);
 		this.pathAngle = radiansToDegrees(this.pathAngle);
 			if (myProjection.min > 0){
 				this.pathAngle *= -1;
 			}
-//		console.log(this.pathAngle);
+	//	console.log(this.pathAngle);
 	}
 	this.drawAutoPath = function(){
 		if (!this.lock){
@@ -384,9 +384,6 @@ function mainLoop(){
 	for (var j = 0; j < objects.length; j++){
 		drawPolygon(objects[j]);
 	}
-//	console.log(player.autoStatus.current);
-	console.log(player.autoStatus);
-//	console.log(player.pathAngle);
 	player.autoPilot();
 	player.drawAutoPath();
 //	checkColisionsNaive(objects);
