@@ -62,7 +62,7 @@ var coord = new Point(c.width/2, c.height/2);
 		else{
 			console.log("System locked!");
 			player.lock = true;
-			player.autoPilot(coord);
+			player.setupAutoPilot(coord);
 		}
 	}
     mouseDown = function(state){

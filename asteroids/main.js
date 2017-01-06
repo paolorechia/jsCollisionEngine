@@ -183,15 +183,36 @@ var ship = function(x, y, l1){
 	this.reverseThrottle = function(pressed){
 		this.reverseEngineOn = pressed;
 	}
-	this.autoPilot = function(coord){	// auto-pilot function to move to coordinates
+	this.setupAutoPilot = function(coord){	// auto-pilot function to move to coordinates
 		this.autoPath = new Point(coord.x, coord.y);
 		pathVector = new Vector(0, 0);
+		frontVector = new Vector(0, 0);
 		calculateVector(coord, this.hitbox.center, pathVector);
-		var angle = angleVectors(this.engineVector, pathVector);
-		console.log(pathVector);
-		console.log(this.engineVersor);
+		if (this.hitbox.velocity == 0){
+			calculateVector(this.front, this.hitbox.center, frontVector);
+			unitVector(frontVector, frontVector);
+			
+		}
+		else{
+			frontVector.x = this.engineVersor.x;
+			frontVector.y = this.engineVersor.y;
+		}
+		translatedPoint = new Point(this.hitbox.center.x - coord.x, this.hitbox.center.y - coord.y);
+		list = [];
+		list.push(translatedPoint);
+		rotatedVector = new Vector(0, 0);
+		var theta = degreesToRadians(90);
+		rotatedVector.x = frontVector.x * Math.cos(theta) - frontVector.y * Math.sin(theta);
+		rotatedVector.y = frontVector.x * Math.sin(theta) + frontVector.y * Math.cos(theta);
 
+		myProjection = projection(list, rotatedVector);
+		console.log(myProjection);
+		var angle = angleVectors(frontVector, pathVector);
+			if (myProjection.min > 0){
+				angle *= -1;
+			}
 		console.log(radiansToDegrees(angle));
+		rotatePolygon(this.hitbox, angle);
 	}
 	this.drawAutoPath = function(){
 		if (!this.lock){
