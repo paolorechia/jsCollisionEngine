@@ -31,13 +31,15 @@ function buildInstructions(){
 	var string;
 	string = "W: Main Engine Throttle";
 	instructions.push(string);
-	string = "S: Reverse Engine Throttle";
+	string = "Q: Reverse Engine Throttle";
 	instructions.push(string);
 	string = "A: Left turning";
 	instructions.push(string);
 	string = "D: Right turning";
 	instructions.push(string);
-	string = "Space: Advanced Braking System";
+	string = "S: Advanced Braking System";
+	instructions.push(string);
+	string = "Space: Shoot";
 	instructions.push(string);
 	string = "Click: Auto-pilot to given point (locks down the ship)";
 	instructions.push(string);	
@@ -47,9 +49,14 @@ function drawInstructions(instructions){
 	ctx.beginPath();
 	ctx.fillStyle="#000FFF";
 	ctx.font="14px Arial";
-
+	var xStart = c.width/6;
+	var offSet = 0;
+	var colSize = 3;
 	for (var i = 0; i < instructions.length; i++){
-		ctx.fillText(instructions[i], c.width/2 - 100, 40 + i * 20);
+		if (i % colSize == 0){
+			offSet += 240;
+		}
+		ctx.fillText(instructions[i], xStart + offSet, 40 + (i % colSize) * 20);
 	}
 	ctx.stroke();
 }
@@ -67,7 +74,7 @@ var objects = [];
 var axis_length = 20;
 var lastDate = new Date();
 var fps = new Fps();
-var maxFPS = 500;
+var maxFPS = 40;
 var interval = 1000/maxFPS;
 
 var score = new Score();
@@ -97,7 +104,7 @@ var Ship = function(x, y, l1){
 	this.isTurning = false;
 	this.acceleration = 0.25;
 	this.maxSpeed = 6;
-	this.turnRate = 10;
+	this.turnRate = 5;
 	this.turning = false;
 	this.rotate = 0;
 	this.front = new Point(this.hitbox.vertices[2].x,

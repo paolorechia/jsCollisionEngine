@@ -18,17 +18,20 @@ var coord = new Point(c.width/2, c.height/2);
         if (event.key == 'w'){
 			player.throttle(true);
         }
-        if (event.key == 's'){
+        if (event.key == 'q'){
 			player.reverseThrottle(true);
+		}
+        if (event.key == 's'){
+			player.brake(true);
         }
         if (event.key == 'd'){
 			player.turn('r', true);
         }
         if (event.key == 'a'){
 			player.turn('l', true);
-        }
+		}
         if (event.key == ' '){
-			player.brake(true);
+
         }
         if (event.key == 'Escape'){
         }
@@ -46,9 +49,11 @@ var coord = new Point(c.width/2, c.height/2);
         if (event.key == 'w'){
 			player.throttle(false);
         }
-        if (event.key == 's'){
+        if (event.key == 'q'){
 			player.reverseThrottle(false);
-
+		}
+        if (event.key == 's'){
+			player.brake(false);
         }
         if (event.key == 'd'){
 			player.turn('r', false);
@@ -57,7 +62,7 @@ var coord = new Point(c.width/2, c.height/2);
 			player.turn('l', false);
         }
         if (event.key == ' '){
-			player.brake(false);
+
         }
  
     }
