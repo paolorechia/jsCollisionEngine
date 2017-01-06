@@ -39,7 +39,8 @@ function buildInstructions(){
 	instructions.push(string);
 	string = "Space: Advanced Braking System";
 	instructions.push(string);
-	
+	string = "Click: Auto-pilot to given point (locks down the ship)";
+	instructions.push(string);	
 	return instructions;
 }
 function drawInstructions(instructions){
@@ -72,7 +73,17 @@ var interval = 1000/maxFPS;
 var score = new Score();
 maxScore = 5;
 var instructions = buildInstructions();
-var ship = function(x, y, l1){
+
+
+var Phases = function(){
+		this.phase1 = false;
+		this.phase2 = false;
+		this.phase3 = false;
+		this.phase4 = false;
+		this.phase5 = false;
+		this.phase6 = false;
+}
+var Ship = function(x, y, l1){
 	this.hitbox = new Triangle(x, y, l1,
 						0, 0,			// vx, vy
 						0, 0);			// velocity, spin
@@ -183,7 +194,7 @@ var ship = function(x, y, l1){
 	this.reverseThrottle = function(pressed){
 		this.reverseEngineOn = pressed;
 	}
-	this.setupAutoPilot = function(coord){	// auto-pilot function to move to coordinates
+	this.calculateAngle = function(coord){
 		this.autoPath = new Point(coord.x, coord.y);
 		pathVector = new Vector(0, 0);
 		frontVector = new Vector(0, 0);
@@ -247,15 +258,77 @@ var ship = function(x, y, l1){
 			}
 		}
 	}
-	this.autoPilot = function(){
+	this.autoPilot = function(){ 	// auto-pilot function to move to coordinates
 		if (!this.lock){
 			return;
 		}
-		this.autoRotate();
+		
+		if (this.autoStatus.phase1){
+			this.calculateAngle(coord);
+			this.autoStatus.phase1 = false;
+			return;
+		}
+
+
+		if (this.autoStatus.phase2){
+			this.brake(true);
+			if (this.hitbox.velocity == 0){
+				this.autoStatus.phase2 = false;
+				this.brake(false);
+			}
+			return;
+
+		}
+		if (this.autoStatus.phase3){
+			this.calculateAngle(coord);
+			this.autoStatus.phase3 = false;
+			return;
+
+		}
+		if (this.autoStatus.phase4){
+			this.autoRotate();
+			if (this.pathAngle == 0){
+				this.autoStatus.phase4 = false;
+			}
+			return;
+			
+		}
+		if (this.autoStatus.phase5){
+			var dist = distance(this.hitbox.center, this.autoPath);
+			var timeToStop = this.hitbox.velocity / this.acceleration;
+			var ETA = dist / this.hitbox.velocity;
+			if (ETA > timeToStop){
+				this.throttle(true);
+			}
+			else{
+				this.autoStatus.phase5 = false;
+				this.throttle(false);
+			}
+			return;
+		}
+		
+		if (this.autoStatus.phase6){
+			this.brake(true);
+			if (this.hitbox.velocity == 0){
+				this.autoStatus.phase6 = false;
+				this.brake(false);
+			}
+			this.lock = false;
+			return;
+		}
+	}
+	this.autoStatus = new Phases();
+	this.setupAutoPilot = function(){
+		this.autoStatus.phase1 = true;
+		this.autoStatus.phase2 = true;		
+		this.autoStatus.phase3 = true;
+		this.autoStatus.phase4 = true;
+		this.autoStatus.phase5 = true;
+		this.autoStatus.phase6 = true;
 	}
 }
 
-var player = new ship(c.width/2, c.height/2, 20);
+var player = new Ship(c.width/2, c.height/2, 20);
 
 player.updateDirection();
 
