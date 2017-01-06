@@ -221,12 +221,7 @@ var Ship = function(x, y, l1){
 			if (myProjection.min > 0){
 				this.pathAngle *= -1;
 			}
-		console.log(coord);			
-		console.log(translatedPoint);
-		console.log(frontVector);
-		console.log(rotatedVector);
-		console.log(myProjection);
-		console.log(this.pathAngle);
+
 	}
 	this.drawAutoPath = function(){
 		if (!this.lock){
