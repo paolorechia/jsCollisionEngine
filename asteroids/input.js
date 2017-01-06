@@ -8,6 +8,8 @@ var coord = new Point(c.width/2, c.height/2);
    function pegaCoordenadasMobile(event){
         coord.x = event.touches[0].clientX;
         coord.y = event.touches[0].clientY;
+		player.lock = true;
+		player.setupAutoPilot(coord);
    }
 	keyboardDown = function(event){
 		if (player.lock){
@@ -74,7 +76,7 @@ var coord = new Point(c.width/2, c.height/2);
     window.addEventListener("keyup", function(event){ keyboardUp(event)}, false);
 
 	c.addEventListener("mousemove", pegaCoordenadas, false);
-//	c.addEventListener("touchstart", pegaCoordenadasMobile, false);
+	c.addEventListener("touchstart", pegaCoordenadasMobile, false);
 /*
     c.addEventListener("mousedown", function(){ mouseDown(true); 
                                                      },
