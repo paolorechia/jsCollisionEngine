@@ -76,9 +76,9 @@ var Weapon = function(){
 	this.position = new Point(0, 0);
 	this.center = new Point(0, 0);
 	this.direction = new Vector(0, 0);
-	this.projectileVelocity = 12;
-	this.projectileWidth = 2;
-	this.projectileHeight = 10;
+	this.projectileVelocity = 10;
+	this.projectileWidth = 1;
+	this.projectileHeight = this.projectileVelocity * 2;
 	this.projectiles = [];
 	
 	this.setPosition = function(point){
@@ -92,11 +92,11 @@ var Weapon = function(){
 		unitVector(this.direction, this.direction);
 	}
 	
-	this.fire = function(){
+	this.fire = function(shipSpeed){
 		console.log("fire!");
 		var projectile = new Rect(this.position.x, this.position.y, this.projectileWidth, this.projectileHeight,
 									   this.direction.x, this.direction.y,
-									   this.projectileVelocity, 0);
+									   this.projectileVelocity + shipSpeed, 0);
 		projectile.hit = false;
 		yAxis = new Vector(0, 1);
 		var angle = angleVectors(this.direction, yAxis);
