@@ -4,9 +4,6 @@ updateResEvent = function(canvas) {
             canvas.height = window.innerHeight-20;
 		  });
 }
-updateResEvent(c);
-c.width = window.innerWidth-20;
-c.height = window.innerHeight-20;
 
 var Score = function(){
 	this.player = 0;
@@ -61,25 +58,6 @@ function drawInstructions(instructions){
 	ctx.stroke();
 }
 
-
-var j = 0;
-var maxSize = c.width/10;
-var minSize = c.width/100;
-var maxSpeed = 6;
-var maxSpin = 4;
-var numberRectangles = 4;
-var numberTriangles = 4;
-var objects = [];
-
-var axis_length = 20;
-var lastDate = new Date();
-var fps = new Fps();
-var maxFPS = 40;
-var interval = 1000/maxFPS;
-
-var score = new Score();
-maxScore = 5;
-var instructions = buildInstructions();
 
 
 var Phases = function(){
@@ -205,10 +183,10 @@ var Ship = function(x, y, l1){
 	this.reverseThrottle = function(pressed){
 		this.reverseEngineOn = pressed;
 	}
-	this.calculateAngle = function(autoPath){
+	this.calculateAngle = function(autoPath){		//autoPath is a given (x,y) point
 		pathVector = new Vector(0, 0);
 		frontVector = new Vector(0, 0);
-		calculateVector(coord, this.hitbox.center, pathVector);
+		calculateVector(autoPath, this.hitbox.center, pathVector);
 		if (this.hitbox.velocity == 0){
 			calculateVector(this.front, this.hitbox.center, frontVector);
 			unitVector(frontVector, frontVector);
@@ -218,7 +196,7 @@ var Ship = function(x, y, l1){
 			frontVector.x = this.engineVersor.x;
 			frontVector.y = this.engineVersor.y;
 		}
-		translatedPoint = new Point(this.hitbox.center.x - coord.x, this.hitbox.center.y - coord.y);
+		translatedPoint = new Point(this.hitbox.center.x - autoPath.x, this.hitbox.center.y - autoPath.y);
 		list = [];
 		list.push(translatedPoint);
 		rotatedVector = new Vector(0, 0);
@@ -347,17 +325,36 @@ var Ship = function(x, y, l1){
 	}
 }
 
-var player = new Ship(c.width/2, c.height/2, 20);
 
-player.updateDirection();
+c.width = window.innerWidth-20;
+c.height = window.innerHeight-20;
+updateResEvent(c);
 
+var j = 0;
 var maxSize = c.width/10;
-var minSize = c.width/300;
+var minSize = c.width/100;
 var maxSpeed = 6;
 var maxSpin = 4;
 var numberRectangles = 4;
 var numberTriangles = 4;
 var objects = [];
+
+var axis_length = 20;
+var lastDate = new Date();
+var fps = new Fps();
+var maxFPS = 40;
+var interval = 1000/maxFPS;
+
+var score = new Score();
+maxScore = 5;
+var instructions = buildInstructions();
+
+var numberTriangles = 4;
+var objects = [];
+
+var player = new Ship(c.width/2, c.height/2, 20);
+player.updateDirection();
+
 objects.push(player.hitbox);
 
 /*
