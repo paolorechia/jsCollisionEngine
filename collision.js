@@ -46,8 +46,15 @@ function degreesToRadians(theta){
 	return theta = theta * Math.PI / 180;
 }
 function angleVectors(vectorA, vectorB){
+	unitA = new Vector(0, 0);
+	unitB = new Vector(0, 0);
+	unitVector(vectorA, unitA);
+	unitVector(vectorB, unitB);
+	var cosTheta = dotProduct(unitA, unitB);
+	/*
 	var cosTheta = dotProduct(vectorA, vectorB);
 	cosTheta = cosTheta / norm(vectorA) * norm(vectorB);
+	*/
 	return Math.acos(cosTheta);
 }
 
@@ -66,8 +73,14 @@ function normalVector2(pointA, pointB, vector){
 
 function unitVector(vector, unit){;
 	var denom = norm(vector);
-	unit.x = vector.x / denom;
-	unit.y = vector.y / denom;
+	if (denom != 0){
+		unit.x = vector.x / denom;
+		unit.y = vector.y / denom;
+	}
+	else{
+		unit.x = 0;
+		unit.y = 0;
+	}
 }
 
 function dotProduct(vectorA, vectorB){
