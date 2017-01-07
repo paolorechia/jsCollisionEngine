@@ -73,7 +73,8 @@ var Phases = function(){
 var Weapon = function(){
 
 	this.firing=false;
-	this.rateOfFire = 1;
+	this.rateOfFire = 100;		// delay between shots
+	this.lockDown = false;
 	this.position = new Point(0, 0);
 	this.center = new Point(0, 0);
 	this.direction = new Vector(0, 0);
@@ -96,10 +97,11 @@ var Weapon = function(){
 	}
 	
 	this.updateFiring = function(shipSpeed){
-		if (this.projectiles.length > this.limit || this.firing == false){
+		if (this.projectiles.length > this.limit || this.firing == false || this.lockDown == true){
 			return;
 		}
 		console.log("fire!");
+		this.lockDown = true;
 		var projectile = new Rect(this.position.x, this.position.y, this.projectileWidth, this.projectileHeight,
 									   this.direction.x, this.direction.y,
 									   this.projectileVelocity + shipSpeed, 0);
@@ -113,6 +115,7 @@ var Weapon = function(){
 		projectile.duration = this.range/this.projectileVelocity;
 		rotatePolygon(projectile,radiansToDegrees(angle));
 		this.projectiles.push(projectile);
+		this.resetLockDown(this);
 	}
 	this.fire = function(pressed){
 		this.firing = pressed;
@@ -126,6 +129,10 @@ var Weapon = function(){
 		}
 	}
 	this.autoFire = function(){
+		
+	}
+	this.resetLockDown = function(weapon){
+		setTimeout(function(){weapon.lockDown = false;}, this.rateOfFire);
 		
 	}
 }
@@ -422,11 +429,13 @@ player.weapon.setPosition(player.front);
 player.weapon.setCenter(player.hitbox.center);
 objects.push(player.hitbox);
 
+
 /*
 for (i = 0; i < numberRectangles; i++){
 	objects.push(new randomRect(maxSize, minSize, maxSpeed, maxSpin));
 
 }
+
 for (i = 0; i < numberTriangles; i++){
 	objects.push(new randomTriangle(maxSize, minSize, maxSpeed, maxSpin));
 }
