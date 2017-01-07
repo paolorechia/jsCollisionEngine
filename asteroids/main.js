@@ -102,7 +102,7 @@ var Weapon = function(){
 		if (this.projectiles.length > this.limit || this.firing == false || this.lockDown == true){
 			return;
 		}
-		console.log("fire!");
+//		console.log("fire!");
 		this.lockDown = true;
 		var projectile = new Rect(this.position.x, this.position.y, this.projectileWidth, this.projectileHeight,
 									   this.direction.x, this.direction.y,
@@ -140,23 +140,30 @@ var Weapon = function(){
 		setTimeout(function(){weapon.lockDown = false;}, 1000/this.rateOfFire);
 	}
 	this.rotateAtBorder = function(axis, projectile){
-		console.log(axis);
+//		console.log(axis);
 		if (axis == 'x'){
-			var theta = angleVectors(this.direction, xAxis);
+			rotatingVersor = new Vector(-projectile.versor.x, projectile.versor.y)
+			var theta = angleVectors(projectile.versor, rotatingVersor);
 			theta = radiansToDegrees(theta);
+			/*
 			if (this.direction.y > 0){
 				theta *= -1;
 			}
-			rotatePolygon(projectile, theta);
+	*/
 		}
 		else if (axis == 'y'){
-			var theta = angleVectors(this.direction, yAxis);
+			rotatingVersor = new Vector(projectile.versor.x, -projectile.versor.y)
+			var theta = angleVectors(projectile.versor, rotatingVersor);
 			theta = radiansToDegrees(theta);
+			/*
 			if (this.direction.x < 0){
 				theta *= -1;
 			}
-			rotatePolygon(projectile, theta);
-		}			
+
+			*/
+		}	
+		rotatePolygon(projectile, theta);		
+		console.log(theta);
 	}
 }
 
@@ -499,7 +506,7 @@ function mainLoop(){
 	player.weapon.updateDuration();
 	for (var k = 0; k < player.weapon.projectiles.length; k++){
 		player.weapon.projectiles[k].update();
-	checkBorder(player.weapon.projectiles[k], function(){player.weapon.rotateAtBorder(axis, player.weapon.projectiles[k])});
+		checkBorder(player.weapon.projectiles[k], function(){player.weapon.rotateAtBorder(axis, player.weapon.projectiles[k])});
 		drawPolygon(player.weapon.projectiles[k]);
 		
 	}
