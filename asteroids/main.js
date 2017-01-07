@@ -73,7 +73,7 @@ var Phases = function(){
 var Weapon = function(){
 
 	this.firing=false;
-	this.rateOfFire = 100;		// delay between shots
+	this.rateOfFire = 5;		// shots per second
 	this.lockDown = false;
 	this.position = new Point(0, 0);
 	this.center = new Point(0, 0);
@@ -132,8 +132,7 @@ var Weapon = function(){
 		
 	}
 	this.resetLockDown = function(weapon){
-		setTimeout(function(){weapon.lockDown = false;}, this.rateOfFire);
-		
+		setTimeout(function(){weapon.lockDown = false;}, 1000/this.rateOfFire);
 	}
 }
 
