@@ -82,7 +82,7 @@ var Weapon = function(){
 	this.direction = new Vector(0, 0);
 	this.projectileVelocity = 20;
 	this.projectileWidth = 1;
-	this.range = 1000; // range in pixels
+	this.range = 10000; // range in pixels
 	this.limit = 10;
 	this.projectileHeight = this.projectileVelocity * 2;
 	this.projectiles = [];
@@ -145,22 +145,24 @@ var Weapon = function(){
 			rotatingVersor = new Vector(-projectile.versor.x, projectile.versor.y)
 			var theta = angleVectors(projectile.versor, rotatingVersor);
 			theta = radiansToDegrees(theta);
-			/*
-			if (this.direction.y > 0){
+			if (rotatingVersor.y > 0){
 				theta *= -1;
 			}
-	*/
+			if (rotatingVersor.x > 0){
+				theta *= -1;
+			}
 		}
 		else if (axis == 'y'){
 			rotatingVersor = new Vector(projectile.versor.x, -projectile.versor.y)
 			var theta = angleVectors(projectile.versor, rotatingVersor);
 			theta = radiansToDegrees(theta);
-			/*
-			if (this.direction.x < 0){
+			if (rotatingVersor.x < 0){
 				theta *= -1;
 			}
-
-			*/
+			
+			if (rotatingVersor.y > 0){
+				theta *= -1;
+			}
 		}	
 		rotatePolygon(projectile, theta);		
 		console.log(theta);
