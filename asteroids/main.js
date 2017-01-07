@@ -141,7 +141,7 @@ var Weapon = function(){
 		for (var i = 0; i < this.projectiles.length; i++){
 			this.projectiles[i].duration--;
 			if (this.projectiles[i].duration <= 0){
-				this.projectiles.pop(i);
+				this.projectiles.splice(i, 1);
 			}
 		}
 	}
