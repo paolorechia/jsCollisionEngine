@@ -80,9 +80,9 @@ var Weapon = function(){
 	this.position = new Point(0, 0);
 	this.center = new Point(0, 0);
 	this.direction = new Vector(0, 0);
-	this.projectileVelocity = 20;
+	this.projectileVelocity = 10;
 	this.projectileWidth = 1;
-	this.range = 10000; // range in pixels
+	this.range = 1000; // range in pixels
 	this.limit = 10;
 	this.projectileHeight = this.projectileVelocity * 2;
 	this.projectiles = [];
@@ -165,7 +165,17 @@ var Weapon = function(){
 			}
 		}	
 		rotatePolygon(projectile, theta);		
-		console.log(theta);
+	//	console.log(theta);
+	}
+	this.onHit = function(){
+		// do stuff
+	}
+	this.removeProjectiles = function(){
+		for (var i = this.projectiles.length - 1; i >= 0; i--){
+			if (this.projectiles[i].hit == true){
+				this.projectiles.pop(i);
+			}
+		}
 	}
 }
 
@@ -425,7 +435,6 @@ var Ship = function(x, y, l1){
 		this.autoStatus.phase6 = true;
 		this.autoStatus.current = 0;
 	}
-
 }
 
 
@@ -445,7 +454,7 @@ var objects = [];
 var axis_length = 20;
 var lastDate = new Date();
 var fps = new Fps();
-var maxFPS = 500;
+var maxFPS = 1000;
 var interval = 1000/maxFPS;
 
 var score = new Score();
@@ -459,20 +468,19 @@ var player = new Ship(c.width/2, c.height/2, 20);
 player.updateDirection();
 player.weapon.setPosition(player.front);
 player.weapon.setCenter(player.hitbox.center);
-objects.push(player.hitbox);
 
 
-/*
+
 for (i = 0; i < numberRectangles; i++){
 	objects.push(new randomRect(maxSize, minSize, maxSpeed, maxSpin));
 
 }
 
+/*
 for (i = 0; i < numberTriangles; i++){
 	objects.push(new randomTriangle(maxSize, minSize, maxSpeed, maxSpin));
 }
 */
-
 var axis_length = 20;
 function mainLoop(){
 	newDate = new Date();
@@ -487,17 +495,22 @@ function mainLoop(){
 	player.updateDirection();
 	player.updatePosition();
 	player.updateTurn();
-	player.weapon.updateDirection(player.hitbox.center);	
+	player.weapon.updateDirection(player.hitbox.center);
+	player.hitbox.update();
+	checkBorder(player.hitbox);
+	calculateAxes(player.hitbox);
+	rotatePolygon(player.hitbox, player.hitbox.spin);	
+	drawPolygon(player.hitbox);
 
 	for (var i = 0; i < objects.length; i++){
-
 		objects[i].update();
 		checkBorder(objects[i]);
 		calculateAxes(objects[i]);
 		rotatePolygon(objects[i], objects[i].spin);
-
+		mtv = collisionSTA(player.hitbox, objects[i]);
+		elasticCollision(player.hitbox, mtv, objects[i]);
 	}
-	checkColisionsNaive(objects);
+
 	for (var j = 0; j < objects.length; j++){
 		drawPolygon(objects[j]);
 	}
@@ -506,13 +519,20 @@ function mainLoop(){
 	
 	player.weapon.updateFiring(player.hitbox.velocity);
 	player.weapon.updateDuration();
+	for (var i = 0; i < player.weapon.projectiles.length; i++){
+		for (var j = 0; j < objects.length; j++){
+			calculateAxes(player.weapon.projectiles[i])
+			smartCollision(player.weapon.projectiles[i], objects[j], player.weapon.onHit);
+		}
+	}
+	player.weapon.removeProjectiles();
 	for (var k = 0; k < player.weapon.projectiles.length; k++){
 		player.weapon.projectiles[k].update();
 		checkBorder(player.weapon.projectiles[k], function(){player.weapon.rotateAtBorder(axis, player.weapon.projectiles[k])});
 		drawPolygon(player.weapon.projectiles[k]);
-		
 	}
-//	checkColisionsNaive(objects);
+
+	checkColisionsNaive(objects);
 	fps.calculateMean();
 	drawFPS(fps.mean);
 	setTimeout(function(){
