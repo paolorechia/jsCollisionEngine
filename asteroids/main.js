@@ -139,6 +139,25 @@ var Weapon = function(){
 	this.resetLockDown = function(weapon){
 		setTimeout(function(){weapon.lockDown = false;}, 1000/this.rateOfFire);
 	}
+	this.rotateAtBorder = function(axis, projectile){
+		console.log(axis);
+		if (axis == 'x'){
+			var theta = angleVectors(this.direction, xAxis);
+			theta = radiansToDegrees(theta);
+			if (this.direction.y > 0){
+				theta *= -1;
+			}
+			rotatePolygon(projectile, theta);
+		}
+		else if (axis == 'y'){
+			var theta = angleVectors(this.direction, yAxis);
+			theta = radiansToDegrees(theta);
+			if (this.direction.x < 0){
+				theta *= -1;
+			}
+			rotatePolygon(projectile, theta);
+		}			
+	}
 }
 
 
@@ -476,12 +495,11 @@ function mainLoop(){
 	player.autoPilot();
 	player.drawAutoPath();
 	
-
 	player.weapon.updateFiring(player.hitbox.velocity);
 	player.weapon.updateDuration();
 	for (var k = 0; k < player.weapon.projectiles.length; k++){
 		player.weapon.projectiles[k].update();
-		checkBorder(player.weapon.projectiles[k], function(){rotatePolygon(player.weapon.projectiles[k], 45)});
+	checkBorder(player.weapon.projectiles[k], function(){player.weapon.rotateAtBorder(axis, player.weapon.projectiles[k])});
 		drawPolygon(player.weapon.projectiles[k]);
 		
 	}
