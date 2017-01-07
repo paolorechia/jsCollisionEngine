@@ -27,8 +27,14 @@ var coord = new Point(c.width/2, c.height/2);
         if (event.key == 'w'){
 			player.throttle(true);
         }
-        if (event.key == 'q'){
+        if (event.key == 'z'){
 			player.reverseThrottle(true);
+		}
+		if (event.key == 'q'){
+			player.strafe('l', true);
+        }
+        if (event.key == 'e'){
+			player.strafe('r', true);
 		}
         if (event.key == 's'){
 			player.brake(true);
@@ -57,8 +63,14 @@ var coord = new Point(c.width/2, c.height/2);
         if (event.key == 'w'){
 			player.throttle(false);
         }
-        if (event.key == 'q'){
+        if (event.key == 'z'){
 			player.reverseThrottle(false);
+		}
+		if (event.key == 'q'){
+			player.strafe('l', false);
+        }
+        if (event.key == 'e'){
+			player.strafe('r', false);
 		}
         if (event.key == 's'){
 			player.brake(false);

@@ -34,6 +34,10 @@ function buildInstructions(){
 	instructions.push(string);
 	string = "D: Right turning";
 	instructions.push(string);
+	string = "Q: Left strafe";
+	instructions.push(string);
+	string = "E: Right strafe";
+	instructions.push(string);
 	string = "S: Advanced Braking System";
 	instructions.push(string);
 	string = "Space: Shoot";
@@ -213,6 +217,8 @@ var Ship = function(x, y, l1){
 	this.reverseEngine = false;
 	this.braking = false;
 	this.isTurning = false;
+	this.isStrafing = false;
+	this.strafingSide = 0; // 0 for left; -1 for right
 	this.acceleration = 0.25;
 	this.maxSpeed = 6;
 	this.turnRate = 5;
@@ -224,6 +230,7 @@ var Ship = function(x, y, l1){
 	this.inertiaVector = new Vector(0, 0);
 	this.engineVersor = new Vector(0, 0);
 	this.engineVector = new Vector(0, 0);
+	this.strafingVector = new Vector(0, 0);
 	
 	this.autoPath = new Point(0, 0);
 	
@@ -305,7 +312,52 @@ var Ship = function(x, y, l1){
 		else{
 			this.rotate = this.turnRate;
 		}
+	}
+	this.updateStrafe = function(){
+		if (!this.isStrafing){
+			return;
+		}
+		this.inertiaVector.x = this.hitbox.versor.x * this.hitbox.velocity;
+		this.inertiaVector.y = this.hitbox.versor.y * this.hitbox.velocity;
 
+		var mid = new midPoint(this.hitbox.vertices[0], this.hitbox.vertices[1]);
+		if (this.strafingSide == -1){
+			calculateVector(mid, this.hitbox.vertices[0], this.strafingVector);
+		}
+		else{
+			calculateVector(mid, this.hitbox.vertices[1], this.strafingVector);
+		}
+		
+		unitVector(this.strafingVector, this.strafingVector);
+		this.strafingVector.x = this.strafingVector.x * this.acceleration/3;
+		this.strafingVector.y = this.strafingVector.y * this.acceleration/3;
+
+		var aux = new Vector(this.strafingVector.x + this.inertiaVector.x,
+							 this.strafingVector.y + this.inertiaVector.y);
+		var calculatedSpeed = norm(aux);
+		if (calculatedSpeed <= this.maxSpeed){
+			if (calculatedSpeed == 0){
+				this.hitbox.velocity = calculatedSpeed;
+				this.hitbox.versor.x = 0;
+				this.hitbox.versor.y = 0;
+			}
+			else{
+				unitVector(aux, aux);
+				this.hitbox.velocity = calculatedSpeed;
+				this.hitbox.versor.x = aux.x;
+				this.hitbox.versor.y = aux.y;
+			}				
+		}
+		
+	}
+	this.strafe = function(side, isStrafing){
+		this.isStrafing = isStrafing;
+		if (side == 'l'){
+			this.strafingSide = 1;	// left side
+		}
+		else{
+			this.strafingSide = -1; // right side
+		}
 	}
 	this.throttle = function(pressed){
 		this.engineOn = pressed;
@@ -476,8 +528,8 @@ var maxSize = c.width/10;
 var minSize = c.width/100;
 var maxSpeed = 6;
 var maxSpin = 2	;
-var numberRectangles = 4;
-var numberTriangles = 4;
+var numberRectangles = 1;
+var numberTriangles = 0;
 var objects = [];
 
 var axis_length = 20;
@@ -490,7 +542,6 @@ var score = new Score();
 maxScore = 5;
 var instructions = buildInstructions();
 
-var numberTriangles = 4;
 var objects = [];
 
 var player = new Ship(c.width/2, c.height/2, 20);
@@ -541,6 +592,7 @@ function mainLoop(){
 	}
 	else{
 		player.updateDirection();
+		player.updateStrafe();
 		player.updatePosition();
 		player.updateTurn();
 		player.weapon.updateDirection(player.hitbox.center);
