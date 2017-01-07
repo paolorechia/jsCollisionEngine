@@ -57,9 +57,14 @@ function drawInstructions(instructions){
 		}
 		ctx.fillText(instructions[i], offSet - xStart, 40 + (i % colSize) * 20);
 	}
-	ctx.stroke();
 }
 
+function drawEndGame(){
+	ctx.beginPath();
+	ctx.fillStyle="#000FFF";
+	ctx.font="28px Arial";
+	ctx.fillText("You've died! Press F5 to restart", c.width/3, c.height/2);
+}
 
 
 var Phases = function(){
@@ -191,6 +196,8 @@ var Ship = function(x, y, l1){
 						0, 0);			// velocity, spin
 	
 
+	this.hp = 100;
+	this.immunity = true;
 	this.weapon = new Weapon();
 	this.lock = false;
 	this.engineOn = false;
@@ -440,6 +447,14 @@ var Ship = function(x, y, l1){
 		this.autoStatus.phase6 = true;
 		this.autoStatus.current = 0;
 	}
+	this.drawStatus = function(){
+		ctx.beginPath();
+		ctx.fillStyle="#FF0000";
+		string = "HP: " + this.hp;
+		ctx.fillText(string, c.width - 200, 30);
+		string = "Immunity: " + this.immunity;
+		ctx.fillText(string, c.width - 200, 60);
+	}
 }
 
 
@@ -497,6 +512,7 @@ for (i = 0; i < numberTriangles; i++){
 }
 
 var axis_length = 20;
+setTimeout(function(){player.immunity = false;}, 3000);
 function mainLoop(){
 	newDate = new Date();
 	elapsedTime = newDate - lastDate;
@@ -507,47 +523,60 @@ function mainLoop(){
 	ctx.fillRect(0,0,c.width,c.height);
 
 	drawInstructions(instructions);
-	player.updateDirection();
-	player.updatePosition();
-	player.updateTurn();
-	player.weapon.updateDirection(player.hitbox.center);
-	player.hitbox.update();
-	checkBorder(player.hitbox);
-	calculateAxes(player.hitbox);
-	rotatePolygon(player.hitbox, player.hitbox.spin);	
-	drawPolygon(player.hitbox);
-
-	for (var i = 0; i < objects.length; i++){
-		objects[i].update();
-		checkBorder(objects[i]);
-		calculateAxes(objects[i]);
-		rotatePolygon(objects[i], objects[i].spin);
-		mtv = collisionSTA(player.hitbox, objects[i]);
-		elasticCollision(player.hitbox, mtv, objects[i]);
-	}
-
-	for (var j = 0; j < objects.length; j++){
-		drawPolygon(objects[j]);
-	}
-	player.autoPilot();
-	player.drawAutoPath();
 	
-	player.weapon.updateFiring(player.hitbox.velocity);
-	player.weapon.updateDuration();
-	for (var i = 0; i < player.weapon.projectiles.length; i++){
-		for (var j = 0; j < objects.length; j++){
-			calculateAxes(player.weapon.projectiles[i])
-			smartCollision(player.weapon.projectiles[i], objects[j], function(){player.weapon.onHit(objects[j])});
+	if (player.hp > 0){
+		player.updateDirection();
+		player.updatePosition();
+		player.updateTurn();
+		player.weapon.updateDirection(player.hitbox.center);
+		player.hitbox.update();
+		checkBorder(player.hitbox);
+		calculateAxes(player.hitbox);
+		rotatePolygon(player.hitbox, player.hitbox.spin);	
+
+		for (var i = 0; i < objects.length; i++){
+			mtv = collisionSTA(player.hitbox, objects[i]);
+			if (mtv){
+				elasticCollision(player.hitbox, mtv, objects[i]);
+				if (player.immunity == false){
+					player.hp -=10;
+				}
+			}
 		}
+
+		player.weapon.updateFiring(player.hitbox.velocity);
+		player.weapon.updateDuration();
+		for (var i = 0; i < player.weapon.projectiles.length; i++){
+			for (var j = 0; j < objects.length; j++){
+				calculateAxes(player.weapon.projectiles[i])
+				smartCollision(player.weapon.projectiles[i], objects[j], function(){player.weapon.onHit(objects[j])});
+			}
+		}
+		player.weapon.removeProjectiles();
+		for (var k = 0; k < player.weapon.projectiles.length; k++){
+			player.weapon.projectiles[k].update();
+			checkBorder(player.weapon.projectiles[k], function(){player.weapon.rotateAtBorder(axis, player.weapon.projectiles[k])});
+			drawPolygon(player.weapon.projectiles[k]);
+		}
+
+		player.autoPilot();
+		player.drawAutoPath();
+		drawPolygon(player.hitbox);
+		player.drawStatus();
 	}
-	player.weapon.removeProjectiles();
-	for (var k = 0; k < player.weapon.projectiles.length; k++){
-		player.weapon.projectiles[k].update();
-		checkBorder(player.weapon.projectiles[k], function(){player.weapon.rotateAtBorder(axis, player.weapon.projectiles[k])});
-		drawPolygon(player.weapon.projectiles[k]);
+	else{
+		drawEndGame();
 	}
+	for (var i = 0; i < objects.length; i++){
+			objects[i].update();
+			checkBorder(objects[i]);
+			calculateAxes(objects[i]);
+			rotatePolygon(objects[i], objects[i].spin);
+			drawPolygon(objects[i]);
+		}
 	killObjects(objects);
 	checkColisionsNaive(objects);
+
 	
 	fps.calculateMean();
 	drawFPS(fps.mean);
