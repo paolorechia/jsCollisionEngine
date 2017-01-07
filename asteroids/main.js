@@ -171,9 +171,10 @@ var Weapon = function(){
 		// do stuff
 	}
 	this.removeProjectiles = function(){
-		for (var i = this.projectiles.length - 1; i >= 0; i--){
+		for (var i = 0; i < this.projectiles.length; i++){
 			if (this.projectiles[i].hit == true){
 				this.projectiles.pop(i);
+				i--;
 			}
 		}
 	}
