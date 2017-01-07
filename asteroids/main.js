@@ -84,6 +84,7 @@ var Weapon = function(){
 	this.projectileWidth = 1;
 	this.range = 1000; // range in pixels
 	this.limit = 10;
+	this.damage = 10;
 	this.projectileHeight = this.projectileVelocity * 2;
 	this.projectiles = [];
 	
@@ -167,13 +168,16 @@ var Weapon = function(){
 		rotatePolygon(projectile, theta);		
 	//	console.log(theta);
 	}
-	this.onHit = function(){
-		// do stuff
+	this.onHit = function(target){
+		target.hp -= this.damage;
+		if (target.hp <= 0){
+			target.dead=true;
+		}
 	}
 	this.removeProjectiles = function(){
 		for (var i = 0; i < this.projectiles.length; i++){
 			if (this.projectiles[i].hit == true){
-				this.projectiles.pop(i);
+				this.projectiles.splice(i, 1);
 				i--;
 			}
 		}
@@ -446,8 +450,8 @@ updateResEvent(c);
 var j = 0;
 var maxSize = c.width/10;
 var minSize = c.width/100;
-var maxSpeed = 6;
-var maxSpin = 4;
+var maxSpeed = 2;
+var maxSpin = 2	;
 var numberRectangles = 4;
 var numberTriangles = 4;
 var objects = [];
@@ -471,17 +475,27 @@ player.weapon.setPosition(player.front);
 player.weapon.setCenter(player.hitbox.center);
 
 
+function killObjects(objects){
+	for (i = 0; i < objects.length; i++){
+		if (objects[i].dead == true){
+			objects.splice(i, 1);
+		}
+	}
+}
 
 for (i = 0; i < numberRectangles; i++){
 	objects.push(new randomRect(maxSize, minSize, maxSpeed, maxSpin));
-
+	objects[i].hp = Math.round(Math.sqrt(objects[i].mass));
+	objects[i].dead == false;
 }
 
-/*
+
 for (i = 0; i < numberTriangles; i++){
 	objects.push(new randomTriangle(maxSize, minSize, maxSpeed, maxSpin));
+	objects[numberRectangles + i].hp = Math.round(Math.sqrt(objects[i].mass));
+	objects[numberRectangles + i].dead == false;
 }
-*/
+
 var axis_length = 20;
 function mainLoop(){
 	newDate = new Date();
@@ -523,7 +537,7 @@ function mainLoop(){
 	for (var i = 0; i < player.weapon.projectiles.length; i++){
 		for (var j = 0; j < objects.length; j++){
 			calculateAxes(player.weapon.projectiles[i])
-			smartCollision(player.weapon.projectiles[i], objects[j], player.weapon.onHit);
+			smartCollision(player.weapon.projectiles[i], objects[j], function(){player.weapon.onHit(objects[j])});
 		}
 	}
 	player.weapon.removeProjectiles();
@@ -532,8 +546,9 @@ function mainLoop(){
 		checkBorder(player.weapon.projectiles[k], function(){player.weapon.rotateAtBorder(axis, player.weapon.projectiles[k])});
 		drawPolygon(player.weapon.projectiles[k]);
 	}
-
+	killObjects(objects);
 	checkColisionsNaive(objects);
+	
 	fps.calculateMean();
 	drawFPS(fps.mean);
 	setTimeout(function(){
