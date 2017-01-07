@@ -17,6 +17,9 @@ var coord = new Point(c.width/2, c.height/2);
         }
         if (event.key == 'Escape'){
         }
+		if (event.key == 'x'){
+			player.weapon.autoFire();
+		}
 		if (player.lock){
 			return;
 		}

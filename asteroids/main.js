@@ -38,6 +38,8 @@ function buildInstructions(){
 	instructions.push(string);
 	string = "Space: Shoot";
 	instructions.push(string);
+	string = "X: Auto-Fire";
+	instructions.push(string);
 	string = "Click: Auto-pilot to given point (locks down the ship)";
 	instructions.push(string);	
 	return instructions;
@@ -46,14 +48,14 @@ function drawInstructions(instructions){
 	ctx.beginPath();
 	ctx.fillStyle="#000FFF";
 	ctx.font="14px Arial";
-	var xStart = c.width/6;
 	var offSet = 0;
+	var xStart = 230;
 	var colSize = 3;
 	for (var i = 0; i < instructions.length; i++){
 		if (i % colSize == 0){
 			offSet += 240;
 		}
-		ctx.fillText(instructions[i], xStart + offSet, 40 + (i % colSize) * 20);
+		ctx.fillText(instructions[i], offSet - xStart, 40 + (i % colSize) * 20);
 	}
 	ctx.stroke();
 }
@@ -73,7 +75,7 @@ var Phases = function(){
 var Weapon = function(){
 
 	this.firing=false;
-	this.rateOfFire = 5;		// shots per second
+	this.rateOfFire = 8;		// shots per second
 	this.lockDown = false;
 	this.position = new Point(0, 0);
 	this.center = new Point(0, 0);
@@ -129,7 +131,10 @@ var Weapon = function(){
 		}
 	}
 	this.autoFire = function(){
-		
+		if (this.firing == true){
+			this.firing = false;
+		}
+		else this.firing = true;
 	}
 	this.resetLockDown = function(weapon){
 		setTimeout(function(){weapon.lockDown = false;}, 1000/this.rateOfFire);
