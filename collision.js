@@ -511,7 +511,7 @@ function changeDirection(polygon, mtv){
 	polygon.versor.y = mtv.y;
 }
 
-function smartCollision(polygonA, polygonB){
+function smartCollision(polygonA, polygonB, action){
 	var mtv = collisionSTA(polygonA, polygonB);
 	if (mtv == false){
 		return;
@@ -531,6 +531,9 @@ function smartCollision(polygonA, polygonB){
 	else{
 		unilateralElasticCollision(polygonA, mtv, polygonB);
 //		console.log("unilateral colision");
+	}
+	if (action != undefined){
+		action();
 	}
 }
 

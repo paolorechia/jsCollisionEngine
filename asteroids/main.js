@@ -59,11 +59,20 @@ function drawInstructions(instructions){
 	}
 }
 
-function drawEndGame(){
-	ctx.beginPath();
-	ctx.fillStyle="#000FFF";
-	ctx.font="28px Arial";
-	ctx.fillText("You've died! Press F5 to restart", c.width/3, c.height/2);
+function drawEndGame(win){
+	if (win){
+		ctx.beginPath();
+		ctx.fillStyle="#000FFF";
+		ctx.font="28px Arial";
+		ctx.fillText("Congratulations! You've won! Press F5 to restart.", c.width/3, c.height/2);		
+		
+	}
+	else{
+		ctx.beginPath();
+		ctx.fillStyle="#000FFF";
+		ctx.font="28px Arial";
+		ctx.fillText("You've died! Press F5 to restart.", c.width/3, c.height/2);
+	}
 }
 
 
@@ -465,7 +474,7 @@ updateResEvent(c);
 var j = 0;
 var maxSize = c.width/10;
 var minSize = c.width/100;
-var maxSpeed = 2;
+var maxSpeed = 6;
 var maxSpin = 2	;
 var numberRectangles = 4;
 var numberTriangles = 4;
@@ -524,7 +533,13 @@ function mainLoop(){
 
 	drawInstructions(instructions);
 	
-	if (player.hp > 0){
+	if (player.hp < 0){
+		drawEndGame(false);
+	}
+	else if (objects.length == 0){
+		drawEndGame(true);
+	}
+	else{
 		player.updateDirection();
 		player.updatePosition();
 		player.updateTurn();
@@ -564,9 +579,7 @@ function mainLoop(){
 		drawPolygon(player.hitbox);
 		player.drawStatus();
 	}
-	else{
-		drawEndGame();
-	}
+
 	for (var i = 0; i < objects.length; i++){
 			objects[i].update();
 			checkBorder(objects[i]);
