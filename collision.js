@@ -465,7 +465,7 @@ function incrementRect(rect, xIncrement, yIncrement){
 }
 
 
-function checkBorder(polygon){
+function checkBorder(polygon, action){
 	yAxis = new Vector(0, 1);
 	xAxis = new Vector(1, 0);
 
@@ -476,23 +476,34 @@ function checkBorder(polygon){
 		polygon.versor.x *= -1;
 		diff = new Vector(-(projX.max - c.width), 0);
 		polygon.applyVector(diff);
+		if (action != undefined){
+			action();
+		}
 	}
 	else if (projX.min < 0){
 		polygon.versor.x *= -1;
 		diff = new Vector(-projX.min, 0);
 		polygon.applyVector(diff);
+		if (action != undefined){
+			action();
 
+		}
 	}
 	if (projY.max > c.height){
 		polygon.versor.y *= -1;
 		diff = new Vector(0, -(projY.max - c.height));
 		polygon.applyVector(diff);
-;
+		if (action != undefined){
+			action();	
+		}
 	}
 	if (projY.min < 0){
 		polygon.versor.y *= -1;
 		diff = new Vector(0, -projY.min);
 		polygon.applyVector(diff);
+		if (action != undefined){
+			action();			
+		}
 	}
 }
 
