@@ -477,7 +477,7 @@ function checkBorder(polygon, action){
 		diff = new Vector(-(projX.max - c.width), 0);
 		polygon.applyVector(diff);
 		if (action != undefined){
-			action();
+			action(axis = 'x');
 		}
 	}
 	else if (projX.min < 0){
@@ -485,8 +485,7 @@ function checkBorder(polygon, action){
 		diff = new Vector(-projX.min, 0);
 		polygon.applyVector(diff);
 		if (action != undefined){
-			action();
-
+			action(axis = 'x');
 		}
 	}
 	if (projY.max > c.height){
@@ -494,7 +493,7 @@ function checkBorder(polygon, action){
 		diff = new Vector(0, -(projY.max - c.height));
 		polygon.applyVector(diff);
 		if (action != undefined){
-			action();	
+			action(axis = 'y');	
 		}
 	}
 	if (projY.min < 0){
@@ -502,7 +501,7 @@ function checkBorder(polygon, action){
 		diff = new Vector(0, -projY.min);
 		polygon.applyVector(diff);
 		if (action != undefined){
-			action();			
+			action(axis = 'y');			
 		}
 	}
 }
