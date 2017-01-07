@@ -518,6 +518,37 @@ var Ship = function(x, y, l1){
 	}
 }
 
+function killObjects(objects){
+	for (i = 0; i < objects.length; i++){
+		if (objects[i].dead == true){
+			objects.splice(i, 1);
+		}
+	}
+}
+
+function drawAsteroid(polygon){
+	ctx.beginPath();
+	ctx.lineWidth=3;
+	if (polygon.hit == true){
+		ctx.strokeStyle="#FF0000";
+	}
+	else{
+		ctx.strokeStyle="#FFFFFF";
+	}
+	ctx.moveTo(polygon.vertices[0].x,
+			   polygon.vertices[0].y);
+
+	for (var i =0; i < polygon.vertices.length; i++){
+		ctx.lineTo(polygon.vertices[i].x,
+				   polygon.vertices[i].y);		
+	}
+	ctx.lineTo(polygon.vertices[0].x,
+			   polygon.vertices[0].y);
+			   
+	ctx.stroke();
+	ctx.fillStyle="#FFFFFF";
+}
+	
 
 c.width = window.innerWidth-20;
 c.height = window.innerHeight-20;
@@ -528,8 +559,8 @@ var maxSize = c.width/10;
 var minSize = c.width/100;
 var maxSpeed = 6;
 var maxSpin = 2	;
-var numberRectangles = 1;
-var numberTriangles = 0;
+var numberRectangles = 3;
+var numberTriangles = 3;
 var objects = [];
 
 var axis_length = 20;
@@ -550,13 +581,6 @@ player.weapon.setPosition(player.front);
 player.weapon.setCenter(player.hitbox.center);
 
 
-function killObjects(objects){
-	for (i = 0; i < objects.length; i++){
-		if (objects[i].dead == true){
-			objects.splice(i, 1);
-		}
-	}
-}
 
 for (i = 0; i < numberRectangles; i++){
 	objects.push(new randomRect(maxSize, minSize, maxSpeed, maxSpin));
@@ -579,7 +603,7 @@ function mainLoop(){
 	lastDate = new Date();
 	fps.add(elapsedTime);
 
-	ctx.fillStyle="#FFFF00";
+	ctx.fillStyle="#000000";
 	ctx.fillRect(0,0,c.width,c.height);
 
 	drawInstructions(instructions);
@@ -637,7 +661,7 @@ function mainLoop(){
 			checkBorder(objects[i]);
 			calculateAxes(objects[i]);
 			rotatePolygon(objects[i], objects[i].spin);
-			drawPolygon(objects[i]);
+			drawAsteroid(objects[i]);
 		}
 	killObjects(objects);
 	checkColisionsNaive(objects);
