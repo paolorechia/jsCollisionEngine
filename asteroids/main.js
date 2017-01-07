@@ -71,13 +71,16 @@ var Phases = function(){
 }
 
 var Weapon = function(){
+
 	this.firing=false;
 	this.rateOfFire = 1;
 	this.position = new Point(0, 0);
 	this.center = new Point(0, 0);
 	this.direction = new Vector(0, 0);
-	this.projectileVelocity = 10;
+	this.projectileVelocity = 20;
 	this.projectileWidth = 1;
+	this.range = 1000; // range in pixels
+	this.limit = 10;
 	this.projectileHeight = this.projectileVelocity * 2;
 	this.projectiles = [];
 	
@@ -92,19 +95,38 @@ var Weapon = function(){
 		unitVector(this.direction, this.direction);
 	}
 	
-	this.fire = function(shipSpeed){
+	this.updateFiring = function(shipSpeed){
+		if (this.projectiles.length > this.limit || this.firing == false){
+			return;
+		}
 		console.log("fire!");
 		var projectile = new Rect(this.position.x, this.position.y, this.projectileWidth, this.projectileHeight,
 									   this.direction.x, this.direction.y,
 									   this.projectileVelocity + shipSpeed, 0);
 		projectile.hit = false;
+		projectile.duration = 120;
 		yAxis = new Vector(0, 1);
 		var angle = angleVectors(this.direction, yAxis);
 		if (this.position.x > this.center.x){
 			angle *= -1;
 		}
+		projectile.duration = this.range/this.projectileVelocity;
 		rotatePolygon(projectile,radiansToDegrees(angle));
 		this.projectiles.push(projectile);
+	}
+	this.fire = function(pressed){
+		this.firing = pressed;
+	}
+	this.updateDuration = function(){
+		for (var i = 0; i < this.projectiles.length; i++){
+			this.projectiles[i].duration--;
+			if (this.projectiles[i].duration <= 0){
+				this.projectiles.pop(i);
+			}
+		}
+	}
+	this.autoFire = function(){
+		
 	}
 }
 
@@ -384,7 +406,7 @@ var objects = [];
 var axis_length = 20;
 var lastDate = new Date();
 var fps = new Fps();
-var maxFPS = 40;
+var maxFPS = 500;
 var interval = 1000/maxFPS;
 
 var score = new Score();
@@ -424,7 +446,7 @@ function mainLoop(){
 	player.updateDirection();
 	player.updatePosition();
 	player.updateTurn();
-	player.weapon.updateDirection(player.hitbox.center);
+	player.weapon.updateDirection(player.hitbox.center);	
 
 	for (var i = 0; i < objects.length; i++){
 
@@ -440,6 +462,10 @@ function mainLoop(){
 	}
 	player.autoPilot();
 	player.drawAutoPath();
+	
+
+	player.weapon.updateFiring(player.hitbox.velocity);
+	player.weapon.updateDuration();
 	for (var k = 0; k < player.weapon.projectiles.length; k++){
 		player.weapon.projectiles[k].update();
 		checkBorder(player.weapon.projectiles[k]);

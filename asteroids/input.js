@@ -12,6 +12,11 @@ var coord = new Point(c.width/2, c.height/2);
 		player.setupAutoPilot(coord);
    }
 	keyboardDown = function(event){
+		if (event.key == ' '){
+			player.weapon.fire(true);
+        }
+        if (event.key == 'Escape'){
+        }
 		if (player.lock){
 			return;
 		}
@@ -30,11 +35,7 @@ var coord = new Point(c.width/2, c.height/2);
         if (event.key == 'a'){
 			player.turn('l', true);
 		}
-        if (event.key == ' '){
-			player.weapon.fire(player.hitbox.velocity);
-        }
-        if (event.key == 'Escape'){
-        }
+ 
     }
 	keyboardUp = function(event){
        if (event.key == 'Escape'){
@@ -42,6 +43,9 @@ var coord = new Point(c.width/2, c.height/2);
 	//			console.log("System unlocked!");
 				player.lock = false;
 		   }
+        }
+        if (event.key == ' '){
+			player.weapon.fire(false);
         }
 		if (player.lock){
 			return;
@@ -61,10 +65,7 @@ var coord = new Point(c.width/2, c.height/2);
         if (event.key == 'a'){
 			player.turn('l', false);
         }
-        if (event.key == ' '){
 
-        }
- 
     }
 	mouseClick = function(){
 	//	console.log("System locked!");
