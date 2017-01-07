@@ -481,7 +481,7 @@ function mainLoop(){
 	player.weapon.updateDuration();
 	for (var k = 0; k < player.weapon.projectiles.length; k++){
 		player.weapon.projectiles[k].update();
-		checkBorder(player.weapon.projectiles[k]);
+		checkBorder(player.weapon.projectiles[k], function(){rotatePolygon(player.weapon.projectiles[k], 45)});
 		drawPolygon(player.weapon.projectiles[k]);
 		
 	}
