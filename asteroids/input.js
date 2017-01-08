@@ -21,6 +21,9 @@ var coord = new Point(c.width/2, c.height/2);
 		if (event.key == 'x'){
 			player.weapon.autoFire();
 		}
+		if (event.key == 'r'){
+			player.changeWeapon();
+		}
 		if (player.lock){
 			return;
 		}

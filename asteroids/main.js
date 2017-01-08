@@ -214,7 +214,7 @@ var Weapon = function(velocity = 10, width = 1, range = 1000, limit = 10, damage
 									   this.direction.x, this.direction.y,
 									   this.projectileVelocity + shipSpeed, 0);
 		projectile.hit = false;
-		projectile.duration = 120;
+		projectile.duration = this.range/this.velocity;
 		yAxis = new Vector(0, 1);
 		var angle = angleVectors(this.direction, yAxis);
 		if (this.position.x > this.center.x){
@@ -669,6 +669,7 @@ var Ship = function(x, y, l1){
 		this.weapons.push(weapon);
 	}
 	this.changeWeapon = function(){
+		this.weapons[this.currentWeapon].firing = false;
 		this.currentWeapon++;
 		this.currentWeapon = this.currentWeapon % this.weapons.length;
 		this.weapon = this.weapons[this.currentWeapon];
@@ -732,7 +733,11 @@ var objects = [];
 
 var player = new Ship(c.width/2, c.height/2, 20);
 player.updateDirection();
-player.addWeapon(new Weapon());
+player.addWeapon(new Weapon(velocity = 10, width = 1, range = 100, limit = 10, damage = 10));
+player.changeWeapon();
+player.weapon.setPosition(player.front);
+player.weapon.setCenter(player.hitbox.center);
+player.addWeapon(new Weapon(velocity = 10, width = 1, range = 1000, limit = 10, damage = 10));
 player.changeWeapon();
 player.weapon.setPosition(player.front);
 player.weapon.setCenter(player.hitbox.center);
@@ -773,10 +778,13 @@ function mainLoop(){
 		player.weapon.updateDirection(player.hitbox.center);
 		player.hitbox.update();
 		player.weapon.updateFiring(player.hitbox.velocity);
-		for (var i = 0; i < player.weapon.projectiles.length; i++){
-			for (var j = 0; j < objects.length; j++){
-				calculateAxes(player.weapon.projectiles[i])
-				smartCollision(player.weapon.projectiles[i], objects[j], function(){player.weapon.onHit(objects[j])});
+		
+		for (var u = 0; u < player.weapons.length; u++){
+			for (var i = 0; i < player.weapons[u].projectiles.length; i++){
+				for (var j = 0; j < objects.length; j++){
+					calculateAxes(player.weapons[u].projectiles[i])
+					smartCollision(player.weapons[u].projectiles[i], objects[j], function(){player.weapons[u].onHit(objects[j])});
+				}
 			}
 		}
 		checkBorder(player.hitbox);
@@ -786,7 +794,7 @@ function mainLoop(){
 	if (level.current > level.max){
 		drawEndGame(true);
 	}
-	player.weapon.updateDuration();
+
 		for (var i = 0; i < objects.length; i++){
 			mtv = collisionSTA(player.hitbox, objects[i]);
 			if (mtv){
@@ -797,12 +805,16 @@ function mainLoop(){
 			}
 		}
 
-		
-		player.weapon.removeProjectiles();
-		for (var k = 0; k < player.weapon.projectiles.length; k++){
-			player.weapon.projectiles[k].update();
-			checkBorder(player.weapon.projectiles[k], function(){player.weapon.rotateAtBorder(axis, player.weapon.projectiles[k])});
-			drawPolygon(player.weapon.projectiles[k]);
+		for (var i = 0; i < player.weapons.length; i++){		
+			player.weapons[i].updateDuration();		
+			player.weapons[i].removeProjectiles();
+		}
+		for (u = 0; u < player.weapons.length; u++){
+				for (var k = 0; k < player.weapons[u].projectiles.length; k++){
+					player.weapons[u].projectiles[k].update();
+					checkBorder(player.weapons[u].projectiles[k], function(){player.weapons[u].rotateAtBorder(axis, player.weapons[u].projectiles[k])});
+					drawPolygon(player.weapons[u].projectiles[k]);
+			}
 		}
 
 		player.autoPilot();
