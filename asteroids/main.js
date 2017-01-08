@@ -7,20 +7,33 @@ updateResEvent = function(canvas) {
 
 var Score = function(){
 	this.player = 0;
-	this.enemy = 0;
+	this.draw = function(){
+		ctx.beginPath();
+		ctx.fillStyle="#000FFF";
+		ctx.font="14px Arial";
+		string = "Score: " + this.player;
+		ctx.fillText(string, c.width/2 - 40, c.height - 20);
+	}
+}
+var Level = function(){
+	this.current = 1;
+	this.max = 10;
+	this.draw = function(){
+		ctx.beginPath();
+		ctx.fillStyle="#000FFF";
+		ctx.font="14px Arial";
+		string = "Level: " + this.current;
+		ctx.fillText(string, c.width/2 + 40, c.height - 20);
+	}
+	this.start = function(){
+		
+		
+	}
+	this.next = function(){
+		this.current++;
+	}
 }
 
-function drawScore(score){
-	ctx.beginPath();
-	ctx.fillStyle="#000FFF";
-	ctx.font="14px Arial";
-	string = "Player: " + score.player;
-	ctx.fillText(string, 10, 40);
-	ctx.stroke();
-	string = "Computer: " + score.enemy;
-	ctx.fillText(string, c.width - 100, 40);
-	ctx.stroke();
-}
 
 function buildInstructions(){
 	var instructions = [];
@@ -571,6 +584,7 @@ function killObjects(objects){
 	for (i = 0; i < objects.length; i++){
 		if (objects[i].dead == true){
 			objects.splice(i, 1);
+			score.player++;
 		}
 	}
 }
@@ -621,7 +635,7 @@ var maxFPS = 1000;
 var interval = 1000/maxFPS;
 
 var score = new Score();
-maxScore = 5;
+var level = new Level();
 var instructions = buildInstructions();
 
 var objects = [];
@@ -715,10 +729,10 @@ function mainLoop(){
 		}
 	}
 
-
 	killObjects(objects);
 	checkColisionsNaive(objects);
-
+	score.draw();
+	level.draw();
 	
 	fps.calculateMean();
 	drawFPS(fps.mean);
