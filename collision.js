@@ -471,7 +471,7 @@ function checkBorder(polygon, action){
 
 	projX = projection(polygon.vertices, xAxis);
 	projY = projection(polygon.vertices, yAxis);
-
+	hit = false;
 	if (projX.max > c.width){
 		polygon.versor.x *= -1;
 		diff = new Vector(-(projX.max - c.width), 0);
@@ -479,6 +479,7 @@ function checkBorder(polygon, action){
 		if (action != undefined){
 			action(axis = 'x');
 		}
+		hit = true;
 	}
 	else if (projX.min < 0){
 		polygon.versor.x *= -1;
@@ -487,6 +488,7 @@ function checkBorder(polygon, action){
 		if (action != undefined){
 			action(axis = 'x');
 		}
+		hit = true;
 	}
 	if (projY.max > c.height){
 		polygon.versor.y *= -1;
@@ -495,6 +497,7 @@ function checkBorder(polygon, action){
 		if (action != undefined){
 			action(axis = 'y');	
 		}
+		hit = true;
 	}
 	if (projY.min < 0){
 		polygon.versor.y *= -1;
@@ -503,7 +506,9 @@ function checkBorder(polygon, action){
 		if (action != undefined){
 			action(axis = 'y');			
 		}
+		hit = true;
 	}
+	return hit;
 }
 
 function changeDirection(polygon, mtv){

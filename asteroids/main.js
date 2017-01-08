@@ -207,7 +207,7 @@ var Weapon = function(velocity = 10, width = 1, range = 1000, limit = 10, damage
 	}
 	
 	this.updateFiring = function(shipSpeed){
-		if (this.projectiles.length > this.limit || this.firing == false || this.lockDown == true){
+		if (this.projectiles.length >= this.limit || this.firing == false || this.lockDown == true){
 			return;
 		}
 //		console.log("fire!");
@@ -315,9 +315,9 @@ var Ship = function(x, y, l1){
 	this.isTurning = false;
 	this.isStrafing = false;
 	this.strafingSide = 0; // 0 for left; -1 for right
-	this.acceleration = 0.25;
-	this.maxSpeed = 6;
-	this.turnRate = 5;
+	this.acceleration = 0.125;
+	this.maxSpeed = 4;
+	this.turnRate = 3.5;
 	this.turning = false;
 	this.rotate = 0;
 	this.front = new Point(this.hitbox.vertices[2].x,
@@ -717,19 +717,19 @@ function drawAsteroid(polygon){
 }
 
 function basicCannon(){
-	cannon = new Weapon(velocity = 10, width = 1, range = 500, limit = 10, damage = 10);
+	cannon = new Weapon(velocity = 10, width = 1, range = 500, limit = 10, damage = 10, mass = 100, rateOfFire = 8);
 	cannon.type = 'p'; // projectile type
 	return cannon;
 }
 
 
 function laserBeam(){
-	beam = new Weapon(velocity = 100, width = 3, range = 2000, limit = 1, damage = 5, rateOfFire = 1);
+	beam = new Weapon(velocity = 100, width = 3, range = 2000, limit = 1, damage = 1, mass=1, rateOfFire = 1000);
 	beam.type = 'l'; // laser type
 
 	beam.draw = function(){
 		ctx.beginPath();
-		ctx.strokeStyle="#FFFF00";
+		ctx.strokeStyle="#0000FF";
 		oldWidth = ctx.lineWidth;
 		ctx.lineWidth=1;
 
@@ -858,7 +858,7 @@ function mainLoop(){
 					else if (player.weapons[u].type =='l'){
 						projectile = player.weapons[u].projectiles[k];
 						var hit = checkBorder(projectile);
-						if (hit) killProjectile(projectile);
+						if (hit) {killProjectile(projectile)};
 					}
 			}
 		}
