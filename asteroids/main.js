@@ -131,6 +131,8 @@ function buildInstructions(){
 	instructions.push(string);
 	string = "X: Auto-Fire";
 	instructions.push(string);
+	string = "R: Change Weapon";
+	instructions.push(string);
 	string = "Click: Auto-pilot to given point (locks down the ship)";
 	instructions.push(string);	
 	return instructions;
@@ -210,7 +212,7 @@ var Weapon = function(velocity = 10, width = 1, range = 1000, limit = 10, damage
 		}
 //		console.log("fire!");
 		this.lockDown = true;
-		var projectile = new Rect(this.position.x, this.position.y, this.projectileWidth, this.projectileHeight,
+		var projectile = new Rect(this.position.x, this.position.y - this.projectileHeight/2, this.projectileWidth, this.projectileHeight,
 									   this.direction.x, this.direction.y,
 									   this.projectileVelocity + shipSpeed, 0);
 		projectile.hit = false;
@@ -737,7 +739,7 @@ player.addWeapon(new Weapon(velocity = 10, width = 1, range = 100, limit = 10, d
 player.changeWeapon();
 player.weapon.setPosition(player.front);
 player.weapon.setCenter(player.hitbox.center);
-player.addWeapon(new Weapon(velocity = 10, width = 1, range = 1000, limit = 10, damage = 10));
+player.addWeapon(new Weapon(velocity = 100, width = 1, range = 1000, limit = 2, damage = 5));
 player.changeWeapon();
 player.weapon.setPosition(player.front);
 player.weapon.setCenter(player.hitbox.center);
