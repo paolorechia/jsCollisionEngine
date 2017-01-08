@@ -516,6 +516,51 @@ var Ship = function(x, y, l1){
 		string = "Immunity: " + this.immunity;
 		ctx.fillText(string, c.width - 200, 60);
 	}
+	this.draw = function(polygon = this.hitbox){
+		ctx.beginPath();
+		if (polygon.hit == true){
+			ctx.strokeStyle="#FF0000";
+			ctx.fillStyle="#FF0000";
+		}
+		else{
+			ctx.strokeStyle="#0000FF";
+			ctx.fillStyle="#0000FF";
+		}
+		
+		for (var i = 0; i < polygon.vertices.length; i++){
+			ctx.beginPath();
+			ctx.arc(polygon.vertices[i].x,
+			polygon.vertices[i].y,
+			3, 0, 2*Math.PI);
+			if (i == 2){
+				ctx.fillStyle="#00F0FF";
+			}
+			ctx.fill();
+		}
+		for (var i = 0; i < polygon.vertices.length - 1; i++){
+			ctx.beginPath();
+//			ctx.strokeStyle="#0000FF";
+			ctx.moveTo(polygon.center.x, polygon.center.y);
+			ctx.lineTo(polygon.vertices[i].x, polygon.vertices[i].y);
+			ctx.stroke();
+		}
+		for (var i = 0; i < polygon.vertices.length - 1; i++){
+			ctx.beginPath();
+//			ctx.strokeStyle="#0000FF";
+			ctx.moveTo(polygon.vertices[2].x, polygon.vertices[2].y);
+			ctx.lineTo(polygon.vertices[i].x, polygon.vertices[i].y);
+			ctx.stroke();
+		}
+			
+		if (polygon.center != undefined){
+			ctx.fillStyle="#00F0FF";
+			ctx.beginPath();
+			ctx.arc(polygon.center.x,
+					polygon.center.y,
+					3, 0, 2*Math.PI);
+			ctx.fill();
+		}
+	}		
 }
 
 function killObjects(objects){
@@ -548,6 +593,8 @@ function drawAsteroid(polygon){
 	ctx.stroke();
 	ctx.fillStyle="#FFFFFF";
 }
+
+
 	
 
 c.width = window.innerWidth-20;
@@ -652,7 +699,7 @@ function mainLoop(){
 
 		player.autoPilot();
 		player.drawAutoPath();
-		drawPolygon(player.hitbox);
+		player.draw();
 		player.drawStatus();
 	}
 
