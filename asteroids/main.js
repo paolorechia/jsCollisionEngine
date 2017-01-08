@@ -688,19 +688,18 @@ function mainLoop(){
 	if (player.hp <= 0){
 		drawEndGame(false);
 	}
-	else{
-		if (level.current > level.max){
-			drawEndGame(true);
-		}
-		player.updateDirection();
-		player.updateStrafe();
-		player.updatePosition();
-		player.updateTurn();
-		player.weapon.updateDirection(player.hitbox.center);
-		player.hitbox.update();
-		checkBorder(player.hitbox);
-		calculateAxes(player.hitbox);
-		rotatePolygon(player.hitbox, player.hitbox.spin);	
+	if (level.current > level.max){
+		drawEndGame(true);
+	}
+	player.updateDirection();
+	player.updateStrafe();
+	player.updatePosition();
+	player.updateTurn();
+	player.weapon.updateDirection(player.hitbox.center);
+	player.hitbox.update();
+	checkBorder(player.hitbox);
+	calculateAxes(player.hitbox);
+	rotatePolygon(player.hitbox, player.hitbox.spin);	
 
 		for (var i = 0; i < objects.length; i++){
 			mtv = collisionSTA(player.hitbox, objects[i]);
@@ -733,13 +732,14 @@ function mainLoop(){
 		}
 
 		player.autoPilot();
-		player.drawAutoPath();
-		player.draw();
+		if (player.hp >= 0){
+			player.drawAutoPath();
+			player.draw();
+		}
 		player.drawStatus();
 		for (var i = 0; i < objects.length; i++){
 			drawAsteroid(objects[i]);
 		}
-	}
 
 	killObjects(objects);
 	checkColisionsNaive(objects);
