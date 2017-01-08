@@ -17,7 +17,7 @@ var Score = function(){
 }
 var Level = function(){
 	this.current = 0;
-	this.max = 1;
+	this.max = 10;
 	this.draw = function(){
 		ctx.beginPath();
 		ctx.fillStyle="#000FFF";
@@ -29,13 +29,12 @@ var Level = function(){
 
 		player.setImmunity(3);
 
-		
-		var maxSize = c.width/10;
-		var minSize = c.width/100;
-		var maxSpeed = Math.round(this.current * 1.3);
-		var maxSpin = Math.floor(this.current *0.5);
-		var numberRectangles = Math.round(this.current * 1.5);
-		var numberTriangles = Math.round(this.current * 1.2);
+		var maxSize = c.width/20 + (this.current * 2);
+		var minSize = c.width/100 + (this.current * 2);
+		var maxSpeed = Math.round(this.current * 0.7);
+		var maxSpin = Math.floor(this.current *0.2);
+		var numberRectangles = Math.round(this.current * 0.6);
+		var numberTriangles = Math.round(this.current * 0.4);
 		for (i = 0; i < numberRectangles; i++){
 		objects.push(new randomRect(maxSize, minSize, maxSpeed, maxSpin));
 		objects[i].hp = Math.round(Math.sqrt(objects[i].mass));
@@ -684,23 +683,38 @@ function mainLoop(){
 			level.start();
 		}
 	}
-	
+
+	for (var i = 0; i < objects.length; i++){
+		objects[i].update();
+		checkBorder(objects[i]);
+		calculateAxes(objects[i]);
+		rotatePolygon(objects[i], objects[i].spin);
+	}
 	if (player.hp <= 0){
 		drawEndGame(false);
+	}
+	else{
+		player.updateDirection();
+		player.updateStrafe();
+		player.updatePosition();
+		player.updateTurn();
+		player.weapon.updateDirection(player.hitbox.center);
+		player.hitbox.update();
+		player.weapon.updateFiring(player.hitbox.velocity);
+		for (var i = 0; i < player.weapon.projectiles.length; i++){
+			for (var j = 0; j < objects.length; j++){
+				calculateAxes(player.weapon.projectiles[i])
+				smartCollision(player.weapon.projectiles[i], objects[j], function(){player.weapon.onHit(objects[j])});
+			}
+		}
+		checkBorder(player.hitbox);
+		calculateAxes(player.hitbox);
+		rotatePolygon(player.hitbox, player.hitbox.spin);	
 	}
 	if (level.current > level.max){
 		drawEndGame(true);
 	}
-	player.updateDirection();
-	player.updateStrafe();
-	player.updatePosition();
-	player.updateTurn();
-	player.weapon.updateDirection(player.hitbox.center);
-	player.hitbox.update();
-	checkBorder(player.hitbox);
-	calculateAxes(player.hitbox);
-	rotatePolygon(player.hitbox, player.hitbox.spin);	
-
+	player.weapon.updateDuration();
 		for (var i = 0; i < objects.length; i++){
 			mtv = collisionSTA(player.hitbox, objects[i]);
 			if (mtv){
@@ -710,20 +724,8 @@ function mainLoop(){
 				}
 			}
 		}
-		for (var i = 0; i < objects.length; i++){
-			objects[i].update();
-			checkBorder(objects[i]);
-			calculateAxes(objects[i]);
-			rotatePolygon(objects[i], objects[i].spin);
-		}
-		player.weapon.updateFiring(player.hitbox.velocity);
-		player.weapon.updateDuration();
-		for (var i = 0; i < player.weapon.projectiles.length; i++){
-			for (var j = 0; j < objects.length; j++){
-				calculateAxes(player.weapon.projectiles[i])
-				smartCollision(player.weapon.projectiles[i], objects[j], function(){player.weapon.onHit(objects[j])});
-			}
-		}
+
+		
 		player.weapon.removeProjectiles();
 		for (var k = 0; k < player.weapon.projectiles.length; k++){
 			player.weapon.projectiles[k].update();
