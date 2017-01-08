@@ -179,10 +179,9 @@ var Phases = function(){
 		this.current = 0;
 }
 
-var Weapon = function(velocity = 10, width = 1, range = 1000, limit = 10, damage = 10){
-
+var Weapon = function(velocity = 10, width = 1, range = 1000, limit = 10, damage = 10, mass = 1, rateOfFire = 8){
 	this.firing=false;
-	this.rateOfFire = 8;		// shots per second
+	this.rateOfFire = rateOfFire;		// shots per second
 	this.lockDown = false;
 	this.position = new Point(0, 0);
 	this.center = new Point(0, 0);
@@ -191,6 +190,7 @@ var Weapon = function(velocity = 10, width = 1, range = 1000, limit = 10, damage
 	this.projectileWidth = width;
 	this.range = range; // range in pixels
 	this.limit = limit;
+	this.mass = mass;
 	this.damage = damage;
 	this.projectileHeight = this.projectileVelocity * 2;
 	this.projectiles = [];
@@ -216,6 +216,7 @@ var Weapon = function(velocity = 10, width = 1, range = 1000, limit = 10, damage
 									   this.direction.x, this.direction.y,
 									   this.projectileVelocity + shipSpeed, 0);
 		projectile.hit = false;
+		projectile.mass = this.mass;
 		projectile.duration = this.range/this.velocity;
 		yAxis = new Vector(0, 1);
 		var angle = angleVectors(this.direction, yAxis);
@@ -287,6 +288,11 @@ var Weapon = function(velocity = 10, width = 1, range = 1000, limit = 10, damage
 				this.projectiles.splice(i, 1);
 				i--;
 			}
+		}
+	}
+	this.draw = function(){
+		for (var i =0; i < this.projectiles.length; i++){
+			drawPolygon(this.projectiles[i]);
 		}
 	}
 }
@@ -710,8 +716,36 @@ function drawAsteroid(polygon){
 	ctx.fillStyle="#FFFFFF";
 }
 
+function basicCannon(){
+	cannon = new Weapon(velocity = 10, width = 1, range = 500, limit = 10, damage = 10);
+	cannon.type = 'p'; // projectile type
+	return cannon;
+}
 
+
+function laserBeam(){
+	beam = new Weapon(velocity = 100, width = 3, range = 2000, limit = 1, damage = 5, rateOfFire = 1);
+	beam.type = 'l'; // laser type
+
+	beam.draw = function(){
+		ctx.beginPath();
+		ctx.strokeStyle="#FFFF00";
+		oldWidth = ctx.lineWidth;
+		ctx.lineWidth=1;
+
+		for (var i = 0; i < this.projectiles.length; i++){
+		ctx.moveTo(this.position.x, this.position.y);
+		ctx.lineTo(this.projectiles[i].vertices[3].x, this.projectiles[i].vertices[3].y);
+		}
+		ctx.stroke();	
+		ctx.lineWidth = oldWidth;
+	}
+	return beam;
+}
+function killProjectile(projectile){
+	projectile.duration = 0;
 	
+}
 
 c.width = window.innerWidth-20;
 c.height = window.innerHeight-20;
@@ -735,11 +769,13 @@ var objects = [];
 
 var player = new Ship(c.width/2, c.height/2, 20);
 player.updateDirection();
-player.addWeapon(new Weapon(velocity = 10, width = 1, range = 100, limit = 10, damage = 10));
+
+player.addWeapon(basicCannon());
 player.changeWeapon();
 player.weapon.setPosition(player.front);
 player.weapon.setCenter(player.hitbox.center);
-player.addWeapon(new Weapon(velocity = 100, width = 1, range = 1000, limit = 2, damage = 5));
+
+player.addWeapon(laserBeam());
 player.changeWeapon();
 player.weapon.setPosition(player.front);
 player.weapon.setCenter(player.hitbox.center);
@@ -806,7 +842,9 @@ function mainLoop(){
 				}
 			}
 		}
-
+		for (var u = 0; u < player.weapons.length; u++){
+			player.weapons[u].draw();
+		}
 		for (var i = 0; i < player.weapons.length; i++){		
 			player.weapons[i].updateDuration();		
 			player.weapons[i].removeProjectiles();
@@ -814,11 +852,16 @@ function mainLoop(){
 		for (u = 0; u < player.weapons.length; u++){
 				for (var k = 0; k < player.weapons[u].projectiles.length; k++){
 					player.weapons[u].projectiles[k].update();
-					checkBorder(player.weapons[u].projectiles[k], function(){player.weapons[u].rotateAtBorder(axis, player.weapons[u].projectiles[k])});
-					drawPolygon(player.weapons[u].projectiles[k]);
+					if (player.weapons[u].type == 'p'){
+						checkBorder(player.weapons[u].projectiles[k], function(){player.weapons[u].rotateAtBorder(axis, player.weapons[u].projectiles[k])});
+					}
+					else if (player.weapons[u].type =='l'){
+						projectile = player.weapons[u].projectiles[k];
+						var hit = checkBorder(projectile);
+						if (hit) killProjectile(projectile);
+					}
 			}
 		}
-
 		player.autoPilot();
 		if (player.hp >= 0){
 			player.drawAutoPath();
