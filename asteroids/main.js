@@ -17,7 +17,7 @@ var Score = function(){
 }
 var Level = function(){
 	this.current = 0;
-	this.max = 10;
+	this.max = 20;
 	this.draw = function(){
 		ctx.beginPath();
 		ctx.fillStyle="#000FFF";
@@ -28,24 +28,77 @@ var Level = function(){
 	this.start = function(){
 
 		player.setImmunity(3);
-
-		var maxSize = c.width/20 + (this.current * 2);
-		var minSize = c.width/100 + (this.current * 2);
-		var maxSpeed = Math.round(this.current * 0.7);
-		var maxSpin = Math.floor(this.current *0.2);
-		var numberRectangles = Math.round(this.current * 0.6);
-		var numberTriangles = Math.round(this.current * 0.4);
-		for (i = 0; i < numberRectangles; i++){
-		objects.push(new randomRect(maxSize, minSize, maxSpeed, maxSpin));
-		objects[i].hp = Math.round(Math.sqrt(objects[i].mass));
-		objects[i].dead == false;
+		player.hp += 10;
+		if (this.current <= 12){
+			var maxSize = c.width/20 + (this.current * 2);
+			var minSize = c.width/100 + (this.current * 2);
+			var maxSpeed = Math.round(this.current * 0.7);
+			var maxSpin = Math.floor(this.current *0.2);
+			var numberRectangles = Math.round(this.current * 0.6);
+			var numberTriangles = Math.round(this.current * 0.4);
+			for (i = 0; i < numberRectangles; i++){
+			objects.push(new randomRect(maxSize, minSize, maxSpeed, maxSpin));
+			objects[i].hp = Math.round(Math.sqrt(objects[i].mass));
+			objects[i].dead == false;
+			}
+			for (i = 0; i < numberTriangles; i++){
+			objects.push(new randomTriangle(maxSize, minSize, maxSpeed, maxSpin));
+			objects[numberRectangles + i].hp = Math.round(Math.sqrt(objects[i].mass));
+			objects[numberRectangles + i].dead == false;
+			}
 		}
-		for (i = 0; i < numberTriangles; i++){
-		objects.push(new randomTriangle(maxSize, minSize, maxSpeed, maxSpin));
-		objects[numberRectangles + i].hp = Math.round(Math.sqrt(objects[i].mass));
-		objects[numberRectangles + i].dead == false;
-		}		
-		
+		else if (this.current >= 13 && this.current <= 15){
+			var maxSize = c.width/400;
+			var minSize = c.width/500;
+			var maxSpeed = Math.round(this.current * 0.5);
+			var maxSpin = Math.floor(this.current * 0.2);
+			var numberRectangles = Math.round(this.current * 2);
+			var numberTriangles = Math.round(this.current);
+			for (i = 0; i < numberRectangles; i++){
+			objects.push(new randomRect(maxSize, minSize, maxSpeed, maxSpin));
+			objects[i].hp = Math.round(Math.sqrt(objects[i].mass));
+			objects[i].dead == false;
+			}
+			for (i = 0; i < numberTriangles; i++){
+			objects.push(new randomTriangle(maxSize, minSize, maxSpeed, maxSpin));
+			objects[numberRectangles + i].hp = Math.round(Math.sqrt(objects[i].mass));
+			objects[numberRectangles + i].dead == false;			
+			}
+		}
+		else{
+			var maxSize = c.width/20 + (this.current * 2);
+			var minSize = c.width/100 + (this.current * 2);
+			var maxSpeed = Math.round(this.current * 0.7);
+			var maxSpin = Math.floor(this.current *0.2);
+			var numberRectangles = Math.round(this.current * 0.1);
+			var numberTriangles = Math.round(this.current * 0.1);
+			for (i = 0; i < numberRectangles; i++){
+			objects.push(new randomRect(maxSize, minSize, maxSpeed, maxSpin));
+			objects[i].hp = Math.round(Math.sqrt(objects[i].mass));
+			objects[i].dead == false;
+			}
+			for (i = 0; i < numberTriangles; i++){
+			objects.push(new randomTriangle(maxSize, minSize, maxSpeed, maxSpin));
+			objects[numberRectangles + i].hp = Math.round(Math.sqrt(objects[i].mass));
+			objects[numberRectangles + i].dead == false;
+			}			
+			var maxSize = c.width/400;
+			var minSize = c.width/500;
+			var maxSpeed = Math.round(this.current * 0.5);
+			var maxSpin = Math.floor(this.current * 0.2);
+			var numberRectangles = Math.round(this.current * 2);
+			var numberTriangles = Math.round(this.current);
+			for (i = 0; i < numberRectangles; i++){
+			objects.push(new randomRect(maxSize, minSize, maxSpeed, maxSpin));
+			objects[i].hp = Math.round(Math.sqrt(objects[i].mass));
+			objects[i].dead == false;
+			}
+			for (i = 0; i < numberTriangles; i++){
+			objects.push(new randomTriangle(maxSize, minSize, maxSpeed, maxSpin));
+			objects[numberRectangles + i].hp = Math.round(Math.sqrt(objects[i].mass));
+			objects[numberRectangles + i].dead == false;			
+			}			
+		}
 	}
 	this.next = function(){
 		this.current++;
@@ -597,6 +650,14 @@ var Ship = function(x, y, l1){
 					polygon.center.y,
 					3, 0, 2*Math.PI);
 			ctx.fill();
+		}
+		if (this.immunity == true){
+			ctx.strokeStyle="#008088";
+			ctx.beginPath();
+			ctx.arc(polygon.center.x,
+					polygon.center.y,
+					polygon.side + 2, 0, 2*Math.PI);
+			ctx.stroke();	
 		}
 	}
 	this.setImmunity = function(seconds){
