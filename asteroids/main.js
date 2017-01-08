@@ -177,7 +177,7 @@ var Phases = function(){
 		this.current = 0;
 }
 
-var Weapon = function(){
+var Weapon = function(velocity = 10, width = 1, range = 1000, limit = 10, damage = 10){
 
 	this.firing=false;
 	this.rateOfFire = 8;		// shots per second
@@ -185,11 +185,11 @@ var Weapon = function(){
 	this.position = new Point(0, 0);
 	this.center = new Point(0, 0);
 	this.direction = new Vector(0, 0);
-	this.projectileVelocity = 10;
-	this.projectileWidth = 1;
-	this.range = 1000; // range in pixels
-	this.limit = 10;
-	this.damage = 10;
+	this.projectileVelocity = velocity;
+	this.projectileWidth = width;
+	this.range = range; // range in pixels
+	this.limit = limit;
+	this.damage = damage;
 	this.projectileHeight = this.projectileVelocity * 2;
 	this.projectiles = [];
 	
@@ -298,7 +298,8 @@ var Ship = function(x, y, l1){
 
 	this.hp = 100;
 	this.immunity = false;
-	this.weapon = new Weapon();
+	this.weapons = [];
+	this.currentWeapon = 0;
 	this.lock = false;
 	this.engineOn = false;
 	this.reverseEngine = false;
@@ -664,6 +665,14 @@ var Ship = function(x, y, l1){
 		this.immunity = true;
 		setTimeout(function(){this.player.immunity = false;}, seconds * 1000);
 	}
+	this.addWeapon = function(weapon){
+		this.weapons.push(weapon);
+	}
+	this.changeWeapon = function(){
+		this.currentWeapon++;
+		this.currentWeapon = this.currentWeapon % this.weapons.length;
+		this.weapon = this.weapons[this.currentWeapon];
+	}
 }
 
 function killObjects(objects){
@@ -723,6 +732,8 @@ var objects = [];
 
 var player = new Ship(c.width/2, c.height/2, 20);
 player.updateDirection();
+player.addWeapon(new Weapon());
+player.changeWeapon();
 player.weapon.setPosition(player.front);
 player.weapon.setCenter(player.hitbox.center);
 
