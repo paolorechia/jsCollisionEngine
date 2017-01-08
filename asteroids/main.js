@@ -400,10 +400,13 @@ var Ship = function(x, y, l1){
 		if (!this.lock){
 			return;
 		}
+		ctx.setLineDash([4]);
+		ctx.strokeStyle="#0000FF";
 		ctx.beginPath();
 		ctx.moveTo(this.hitbox.center.x, this.hitbox.center.y);
 		ctx.lineTo(this.autoPath.x, this.autoPath.y);
 		ctx.stroke();
+		ctx.setLineDash([0]);
 	}
 	this.autoRotate = function(){
 		if (this.pathAngle == 0){
@@ -510,6 +513,7 @@ var Ship = function(x, y, l1){
 	}
 	this.drawStatus = function(){
 		ctx.beginPath();
+		ctx.font="14px Arial";
 		ctx.fillStyle="#FF0000";
 		string = "HP: " + this.hp;
 		ctx.fillText(string, c.width - 200, 30);
