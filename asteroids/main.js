@@ -681,7 +681,12 @@ function mainLoop(){
 				}
 			}
 		}
-
+		for (var i = 0; i < objects.length; i++){
+			objects[i].update();
+			checkBorder(objects[i]);
+			calculateAxes(objects[i]);
+			rotatePolygon(objects[i], objects[i].spin);
+		}
 		player.weapon.updateFiring(player.hitbox.velocity);
 		player.weapon.updateDuration();
 		for (var i = 0; i < player.weapon.projectiles.length; i++){
@@ -701,15 +706,12 @@ function mainLoop(){
 		player.drawAutoPath();
 		player.draw();
 		player.drawStatus();
-	}
-
-	for (var i = 0; i < objects.length; i++){
-			objects[i].update();
-			checkBorder(objects[i]);
-			calculateAxes(objects[i]);
-			rotatePolygon(objects[i], objects[i].spin);
+		for (var i = 0; i < objects.length; i++){
 			drawAsteroid(objects[i]);
 		}
+	}
+
+
 	killObjects(objects);
 	checkColisionsNaive(objects);
 
