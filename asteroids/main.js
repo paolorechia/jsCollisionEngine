@@ -16,8 +16,8 @@ var Score = function(){
 	}
 }
 var Level = function(){
-	this.current = 1;
-	this.max = 10;
+	this.current = 0;
+	this.max = 1;
 	this.draw = function(){
 		ctx.beginPath();
 		ctx.fillStyle="#000FFF";
@@ -26,12 +26,34 @@ var Level = function(){
 		ctx.fillText(string, c.width/2 + 40, c.height - 20);
 	}
 	this.start = function(){
+
+		player.setImmunity(3);
+
 		
+		var maxSize = c.width/10;
+		var minSize = c.width/100;
+		var maxSpeed = Math.round(this.current * 1.3);
+		var maxSpin = Math.floor(this.current *0.5);
+		var numberRectangles = Math.round(this.current * 1.5);
+		var numberTriangles = Math.round(this.current * 1.2);
+		for (i = 0; i < numberRectangles; i++){
+		objects.push(new randomRect(maxSize, minSize, maxSpeed, maxSpin));
+		objects[i].hp = Math.round(Math.sqrt(objects[i].mass));
+		objects[i].dead == false;
+		}
+		for (i = 0; i < numberTriangles; i++){
+		objects.push(new randomTriangle(maxSize, minSize, maxSpeed, maxSpin));
+		objects[numberRectangles + i].hp = Math.round(Math.sqrt(objects[i].mass));
+		objects[numberRectangles + i].dead == false;
+		}		
 		
 	}
 	this.next = function(){
 		this.current++;
 	}
+}
+var Game = function(){
+	this.over = false;
 }
 
 
@@ -223,7 +245,7 @@ var Ship = function(x, y, l1){
 	
 
 	this.hp = 100;
-	this.immunity = true;
+	this.immunity = false;
 	this.weapon = new Weapon();
 	this.lock = false;
 	this.engineOn = false;
@@ -577,7 +599,11 @@ var Ship = function(x, y, l1){
 					3, 0, 2*Math.PI);
 			ctx.fill();
 		}
-	}		
+	}
+	this.setImmunity = function(seconds){
+		this.immunity = true;
+		setTimeout(function(){this.player.immunity = false;}, seconds * 1000);
+	}
 }
 
 function killObjects(objects){
@@ -620,15 +646,10 @@ c.height = window.innerHeight-20;
 updateResEvent(c);
 
 var j = 0;
-var maxSize = c.width/10;
-var minSize = c.width/100;
-var maxSpeed = 6;
-var maxSpin = 2	;
-var numberRectangles = 3;
-var numberTriangles = 3;
+
+
 var objects = [];
 
-var axis_length = 20;
 var lastDate = new Date();
 var fps = new Fps();
 var maxFPS = 1000;
@@ -645,23 +666,7 @@ player.updateDirection();
 player.weapon.setPosition(player.front);
 player.weapon.setCenter(player.hitbox.center);
 
-
-
-for (i = 0; i < numberRectangles; i++){
-	objects.push(new randomRect(maxSize, minSize, maxSpeed, maxSpin));
-	objects[i].hp = Math.round(Math.sqrt(objects[i].mass));
-	objects[i].dead == false;
-}
-
-
-for (i = 0; i < numberTriangles; i++){
-	objects.push(new randomTriangle(maxSize, minSize, maxSpeed, maxSpin));
-	objects[numberRectangles + i].hp = Math.round(Math.sqrt(objects[i].mass));
-	objects[numberRectangles + i].dead == false;
-}
-
-var axis_length = 20;
-setTimeout(function(){player.immunity = false;}, 3000);
+var game = new Game();
 function mainLoop(){
 	newDate = new Date();
 	elapsedTime = newDate - lastDate;
@@ -672,14 +677,21 @@ function mainLoop(){
 	ctx.fillRect(0,0,c.width,c.height);
 
 	drawInstructions(instructions);
+
+	if (objects.length == 0 && level.current <= level.max){
+		level.next();
+		if (level.current <= level.max){
+			level.start();
+		}
+	}
 	
-	if (player.hp < 0){
+	if (player.hp <= 0){
 		drawEndGame(false);
 	}
-	else if (objects.length == 0){
-		drawEndGame(true);
-	}
 	else{
+		if (level.current > level.max){
+			drawEndGame(true);
+		}
 		player.updateDirection();
 		player.updateStrafe();
 		player.updatePosition();
