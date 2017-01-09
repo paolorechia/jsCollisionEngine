@@ -213,14 +213,24 @@ var EnergySource = function(max = 100, rechargeRate = 10, rechargeSpeed=1000){ /
 	this.max = max;
 	this.current = this.max;
 	this.rechargeRate = rechargeRate;
-	this.recharge = function(){
-		if (this.current < this.max){
-			setTimeout(function(){
-				this.current += rechargeRate;
+	this.rechargeSpeed = 1000;
+	this.rechargeEvent = undefined;
+	this.recharging= true;
+	this.recharge = function(source){
+		if (this.recharging){
+			if (this.current < this.max){
+				this.current += this.rechargeRate;
 				if (this.current > this.max){
 					this.current = this.max;
 				}
-			}, 1000)
+				this.recharging = false;
+				this.rechargeEvent = undefined;
+			}
+					//	console.log(this.rechargeEvent);
+			if (this.rechargeEvent == undefined){
+				this.rechargeEvent = setTimeout(function(){source.recharging = true;}, source.rechargeSpeed);
+				console.log(this.rechargeEvent);
+			}
 		}
 	}
 	this.drain = function(n){
@@ -280,14 +290,13 @@ var Weapon = function(velocity = 10, width = 1, range = 1000, limit = 10, damage
 		}
 		if (this.energyUsage > 0){
 			if (this.powerSupply.current < this.energyUsage){
-				console.log(this.powerSupply);
 				return;
 			}
 			else{
 				this.powerSupply.drain(energyUsage);
 			}
 		}
-//		console.log("fire!");
+
 		this.lockDown = true;
 		var projectile = new Rect(this.position.x, this.position.y - this.projectileHeight/2, this.projectileWidth, this.projectileHeight,
 									   this.direction.x, this.direction.y,
@@ -989,7 +998,7 @@ player.updateDirection();
 
 player.addWeapon(machineGun());
 player.changeWeapon();
-player.weapon.setPowerSupply(player.powerSupply);
+
 player.weapon.setCenter(player.hitbox.vertices[0]);
 player.weapon.setPosition(player.auxHitbox.vertices[0]);
 
@@ -1004,6 +1013,7 @@ player.weapon.enabled=true;
 
 player.addWeapon(lightLaserBlaster());
 player.changeWeapon();
+player.weapon.setPowerSupply(player.powerSupply);
 player.weapon.setPosition(player.front);
 player.weapon.setCenter(player.hitbox.center);
 player.weapon.enabled=true;
@@ -1076,7 +1086,8 @@ function mainLoop(){
 		player.updateStrafe();
 		player.updatePosition();
 		player.updateTurn();
-		
+		player.powerSupply.recharge(player.powerSupply);
+
 		for (var i = 0; i < player.weapons.length; i++){
 			if (player.weapons[i].enabled){
 				player.weapons[i].updateDirection();
@@ -1141,7 +1152,6 @@ function mainLoop(){
 		for (var i = 0; i < objects.length; i++){
 			drawAsteroid(objects[i]);
 		}
-
 	killObjects(objects);
 	checkColisionsNaive(objects);
 	score.draw();
@@ -1150,9 +1160,7 @@ function mainLoop(){
 	
 	fps.calculateMean();
 	drawFPS(fps.mean);
-	setTimeout(function(){
-		requestAnimationFrame(mainLoop)
-	}, interval);
+	setTimeout(function(){requestAnimationFrame(mainLoop)}, interval);
 }
 
 mainLoop();
