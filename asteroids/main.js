@@ -591,8 +591,8 @@ var Ship = function(x, y, l1){
 			if (this.hitbox.velocity == 0){
 				this.autoStatus.phase6 = false;
 				this.brake(false);
+				this.lock = false;
 			}
-			this.lock = false;
 			//console.log("System unlocked!");
 			return;
 		}
@@ -794,15 +794,15 @@ function heavyLaserBlaster(){
 	return blaster;
 }
 function lightLaserBeam(){
-	beam = new Weapon(velocity = 100, width = 4, range = 2000, limit = 1, damage = 1, mass=1, rateOfFire = 1000);
+	beam = new Weapon(velocity = 100, width = 2, range = 2000, limit = 1, damage = 1, mass=1, rateOfFire = 1000);
 	beam.type = 'l'; // laser type
 
 	beam.draw = function(){
 		ctx.beginPath();
 		ctx.strokeStyle="#009099";
 		oldWidth = ctx.lineWidth;
-		ctx.lineWidth=beam.width;
-
+		ctx.lineWidth=beam.projectileWidth;
+		console.log(ctx.lineWidth);
 		for (var i = 0; i < this.projectiles.length; i++){
 			ctx.moveTo(this.position.x, this.position.y);
 			ctx.lineTo(this.projectiles[i].vertices[3].x, this.projectiles[i].vertices[3].y);
@@ -820,8 +820,8 @@ function heavyLaserBeam(){
 		ctx.beginPath();
 		ctx.strokeStyle="#009099";
 		oldWidth = ctx.lineWidth;
-	
-		ctx.lineWidth=beam.width;
+		console.log(ctx.lineWidth);
+		ctx.lineWidth=beam.projectileWidth;
 		for (var i = 0; i < this.projectiles.length; i++){
 			ctx.moveTo(this.position.x, this.position.y);
 			ctx.lineTo(this.projectiles[i].vertices[3].x, this.projectiles[i].vertices[3].y);
