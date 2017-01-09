@@ -209,16 +209,18 @@ var Phases = function(){
 		this.current = 0;
 }
 
-var EnergySource = function(max, rechargeRate){
-	this.max = this.max;
+var EnergySource = function(max = 100, rechargeRate = 10, rechargeSpeed=1000){ //rechargeSpeed in microseconds; rechargeRate in points per second
+	this.max = max;
 	this.current = this.max;
 	this.rechargeRate = rechargeRate;
 	this.recharge = function(){
 		if (this.current < this.max){
-			this.current += rechargeRate;
-			if (this.current > this.max){
-				this.current = this.max;
-			}
+			setTimeout(function(){
+				this.current += rechargeRate;
+				if (this.current > this.max){
+					this.current = this.max;
+				}
+			}, 1000)
 		}
 	}
 	this.drain = function(n){
@@ -278,6 +280,7 @@ var Weapon = function(velocity = 10, width = 1, range = 1000, limit = 10, damage
 		}
 		if (this.energyUsage > 0){
 			if (this.powerSupply.current < this.energyUsage){
+				console.log(this.powerSupply);
 				return;
 			}
 			else{
@@ -382,6 +385,7 @@ var Ship = function(x, y, l1){
 						0, 0);			// velocity, spin
 	
 	this.auxHitbox = new Triangle(x, y - l1, l1, 0, 0, 0, 0);
+	this.powerSupply = new EnergySource(100, 10);
 	this.hp = 100;
 	this.immunity = false;
 	this.weapons = [];
@@ -712,6 +716,8 @@ var Ship = function(x, y, l1){
 		ctx.fillText(string, c.width - 200, 30);
 		string = "Immunity: " + this.immunity;
 		ctx.fillText(string, c.width - 200, 60);
+		string = "Energy: " + this.powerSupply.current;
+		ctx.fillText(string, c.width - 200, 90);		
 	}
 	this.draw = function(polygon = this.hitbox){
 		ctx.beginPath();
@@ -861,7 +867,10 @@ function drawHeavyBlaster(polygon, strokeColor="#0000FF", hitColor="#FF0000", jo
 				}
 		}
 }
-
+/*
+var Weapon = function(velocity = 10, width = 1, range = 1000, limit = 10, damage = 10, 
+					  mass = 1, rateOfFire = 8, spin=0, hasAmmo=false, ammo=100, energyUsage=0){
+						  */
 function machineGun(){
 	cannon = new Weapon(velocity = 10, width = 1, range = 500, limit = 12, damage = 10, mass = 100, rateOfFire = 16, spin=0, hasAmmo=true, ammo=2000);
 	cannon.type = 'p'; // projectile type
@@ -892,7 +901,8 @@ function asteroidShooter(){
 }
 
 function lightLaserBlaster(){
-	blaster = new Weapon(velocity = 30, width = 1, range = 1000, limit = 12, damage = 5, mass=1, rateOfFire = 12);
+	blaster = new Weapon(velocity = 30, width = 1, range = 1000, limit = 12, damage = 5, mass=1, rateOfFire = 12,  spin=0, hasAmmo=false, ammo=1,
+						 energyUsage = 5);
 	blaster.draw = function(){
 		for (var i = 0; i < this.projectiles.length; i++){
 			drawPolygon(this.projectiles[i], strokeColor="#0000FF", hitColor="#0FF0FF", joints=false, center=false, fillColor="#0F00FF");
@@ -979,6 +989,7 @@ player.updateDirection();
 
 player.addWeapon(machineGun());
 player.changeWeapon();
+player.weapon.setPowerSupply(player.powerSupply);
 player.weapon.setCenter(player.hitbox.vertices[0]);
 player.weapon.setPosition(player.auxHitbox.vertices[0]);
 
