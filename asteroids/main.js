@@ -209,7 +209,28 @@ var Phases = function(){
 		this.current = 0;
 }
 
-var Weapon = function(velocity = 10, width = 1, range = 1000, limit = 10, damage = 10, mass = 1, rateOfFire = 8, spin=0, hasAmmo=false, ammo=100){
+var EnergySource = function(max, rechargeRate){
+	this.max = this.max;
+	this.current = this.max;
+	this.rechargeRate = rechargeRate;
+	this.recharge = function(){
+		if (this.current < this.max){
+			this.current += rechargeRate;
+			if (this.current > this.max){
+				this.current = this.max;
+			}
+		}
+	}
+	this.drain = function(n){
+		this.current -= n;
+		if (this.current < 0){
+			this.current = 0;
+		}
+	}
+}
+
+var Weapon = function(velocity = 10, width = 1, range = 1000, limit = 10, damage = 10, 
+					  mass = 1, rateOfFire = 8, spin=0, hasAmmo=false, ammo=100, energyUsage=0){
 	this.enabled = false;
 	this.firing=false;
 	this.rateOfFire = rateOfFire;		// shots per second
@@ -224,11 +245,15 @@ var Weapon = function(velocity = 10, width = 1, range = 1000, limit = 10, damage
 	this.mass = mass;
 	this.damage = damage;
 	this.hasAmmo = hasAmmo;
+	this.energyUsage = energyUsage;
 	if (hasAmmo){
 		this.ammo=ammo;
 	}
 	else{
 		this.ammo=1;
+	}
+	if (energyUsage > 0){
+		this.powerSupply = new EnergySource(0, 0);
 	}
 	this.projectileHeight = this.projectileVelocity * 2;
 	this.projectiles = [];
@@ -239,6 +264,9 @@ var Weapon = function(velocity = 10, width = 1, range = 1000, limit = 10, damage
 	this.setCenter = function(point){
 		this.center = point;
 	}
+	this.setPowerSupply = function(powerSupply){
+		this.powerSupply = powerSupply;
+	}
 	this.updateDirection = function(){
 		calculateVector(this.position, this.center, this.direction);
 		unitVector(this.direction, this.direction);
@@ -247,6 +275,14 @@ var Weapon = function(velocity = 10, width = 1, range = 1000, limit = 10, damage
 	this.updateFiring = function(shipSpeed){
 		if (this.projectiles.length >= this.limit || this.firing == false || this.lockDown == true || this.ammo <= 0){
 			return;
+		}
+		if (this.energyUsage > 0){
+			if (this.powerSupply.current < this.energyUsage){
+				return;
+			}
+			else{
+				this.powerSupply.drain(energyUsage);
+			}
 		}
 //		console.log("fire!");
 		this.lockDown = true;
