@@ -809,7 +809,7 @@ function heavyCannon(){
 	return cannon;
 }
 function asteroidShooter(){
-	cannon = new Weapon(velocity = 10, width = 20, range = 500, limit = 1, damage = 50, mass = 10000, rateOfFire = 1, spin = 120);
+	cannon = new Weapon(velocity = 10, width = 20, range = 500, limit = 1, damage = 50, mass = 10000, rateOfFire = 1, spin = 120, hasAmmo=true, ammo=50);
 	cannon.projectileVelocity=10;
 	cannon.type = 'p'; // projectile type
 	return cannon;
