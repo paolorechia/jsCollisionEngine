@@ -226,10 +226,8 @@ var EnergySource = function(max = 100, rechargeRate = 10, rechargeSpeed=1000){ /
 				this.recharging = false;
 				this.rechargeEvent = undefined;
 			}
-					//	console.log(this.rechargeEvent);
 			if (this.rechargeEvent == undefined){
 				this.rechargeEvent = setTimeout(function(){source.recharging = true;}, source.rechargeSpeed);
-				console.log(this.rechargeEvent);
 			}
 		}
 	}
