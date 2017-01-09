@@ -14,7 +14,9 @@ var coord = new Point(c.width/2, c.height/2);
    }
 	keyboardDown = function(event){
 		if (event.key == ' '){
-			player.weapon.fire(true);
+			for (var i= 0; i < player.weapons.length; i++){
+				player.weapons[i].fire(true);
+			}
         }
         if (event.key == 'Escape'){
         }
@@ -58,7 +60,9 @@ var coord = new Point(c.width/2, c.height/2);
 		   }
         }
         if (event.key == ' '){
-			player.weapon.fire(false);
+			for (var i= 0; i < player.weapons.length; i++){
+				player.weapons[i].fire(false);
+			}
         }
 		if (player.lock){
 			return;

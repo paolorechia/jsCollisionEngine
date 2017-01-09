@@ -802,7 +802,6 @@ function lightLaserBeam(){
 		ctx.strokeStyle="#009099";
 		oldWidth = ctx.lineWidth;
 		ctx.lineWidth=beam.projectileWidth;
-		console.log(ctx.lineWidth);
 		for (var i = 0; i < this.projectiles.length; i++){
 			ctx.moveTo(this.position.x, this.position.y);
 			ctx.lineTo(this.projectiles[i].vertices[3].x, this.projectiles[i].vertices[3].y);
@@ -820,7 +819,6 @@ function heavyLaserBeam(){
 		ctx.beginPath();
 		ctx.strokeStyle="#009099";
 		oldWidth = ctx.lineWidth;
-		console.log(ctx.lineWidth);
 		ctx.lineWidth=beam.projectileWidth;
 		for (var i = 0; i < this.projectiles.length; i++){
 			ctx.moveTo(this.position.x, this.position.y);
@@ -928,9 +926,12 @@ function mainLoop(){
 		player.updateStrafe();
 		player.updatePosition();
 		player.updateTurn();
-		player.weapon.updateDirection(player.hitbox.center);
 		player.hitbox.update();
-		player.weapon.updateFiring(player.hitbox.velocity);
+		
+		for (var i = 0; i < player.weapons.length; i++){
+			player.weapons[i].updateDirection(player.hitbox.center);
+			player.weapons[i].updateFiring(player.hitbox.velocity);
+		}
 		
 		for (var u = 0; u < player.weapons.length; u++){
 			for (var i = 0; i < player.weapons[u].projectiles.length; i++){
@@ -947,7 +948,6 @@ function mainLoop(){
 	if (level.current > level.max){
 		drawEndGame(true);
 	}
-
 		for (var i = 0; i < objects.length; i++){
 			mtv = collisionSTA(player.hitbox, objects[i]);
 			if (mtv){
