@@ -825,6 +825,13 @@ function drawHeavyBlaster(polygon, strokeColor="#0000FF", hitColor="#FF0000", jo
 				}
 		}
 }
+
+function machineGun(){
+	cannon = new Weapon(velocity = 10, width = 1, range = 500, limit = 12, damage = 10, mass = 100, rateOfFire = 16, spin=0, hasAmmo=true, ammo=2000);
+	cannon.type = 'p'; // projectile type
+	cannon.name="Machine Gun";
+	return cannon;
+}
 	
 function lightCannon(){
 	cannon = new Weapon(velocity = 2, width = 4, range = 500, limit = 10, damage = 10, mass = 100, rateOfFire = 8, spin = 120, hasAmmo=true, ammo=2000);
@@ -934,14 +941,14 @@ var objects = [];
 var player = new Ship(c.width/2, c.height/2, 20);
 player.updateDirection();
 
-player.addWeapon(lightCannon());
+player.addWeapon(machineGun());
 player.changeWeapon();
 player.weapon.setCenter(player.hitbox.vertices[0]);
 player.weapon.setPosition(player.auxHitbox.vertices[0]);
 
 player.weapon.enabled=true;
 
-player.addWeapon(lightCannon());
+player.addWeapon(machineGun());
 player.changeWeapon();
 player.weapon.setCenter(player.hitbox.vertices[1]);
 player.weapon.setPosition(player.auxHitbox.vertices[1]);
@@ -1038,7 +1045,7 @@ function mainLoop(){
 				}
 			}
 		}
-		checkBorder(player.hitbox);
+		checkBorder(player.hitbox); //auxHitbox);
 		calculateAxes(player.hitbox);
 		rotatePolygon(player.hitbox, player.hitbox.spin);	
 	}
@@ -1048,7 +1055,9 @@ function mainLoop(){
 		for (var i = 0; i < objects.length; i++){
 			mtv = collisionSTA(player.hitbox, objects[i]);
 			if (mtv){
+				
 				elasticCollision(player.hitbox, mtv, objects[i]);
+				elasticCollision(player.auxHitbox, mtv, objects[i]);
 				if (player.immunity == false){
 					player.hp -=10;
 				}
