@@ -460,7 +460,8 @@ var Ship = function(x, y, l1){
 				this.hitbox.versor.y = aux.y;
 			}				
 		}
-		
+		this.auxHitbox.velocity = this.hitbox.velocity;
+		this.auxHitbox.versor = this.hitbox.versor;
 	}
 	this.strafe = function(side, isStrafing){
 		this.isStrafing = isStrafing;
@@ -1008,7 +1009,6 @@ function mainLoop(){
 		if (player.hp >= 0){
 			player.drawAutoPath();
 			player.draw();
-			drawPolygon(player.auxHitbox);
 		}
 		player.drawStatus();
 		for (var i = 0; i < objects.length; i++){
