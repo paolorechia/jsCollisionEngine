@@ -528,20 +528,24 @@ var Ship = function(x, y, l1){
 		if (this.pathAngle > 0){
 			if (this.pathAngle >= this.turnRate){
 				this.pathAngle -= this.turnRate;
-				rotatePolygon(this.hitbox, this.turnRate);
+				this.turn('r', true);
 			}
 			else{
-				rotatePolygon(this.hitbox, this.pathAngle);
-				this.pathAngle = 0;				
+				this.turn('r', true);
+				this.updateTurn();
+				this.turn('l', false);
+				this.pathAngle = 0;
 			}
 		}
 		else{
 			if (this.pathAngle < this.turnRate){
 				this.pathAngle += this.turnRate;
-				rotatePolygon(this.hitbox, -this.turnRate);
+				this.turn('l', true);
 			}
 			else{
-				rotatePolygon(this.hitbox, this.pathAngle);
+				this.turn('l', true);
+				this.updateTurn();
+				this.turn('l', false);
 				this.pathAngle = 0;
 			}
 		}
