@@ -794,7 +794,7 @@ function heavyLaserBlaster(){
 	return blaster;
 }
 function lightLaserBeam(){
-	beam = new Weapon(velocity = 100, width = 2, range = 2000, limit = 1, damage = 1, mass=1, rateOfFire = 1000);
+	beam = new Weapon(velocity = 100, width = 4, range = 2000, limit = 1, damage = 1, mass=1, rateOfFire = 1000);
 	beam.type = 'l'; // laser type
 
 	beam.draw = function(){
@@ -813,7 +813,7 @@ function lightLaserBeam(){
 	return beam;
 }
 function heavyLaserBeam(){
-	beam = new Weapon(velocity = 100, width = 5, range = 2000, limit = 1, damage = 5, mass=1, rateOfFire = 1000);
+	beam = new Weapon(velocity = 100, width = 8, range = 2000, limit = 1, damage = 5, mass=1, rateOfFire = 1000);
 	beam.type = 'l'; // laser type
 
 	beam.draw = function(){
