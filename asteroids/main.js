@@ -703,6 +703,16 @@ var Ship = function(x, y, l1){
 		this.currentWeapon = this.currentWeapon % this.weapons.length;
 		this.weapon = this.weapons[this.currentWeapon];
 	}
+	this.cycleEnabledWeapons = function(){
+		this.currentWeapon++;
+		this.currentWeapon = this.currentWeapon % this.weapons.length;
+		if (this.weapons[this.currentWeapon].enabled){
+			this.weapons[this.currentWeapon].enabled = false;
+		}
+		else{
+			this.weapons[this.currentWeapon].enabled = true;			
+		}
+	}
 }
 
 function killObjects(objects){
@@ -897,6 +907,7 @@ player.weapon.setPosition(player.front);
 player.weapon.setCenter(player.hitbox.center);
 player.weapon.enabled=true;
 
+/*
 player.addWeapon(asteroidShooter());
 player.changeWeapon();
 player.weapon.setPosition(player.front);
@@ -922,6 +933,7 @@ player.addWeapon(heavyLaserBeam());
 player.changeWeapon();
 player.weapon.setPosition(player.front);
 player.weapon.setCenter(player.hitbox.center);
+*/
 
 var game = new Game();
 function mainLoop(){

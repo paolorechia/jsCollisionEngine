@@ -24,7 +24,7 @@ var coord = new Point(c.width/2, c.height/2);
 			player.weapon.autoFire();
 		}
 		if (event.key == 'r'){
-			player.changeWeapon();
+			player.cycleEnabledWeapons();
 		}
 		if (player.lock){
 			return;
