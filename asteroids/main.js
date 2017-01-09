@@ -1045,7 +1045,7 @@ function mainLoop(){
 				}
 			}
 		}
-		checkBorder(player.hitbox); //auxHitbox);
+		checkBorder(player.hitbox, function(){player.auxHitbox.applyVector(diff)});
 		calculateAxes(player.hitbox);
 		rotatePolygon(player.hitbox, player.hitbox.spin);	
 	}
