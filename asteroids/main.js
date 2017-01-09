@@ -209,11 +209,11 @@ var Phases = function(){
 		this.current = 0;
 }
 
-var EnergySource = function(max = 100, rechargeRate = 10, rechargeSpeed=1000){ //rechargeSpeed in microseconds; rechargeRate in points per second
+var EnergySource = function(max = 100, rechargeRate = 10, rechargeSpeed=500){ //rechargeSpeed in microseconds; rechargeRate in points per second
 	this.max = max;
 	this.current = this.max;
 	this.rechargeRate = rechargeRate;
-	this.rechargeSpeed = 1000;
+	this.rechargeSpeed = rechargeSpeed;
 	this.rechargeEvent = undefined;
 	this.recharging= true;
 	this.recharge = function(source){
