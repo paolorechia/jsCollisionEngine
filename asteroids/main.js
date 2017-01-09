@@ -715,16 +715,64 @@ function drawAsteroid(polygon){
 	ctx.stroke();
 	ctx.fillStyle="#FFFFFF";
 }
+function drawPolygon2(polygon, strokeColor="#0000FF", hitcolor="#FF0000", joints=true, center=true, fillColor="#00F00FF"){
+		ctx.beginPath();
+		if (polygon.hit == true){
+			ctx.strokeStyle="#FF0000";
+		}
+		else{
+			ctx.strokeStyle=strokeColor;
+		}
+		ctx.moveTo(polygon.vertices[0].x,
+				   polygon.vertices[0].y);
 
+		for (var i =0; i < polygon.vertices.length; i++){
+			ctx.lineTo(polygon.vertices[i].x,
+					   polygon.vertices[i].y);		
+		}
+		ctx.lineTo(polygon.vertices[0].x,
+				   polygon.vertices[0].y);
+				   
+		ctx.stroke();
+		ctx.fillStyle=fillColor;
+		if (joints){
+			for (var i = 0; i < polygon.vertices.length; i++){
+				ctx.beginPath();
+				ctx.arc(polygon.vertices[i].x,
+				polygon.vertices[i].y,
+				3, 0, 2*Math.PI);
+				ctx.fill();
+			}
+		}
+		if(center){
+			if (polygon.center != undefined){
+				ctx.fillStyle=fillColor;
+				ctx.beginPath();
+				ctx.arc(polygon.center.x,
+						polygon.center.y,
+						3, 0, 2*Math.PI);
+				ctx.fill();
+			}
+		}
+}
 function basicCannon(){
-	cannon = new Weapon(velocity = 10, width = 1, range = 500, limit = 10, damage = 10, mass = 100, rateOfFire = 8);
+	cannon = new Weapon(velocity = 10, width = 10, range = 500, limit = 10, damage = 10, mass = 100, rateOfFire = 8);
 	cannon.type = 'p'; // projectile type
 	return cannon;
 }
 
+function laserBlaster(){
+	blaster = new Weapon(velocity = 30, width = 1, range = 1000, limit = 12, damage = 1, mass=1, rateOfFire = 12);
+	blaster.draw = function(){
+		for (var i = 0; i < this.projectiles.length; i++){
+			drawPolygon2(this.projectiles[i], joints=false);
+		}
+	}
+	return blaster;
+}
 
 function laserBeam(){
-	beam = new Weapon(velocity = 100, width = 3, range = 2000, limit = 1, damage = 1, mass=1, rateOfFire = 1000);
+	beam = new Weapon(velocity = 100, width = 1, range = 2000, limit = 1, damage = 1, mass=1, rateOfFire = 1000);
 	beam.type = 'l'; // laser type
 
 	beam.draw = function(){
@@ -734,8 +782,8 @@ function laserBeam(){
 		ctx.lineWidth=1;
 
 		for (var i = 0; i < this.projectiles.length; i++){
-		ctx.moveTo(this.position.x, this.position.y);
-		ctx.lineTo(this.projectiles[i].vertices[3].x, this.projectiles[i].vertices[3].y);
+			ctx.moveTo(this.position.x, this.position.y);
+			ctx.lineTo(this.projectiles[i].vertices[3].x, this.projectiles[i].vertices[3].y);
 		}
 		ctx.stroke();	
 		ctx.lineWidth = oldWidth;
@@ -776,6 +824,11 @@ player.weapon.setPosition(player.front);
 player.weapon.setCenter(player.hitbox.center);
 
 player.addWeapon(laserBeam());
+player.changeWeapon();
+player.weapon.setPosition(player.front);
+player.weapon.setCenter(player.hitbox.center);
+
+player.addWeapon(laserBlaster());
 player.changeWeapon();
 player.weapon.setPosition(player.front);
 player.weapon.setCenter(player.hitbox.center);
