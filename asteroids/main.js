@@ -715,10 +715,10 @@ function drawAsteroid(polygon){
 	ctx.stroke();
 	ctx.fillStyle="#FFFFFF";
 }
-function drawPolygon2(polygon, strokeColor="#0000FF", hitcolor="#FF0000", joints=true, center=true, fillColor="#00F00FF"){
+function drawPolygon2(polygon, strokeColor="#0000FF", hitColor="#FF0000", joints=true, center=true, fillColor="#00F00FF"){
 		ctx.beginPath();
 		if (polygon.hit == true){
-			ctx.strokeStyle="#FF0000";
+			ctx.strokeStyle=hitColor;
 		}
 		else{
 			ctx.strokeStyle=strokeColor;
@@ -762,10 +762,10 @@ function basicCannon(){
 }
 
 function laserBlaster(){
-	blaster = new Weapon(velocity = 30, width = 1, range = 1000, limit = 12, damage = 1, mass=1, rateOfFire = 12);
+	blaster = new Weapon(velocity = 30, width = 1, range = 1000, limit = 12, damage = 5, mass=1, rateOfFire = 12);
 	blaster.draw = function(){
 		for (var i = 0; i < this.projectiles.length; i++){
-			drawPolygon2(this.projectiles[i], joints=false);
+			drawPolygon2(this.projectiles[i], strokeColor="#0000FF", hitColor="#0FF0FF", joints=false, center=false, fillColor="#0F00FF");
 		}
 	}
 	return blaster;
