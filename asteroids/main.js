@@ -861,13 +861,13 @@ player.updateDirection();
 player.addWeapon(lightCannon());
 player.changeWeapon();
 player.weapon.setPosition(player.front);
-player.weapon.setCenter(player.hitbox.center);
+player.weapon.setCenter(player.hitbox.vertices[0]);
 player.weapon.enabled=true;
 
 player.addWeapon(lightCannon());
 player.changeWeapon();
 player.weapon.setPosition(player.front);
-player.weapon.setCenter(player.hitbox.center);
+player.weapon.setCenter(player.hitbox.vertices[1]);
 player.weapon.enabled=true;
 
 player.addWeapon(heavyCannon());
@@ -939,7 +939,7 @@ function mainLoop(){
 		
 		for (var i = 0; i < player.weapons.length; i++){
 			if (player.weapons[i].enabled){
-				player.weapons[i].updateDirection(player.hitbox.center);
+				player.weapons[i].updateDirection();
 				player.weapons[i].updateFiring(player.hitbox.velocity);
 			}
 		}
