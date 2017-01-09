@@ -179,7 +179,7 @@ var Phases = function(){
 		this.current = 0;
 }
 
-var Weapon = function(velocity = 10, width = 1, range = 1000, limit = 10, damage = 10, mass = 1, rateOfFire = 8){
+var Weapon = function(velocity = 10, width = 1, range = 1000, limit = 10, damage = 10, mass = 1, rateOfFire = 8, spin=0){
 	this.firing=false;
 	this.rateOfFire = rateOfFire;		// shots per second
 	this.lockDown = false;
@@ -223,6 +223,7 @@ var Weapon = function(velocity = 10, width = 1, range = 1000, limit = 10, damage
 		if (this.position.x > this.center.x){
 			angle *= -1;
 		}
+		projectile.spin = spin;
 		projectile.duration = this.range/this.projectileVelocity;
 		rotatePolygon(projectile,radiansToDegrees(angle));
 		this.projectiles.push(projectile);
@@ -725,12 +726,12 @@ function drawHeavyBlaster(polygon, strokeColor="#0000FF", hitColor="#FF0000", jo
 		}
 		ctx.moveTo(polygon.vertices[0].x,
 				   polygon.vertices[0].y);
-		ctx.lineTo(polygon.vertices[2].x,
-					   polygon.vertices[2].y);		
+		ctx.lineTo(polygon.vertices[3].x,
+					   polygon.vertices[3].y);		
 		ctx.moveTo(polygon.vertices[1].x,
 				   polygon.vertices[1].y);
-		ctx.lineTo(polygon.vertices[3].x,
-				   polygon.vertices[3].y);
+		ctx.lineTo(polygon.vertices[2].x,
+				   polygon.vertices[2].y);
 				   
 		ctx.stroke();
 		ctx.fillStyle=jointColor;
@@ -756,12 +757,20 @@ function drawHeavyBlaster(polygon, strokeColor="#0000FF", hitColor="#FF0000", jo
 }
 	
 function lightCannon(){
-	cannon = new Weapon(velocity = 10, width = 1, range = 500, limit = 10, damage = 10, mass = 100, rateOfFire = 8);
+	cannon = new Weapon(velocity = 2, width = 4, range = 500, limit = 10, damage = 10, mass = 100, rateOfFire = 8, spin = 120);
+	cannon.projectileVelocity = 10;
 	cannon.type = 'p'; // projectile type
 	return cannon;
 }
 function heavyCannon(){
-	cannon = new Weapon(velocity = 10, width = 10, range = 500, limit = 10, damage = 10, mass = 100, rateOfFire = 8);
+	cannon = new Weapon(velocity = 4, width = 8, range = 500, limit = 10, damage = 20, mass = 1000, rateOfFire = 4, spin = 120);
+	cannon.projectileVelocity=10;
+	cannon.type = 'p'; // projectile type
+	return cannon;
+}
+function asteroidShooter(){
+	cannon = new Weapon(velocity = 10, width = 20, range = 500, limit = 1, damage = 50, mass = 10000, rateOfFire = 1, spin = 120);
+	cannon.projectileVelocity=10;
 	cannon.type = 'p'; // projectile type
 	return cannon;
 }
@@ -776,7 +785,7 @@ function lightLaserBlaster(){
 	return blaster;
 }
 function heavyLaserBlaster(){
-	blaster = new Weapon(velocity = 30, width = 12, range = 1000, limit = 4, damage = 20, mass=1, rateOfFire = 10);
+	blaster = new Weapon(velocity = 30, width = 12, range = 1000, limit = 8, damage = 20, mass=1, rateOfFire = 6);
 	blaster.draw = function(){
 		for (var i = 0; i < this.projectiles.length; i++){
 			drawHeavyBlaster(this.projectiles[i], strokeColor="#0000FF", hitColor="#0FF0FF", joints=false, center=false, fillColor="#0F00FF");
@@ -785,7 +794,7 @@ function heavyLaserBlaster(){
 	return blaster;
 }
 function lightLaserBeam(){
-	beam = new Weapon(velocity = 100, width = 1, range = 2000, limit = 1, damage = 1, mass=1, rateOfFire = 1000);
+	beam = new Weapon(velocity = 100, width = 2, range = 2000, limit = 1, damage = 1, mass=1, rateOfFire = 1000);
 	beam.type = 'l'; // laser type
 
 	beam.draw = function(){
@@ -804,15 +813,15 @@ function lightLaserBeam(){
 	return beam;
 }
 function heavyLaserBeam(){
-	beam = new Weapon(velocity = 100, width = 10, range = 2000, limit = 1, damage = 10, mass=1, rateOfFire = 1000);
+	beam = new Weapon(velocity = 100, width = 5, range = 2000, limit = 1, damage = 5, mass=1, rateOfFire = 1000);
 	beam.type = 'l'; // laser type
 
 	beam.draw = function(){
 		ctx.beginPath();
-		ctx.strokeStyle="#0000FF";
+		ctx.strokeStyle="#009099";
 		oldWidth = ctx.lineWidth;
+	
 		ctx.lineWidth=beam.width;
-
 		for (var i = 0; i < this.projectiles.length; i++){
 			ctx.moveTo(this.position.x, this.position.y);
 			ctx.lineTo(this.projectiles[i].vertices[3].x, this.projectiles[i].vertices[3].y);
@@ -859,6 +868,12 @@ player.addWeapon(heavyCannon());
 player.changeWeapon();
 player.weapon.setPosition(player.front);
 player.weapon.setCenter(player.hitbox.center);
+
+player.addWeapon(asteroidShooter());
+player.changeWeapon();
+player.weapon.setPosition(player.front);
+player.weapon.setCenter(player.hitbox.center);
+
 
 player.addWeapon(lightLaserBlaster());
 player.changeWeapon();
@@ -960,6 +975,7 @@ function mainLoop(){
 						var hit = checkBorder(projectile);
 						if (hit) {killProjectile(projectile)};
 					}
+					rotatePolygon(player.weapons[u].projectiles[k], player.weapons[u].projectiles[k].spin);	
 			}
 		}
 		player.autoPilot();
