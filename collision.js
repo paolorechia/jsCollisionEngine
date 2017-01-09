@@ -199,66 +199,46 @@ function times2(a){
 	return a * 2;
 }
 
-function drawPolygon(polygon){
-	ctx.beginPath();
-	if (polygon.hit == true){
-		ctx.strokeStyle="#FF0000";
-	}
-	else{
-		ctx.strokeStyle="#000000";
-	}
-	if (polygon.sides == 1){	// it's a circle, special case
-		ctx.arc(polygon.center.x,
-				polygon.center.y,
-				polygon.radius,
-				0, 2*Math.PI);
+function drawPolygon(polygon, strokeColor="#0000FF", hitColor="#FF0000", joints=true, center=true, centerColor="#00F0FF", jointColor="#0000FF"){
+		ctx.beginPath();
+		if (polygon.hit == true){
+			ctx.strokeStyle=hitColor;
+		}
+		else{
+			ctx.strokeStyle=strokeColor;
+		}
+		ctx.moveTo(polygon.vertices[0].x,
+				   polygon.vertices[0].y);
 
+		for (var i =0; i < polygon.vertices.length; i++){
+			ctx.lineTo(polygon.vertices[i].x,
+					   polygon.vertices[i].y);		
+		}
+		ctx.lineTo(polygon.vertices[0].x,
+				   polygon.vertices[0].y);
+				   
 		ctx.stroke();
-		ctx.fillStyle="#00F0FF";
-
-		ctx.beginPath();
-		ctx.arc(polygon.center.x,
-				polygon.center.y,
+		ctx.fillStyle=jointColor;
+		if (joints){
+			for (var i = 0; i < polygon.vertices.length; i++){
+				ctx.beginPath();
+				ctx.arc(polygon.vertices[i].x,
+				polygon.vertices[i].y,
 				3, 0, 2*Math.PI);
-		ctx.fill();
-		
-		ctx.fillStyle="#FF00FF";
-		ctx.beginPath();
-		ctx.arc(polygon.front.x,
-				polygon.front.y,
-				3, 0, 2*Math.PI);
-		ctx.fill();
-		return;
-	}
-	ctx.moveTo(polygon.vertices[0].x,
-			   polygon.vertices[0].y);
-
-	for (var i =0; i < polygon.vertices.length; i++){
-		ctx.lineTo(polygon.vertices[i].x,
-				   polygon.vertices[i].y);		
-	}
-	ctx.lineTo(polygon.vertices[0].x,
-			   polygon.vertices[0].y);
-			   
-	ctx.stroke();
-	ctx.fillStyle="#0000FF";
-	for (var i = 0; i < polygon.vertices.length; i++){
-		ctx.beginPath();
-		ctx.arc(polygon.vertices[i].x,
-		polygon.vertices[i].y,
-		3, 0, 2*Math.PI);
-		ctx.fill();
-	}
-	if (polygon.center != undefined){
-		ctx.fillStyle="#00F0FF";
-		ctx.beginPath();
-		ctx.arc(polygon.center.x,
-				polygon.center.y,
-				3, 0, 2*Math.PI);
-		ctx.fill();
-	}
+				ctx.fill();
+			}
+		}
+		if(center){
+			if (polygon.center != undefined){
+				ctx.fillStyle=centerColor;
+				ctx.beginPath();
+				ctx.arc(polygon.center.x,
+						polygon.center.y,
+						3, 0, 2*Math.PI);
+				ctx.fill();
+			}
+		}
 }
-
 midPoint = function(pointA, pointB){
 	vector = new Vector(0, 0);
 	calculateVector(pointA, pointB, vector);
