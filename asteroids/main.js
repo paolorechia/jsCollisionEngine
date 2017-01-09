@@ -305,7 +305,7 @@ var Ship = function(x, y, l1){
 						0, 0,			// vx, vy
 						0, 0);			// velocity, spin
 	
-
+	this.auxHitbox = new Triangle(x, y - l1, l1, 0, 0, 0, 0);
 	this.hp = 100;
 	this.immunity = false;
 	this.weapons = [];
@@ -324,7 +324,6 @@ var Ship = function(x, y, l1){
 	this.rotate = 0;
 	this.front = new Point(this.hitbox.vertices[2].x,
 						   this.hitbox.vertices[2].y);
-	
 	this.inertiaVector = new Vector(0, 0);
 	this.engineVersor = new Vector(0, 0);
 	this.engineVector = new Vector(0, 0);
@@ -381,25 +380,40 @@ var Ship = function(x, y, l1){
 				this.hitbox.velocity = calculatedSpeed;
 				this.hitbox.versor.x = 0;
 				this.hitbox.versor.y = 0;
+				this.auxHitbox.velocity = this.hitbox.velocity;
+				this.auxHitbox.versor = this.hitbox.versor;
 			}
 			else{
 				unitVector(aux, aux);
 				this.hitbox.velocity = calculatedSpeed;
 				this.hitbox.versor.x = aux.x;
 				this.hitbox.versor.y = aux.y;
+				this.auxHitbox.velocity = this.hitbox.velocity;
+				this.auxHitbox.versor = this.hitbox.versor;
 			}				
 		}
 
 	}
 	this.updatePosition = function(){
 		this.hitbox.update(); 
+		this.auxHitbox.update();
 		this.front.x = this.hitbox.vertices[2].x
 		this.front.y = this.hitbox.vertices[2].y
-		
 	}
+	
 	this.updateTurn = function(){
 		if (this.isTurning){
 			rotatePolygon(this.hitbox, this.rotate);
+			theta = degreesToRadians(this.rotate);
+			for (var i = 0; i < this.auxHitbox.vertices.length; i++){
+
+				this.auxHitbox.vertices[i].x -= this.hitbox.center.x;
+				this.auxHitbox.vertices[i].y -= this.hitbox.center.y;
+				x = this.auxHitbox.vertices[i].x * Math.cos(theta) - this.auxHitbox.vertices[i].y * Math.sin(theta);
+				y = this.auxHitbox.vertices[i].x * Math.sin(theta) + this.auxHitbox.vertices[i].y * Math.cos(theta);
+				this.auxHitbox.vertices[i].x = x + this.hitbox.center.x;
+				this.auxHitbox.vertices[i].y = y + this.hitbox.center.y;
+			}
 		}
 	}
 	this.turn = function(side, isTurning){
@@ -860,14 +874,16 @@ player.updateDirection();
 
 player.addWeapon(lightCannon());
 player.changeWeapon();
-player.weapon.setPosition(player.front);
 player.weapon.setCenter(player.hitbox.vertices[0]);
+player.weapon.setPosition(player.auxHitbox.vertices[0]);
+
 player.weapon.enabled=true;
 
 player.addWeapon(lightCannon());
 player.changeWeapon();
-player.weapon.setPosition(player.front);
 player.weapon.setCenter(player.hitbox.vertices[1]);
+player.weapon.setPosition(player.auxHitbox.vertices[1]);
+
 player.weapon.enabled=true;
 
 player.addWeapon(heavyCannon());
@@ -935,7 +951,6 @@ function mainLoop(){
 		player.updateStrafe();
 		player.updatePosition();
 		player.updateTurn();
-		player.hitbox.update();
 		
 		for (var i = 0; i < player.weapons.length; i++){
 			if (player.weapons[i].enabled){
@@ -993,6 +1008,7 @@ function mainLoop(){
 		if (player.hp >= 0){
 			player.drawAutoPath();
 			player.draw();
+			drawPolygon(player.auxHitbox);
 		}
 		player.drawStatus();
 		for (var i = 0; i < objects.length; i++){
