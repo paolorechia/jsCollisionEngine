@@ -179,7 +179,7 @@ var Phases = function(){
 		this.current = 0;
 }
 
-var Weapon = function(velocity = 10, width = 1, range = 1000, limit = 10, damage = 10, mass = 1, rateOfFire = 8, spin=0){
+var Weapon = function(velocity = 10, width = 1, range = 1000, limit = 10, damage = 10, mass = 1, rateOfFire = 8, spin=0, hasAmmo=false, ammo=100){
 	this.enabled = false;
 	this.firing=false;
 	this.rateOfFire = rateOfFire;		// shots per second
@@ -193,6 +193,13 @@ var Weapon = function(velocity = 10, width = 1, range = 1000, limit = 10, damage
 	this.limit = limit;
 	this.mass = mass;
 	this.damage = damage;
+	this.hasAmmo = hasAmmo;
+	if (hasAmmo){
+		this.ammo=ammo;
+	}
+	else{
+		this.ammo=1;
+	}
 	this.projectileHeight = this.projectileVelocity * 2;
 	this.projectiles = [];
 	
@@ -208,7 +215,7 @@ var Weapon = function(velocity = 10, width = 1, range = 1000, limit = 10, damage
 	}
 	
 	this.updateFiring = function(shipSpeed){
-		if (this.projectiles.length >= this.limit || this.firing == false || this.lockDown == true){
+		if (this.projectiles.length >= this.limit || this.firing == false || this.lockDown == true || this.ammo <= 0){
 			return;
 		}
 //		console.log("fire!");
@@ -228,6 +235,9 @@ var Weapon = function(velocity = 10, width = 1, range = 1000, limit = 10, damage
 		projectile.duration = this.range/this.projectileVelocity;
 		rotatePolygon(projectile,radiansToDegrees(angle));
 		this.projectiles.push(projectile);
+		if (this.hasAmmo){
+			this.ammo--;
+		}
 		this.resetLockDown(this);
 	}
 	this.fire = function(pressed){
@@ -787,13 +797,13 @@ function drawHeavyBlaster(polygon, strokeColor="#0000FF", hitColor="#FF0000", jo
 }
 	
 function lightCannon(){
-	cannon = new Weapon(velocity = 2, width = 4, range = 500, limit = 10, damage = 10, mass = 100, rateOfFire = 8, spin = 120);
+	cannon = new Weapon(velocity = 2, width = 4, range = 500, limit = 10, damage = 10, mass = 100, rateOfFire = 8, spin = 120, hasAmmo=true, ammo=2000);
 	cannon.projectileVelocity = 10;
 	cannon.type = 'p'; // projectile type
 	return cannon;
 }
 function heavyCannon(){
-	cannon = new Weapon(velocity = 4, width = 8, range = 500, limit = 10, damage = 20, mass = 1000, rateOfFire = 4, spin = 120);
+	cannon = new Weapon(velocity = 4, width = 8, range = 500, limit = 10, damage = 20, mass = 1000, rateOfFire = 4, spin = 120, hasAmmo=true, ammo=500);
 	cannon.projectileVelocity=10;
 	cannon.type = 'p'; // projectile type
 	return cannon;
