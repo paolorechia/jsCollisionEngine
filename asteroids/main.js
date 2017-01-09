@@ -137,6 +137,36 @@ function buildInstructions(){
 	instructions.push(string);	
 	return instructions;
 }
+function buildWeaponsStatus(weapons){
+	var list = [];
+	for (var i = 0; i < weapons.length; i++){
+		if (weapons[i].enabled){
+			string = weapons[i].name + ": enabled";
+		}
+		else{
+			string = weapons[i].name + ": disabled";
+		}
+		if (weapons[i].hasAmmo){
+			string += " --- Ammo: " + weapons[i].ammo;
+		}
+		list.push(string);
+	}
+	return list;
+}
+function drawWeaponsStatus(list){
+	ctx.beginPath();
+	ctx.fillStyle="#00F0FF";
+	ctx.font="14px Arial";
+	var offSet = 0;
+	var xStart = 230;
+	var colSize = 3;
+	for (var i = 0; i < list.length; i++){
+		if (i % colSize == 0){
+			offSet += 240;
+		}
+		ctx.fillText(list[i], offSet - xStart, 40 + (i % colSize) * 20);
+	}
+}
 function drawInstructions(instructions){
 	ctx.beginPath();
 	ctx.fillStyle="#000FFF";
@@ -800,18 +830,21 @@ function lightCannon(){
 	cannon = new Weapon(velocity = 2, width = 4, range = 500, limit = 10, damage = 10, mass = 100, rateOfFire = 8, spin = 120, hasAmmo=true, ammo=2000);
 	cannon.projectileVelocity = 10;
 	cannon.type = 'p'; // projectile type
+	cannon.name="Light Cannon";
 	return cannon;
 }
 function heavyCannon(){
 	cannon = new Weapon(velocity = 4, width = 8, range = 500, limit = 10, damage = 20, mass = 1000, rateOfFire = 4, spin = 120, hasAmmo=true, ammo=500);
 	cannon.projectileVelocity=10;
 	cannon.type = 'p'; // projectile type
+	cannon.name="Heavy Cannon";
 	return cannon;
 }
 function asteroidShooter(){
 	cannon = new Weapon(velocity = 10, width = 20, range = 500, limit = 1, damage = 50, mass = 10000, rateOfFire = 1, spin = 120, hasAmmo=true, ammo=50);
 	cannon.projectileVelocity=10;
 	cannon.type = 'p'; // projectile type
+	cannon.name="Asteroid Shooter";
 	return cannon;
 }
 
@@ -822,6 +855,7 @@ function lightLaserBlaster(){
 			drawPolygon(this.projectiles[i], strokeColor="#0000FF", hitColor="#0FF0FF", joints=false, center=false, fillColor="#0F00FF");
 		}
 	}
+	blaster.name = "Light Laser Blaster";
 	return blaster;
 }
 function heavyLaserBlaster(){
@@ -831,6 +865,7 @@ function heavyLaserBlaster(){
 			drawHeavyBlaster(this.projectiles[i], strokeColor="#0000FF", hitColor="#0FF0FF", joints=false, center=false, fillColor="#0F00FF");
 		}
 	}
+	blaster.name = "Heavy Laser Blaster";
 	return blaster;
 }
 function lightLaserBeam(){
@@ -849,6 +884,7 @@ function lightLaserBeam(){
 		ctx.stroke();	
 		ctx.lineWidth = oldWidth;
 	}
+	beam.name = "Light Laser Beam";
 	return beam;
 }
 function heavyLaserBeam(){
@@ -867,6 +903,7 @@ function heavyLaserBeam(){
 		ctx.stroke();	
 		ctx.lineWidth = oldWidth;
 	}
+	beam.name = "Heavy Laser Beam";
 	return beam;
 }
 function killProjectile(projectile){
@@ -911,7 +948,7 @@ player.weapon.setPosition(player.auxHitbox.vertices[1]);
 
 player.weapon.enabled=true;
 
-player.addWeapon(heavyCannon());
+player.addWeapon(lightLaserBlaster());
 player.changeWeapon();
 player.weapon.setPosition(player.front);
 player.weapon.setCenter(player.hitbox.center);
@@ -945,6 +982,8 @@ player.weapon.setPosition(player.front);
 player.weapon.setCenter(player.hitbox.center);
 */
 
+var instruct = false;
+
 var game = new Game();
 function mainLoop(){
 	newDate = new Date();
@@ -955,8 +994,13 @@ function mainLoop(){
 	ctx.fillStyle="#000000";
 	ctx.fillRect(0,0,c.width,c.height);
 
-	drawInstructions(instructions);
-
+	if (instruct){
+		drawInstructions(instructions);
+	}
+	else{
+		weaponStatus = buildWeaponsStatus(player.weapons);
+		drawWeaponsStatus(weaponStatus);
+	}
 	if (objects.length == 0 && level.current <= level.max){
 		level.next();
 		if (level.current <= level.max){
@@ -1032,6 +1076,7 @@ function mainLoop(){
 			}
 		}
 		player.autoPilot();
+
 		if (player.hp >= 0){
 			player.drawAutoPath();
 			player.draw();
@@ -1045,6 +1090,7 @@ function mainLoop(){
 	checkColisionsNaive(objects);
 	score.draw();
 	level.draw();
+
 	
 	fps.calculateMean();
 	drawFPS(fps.mean);
