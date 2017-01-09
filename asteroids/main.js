@@ -715,14 +715,58 @@ function drawAsteroid(polygon){
 	ctx.stroke();
 	ctx.fillStyle="#FFFFFF";
 }
-
-function basicCannon(){
+function drawHeavyBlaster(polygon, strokeColor="#0000FF", hitColor="#FF0000", joints=true, center=true, centerColor="#00F0FF", jointColor="#0000FF"){
+		ctx.beginPath();
+		if (polygon.hit == true){
+			ctx.strokeStyle=hitColor;
+		}
+		else{
+			ctx.strokeStyle=strokeColor;
+		}
+		ctx.moveTo(polygon.vertices[0].x,
+				   polygon.vertices[0].y);
+		ctx.lineTo(polygon.vertices[2].x,
+					   polygon.vertices[2].y);		
+		ctx.moveTo(polygon.vertices[1].x,
+				   polygon.vertices[1].y);
+		ctx.lineTo(polygon.vertices[3].x,
+				   polygon.vertices[3].y);
+				   
+		ctx.stroke();
+		ctx.fillStyle=jointColor;
+		if (joints){
+			for (var i = 0; i < polygon.vertices.length; i++){
+				ctx.beginPath();
+				ctx.arc(polygon.vertices[i].x,
+				polygon.vertices[i].y,
+				3, 0, 2*Math.PI);
+				ctx.fill();
+			}
+		}
+		if(center){
+			if (polygon.center != undefined){
+				ctx.fillStyle=centerColor;
+				ctx.beginPath();
+				ctx.arc(polygon.center.x,
+						polygon.center.y,
+						3, 0, 2*Math.PI);
+				ctx.fill();
+				}
+		}
+}
+	
+function lightCannon(){
+	cannon = new Weapon(velocity = 10, width = 1, range = 500, limit = 10, damage = 10, mass = 100, rateOfFire = 8);
+	cannon.type = 'p'; // projectile type
+	return cannon;
+}
+function heavyCannon(){
 	cannon = new Weapon(velocity = 10, width = 10, range = 500, limit = 10, damage = 10, mass = 100, rateOfFire = 8);
 	cannon.type = 'p'; // projectile type
 	return cannon;
 }
 
-function laserBlaster(){
+function lightLaserBlaster(){
 	blaster = new Weapon(velocity = 30, width = 1, range = 1000, limit = 12, damage = 5, mass=1, rateOfFire = 12);
 	blaster.draw = function(){
 		for (var i = 0; i < this.projectiles.length; i++){
@@ -731,16 +775,43 @@ function laserBlaster(){
 	}
 	return blaster;
 }
-
-function laserBeam(){
+function heavyLaserBlaster(){
+	blaster = new Weapon(velocity = 30, width = 12, range = 1000, limit = 4, damage = 20, mass=1, rateOfFire = 10);
+	blaster.draw = function(){
+		for (var i = 0; i < this.projectiles.length; i++){
+			drawHeavyBlaster(this.projectiles[i], strokeColor="#0000FF", hitColor="#0FF0FF", joints=false, center=false, fillColor="#0F00FF");
+		}
+	}
+	return blaster;
+}
+function lightLaserBeam(){
 	beam = new Weapon(velocity = 100, width = 1, range = 2000, limit = 1, damage = 1, mass=1, rateOfFire = 1000);
+	beam.type = 'l'; // laser type
+
+	beam.draw = function(){
+		ctx.beginPath();
+		ctx.strokeStyle="#009099";
+		oldWidth = ctx.lineWidth;
+		ctx.lineWidth=beam.width;
+
+		for (var i = 0; i < this.projectiles.length; i++){
+			ctx.moveTo(this.position.x, this.position.y);
+			ctx.lineTo(this.projectiles[i].vertices[3].x, this.projectiles[i].vertices[3].y);
+		}
+		ctx.stroke();	
+		ctx.lineWidth = oldWidth;
+	}
+	return beam;
+}
+function heavyLaserBeam(){
+	beam = new Weapon(velocity = 100, width = 10, range = 2000, limit = 1, damage = 10, mass=1, rateOfFire = 1000);
 	beam.type = 'l'; // laser type
 
 	beam.draw = function(){
 		ctx.beginPath();
 		ctx.strokeStyle="#0000FF";
 		oldWidth = ctx.lineWidth;
-		ctx.lineWidth=1;
+		ctx.lineWidth=beam.width;
 
 		for (var i = 0; i < this.projectiles.length; i++){
 			ctx.moveTo(this.position.x, this.position.y);
@@ -779,17 +850,32 @@ var objects = [];
 var player = new Ship(c.width/2, c.height/2, 20);
 player.updateDirection();
 
-player.addWeapon(basicCannon());
+player.addWeapon(lightCannon());
 player.changeWeapon();
 player.weapon.setPosition(player.front);
 player.weapon.setCenter(player.hitbox.center);
 
-player.addWeapon(laserBeam());
+player.addWeapon(heavyCannon());
 player.changeWeapon();
 player.weapon.setPosition(player.front);
 player.weapon.setCenter(player.hitbox.center);
 
-player.addWeapon(laserBlaster());
+player.addWeapon(lightLaserBlaster());
+player.changeWeapon();
+player.weapon.setPosition(player.front);
+player.weapon.setCenter(player.hitbox.center);
+
+player.addWeapon(heavyLaserBlaster());
+player.changeWeapon();
+player.weapon.setPosition(player.front);
+player.weapon.setCenter(player.hitbox.center);
+
+player.addWeapon(lightLaserBeam());
+player.changeWeapon();
+player.weapon.setPosition(player.front);
+player.weapon.setCenter(player.hitbox.center);
+
+player.addWeapon(heavyLaserBeam());
 player.changeWeapon();
 player.weapon.setPosition(player.front);
 player.weapon.setCenter(player.hitbox.center);
