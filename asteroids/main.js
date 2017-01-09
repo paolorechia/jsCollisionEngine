@@ -90,13 +90,13 @@ var Level = function(){
 			var numberTriangles = Math.round(this.current);
 			for (i = 0; i < numberRectangles; i++){
 			objects.push(new randomRect(maxSize, minSize, maxSpeed, maxSpin));
-			objects[i].hp = Math.round(Math.sqrt(objects[i].mass));
-			objects[i].dead == false;
+			objects[numberRectangles + numberTriangles + i].hp = Math.round(Math.sqrt(objects[i].mass));
+			objects[numberRectangles + numberTriangles + i].dead == false;
 			}
 			for (i = 0; i < numberTriangles; i++){
 			objects.push(new randomTriangle(maxSize, minSize, maxSpeed, maxSpin));
-			objects[numberRectangles + i].hp = Math.round(Math.sqrt(objects[i].mass));
-			objects[numberRectangles + i].dead == false;			
+			objects[numberRectangles + numberRectangles + numberTriangles + i].hp = Math.round(Math.sqrt(objects[i].mass));
+			objects[numberRectangles + numberRectangles + numberTriangles + i].dead == false;			
 			}			
 		}
 	}
@@ -180,6 +180,7 @@ var Phases = function(){
 }
 
 var Weapon = function(velocity = 10, width = 1, range = 1000, limit = 10, damage = 10, mass = 1, rateOfFire = 8, spin=0){
+	this.enabled = false;
 	this.firing=false;
 	this.rateOfFire = rateOfFire;		// shots per second
 	this.lockDown = false;
@@ -861,11 +862,19 @@ player.addWeapon(lightCannon());
 player.changeWeapon();
 player.weapon.setPosition(player.front);
 player.weapon.setCenter(player.hitbox.center);
+player.weapon.enabled=true;
+
+player.addWeapon(lightCannon());
+player.changeWeapon();
+player.weapon.setPosition(player.front);
+player.weapon.setCenter(player.hitbox.center);
+player.weapon.enabled=true;
 
 player.addWeapon(heavyCannon());
 player.changeWeapon();
 player.weapon.setPosition(player.front);
 player.weapon.setCenter(player.hitbox.center);
+player.weapon.enabled=true;
 
 player.addWeapon(asteroidShooter());
 player.changeWeapon();
@@ -929,8 +938,10 @@ function mainLoop(){
 		player.hitbox.update();
 		
 		for (var i = 0; i < player.weapons.length; i++){
-			player.weapons[i].updateDirection(player.hitbox.center);
-			player.weapons[i].updateFiring(player.hitbox.velocity);
+			if (player.weapons[i].enabled){
+				player.weapons[i].updateDirection(player.hitbox.center);
+				player.weapons[i].updateFiring(player.hitbox.velocity);
+			}
 		}
 		
 		for (var u = 0; u < player.weapons.length; u++){
