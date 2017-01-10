@@ -21,90 +21,43 @@ var y = 200;
 
 
 
-function generateRed(){
+function generateColor(color, intensity = 255, alternate = 6){
 	var i = 0;
 		for (var j = 0; j < width; j++){
 			var random = Math.random();		
 			if (random > 0.5){
-				red[i][j]=255;
+				color[i][j]=intensity;
 			}
 			else{
-				red[i][j]=0;	
+				color[i][j]=0;	
 			}
 		}
 	for (var i = 1; i < height; i++){
-		red[i][0] = (red[i-1][0] + red[i-1][1]) / 2;
+		color[i][0] = (color[i-1][0] + color[i-1][1]) / 2;
 
-		if (i% 4 == 0){
+		if (i% alternate == 0){
 			for (var j = 0; j < width; j++){
 				var random = Math.random();		
 				if (random > 0.5){
-					red[i][j]=255;
+					color[i][j]=intensity;
 				}
 				else{
-					red[i][j]=0;	
+					color[i][j]=0;	
 				}
 			}
 		}
 		else{
-					if (i % 2 != 0){
+			if (i % 2 != 0){
 			for (var j = 1; j < width - 1; j++){
-				red[i][j] = (red[i-1][j] + red[i-1][j-1] + red[i-1][j+1]) / 3;
+				color[i][j] = (color[i-1][j] + color[i-1][j-1] + color[i-1][j+1]) / 3;
 			}
 		}
-		}
-		/*
-		else{
-			for (var j = 1; j < width - 1; j++){
-				red[i][j] = (red[i-1][j] + red[i-1][j] + red[i-2][j]) / 3;
-			}
-		}
-		*/
-	}
-}
-function generateGreen(){
-	var i = 0;
-		for (var j = 0; j < width; j++){
-			var random = Math.random();
-			if (random > 0.5){
-				green[i][j]=255;
-			}
-			else{
-				green[i][j]=0;	
-			}
-			//green[i][j]=Math.round(random);
-		//	console.log(green[i][j]);
-		}
-	for (var i = 1; i < height; i++){
-		green[i][0] = (green[i-1][0] + green[i-1][1]) / 2;
-		for (var j = 1; j < width - 1; j++){
-			green[i][j] = (green[i-1][j] + green[i-1][j-1]) + green[i-1][j+1] / 3;
 		}
 	}
 }
-function generateBlue(){
-	var i = 0;
-		for (var j = 0; j < width; j++){
-			//var random = Math.random() * 40;
-			var random = Math.random();
-			if (random > 0.5){
-				blue[i][j]=255;
-			}
-			else{
-				blue[i][j]=0;	
-			
-			//blue[i][j]=Math.round(random);
-		//	console.log(blue[i][j]);
-			}
-		}
-	for (var i = 1; i < height; i++){
-		blue[i][0] = (blue[i-1][0] + blue[i-1][1]) / 2;
-		for (var j = 1; j < width - 1; j++){
-			blue[i][j] = (blue[i-1][j] + blue[i-1][j-1]) + blue[i-1][j+1] / 3;
-		}
-	}
-}
-function drawRed(){
+
+
+function drawFire(){
 	for (var i = 0; i < height; i++){
 		for (var j = 0; j < width; j++){
 			ctx.beginPath();
@@ -112,9 +65,11 @@ function drawRed(){
 				ctx.fillStyle="rgb(" + red[j][i] + ", 0, 0)";
 				ctx.fillRect(y + j, i + x, 1, 1);
 			}
-			else{
-				ctx.fillStyle="rgb(" + red[j][i] + ", " + red[j][i] + ", " + "0)";
-			}
+				if (green[j][i] > 0){
+					ctx.fillStyle="rgb(255, 255, 0)";
+				//	ctx.fillStyle="rgb(" + green[j][i] + ", " + green[j][i] + ", " + "0)";
+					ctx.fillRect(y + j, i + x, 1, 1);
+				}
 		}
 	}
 }
@@ -134,22 +89,17 @@ function drawColored(){
 	}
 }
 */
-generateRed();
-//generateGreen();
-//generateBlue();
+generateColor(red, 255, 12);
+generateColor(green, 255, 12);
 
 function mainLoop(){
 
 	ctx.fillStyle="rgb(0, 0, 0)";
 	ctx.fillRect(0,0,c.width,c.height);
 
-	/*
-
-generateGreen();
-generateBlue();
-*/
-generateRed();
-	drawRed();
+	generateColor(red);
+	generateColor(green, 127);
+	drawFire();
 
 
     requestAnimationFrame(mainLoop)
