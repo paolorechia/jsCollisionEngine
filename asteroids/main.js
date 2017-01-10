@@ -28,7 +28,7 @@ var Level = function(){
 	this.start = function(){
 
 		player.setImmunity(3);
-		player.hp += 10;
+		player.hull.current += 10;
 		if (this.current <= 12){
 			var maxSize = c.width/20 + (this.current * 2);
 			var minSize = c.width/100 + (this.current * 2);
@@ -248,11 +248,12 @@ var Shield = function(max = 100, drainRate=10){
 	this.max = max;
 	this.current = 0;
 	this.drainRate = drainRate;
-	this.rechargeEfficiency = 1; // transforms 1 energy point into 'n' shield points
+	this.rechargeEfficiency = 0.5; // transforms 1 energy point into 'k' shield points
 	this.drainSpeed = 250;
 	this.draining = true;
+	this.drainEvent = undefined;
 	this.powerSupply = new EnergySource(0, 0);
-	this.resistance = 1;
+	this.resistance = 0;
 	this.resistanceType = 'f'; // defense type can be either 'f' (flat) or 'p' (porcentual)
 							// The first case will simply subtract a constant from the received damage; the second will multiply the damage by the constant
 	
@@ -262,30 +263,40 @@ var Shield = function(max = 100, drainRate=10){
 	this.setEnabled = function(enabled){
 		this.enabled = enabled;
 	}
-	this.drainEnergy = function(source){	// drains energy from power supply to recharge shield points
-		if (this.recharging){
+	this.drainEnergy = function(shield){	// drains energy from power supply to recharge shield points
+		if (this.draining && this.enabled){
+				this.draining = false;
+				this.drainingEvent = undefined;
+				if (this.drainingEvent === undefined){
+					this.drainingEvent = setTimeout(function(){shield.draining = true;}, shield.drainSpeed);
+				}
 			if (this.current < this.max){
-				this.current += this.rechargeRate;
+				
+				if (this.powerSupply.current > this.drainRate){
+					this.current += this.drainRate * this.rechargeEfficiency;
+					this.powerSupply.current -= this.drainRate;
+				}
+				else{
+					this.current += this.powerSupply.current * this.rechargeEfficiency;
+					this.powerSupply.current = 0;
+				}
 				if (this.current > this.max){
 					this.current = this.max;
 				}
-				this.recharging = false;
-				this.rechargeEvent = undefined;
+			
 			}
-			if (this.rechargeEvent == undefined){
-				this.rechargeEvent = setTimeout(function(){source.recharging = true;}, source.rechargeSpeed);
-			}
+			
 		}
 	}
 	this.sufferDamage = function(damage){
 		if (this.resistanceType == 'f'){
-			var actualDamage = damage - resistance;
+			var actualDamage = damage - this.resistance;
 			if (actualDamage > 0){
 					this.current -= actualDamage;
 			}
 		}
 		else{
-			var actualDamage = damage * resistance;
+			var actualDamage = damage * this.resistance;
 			if (actualDamage > 0){
 					this.current -= actualDamage;
 			}			
@@ -863,7 +874,7 @@ var Ship = function(x, y, l1){
 	}
 	this.setImmunity = function(seconds){
 		this.immunity = true;
-		setTimeout(function(){this.player.immunity = false;}, seconds * 1000);
+		setTimeout(function(	){this.player.immunity = false;}, seconds * 1000);
 	}
 	this.addWeapon = function(weapon){
 		this.weapons.push(weapon);
@@ -889,7 +900,7 @@ var Ship = function(x, y, l1){
 			return;
 		}
 		if (this.shield != undefined && this.shield.enabled && this.shield.current > 0){
-			var exceedingDamage = shield.sufferDamage(damage); // subtract shield points
+			var exceedingDamage = this.shield.sufferDamage(damage); // subtract shield points
 			if (exceedingDamage){
 				this.hull.sufferDamage(exceedingDamage);
 			}
@@ -1122,6 +1133,7 @@ player.weapon.setPosition(player.front);
 player.weapon.setCenter(player.hitbox.center);
 player.weapon.enabled=true;
 
+player.shield.setPowerSupply(player.powerSupply);
 /*
 player.addWeapon(asteroidShooter());
 player.changeWeapon();
@@ -1191,6 +1203,7 @@ function mainLoop(){
 		player.updatePosition();
 		player.updateTurn();
 		player.powerSupply.recharge(player.powerSupply);
+		player.shield.drainEnergy(player.shield);
 
 		for (var i = 0; i < player.weapons.length; i++){
 			if (player.weapons[i].enabled){
