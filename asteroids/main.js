@@ -15,8 +15,24 @@ var Score = function(){
 		ctx.fillText(string, c.width/2 - 40, c.height - 20);
 	}
 }
+function generateAsteroids(maxSize, minSize, maxSpeed, maxSpin, numberRectangles, numberTriangles){
+			for (i = 0; i < numberRectangles; i++){
+				rect = new randomRect(maxSize, minSize, maxSpeed, maxSpin);
+				rect.hp= Math.round(Math.sqrt(rect.mass));
+				rect.dead = false;
+				rect.sufferDamage = asteroidSufferDamage;
+				objects.push(rect);
+			}
+			for (i = 0; i < numberTriangles; i++){
+				triangle = new randomTriangle(maxSize, minSize, maxSpeed, maxSpin);
+				triangle.hp = Math.round(Math.sqrt(triangle.mass));
+				triangle.dead == false;		
+				triangle.sufferDamage = asteroidSufferDamage;				
+				objects.push(triangle);
+			}	
+}
 var Level = function(){
-	this.current = 1;
+	this.current = 18;
 	this.max = 20;
 	this.draw = function(){
 		ctx.beginPath();
@@ -36,18 +52,7 @@ var Level = function(){
 			var maxSpin = Math.floor(this.current *0.2);
 			var numberRectangles = Math.round(this.current * 0.6);
 			var numberTriangles = Math.round(this.current * 0.4);
-			for (i = 0; i < numberRectangles; i++){
-				objects.push(new randomRect(maxSize, minSize, maxSpeed, maxSpin));
-				objects[i].hp = Math.round(Math.sqrt(objects[i].mass));
-				objects[i].dead == false;
-				objects[i].sufferDamage = asteroidSufferDamage;
-			}
-			for (i = 0; i < numberTriangles; i++){
-				objects.push(new randomTriangle(maxSize, minSize, maxSpeed, maxSpin));
-				objects[numberRectangles + i].hp = Math.round(Math.sqrt(objects[i].mass));
-				objects[numberRectangles + i].dead == false;
-				objects[numberRectangles + i].sufferDamage = asteroidSufferDamage;
-			}
+			generateAsteroids(maxSize, minSize, maxSpeed, maxSpin, numberRectangles, numberTriangles);
 		}
 		else if (this.current >= 13 && this.current <= 15){
 			var maxSize = c.width/400;
@@ -56,16 +61,7 @@ var Level = function(){
 			var maxSpin = Math.floor(this.current * 0.2);
 			var numberRectangles = Math.round(this.current * 2);
 			var numberTriangles = Math.round(this.current);
-			for (i = 0; i < numberRectangles; i++){
-			objects.push(new randomRect(maxSize, minSize, maxSpeed, maxSpin));
-			objects[i].hp = Math.round(Math.sqrt(objects[i].mass));
-			objects[i].dead == false;
-			}
-			for (i = 0; i < numberTriangles; i++){
-			objects.push(new randomTriangle(maxSize, minSize, maxSpeed, maxSpin));
-			objects[numberRectangles + i].hp = Math.round(Math.sqrt(objects[i].mass));
-			objects[numberRectangles + i].dead == false;			
-			}
+			generateAsteroids(maxSize, minSize, maxSpeed, maxSpin, numberRectangles, numberTriangles);
 		}
 		else{
 			var maxSize = c.width/20 + (this.current * 2);
@@ -74,34 +70,14 @@ var Level = function(){
 			var maxSpin = Math.floor(this.current *0.2);
 			var numberRectangles = Math.round(this.current * 0.1);
 			var numberTriangles = Math.round(this.current * 0.1);
-			for (i = 0; i < numberRectangles; i++){
-			objects.push(new randomRect(maxSize, minSize, maxSpeed, maxSpin));
-			objects[i].hp = Math.round(Math.sqrt(objects[i].mass));
-			objects[i].dead == false;
-			}
-			for (i = 0; i < numberTriangles; i++){
-			objects.push(new randomTriangle(maxSize, minSize, maxSpeed, maxSpin));
-			objects[numberRectangles + i].hp = Math.round(Math.sqrt(objects[i].mass));
-			objects[numberRectangles + i].dead = false;
-			}			
+			generateAsteroids(maxSize, minSize, maxSpeed, maxSpin, numberRectangles, numberTriangles);
 			var maxSize = c.width/400;
 			var minSize = c.width/500;
 			var maxSpeed = Math.round(this.current * 0.5);
 			var maxSpin = Math.floor(this.current * 0.2);
 			var numberRectangles = Math.round(this.current * 2);
 			var numberTriangles = Math.round(this.current);
-			for (i = 0; i < numberRectangles; i++){
-				rect = new randomRect(maxSize, minSize, maxSpeed, maxSpin);
-				rect.hp= Math.round(Math.sqrt(objects[i].mass));
-				rect.dead = false;
-				objects.push(rect);
-			}
-			for (i = 0; i < numberTriangles; i++){
-				triangle = new randomTriangle(maxSize, minSize, maxSpeed, maxSpin);
-				triangle.hp = Math.round(Math.sqrt(objects[i].mass));
-				triangle.dead == false;			
-				objects.push(triangle);
-			}			
+			generateAsteroids(maxSize, minSize, maxSpeed, maxSpin, numberRectangles, numberTriangles);
 		}
 	}
 	this.next = function(){
