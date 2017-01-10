@@ -454,13 +454,13 @@ var Weapon = function(velocity = 10, width = 1, range = 1000, limit = 10, damage
 }
 
 
-var Ship = function(x, y, l1){
+var Ship = function(x, y, l1, primaryColor = "#0000FF", secondaryColor = "#00F0FF"){
 	this.hitbox = new Triangle(x, y, l1,
 						0, 0,			// vx, vy
 						0, 0);			// velocity, spin
 	
-	this.primaryColor = "#0000FF";
-	this.secondaryColor = "#00F0FF";
+	this.primaryColor = primaryColor;
+	this.secondaryColor = secondaryColor;	
 	this.auxHitbox = new Triangle(x, y - l1, l1, 0, 0, 0, 0);
 	this.powerSupply = new EnergySource(100, 10);
 	this.hull = new Hull();
@@ -795,7 +795,12 @@ var Ship = function(x, y, l1){
 		string = "Energy: " + this.powerSupply.current;
 		ctx.fillText(string, c.width - 200, 90);		
 		if (this.shield != undefined){
-			string = "Shield: " + this.shield.current + ": " + this.shield.enabled;
+			if (this.shield.enabled){
+				string = "Shield enabled: " + this.shield.current;
+			}
+			else{
+				string = "Shield disabled: " + this.shield.current;	
+			}
 			ctx.fillText(string, c.width - 200, 120);					
 		}
 	}
