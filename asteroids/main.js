@@ -1172,11 +1172,11 @@ function mainLoop(){
 	ctx.fillRect(0,0,c.width,c.height);
 
 	if (instruct){
-		drawInstructions(instructions);
+		drawInstructions(instructions, player.secondaryColor);
 	}
 	else{
 		weaponStatus = buildWeaponsStatus(player.weapons);
-		drawWeaponsStatus(weaponStatus);
+		drawWeaponsStatus(weaponStatus, player.secondaryColor);
 	}
 	if (objects.length == 0 && level.current <= level.max){
 		level.next();
@@ -1266,8 +1266,8 @@ function mainLoop(){
 		}
 	killObjects(objects);
 	checkColisionsNaive(objects);
-	score.draw();
-	level.draw();
+	score.draw(player.secondaryColor);
+	level.draw(player.secondaryColor);
 
 	
 	fps.calculateMean();
