@@ -32,7 +32,7 @@ function generateAsteroids(maxSize, minSize, maxSpeed, maxSpin, numberRectangles
 			}	
 }
 var Level = function(){
-	this.current = 18;
+	this.current = 1;
 	this.max = 20;
 	this.draw = function(){
 		ctx.beginPath();
@@ -111,7 +111,9 @@ function buildInstructions(){
 	instructions.push(string);
 	string = "X: Auto-Fire";
 	instructions.push(string);
-	string = "R: Change Weapon";
+	string = "R: Cycle Weapons";
+	instructions.push(string);
+	string = "F: Enable Shield";
 	instructions.push(string);
 	string = "Click: Auto-pilot to given point (locks down the ship)";
 	instructions.push(string);	
@@ -1091,6 +1093,7 @@ var Stellar = function(){
 	ship.weapon.enabled=true;
 	ship.shield.setPowerSupply(ship.powerSupply);
 	ship.shield.setEnabled(true);
+
 	return ship;
 }
 

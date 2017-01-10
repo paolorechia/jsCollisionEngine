@@ -28,7 +28,12 @@ var coord = new Point(c.width/2, c.height/2);
 			player.cycleEnabledWeapons();
 		}
 		if (event.key == 'f'){
-			player.shield.setEnabled(true);
+			if (player.shield.enabled){
+				player.shield.setEnabled(false);
+			}
+			else{
+				player.shield.setEnabled(true);
+			}
 		}
 		if (player.lock){
 			return;
