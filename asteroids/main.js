@@ -472,9 +472,9 @@ var Ship = function(x, y, l1){
 	
 	this.auxHitbox = new Triangle(x, y - l1, l1, 0, 0, 0, 0);
 	this.powerSupply = new EnergySource(100, 10);
-	this.hp = 100;
-	this.damageResistance = 0;
+	this.hull = new Hull(100, 1);
 	this.immunity = false;
+	this.dead = false;
 	this.weapons = [];
 	this.currentWeapon = 0;
 	this.lock = false;
@@ -796,12 +796,16 @@ var Ship = function(x, y, l1){
 		ctx.beginPath();
 		ctx.font="14px Arial";
 		ctx.fillStyle="#FF0000";
-		string = "HP: " + this.hp;
+		string = "Hull: " + this.hull.current;
 		ctx.fillText(string, c.width - 200, 30);
 		string = "Immunity: " + this.immunity;
 		ctx.fillText(string, c.width - 200, 60);
 		string = "Energy: " + this.powerSupply.current;
 		ctx.fillText(string, c.width - 200, 90);		
+		if (this.shield != undefined){
+			string = "Shield: " + this.powerSupply.current;
+			ctx.fillText(string, c.width - 200, 120);					
+		}
 	}
 	this.draw = function(polygon = this.hitbox){
 		ctx.beginPath();
@@ -884,11 +888,14 @@ var Ship = function(x, y, l1){
 			return;
 		}
 		if (this.shield != undefined && this.shield.enabled && this.shield.current > 0){
-			shield.current -= damage; // subtract shield points
+			var exceedingDamage = shield.sufferDamage(damage); // subtract shield points
+			if (exceedingDamage){
+				this.hull.sufferDamage(exceedingDamage);
+			}
 		}		
 		else{
-			this.hp -= damage;
-			if (this.hp <= 0){
+			this.hull.sufferDamage(damage);
+			if (this.hull.current <= 0){
 				this.dead=true;
 			}
 		}
@@ -1174,7 +1181,7 @@ function mainLoop(){
 		calculateAxes(objects[i]);
 		rotatePolygon(objects[i], objects[i].spin);
 	}
-	if (player.hp <= 0){
+	if (player.dead){
 		drawEndGame(false);
 	}
 	else{
@@ -1238,7 +1245,7 @@ function mainLoop(){
 		}
 		player.autoPilot();
 
-		if (player.hp >= 0){
+		if (player.dead == false){
 			player.drawAutoPath();
 			player.draw();
 		}
