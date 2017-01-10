@@ -16,7 +16,7 @@ var Score = function(){
 	}
 }
 var Level = function(){
-	this.current = 0;
+	this.current = 1;
 	this.max = 20;
 	this.draw = function(){
 		ctx.beginPath();
@@ -80,7 +80,7 @@ var Level = function(){
 			for (i = 0; i < numberTriangles; i++){
 			objects.push(new randomTriangle(maxSize, minSize, maxSpeed, maxSpin));
 			objects[numberRectangles + i].hp = Math.round(Math.sqrt(objects[i].mass));
-			objects[numberRectangles + i].dead == false;
+			objects[numberRectangles + i].dead = false;
 			}			
 			var maxSize = c.width/400;
 			var minSize = c.width/500;
@@ -89,14 +89,16 @@ var Level = function(){
 			var numberRectangles = Math.round(this.current * 2);
 			var numberTriangles = Math.round(this.current);
 			for (i = 0; i < numberRectangles; i++){
-			objects.push(new randomRect(maxSize, minSize, maxSpeed, maxSpin));
-			objects[numberRectangles + numberTriangles + i].hp = Math.round(Math.sqrt(objects[i].mass));
-			objects[numberRectangles + numberTriangles + i].dead == false;
+				rect = new randomRect(maxSize, minSize, maxSpeed, maxSpin);
+				rect.hp= Math.round(Math.sqrt(objects[i].mass));
+				rect.dead = false;
+				objects.push(rect);
 			}
 			for (i = 0; i < numberTriangles; i++){
-			objects.push(new randomTriangle(maxSize, minSize, maxSpeed, maxSpin));
-			objects[numberRectangles + numberRectangles + numberTriangles + i].hp = Math.round(Math.sqrt(objects[i].mass));
-			objects[numberRectangles + numberRectangles + numberTriangles + i].dead == false;			
+				triangle = new randomTriangle(maxSize, minSize, maxSpeed, maxSpin);
+				triangle.hp = Math.round(Math.sqrt(objects[i].mass));
+				triangle.dead == false;			
+				objects.push(triangle);
 			}			
 		}
 	}
@@ -239,6 +241,21 @@ var EnergySource = function(max = 100, rechargeRate = 10, rechargeSpeed=500){ //
 	}
 }
 
+var Shield = function(){
+	this.enabled = false;
+	this.max = max;
+	this.current = this.max;
+	this.drainRate = drainRate;
+	
+	this.setEnabled = function(enabled){
+		this.enabled = enabled;
+	}
+	this.recharge = function(){
+		if (true){}
+		
+	}
+}
+
 var Weapon = function(velocity = 10, width = 1, range = 1000, limit = 10, damage = 10, 
 					  mass = 1, rateOfFire = 8, spin=0, hasAmmo=false, ammo=100, energyUsage=0){
 	this.enabled = false;
@@ -365,7 +382,12 @@ var Weapon = function(velocity = 10, width = 1, range = 1000, limit = 10, damage
 	//	console.log(theta);
 	}
 	this.onHit = function(target){
-		target.hp -= this.damage;
+		if (target.hasShield && target.shield.points > 0){
+			target.shield -=this.damage;
+		}
+		else{
+			target.hp -= this.damage;	
+		}
 		if (target.hp <= 0){
 			target.dead=true;
 		}
