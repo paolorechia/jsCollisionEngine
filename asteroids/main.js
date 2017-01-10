@@ -36,7 +36,7 @@ var Level = function(color="#000FFF"){
 	this.max = 20;
 	this.draw = function(){
 		ctx.beginPath();
-		ctx.fillStyle=color; ;
+		ctx.fillStyle=color;
 		ctx.font="14px Arial";
 		string = "Level: " + this.current;
 		ctx.fillText(string, c.width/2 + 40, c.height - 20);
@@ -1271,7 +1271,7 @@ function mainLoop(){
 
 	
 	fps.calculateMean();
-	drawFPS(fps.mean);
+	drawFPS(fps.mean, player.secondaryColor);
 	setTimeout(function(){requestAnimationFrame(mainLoop)}, interval);
 }
 

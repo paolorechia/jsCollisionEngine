@@ -301,9 +301,9 @@ function drawAxes(polygon, length){
 		drawVector(midpoint, axis); 
 }
 
-function drawFPS(number){
+function drawFPS(number, color="#000FFF"){
 	ctx.beginPath();
-	ctx.fillStyle="#000FFF";
+	ctx.fillStyle=color;
 	ctx.font="14px Arial";
 	string = "FPS: " + number;
 	ctx.fillText(string, 10, 20);

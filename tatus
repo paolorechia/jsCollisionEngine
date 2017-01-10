@@ -1,0 +1,947 @@
+[33mcommit 0355a9a78978a4ff9eb686423647955307044aad[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Tue Jan 10 19:07:04 2017 -0200
+
+    improved drawStatus
+
+[33mcommit b3a3629815f3a46372c307be80e5634c3079d7ed[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Tue Jan 10 19:03:29 2017 -0200
+
+    making colors changeable
+
+[33mcommit 1cfd2a9cb131604ec74ab2d41aa8b2fad6360769[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Tue Jan 10 18:55:39 2017 -0200
+
+    added shield disable
+
+[33mcommit e5fbecb636c0f334a8d73af676afd35ca36e7b21[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Tue Jan 10 18:48:35 2017 -0200
+
+    added generateAsteroids function, fixed levels
+
+[33mcommit 02f57c91732e3f264caa3d961d3f21bce222b341[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Tue Jan 10 18:40:06 2017 -0200
+
+    customized stellar hull and shield
+
+[33mcommit 5195f8bbc624a549e5aadf062a667a3c85ab977f[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Tue Jan 10 18:36:01 2017 -0200
+
+    added a ship wrapper, Stellar
+
+[33mcommit 26474e95cf87e761cf4147d5716751e98229d10f[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Tue Jan 10 18:29:28 2017 -0200
+
+    shield recharge
+
+[33mcommit 80506f96bc69d04c30ea567d7cfc5740ad992674[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Tue Jan 10 18:14:39 2017 -0200
+
+    shield enabled coded
+
+[33mcommit 0d481d60afc4c72f8560687ac4f8e146e1eed78c[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Tue Jan 10 18:08:29 2017 -0200
+
+    hull system working with resistance
+
+[33mcommit 1bd4d778c9f46d18a5f3bc62dfb1fb82f54a1e8a[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Tue Jan 10 18:02:42 2017 -0200
+
+    added shield and hull prototypes, yet to test 'em
+
+[33mcommit 3a8bc8d7c3de90f5ac7bab0f970d21ee2ee87f4a[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Tue Jan 10 17:46:25 2017 -0200
+
+    created function asteroidSufferDamage - onHitWeapons now call target.sufferDamage function
+
+[33mcommit d0275fe5bdc13cdd38848c8b96b73e72cb5f0906[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Tue Jan 10 17:18:06 2017 -0200
+
+    fixed lvl 16+ spawn
+
+[33mcommit 041b33a53b429c6ff15162858127cd55f4595820[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Mon Jan 9 22:59:26 2017 -0200
+
+    changed colors
+
+[33mcommit f4c32f9682061ebe17a867e7f498faaf6bd861d8[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Mon Jan 9 22:56:16 2017 -0200
+
+    moving flame? kek
+
+[33mcommit a7af49db5f1e46c22a64f5f8f31572f4b5c94906[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Mon Jan 9 22:47:44 2017 -0200
+
+    best model so far...
+
+[33mcommit d1520b6dfa0ba42e8a98e104d596dd4345b7c221[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Mon Jan 9 22:26:23 2017 -0200
+
+    interesting colors
+
+[33mcommit 9a19f46f5e59a29ad2a27c9fb7b8f64a16219d89[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Mon Jan 9 22:06:28 2017 -0200
+
+    interesting red model generated
+
+[33mcommit 4568d037c9bb456aa080fed1d1262dbf99b24ac7[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Mon Jan 9 21:33:08 2017 -0200
+
+    lame
+
+[33mcommit 15ffebaf87a1e795fad94226512220d713ce856b[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Mon Jan 9 21:17:07 2017 -0200
+
+    functions prototypes
+
+[33mcommit c937d74eaf349f6f7003737e0a634ea4444dee5c[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Mon Jan 9 20:53:44 2017 -0200
+
+    fire prototype
+
+[33mcommit 19bee22f98a9249facddac1145f4edff98789a65[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Mon Jan 9 16:17:47 2017 -0200
+
+    increased energy recharge speed
+
+[33mcommit 581b812616173d53bb4e06d94d1bc17ce1344930[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Mon Jan 9 16:14:26 2017 -0200
+
+    disabled console log
+
+[33mcommit c34cf36fdf935c8f583f1402eca73301212e0439[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Mon Jan 9 16:11:20 2017 -0200
+
+    energy weapons drain energy; energy recharge
+
+[33mcommit 45634ae65b1f75a9aabc950016a77be1c49e2a33[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Mon Jan 9 15:32:09 2017 -0200
+
+    need a bug fix on power supply setting; commiting just for safety
+
+[33mcommit cbafbb9d1c19b7209221ba985574142349040f34[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Mon Jan 9 15:20:36 2017 -0200
+
+    energy source prototype; power supply test on weapon prototype
+
+[33mcommit 60312454c02b726cee85c0e8c7ee70cd6debca38[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Mon Jan 9 15:12:32 2017 -0200
+
+    fixed triple weapons collisions at border and with objects
+
+[33mcommit f08a3044dc84b1d5f59fb4be40fd4cfb8b8c1644[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Mon Jan 9 15:09:47 2017 -0200
+
+    added machine gun prototype
+
+[33mcommit 8438a431ef74f92626df15bedbb5105d31d2076b[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Mon Jan 9 14:56:34 2017 -0200
+
+    instructions shown when escape is pressed down; weapons status is now shown on screen
+
+[33mcommit bc5eafea3b879313b609b75c5521b796a0cd9308[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Mon Jan 9 14:36:55 2017 -0200
+
+    max Ammo added to asteroid shooter
+
+[33mcommit e7ec2741f531f83131fffc2125b58f2e172ec2bb[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Mon Jan 9 14:36:31 2017 -0200
+
+    max Ammo added to cannon weapons
+
+[33mcommit 1bf2cc7f4e0dcce549255d81104f58a26fa21417[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Mon Jan 9 14:30:11 2017 -0200
+
+    weapon cycle added
+
+[33mcommit 31683ae6a265671d8ba61ab7016e5823ec433e50[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Mon Jan 9 14:24:50 2017 -0200
+
+    fixed auto pilot with triple weapons
+
+[33mcommit 2cf8e7330308f173d3f8974efea74787859ac985[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Mon Jan 9 14:21:40 2017 -0200
+
+    fixed triple weapons with strafing'
+
+[33mcommit 05474dc2e82d11239bb9cda35226e75ffb304880[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Mon Jan 9 14:12:50 2017 -0200
+
+    frontal triple weapons working! showing extra hitbox just for fun
+
+[33mcommit 7c1f8586d6b3f69529af872b268ab470c9a82b61[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Mon Jan 9 13:45:27 2017 -0200
+
+    triple weapon with angle
+
+[33mcommit 6580f410dd67cae07be0e9f5b8819ea32e1640ff[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Mon Jan 9 13:42:15 2017 -0200
+
+    added weapon enable, hopefully fixed imortal asteroids on level 16+
+
+[33mcommit 44318a65a6831b698d338f5d1570da9a1fe20a4f[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Mon Jan 9 13:34:13 2017 -0200
+
+    all weapons, woohoo
+
+[33mcommit ceef447eff71b5f22da7305c3508ec01a88dae16[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Mon Jan 9 13:23:39 2017 -0200
+
+    fixed autoPilot braking bug
+
+[33mcommit 1a85d2667230bcc80e19041082ffee24f7a12a67[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Sun Jan 8 23:18:10 2017 -0200
+
+    projectile weapons at a good state
+
+[33mcommit 757203a18273f762998f391c2098943abe4bb2d8[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Sun Jan 8 23:12:30 2017 -0200
+
+    improved weapons
+
+[33mcommit 892493e1534d559d54d415dd1a9d9477892a46b1[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Sun Jan 8 22:52:12 2017 -0200
+
+    several weapons added
+
+[33mcommit 6720fe8062433063b4a09625e5f30877d1a423f3[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Sun Jan 8 22:36:47 2017 -0200
+
+    updated drawPolygon function
+
+[33mcommit 84395c28436c1a384c6bd05b0afc96b348042262[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Sun Jan 8 22:32:58 2017 -0200
+
+    fixed laserblaster call to drawPolygon2
+
+[33mcommit e9d493bca3b713ed0413db01d10bdd0a7e7a650a[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Sun Jan 8 22:29:41 2017 -0200
+
+    added laser blaster
+
+[33mcommit 224d948964a800d8392535c71f68424977dba961[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Sun Jan 8 17:53:09 2017 -0200
+
+    fine tuned gameplay
+
+[33mcommit 2e92090f45fd32c64033e20d408f3982070124d2[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Sun Jan 8 17:36:33 2017 -0200
+
+    laser beam done
+
+[33mcommit ed2bed08b2d5a61ab3e13e24b638fd81c54bd588[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Sun Jan 8 16:45:41 2017 -0200
+
+    fixed wrong origin of projectiles
+
+[33mcommit a2b986ac6bc26125fcbfd22b8615ece1c0d7307b[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Sun Jan 8 16:39:49 2017 -0200
+
+    multiple weapons support fixed
+
+[33mcommit c61b1bd7e5c526db597636998748df81b8d16e49[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Sun Jan 8 16:05:42 2017 -0200
+
+    added structure to ship to support multiple weapons
+
+[33mcommit c401d22de50e3bb118df5ff992112afa4b514924[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Sun Jan 8 15:47:06 2017 -0200
+
+    tons of levels to beat
+
+[33mcommit 92abc3a4051ef94f7a4195363938f8fdb704729b[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Sun Jan 8 15:28:39 2017 -0200
+
+    improved levels scaling, player can no longer control ship after death
+
+[33mcommit d3d74367efbd36fa5f0ab7e276142bcd2246a5b9[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Sun Jan 8 15:21:11 2017 -0200
+
+    polygons now are drawed when player dies
+
+[33mcommit 79e62eb862b11f8181c8361a425169454d3e62f8[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Sun Jan 8 15:14:51 2017 -0200
+
+    added generated levels
+
+[33mcommit 8d5559353c200438562f40fa9b1b49d9be6cad87[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Sun Jan 8 14:53:08 2017 -0200
+
+    added score to game; added level prototype
+
+[33mcommit c5fefc345bd63611b10e7f084c8611bb659eb201[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Sun Jan 8 14:44:59 2017 -0200
+
+    dashed line to autopath
+
+[33mcommit 1a9e0034c7280be3a2e944a2a9f1afa3adbb0aa6[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Sat Jan 7 22:20:22 2017 -0200
+
+    adding readme
+
+[33mcommit 12d806377f448190b5e1c89a4797a426cca86b25[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Sat Jan 7 22:13:59 2017 -0200
+
+    asteroid hit effect fixed
+
+[33mcommit 17409d9d426b4686780edbf368a8844467d4a493[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Sat Jan 7 22:11:28 2017 -0200
+
+    stylish refining
+
+[33mcommit 0a241c6d66d50385d6735a9abe010b25d644699b[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Sat Jan 7 21:23:58 2017 -0200
+
+    stylish drawing added
+
+[33mcommit 511774b2525f5ccb5ab25d0aee8cbf30b765d1c3[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Sat Jan 7 21:09:13 2017 -0200
+
+    added strafing
+
+[33mcommit 649eb0c573b57f552f6ef07c441fe3fb2d95c19a[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Sat Jan 7 20:36:21 2017 -0200
+
+    trying to fix mobile autofire
+
+[33mcommit f56a983533dd4976d68068c5a96f1bb1fb113fcf[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Sat Jan 7 15:39:10 2017 -0200
+
+    added autofire to mobile touch
+
+[33mcommit b8cf385dc1072f1bde415b19aa342f34b0a4e8c3[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Sat Jan 7 15:32:32 2017 -0200
+
+    fixed projectiles removal
+
+[33mcommit 9c3531477d6e4448d503cf115f20e82e33cb1374[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Sat Jan 7 15:27:02 2017 -0200
+
+    adding changes to engine, game settings
+
+[33mcommit 9f95d10824f78d31db18577b625a384bdc9632ac[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Sat Jan 7 15:19:26 2017 -0200
+
+    added player HP, immunity, end game and status prototype
+
+[33mcommit fe8a24a49a9d931498d59c7c3e7c053a511f2d51[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Sat Jan 7 14:59:31 2017 -0200
+
+    HP and removal of objects added
+
+[33mcommit 3dffa549b727d28d6aae006daa1696f11d7a81ec[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Sat Jan 7 14:29:24 2017 -0200
+
+    fixed removal of projectiles
+
+[33mcommit e238c87d4764cafdd6f541c054fdde381925a3a6[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Sat Jan 7 14:24:44 2017 -0200
+
+    added collision detection between projectiles and objects
+
+[33mcommit b9a3c2629e8ded967080ae41606f4c25124afcc8[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Sat Jan 7 11:45:55 2017 -0200
+
+    commiting updates to engine
+
+[33mcommit ea309090717acdfbfd456b3c89edab7e2cd8c87b[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Sat Jan 7 11:44:47 2017 -0200
+
+    rotation of projectiles complete!
+
+[33mcommit 88f0b9032950f17efad56283c9a35f8cc42c2847[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Sat Jan 7 11:37:30 2017 -0200
+
+    projectile rotation working for counter-clockwise
+
+[33mcommit ddbedc90c7fff3b72efe4dfe1fc6af358423fc01[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Sat Jan 7 11:07:12 2017 -0200
+
+    rotating projectiles prototype function
+
+[33mcommit 5ef1479915513f14797361dcc4f242f314291583[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Sat Jan 7 10:45:39 2017 -0200
+
+    actually commiting last one now
+
+[33mcommit e3b3287f2a3389fc17e3c0089de79df288d46e9f[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Sat Jan 7 10:45:20 2017 -0200
+
+    checkborder now accepts a function argument that can be a closure
+
+[33mcommit c2613e50edcafbcd412ce462af7d361c7658b29c[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Sat Jan 7 00:07:37 2017 -0200
+
+    added auto fire, updated instructions
+
+[33mcommit b502dec782ce9deef74b82f79b0cb43b31fea047[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Sat Jan 7 00:01:00 2017 -0200
+
+    rate of fire'
+
+[33mcommit 5a4e27963894785a91cbdd63d6002af5964ad9ee[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Fri Jan 6 23:56:01 2017 -0200
+
+    added delay between shots, todo easy to change rate of fire
+
+[33mcommit e80203a9d1cb5ca1278adde3ca84fe341beae462[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Fri Jan 6 23:42:34 2017 -0200
+
+    weapon fire button improved, added duration to projectiles
+
+[33mcommit 4a92a9327d0fa2b930fe1f6029bc22eb97709634[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Fri Jan 6 16:23:30 2017 -0200
+
+    added ship's speed to projectile
+
+[33mcommit b0e21ad59589691c03869469a59f1f64b074f0fd[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Fri Jan 6 16:18:31 2017 -0200
+
+    projectile without object collision added
+
+[33mcommit 955aa8759b41283a78594299f2ce210fde45fd8d[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Fri Jan 6 15:27:34 2017 -0200
+
+    changed FPS, now stores mean inside a variable to avoid redundant calculations
+
+[33mcommit 60407eb60205642ed2a045eb628428638846ed30[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Fri Jan 6 15:17:54 2017 -0200
+
+    minor changes to code
+
+[33mcommit f83041e2990dc2a6d8f622ae1844f8caf655aca7[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Fri Jan 6 15:11:41 2017 -0200
+
+    changed controls slightly, added more columns to instructions
+
+[33mcommit 000b485c8382caf31cca87566b21313e9da63e9b[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Fri Jan 6 00:20:59 2017 -0200
+
+    fixed turning
+
+[33mcommit d14a029c93e14d6e97b0bb48a3506b193110d4d2[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Fri Jan 6 00:00:20 2017 -0200
+
+    fixed negative square root on engine, removed FPS cap for testing
+
+[33mcommit 32efbda135d8ebb100d3dc7f2d9c80676e6802af[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Thu Jan 5 23:42:06 2017 -0200
+
+    enabling touch, testing
+
+[33mcommit 233a1111780eb2241009488492dd32616c310fae[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Thu Jan 5 23:37:31 2017 -0200
+
+    logs disabled for real now
+
+[33mcommit 06176c95ee136d196c68d91b9efd9f767aba2f3f[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Thu Jan 5 23:36:58 2017 -0200
+
+    disabling logs, commiting change to engine: angleVectors now expect unitVectors and no longer divides by 0
+
+[33mcommit ee83ce72ddb6e302dace3d58ab0ac030a4fc30f4[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Thu Jan 5 23:34:30 2017 -0200
+
+    full logs
+
+[33mcommit beb3c8dfcd02608af85d0c99572ed3be028fea39[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Thu Jan 5 23:31:40 2017 -0200
+
+    no logs
+
+[33mcommit 753a99574a29a624fe791321fc695494129732c4[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Thu Jan 5 23:29:13 2017 -0200
+
+    floating coordinates fixed
+
+[33mcommit 0809daf3d84c584e93e9bc089923225d5e0939bb[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Thu Jan 5 23:25:51 2017 -0200
+
+    fixed superposition of given points bug
+
+[33mcommit 1b7aad370d7734793b7c54b2125f39f608819699[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Thu Jan 5 23:04:58 2017 -0200
+
+    simplistic auto-pilot model finished
+
+[33mcommit 9c50073487b6e4b2d16a10e8e3e6a41ba0d1cda5[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Thu Jan 5 22:32:44 2017 -0200
+
+    auto-turn to given point completed!
+
+[33mcommit d3febe1282c55d6c7dad952bf06dcbc67229a7b3[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Thu Jan 5 22:07:47 2017 -0200
+
+    calculated angle from Path with sign relative to the projection of the path Point on the ship's direction axis
+
+[33mcommit 4305d1694991b574002e2216b47262521154a1bf[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Thu Jan 5 21:06:17 2017 -0200
+
+    fixed unitVector function, no longer dividing by 0
+
+[33mcommit 3263f0b11188143e65d9635c875bec6a3a6d9fea[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Thu Jan 5 19:56:15 2017 -0200
+
+    drawAutoPath prototype
+
+[33mcommit 6eb76554ecf146e76b1e8bea506519ca859e1efe[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Thu Jan 5 19:46:37 2017 -0200
+
+    adding system lock to click
+
+[33mcommit 5d4e4ca707190b780a8d26fd81ad19e51ee507fb[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Thu Jan 5 19:28:25 2017 -0200
+
+    instructions on screen
+
+[33mcommit 0b9e50fa02dd999602a9388546d5ad679a239363[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Thu Jan 5 19:19:36 2017 -0200
+
+    controls refined
+
+[33mcommit ca329682ede594450ae72f81f0c55cba8674275f[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Thu Jan 5 19:14:08 2017 -0200
+
+    keyboard control changed to keydown and keyup system, extraordinary increase in response -- still need to redo braking
+
+[33mcommit f48b9c897ad75a767d5ba1b969b185a251829cf2[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Wed Jan 4 00:06:10 2017 -0200
+
+    ABS done'
+
+[33mcommit beb2d2d426aa4839172ec9edb2d7f31a83fe0fd4[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Tue Jan 3 23:49:50 2017 -0200
+
+    added reverseEngine
+
+[33mcommit b17582daf2215143d237e09cf1bf7ef80637eb44[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Tue Jan 3 23:40:07 2017 -0200
+
+    added random objects, collision seems to be working just fine
+
+[33mcommit 90e9f23826deb34193c8c0d42f71094928f37d2a[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Tue Jan 3 23:28:34 2017 -0200
+
+    changing a few arguments
+
+[33mcommit dcfd67d9c2a4786a8b10159a07ca6b5a091e03b2[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Tue Jan 3 23:25:44 2017 -0200
+
+    fixed turn
+
+[33mcommit 7e2e5460e05554e8b8e996e4a063b6bf51a1824e[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Tue Jan 3 23:21:33 2017 -0200
+
+    turning added; fix undesired accelerating while turning
+
+[33mcommit fe13f08db39935a621e2be71d107a37deda3bd6a[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Tue Jan 3 23:08:16 2017 -0200
+
+    acceleration model fixed on Y axis and against border -- should check other cases to see if it's really consistent
+
+[33mcommit 1553b5ee9ae214e1182fd03062284b1c93fe44b2[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Tue Jan 3 21:55:50 2017 -0200
+
+    sucessfully limited maxSpeed, throttle seems working
+
+[33mcommit 55348b56933ce3333d6bc7ff86e4453cbc58e1c3[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Tue Jan 3 11:59:16 2017 -0200
+
+    trying to set up physics for the ship on asteroids, needs debugging
+
+[33mcommit ce8c8b3add65af91b1c8465e20e77a0ad1737a1f[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Tue Jan 3 11:31:04 2017 -0200
+
+    removed console log from Pong
+
+[33mcommit 7800bb788ddc866b12bc5a6b7c29aed47c5857e4[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Tue Jan 3 11:29:48 2017 -0200
+
+    creating asteroids prototype
+
+[33mcommit 79c89db34db961a937215aa33864a497538201b8[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Tue Jan 3 10:43:49 2017 -0200
+
+    resizing links
+
+[33mcommit 896bf34d8df491374259f0f545b0c8f07e261115[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Tue Jan 3 10:38:51 2017 -0200
+
+    adding pong
+
+[33mcommit bd1b4ad9da3116b8627347494c90d8594e970dca[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Tue Jan 3 10:33:06 2017 -0200
+
+    merging repositories
+
+[33mcommit 21a69e648381860925e7dbad04b1b02e9538db83[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Mon Jan 2 19:14:38 2017 -0200
+
+    php
+
+[33mcommit 87cff89cca25b6cf65ca3e2195e575075a021ea8[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Mon Jan 2 14:03:33 2017 -0200
+
+    input prototype set
+
+[33mcommit 09f1f13effe032f5c2b996feb3d943a61822a781[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Mon Jan 2 11:40:53 2017 -0200
+
+    removed circle functions
+
+[33mcommit 7071ecbfe91779d604a7b07cd4e1c28eaa329775[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Mon Jan 2 10:45:57 2017 -0200
+
+    removed useless loops from bordercheck Algorithm
+
+[33mcommit d6388ae1ea52586586d2965e7bdfbae728e0a582[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Sun Jan 1 19:35:34 2017 -0200
+
+    circle not working correctly, need a conceptual revision; checkBorder algorithm potentially wrong for all polygons, investigate
+
+[33mcommit ceaab6c72dc69d1cb818b40adbc30d993f2a3af0[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Sun Jan 1 19:27:05 2017 -0200
+
+    circle artificial vertices added, axes need fix
+
+[33mcommit e9e1dce8d1dc4040fa79d5684c7fdb6cdd32dc26[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Sun Jan 1 15:33:46 2017 -0200
+
+    fixed circle rotation, to do 4 vertices for circle collisions
+
+[33mcommit d3aff60dd14c651d6b17c671b97343acb1a195d6[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Sun Jan 1 15:24:33 2017 -0200
+
+    fixed degrees to radians conversion and vice-versa
+
+[33mcommit b4ff9c2b4c47403d9267d2d93594ee0693189655[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Sun Jan 1 15:09:33 2017 -0200
+
+    adding circle drawing and part of update
+
+[33mcommit d24d203995eb79bd19fdb2f8998faee2de898c11[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Sat Dec 31 20:37:23 2016 -0200
+
+    isoceles triangles completed -- noticed that sometimes collisions occur when polygons are still too far away
+
+[33mcommit 502245248b1e60ffa08c488f575618deea169d18[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Sat Dec 31 20:26:11 2016 -0200
+
+    triangle collision at border implemented
+
+[33mcommit 383e9473fab6d9b8fa7196d82d6cd324415c0a67[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Sat Dec 31 20:14:02 2016 -0200
+
+    triangle prototype at work, small section of polymorphism to apply vectors to polygons
+
+[33mcommit 98016ac2ba38ddb608a48bd9a443ab0a3a85b908[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Sat Dec 31 19:13:56 2016 -0200
+
+    minor tweaking'
+
+[33mcommit f6e29c71b1290ee852e518b9f18e8f467175104c[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Sat Dec 31 18:54:40 2016 -0200
+
+    smart collision wrap up
+
+[33mcommit 338ff5f94ad6fa2c9e28f0807ff2c6c3e01050cc[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Sat Dec 31 18:23:34 2016 -0200
+
+    wrapping up collision functions
+
+[33mcommit 870e0512a5b695175c430b78f511387ef018dd3d[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Sat Dec 31 14:20:23 2016 -0200
+
+    spin changes on partially elastic collision
+
+[33mcommit 23019133bd4ef3e26e586e48b85d8a208ae1b4af[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Sat Dec 31 14:11:54 2016 -0200
+
+    simplistic partially elastic collision
+
+[33mcommit 9feb223f305482464f484c38cd6f73e2a5f8046f[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Sat Dec 31 13:44:37 2016 -0200
+
+    max FPS added, simplistic inelastic collision finished
+
+[33mcommit ffcf1fb68cc69bed038ab770f0c27393980889ae[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Fri Dec 30 15:09:16 2016 -0200
+
+    fixed FPS count
+
+[33mcommit 31778608a177da049688fcc7ffbdab3fdea8fda2[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Fri Dec 30 14:50:36 2016 -0200
+
+    FPS count added
+
+[33mcommit 14e126021cd867b618f7f2f1504a4cf0438d07f5[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Fri Dec 30 13:41:57 2016 -0200
+
+    simple elastic collision
+
+[33mcommit 8b80f14a65ec903170d1710d8e2748a620421e81[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Fri Dec 30 00:02:18 2016 -0200
+
+    fixed collision on smaller polygon
+
+[33mcommit f8c2c4cdb90a8ba6a0c24eb01bc94f0585960239[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Thu Dec 29 23:58:22 2016 -0200
+
+    refining collision behavior
+
+[33mcommit 05c72f171e8151e46baa0335a86fbffbb5a75516[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Thu Dec 29 21:54:16 2016 -0200
+
+    colisao com pesos
+
+[33mcommit 7d559622652d39b5808f668c6cb75f7f35036cda[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Thu Dec 29 21:43:45 2016 -0200
+
+    colisao STA funcionando
+
+[33mcommit 155993cda3c1e9cea57469618c9e24d5ee87c89c[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Thu Dec 29 21:04:15 2016 -0200
+
+    borderSTA fully implemented with MTV bounce; collisions between boxes not working so well
+
+[33mcommit fc147f8d3567db689e35d110fd54d747cb698a14[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Thu Dec 29 19:29:10 2016 -0200
+
+    border check changed to STA algorithm, working -- MTV yet to be implemented
+
+[33mcommit 417f5032e0c92bbbedc2f119cb56051d152d0461[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Thu Dec 29 19:15:45 2016 -0200
+
+    naive fix for border check
+
+[33mcommit 47d9c29c6eba40c878cae7a9271a0fba35bb6ba9[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Wed Dec 28 17:44:49 2016 -0200
+
+    minor changes
+
+[33mcommit dbe777afb1c6f23e93232d695cd6ab0e5bc2ca8b[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Wed Dec 28 17:37:36 2016 -0200
+
+    colisao STA implementada com sucessogit add . --all!
+
+[33mcommit 9d8822956a599e7706c0d38d1ce716175b940e77[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Wed Dec 28 17:07:30 2016 -0200
+
+    fixed draw axes bug
+
+[33mcommit 5320eec15e379cfff8483455d706155391100186[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Wed Dec 28 16:27:37 2016 -0200
+
+    prototipo de projecao com bug
+
+[33mcommit ffb45f87538e41b3c56376b00af041ce14f08a19[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Wed Dec 28 16:07:00 2016 -0200
+
+    normal drawing refactored to axes drawing
+
+[33mcommit eda5c1075e71f0db53bba8d57998a476bcc0907e[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Wed Dec 28 15:46:17 2016 -0200
+
+    drawing of normal vectors done
+
+[33mcommit fd41f268bf47a31a11d91084f3e1979bd9cb0f4e[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Wed Dec 28 15:23:52 2016 -0200
+
+    basic algebra functions finished
+
+[33mcommit 732b666edb3d9e9f60a002134f5c0267d0f9dd89[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Wed Dec 28 14:05:17 2016 -0200
+
+    adding linear algebra functions...
+
+[33mcommit 02c7d0fb175e767abb93376a17ab8abe9c0571cb[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Tue Dec 27 19:26:07 2016 -0200
+
+    border collision check point by point
+
+[33mcommit bd0a8f4d7ce499837808b39845c100e996304fdf[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Tue Dec 27 18:37:09 2016 -0200
+
+    rotation fixed for all objects; quickRotate (or more like simple rotate written)
+
+[33mcommit f5df3b5453a4eb2940d521dc35ade78e47dcda43[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Tue Dec 27 17:57:20 2016 -0200
+
+    mysterious bug with rotating inside update, rotating outside sucessful for few objects
+
+[33mcommit 4dfa4c068526b44969bda3114fc2d84bfca8bc73[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Tue Dec 27 17:50:23 2016 -0200
+
+    rotation sucessful for 1 object
+
+[33mcommit ee25181b10db3f363fbac47aec49965418983e78[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Tue Dec 27 16:52:48 2016 -0200
+
+    novo modelo funcionando
+
+[33mcommit f9bd2bd8189b4fc7ca1c28c49c3c6575779e3621[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Tue Dec 27 15:56:46 2016 -0200
+
+    desenho rudimentar de poligono implementado
+
+[33mcommit cad7f58361af31b76cc24970d830cbaa254eed80[m
+Author: Paolo Rechia <paolorechia@gmail.com>
+Date:   Tue Dec 27 11:29:22 2016 -0200
+
+    tr0l0l0
