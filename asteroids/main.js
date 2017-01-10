@@ -312,6 +312,8 @@ var Hull = function(max = 100, resistance = 0){
 
 var Weapon = function(velocity = 10, width = 1, range = 1000, limit = 10, damage = 10, 
 					  mass = 1, rateOfFire = 8, spin=0, hasAmmo=false, ammo=100, energyUsage=0){
+	
+//	this.owner = new Ship();
 	this.enabled = false;
 	this.firing=false;
 	this.rateOfFire = rateOfFire;		// shots per second
@@ -339,6 +341,9 @@ var Weapon = function(velocity = 10, width = 1, range = 1000, limit = 10, damage
 	this.projectileHeight = this.projectileVelocity * 2;
 	this.projectiles = [];
 	
+	this.setOwner = function(owner){
+		this.owner = owner;
+	}
 	this.setPosition = function(point){
 		this.position = point; // creates a reference to the variable, not a copy (usually the ship's location)
 	}
@@ -1069,14 +1074,15 @@ function killProjectile(projectile){
 	
 }
 //var Shield = function(max = 100, resistance=0, drainRate=10, rechargeEfficiency = 0.5, drainSpeed = 250){
-var Stellar = function(){
-	var ship = new Ship(c.width/2, c.height/2, 20);
+var Stellar = function(primaryColor="#0000FF", secondaryColor = "00F0FF"){
+	var ship = new Ship(c.width/2, c.height/2, 20, primaryColor, secondaryColor);
 	ship.updateDirection();
 	ship.hull = new Hull(100, 1);
 	ship.shield = new Shield(50, 0, 5, 0.5, 300);
 	
 	ship.addWeapon(machineGun());
 	ship.changeWeapon();
+//	ship.weapon.setOwner(ship);
 
 	ship.weapon.setCenter(ship.hitbox.vertices[0]);
 	ship.weapon.setPosition(ship.auxHitbox.vertices[0]);
