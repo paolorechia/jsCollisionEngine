@@ -243,13 +243,13 @@ var EnergySource = function(max = 100, rechargeRate = 10, rechargeSpeed=500){ //
 	}
 }
 
-var Shield = function(max = 100, drainRate=10){
+var Shield = function(max = 100, resistance=0, drainRate=10, rechargeEfficiency = 0.5, drainSpeed = 250){
 	this.enabled = false;
 	this.max = max;
 	this.current = 0;
 	this.drainRate = drainRate;
-	this.rechargeEfficiency = 0.5; // transforms 1 energy point into 'k' shield points
-	this.drainSpeed = 250;
+	this.rechargeEfficiency = rechargeEfficiency; // transforms 1 energy point into 'k' shield points
+	this.drainSpeed = drainSpeed;
 	this.draining = true;
 	this.drainEvent = undefined;
 	this.powerSupply = new EnergySource(0, 0);
@@ -1085,11 +1085,13 @@ function killProjectile(projectile){
 	projectile.duration = 0;
 	
 }
-
+//var Shield = function(max = 100, resistance=0, drainRate=10, rechargeEfficiency = 0.5, drainSpeed = 250){
 var Stellar = function(){
 	var ship = new Ship(c.width/2, c.height/2, 20);
 	ship.updateDirection();
-
+	ship.hull = new Hull(100, 1);
+	ship.shield = new Shield(50, 0, 5, 0.5, 300);
+	
 	ship.addWeapon(machineGun());
 	ship.changeWeapon();
 
