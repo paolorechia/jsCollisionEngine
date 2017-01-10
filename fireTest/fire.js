@@ -1,5 +1,4 @@
-var c = document.getElementById("umCanvas");
-var ctx = c.getContext("2d");
+
 var width = 12;
 var height = 12;
 var red = new Array(height);
@@ -16,8 +15,9 @@ for (var i = 0; i < blue.length; i++){
 	blue[i] = new Array(width);
 }
 
-var x = 200;
-var y = 200;
+var rect = new Rect(200, 200, 12, 12, 1, 0, 1, 0);
+
+// = function(x, y, width, height, vx, vy, velocity, spin){
 
 function generateColor(color, intensity = 255, alternate = 6, craziness = 2){
 	var i = 0;
@@ -55,7 +55,7 @@ function generateColor(color, intensity = 255, alternate = 6, craziness = 2){
 }
 
 
-function drawFire(red, green){
+function drawFire(red, green, x, y){
 	for (var i = 0; i < height; i++){
 		for (var j = 0; j < width; j++){
 			ctx.beginPath();
@@ -75,7 +75,7 @@ function drawFire(red, green){
 generateColor(red, 255, 4, 2);
 generateColor(green, 255, 4, 2);
 
-var i = 10;
+var i = 0;
 function mainLoop(){
 
 	ctx.fillStyle="rgb(0, 0, 0)";
@@ -84,8 +84,12 @@ function mainLoop(){
 	generateColor(red, 255, 4, 2);
 	generateColor(green, 255, 4, 2);
 
-	drawFire(red, green);
-
+	drawFire(red, green, rect.position.x, rect.position.y);
+	rect.update();
+	if (i > 5){
+		
+		
+	}
     requestAnimationFrame(mainLoop)
 }
 
