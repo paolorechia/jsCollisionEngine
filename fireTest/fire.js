@@ -60,12 +60,12 @@ function drawFire(red, green, x, y){
 		for (var j = 0; j < width; j++){
 			ctx.beginPath();
 			if (red[j][i] > 0){
-				ctx.fillStyle="rgb(255, 0, 0)";
+				ctx.fillStyle="rgb(0, 0, 255)";
 				//ctx.fillStyle="rgb(" + red[j][i] + ", 0, 0)";
 				ctx.fillRect(y + j, i + x, 1, 1);
 			}
 				if (green[j][i] > 0){
-					ctx.fillStyle="rgb(255, 255, 0)";
+					ctx.fillStyle="rgb(255, 255, 255)";
 					//ctx.fillStyle="rgb(" + green[j][i] + ", " + green[j][i] + ", " + "0)";
 					ctx.fillRect(y + j, i + x, 1, 1);
 				}
