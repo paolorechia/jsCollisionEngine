@@ -5,11 +5,11 @@ updateResEvent = function(canvas) {
 		  });
 }
 
-var Score = function(){
+var Score = function(color = "#000FFF"){
 	this.player = 0;
 	this.draw = function(){
 		ctx.beginPath();
-		ctx.fillStyle="#000FFF";
+		ctx.fillStyle=color;
 		ctx.font="14px Arial";
 		string = "Score: " + this.player;
 		ctx.fillText(string, c.width/2 - 40, c.height - 20);
@@ -31,12 +31,12 @@ function generateAsteroids(maxSize, minSize, maxSpeed, maxSpin, numberRectangles
 				objects.push(triangle);
 			}	
 }
-var Level = function(){
+var Level = function(color="#000FFF"){
 	this.current = 1;
 	this.max = 20;
 	this.draw = function(){
 		ctx.beginPath();
-		ctx.fillStyle="#000FFF";
+		ctx.fillStyle=color; ;
 		ctx.font="14px Arial";
 		string = "Level: " + this.current;
 		ctx.fillText(string, c.width/2 + 40, c.height - 20);
@@ -1074,7 +1074,7 @@ function killProjectile(projectile){
 	
 }
 //var Shield = function(max = 100, resistance=0, drainRate=10, rechargeEfficiency = 0.5, drainSpeed = 250){
-var Stellar = function(primaryColor="#0000FF", secondaryColor = "00F0FF"){
+var Stellar = function(primaryColor="#0000FF", secondaryColor = "#00F0FF"){
 	var ship = new Ship(c.width/2, c.height/2, 20, primaryColor, secondaryColor);
 	ship.updateDirection();
 	ship.hull = new Hull(100, 1);
@@ -1129,7 +1129,7 @@ var instructions = buildInstructions();
 
 var objects = [];
 
-player = new Stellar();
+player = new Stellar("#F0F0F0F", "#FF00FF");
 
 /*
 player.addWeapon(asteroidShooter());
