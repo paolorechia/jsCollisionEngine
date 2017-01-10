@@ -483,7 +483,7 @@ var Ship = function(x, y, l1){
 	
 	this.auxHitbox = new Triangle(x, y - l1, l1, 0, 0, 0, 0);
 	this.powerSupply = new EnergySource(100, 10);
-	this.hull = new Hull(100, 1);
+	this.hull = new Hull();
 	this.shield = new Shield();
 	this.immunity = false;
 	this.dead = false;
@@ -922,7 +922,6 @@ function killObjects(objects){
 		}
 	}
 }
-
 function drawAsteroid(polygon){
 	ctx.beginPath();
 	ctx.lineWidth=3;
@@ -995,14 +994,14 @@ var Weapon = function(velocity = 10, width = 1, range = 1000, limit = 10, damage
 					  mass = 1, rateOfFire = 8, spin=0, hasAmmo=false, ammo=100, energyUsage=0){
 						  */
 function machineGun(){
-	cannon = new Weapon(velocity = 10, width = 1, range = 500, limit = 12, damage = 10, mass = 100, rateOfFire = 16, spin=0, hasAmmo=true, ammo=2000);
+	cannon = new Weapon(velocity = 8, width = 1, range = 500, limit = 12, damage = 6, mass = 100, rateOfFire = 16, spin=0, hasAmmo=true, ammo=2000);
 	cannon.type = 'p'; // projectile type
 	cannon.name="Machine Gun";
 	return cannon;
 }
 	
 function lightCannon(){
-	cannon = new Weapon(velocity = 2, width = 4, range = 500, limit = 10, damage = 10, mass = 100, rateOfFire = 8, spin = 120, hasAmmo=true, ammo=2000);
+	cannon = new Weapon(velocity = 2, width = 4, range = 500, limit = 10, damage = 10, mass = 100, rateOfFire = 8, spin = 120, hasAmmo=true, ammo=1000);
 	cannon.projectileVelocity = 10;
 	cannon.type = 'p'; // projectile type
 	cannon.name="Light Cannon";
@@ -1087,6 +1086,36 @@ function killProjectile(projectile){
 	
 }
 
+var Stellar = function(){
+	var ship = new Ship(c.width/2, c.height/2, 20);
+	ship.updateDirection();
+
+	ship.addWeapon(machineGun());
+	ship.changeWeapon();
+
+	ship.weapon.setCenter(ship.hitbox.vertices[0]);
+	ship.weapon.setPosition(ship.auxHitbox.vertices[0]);
+
+	ship.weapon.enabled=true;
+
+	ship.addWeapon(machineGun());
+	ship.changeWeapon();
+	ship.weapon.setCenter(ship.hitbox.vertices[1]);
+	ship.weapon.setPosition(ship.auxHitbox.vertices[1]);
+
+	ship.weapon.enabled=true;
+
+	ship.addWeapon(lightLaserBlaster());
+	ship.changeWeapon();
+	ship.weapon.setPowerSupply(ship.powerSupply);
+	ship.weapon.setPosition(ship.front);
+	ship.weapon.setCenter(ship.hitbox.center);
+	ship.weapon.enabled=true;
+	ship.shield.setPowerSupply(ship.powerSupply);
+	ship.shield.setEnabled(true);
+	return ship;
+}
+
 c.width = window.innerWidth-20;
 c.height = window.innerHeight-20;
 updateResEvent(c);
@@ -1108,32 +1137,8 @@ var instructions = buildInstructions();
 
 var objects = [];
 
-var player = new Ship(c.width/2, c.height/2, 20);
-player.updateDirection();
+player = new Stellar();
 
-player.addWeapon(machineGun());
-player.changeWeapon();
-
-player.weapon.setCenter(player.hitbox.vertices[0]);
-player.weapon.setPosition(player.auxHitbox.vertices[0]);
-
-player.weapon.enabled=true;
-
-player.addWeapon(machineGun());
-player.changeWeapon();
-player.weapon.setCenter(player.hitbox.vertices[1]);
-player.weapon.setPosition(player.auxHitbox.vertices[1]);
-
-player.weapon.enabled=true;
-
-player.addWeapon(lightLaserBlaster());
-player.changeWeapon();
-player.weapon.setPowerSupply(player.powerSupply);
-player.weapon.setPosition(player.front);
-player.weapon.setCenter(player.hitbox.center);
-player.weapon.enabled=true;
-
-player.shield.setPowerSupply(player.powerSupply);
 /*
 player.addWeapon(asteroidShooter());
 player.changeWeapon();
