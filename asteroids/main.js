@@ -135,9 +135,9 @@ function buildWeaponsStatus(weapons){
 	}
 	return list;
 }
-function drawWeaponsStatus(list){
+function drawWeaponsStatus(list, color="#00F0FF"){
 	ctx.beginPath();
-	ctx.fillStyle="#00F0FF";
+	ctx.fillStyle=color;
 	ctx.font="14px Arial";
 	var offSet = 0;
 	var xStart = 230;
@@ -149,9 +149,9 @@ function drawWeaponsStatus(list){
 		ctx.fillText(list[i], offSet - xStart, 40 + (i % colSize) * 20);
 	}
 }
-function drawInstructions(instructions){
+function drawInstructions(instructions, color="#000FFF"){
 	ctx.beginPath();
-	ctx.fillStyle="#000FFF";
+	ctx.fillStyle=color;
 	ctx.font="14px Arial";
 	var offSet = 0;
 	var xStart = 230;
@@ -164,17 +164,17 @@ function drawInstructions(instructions){
 	}
 }
 
-function drawEndGame(win){
+function drawEndGame(win, color="#000FFF", lose="#FF0000"){
 	if (win){
 		ctx.beginPath();
-		ctx.fillStyle="#000FFF";
+		ctx.fillStyle=color;
 		ctx.font="28px Arial";
 		ctx.fillText("Congratulations! You've won! Press F5 to restart.", c.width/3, c.height/2);		
 		
 	}
 	else{
 		ctx.beginPath();
-		ctx.fillStyle="#000FFF";
+		ctx.fillStyle=lose;
 		ctx.font="28px Arial";
 		ctx.fillText("You've died! Press F5 to restart.", c.width/3, c.height/2);
 	}
@@ -459,6 +459,8 @@ var Ship = function(x, y, l1){
 						0, 0,			// vx, vy
 						0, 0);			// velocity, spin
 	
+	this.primaryColor = "#0000FF";
+	this.secondaryColor = "#00F0FF";
 	this.auxHitbox = new Triangle(x, y - l1, l1, 0, 0, 0, 0);
 	this.powerSupply = new EnergySource(100, 10);
 	this.hull = new Hull();
@@ -671,7 +673,7 @@ var Ship = function(x, y, l1){
 			return;
 		}
 		ctx.setLineDash([4]);
-		ctx.strokeStyle="#0000FF";
+		ctx.strokeStyle=this.primaryColor;
 		ctx.beginPath();
 		ctx.moveTo(this.hitbox.center.x, this.hitbox.center.y);
 		ctx.lineTo(this.autoPath.x, this.autoPath.y);
@@ -785,7 +787,7 @@ var Ship = function(x, y, l1){
 	this.drawStatus = function(){
 		ctx.beginPath();
 		ctx.font="14px Arial";
-		ctx.fillStyle="#FF0000";
+		ctx.fillStyle=this.secondaryColor;
 		string = "Hull: " + this.hull.current;
 		ctx.fillText(string, c.width - 200, 30);
 		string = "Immunity: " + this.immunity;
@@ -804,8 +806,8 @@ var Ship = function(x, y, l1){
 			ctx.fillStyle="#FF0000";
 		}
 		else{
-			ctx.strokeStyle="#0000FF";
-			ctx.fillStyle="#0000FF";
+			ctx.strokeStyle=this.primaryColor;
+			ctx.fillStyle=this.primaryColor;
 		}
 		
 		for (var i = 0; i < polygon.vertices.length; i++){
@@ -814,27 +816,25 @@ var Ship = function(x, y, l1){
 			polygon.vertices[i].y,
 			3, 0, 2*Math.PI);
 			if (i == 2){
-				ctx.fillStyle="#00F0FF";
+				ctx.fillStyle=this.secondaryColor;
 			}
 			ctx.fill();
 		}
 		for (var i = 0; i < polygon.vertices.length - 1; i++){
 			ctx.beginPath();
-//			ctx.strokeStyle="#0000FF";
 			ctx.moveTo(polygon.center.x, polygon.center.y);
 			ctx.lineTo(polygon.vertices[i].x, polygon.vertices[i].y);
 			ctx.stroke();
 		}
 		for (var i = 0; i < polygon.vertices.length - 1; i++){
 			ctx.beginPath();
-//			ctx.strokeStyle="#0000FF";
 			ctx.moveTo(polygon.vertices[2].x, polygon.vertices[2].y);
 			ctx.lineTo(polygon.vertices[i].x, polygon.vertices[i].y);
 			ctx.stroke();
 		}
 			
 		if (polygon.center != undefined){
-			ctx.fillStyle="#00F0FF";
+			ctx.fillStyle=this.secondaryColor
 			ctx.beginPath();
 			ctx.arc(polygon.center.x,
 					polygon.center.y,
@@ -842,7 +842,7 @@ var Ship = function(x, y, l1){
 			ctx.fill();
 		}
 		if (this.immunity == true){
-			ctx.strokeStyle="#008088";
+			ctx.strokeStyle=this.secondaryColor;
 			ctx.beginPath();
 			ctx.arc(polygon.center.x,
 					polygon.center.y,
@@ -900,14 +900,14 @@ function killObjects(objects){
 		}
 	}
 }
-function drawAsteroid(polygon){
+function drawAsteroid(polygon, color="#FFFFFF", hitcolor="#FF0000"){
 	ctx.beginPath();
 	ctx.lineWidth=3;
 	if (polygon.hit == true){
-		ctx.strokeStyle="#FF0000";
+		ctx.strokeStyle=hitcolor;
 	}
 	else{
-		ctx.strokeStyle="#FFFFFF";
+		ctx.strokeStyle=color;
 	}
 	ctx.moveTo(polygon.vertices[0].x,
 			   polygon.vertices[0].y);
@@ -920,7 +920,7 @@ function drawAsteroid(polygon){
 			   polygon.vertices[0].y);
 			   
 	ctx.stroke();
-	ctx.fillStyle="#FFFFFF";
+//	ctx.fillStyle=color;
 }
 function asteroidSufferDamage(damage){
 	this.hp -= damage;
