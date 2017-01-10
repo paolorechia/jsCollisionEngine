@@ -37,14 +37,16 @@ var Level = function(){
 			var numberRectangles = Math.round(this.current * 0.6);
 			var numberTriangles = Math.round(this.current * 0.4);
 			for (i = 0; i < numberRectangles; i++){
-			objects.push(new randomRect(maxSize, minSize, maxSpeed, maxSpin));
-			objects[i].hp = Math.round(Math.sqrt(objects[i].mass));
-			objects[i].dead == false;
+				objects.push(new randomRect(maxSize, minSize, maxSpeed, maxSpin));
+				objects[i].hp = Math.round(Math.sqrt(objects[i].mass));
+				objects[i].dead == false;
+				objects[i].sufferDamage = asteroidSufferDamage;
 			}
 			for (i = 0; i < numberTriangles; i++){
-			objects.push(new randomTriangle(maxSize, minSize, maxSpeed, maxSpin));
-			objects[numberRectangles + i].hp = Math.round(Math.sqrt(objects[i].mass));
-			objects[numberRectangles + i].dead == false;
+				objects.push(new randomTriangle(maxSize, minSize, maxSpeed, maxSpin));
+				objects[numberRectangles + i].hp = Math.round(Math.sqrt(objects[i].mass));
+				objects[numberRectangles + i].dead == false;
+				objects[numberRectangles + i].sufferDamage = asteroidSufferDamage;
 			}
 		}
 		else if (this.current >= 13 && this.current <= 15){
@@ -217,7 +219,7 @@ var EnergySource = function(max = 100, rechargeRate = 10, rechargeSpeed=500){ //
 	this.rechargeRate = rechargeRate;
 	this.rechargeSpeed = rechargeSpeed;
 	this.rechargeEvent = undefined;
-	this.recharging= true;
+	this.recharging = true;
 	this.recharge = function(source){
 		if (this.recharging){
 			if (this.current < this.max){
@@ -241,18 +243,37 @@ var EnergySource = function(max = 100, rechargeRate = 10, rechargeSpeed=500){ //
 	}
 }
 
-var Shield = function(){
+var Shield = function(max = 100, drainRate=10){
 	this.enabled = false;
 	this.max = max;
-	this.current = this.max;
+	this.current = 0;
 	this.drainRate = drainRate;
+	this.energyEfficiency = 1; // transforms 1 energy point into 'n' shield points
+	this.drainSpeed = 250;
+	this.draining = true;
+	this.powerSupply = new EnergySource(0, 0);
+
 	
+	this.setPowerSupply = function(powerSupply){
+		this.powerSupply = powerSupply;
+	}
 	this.setEnabled = function(enabled){
 		this.enabled = enabled;
 	}
-	this.recharge = function(){
-		if (true){}
-		
+	this.drainEnergy = function(source){	// drains energy from power supply to recharge shield points
+		if (this.recharging){
+			if (this.current < this.max){
+				this.current += this.rechargeRate;
+				if (this.current > this.max){
+					this.current = this.max;
+				}
+				this.recharging = false;
+				this.rechargeEvent = undefined;
+			}
+			if (this.rechargeEvent == undefined){
+				this.rechargeEvent = setTimeout(function(){source.recharging = true;}, source.rechargeSpeed);
+			}
+		}
 	}
 }
 
@@ -382,15 +403,7 @@ var Weapon = function(velocity = 10, width = 1, range = 1000, limit = 10, damage
 	//	console.log(theta);
 	}
 	this.onHit = function(target){
-		if (target.hasShield && target.shield.points > 0){
-			target.shield -=this.damage;
-		}
-		else{
-			target.hp -= this.damage;	
-		}
-		if (target.hp <= 0){
-			target.dead=true;
-		}
+		target.sufferDamage(this.damage);
 	}
 	this.removeProjectiles = function(){
 		for (var i = 0; i < this.projectiles.length; i++){
@@ -700,9 +713,6 @@ var Ship = function(x, y, l1){
 		}
 		if (this.autoStatus.phase5){
 			var dist = distance(this.hitbox.center, this.autoPath);
-//			console.log(this.hitbox.center);
-//			console.log(this.autoPath);
-//			console.log(dist);
 			var timeToStop = this.hitbox.velocity / this.acceleration;
 			var ETA = dist / this.hitbox.velocity;
 			if (ETA > timeToStop){
@@ -856,6 +866,12 @@ function drawAsteroid(polygon){
 			   
 	ctx.stroke();
 	ctx.fillStyle="#FFFFFF";
+}
+function asteroidSufferDamage(damage){
+	this.hp -= damage;
+	if (this.hp < 0){
+		this.dead = true;
+	}
 }
 function drawHeavyBlaster(polygon, strokeColor="#0000FF", hitColor="#FF0000", joints=true, center=true, centerColor="#00F0FF", jointColor="#0000FF"){
 		ctx.beginPath();
