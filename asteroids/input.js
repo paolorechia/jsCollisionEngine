@@ -27,6 +27,9 @@ var coord = new Point(c.width/2, c.height/2);
 		if (event.key == 'r'){
 			player.cycleEnabledWeapons();
 		}
+		if (event.key == 'f'){
+			player.shield.setEnabled(true);
+		}
 		if (player.lock){
 			return;
 		}

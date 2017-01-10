@@ -473,6 +473,7 @@ var Ship = function(x, y, l1){
 	this.auxHitbox = new Triangle(x, y - l1, l1, 0, 0, 0, 0);
 	this.powerSupply = new EnergySource(100, 10);
 	this.hull = new Hull(100, 1);
+	this.shield = new Shield();
 	this.immunity = false;
 	this.dead = false;
 	this.weapons = [];
@@ -803,7 +804,7 @@ var Ship = function(x, y, l1){
 		string = "Energy: " + this.powerSupply.current;
 		ctx.fillText(string, c.width - 200, 90);		
 		if (this.shield != undefined){
-			string = "Shield: " + this.powerSupply.current;
+			string = "Shield: " + this.shield.current + ": " + this.shield.enabled;
 			ctx.fillText(string, c.width - 200, 120);					
 		}
 	}
