@@ -248,11 +248,13 @@ var Shield = function(max = 100, drainRate=10){
 	this.max = max;
 	this.current = 0;
 	this.drainRate = drainRate;
-	this.energyEfficiency = 1; // transforms 1 energy point into 'n' shield points
+	this.rechargeEfficiency = 1; // transforms 1 energy point into 'n' shield points
 	this.drainSpeed = 250;
 	this.draining = true;
 	this.powerSupply = new EnergySource(0, 0);
-
+	this.resistance = 1;
+	this.resistanceType = 'f'; // defense type can be either 'f' (flat) or 'p' (porcentual)
+							// The first case will simply subtract a constant from the received damage; the second will multiply the damage by the constant
 	
 	this.setPowerSupply = function(powerSupply){
 		this.powerSupply = powerSupply;
@@ -273,6 +275,48 @@ var Shield = function(max = 100, drainRate=10){
 			if (this.rechargeEvent == undefined){
 				this.rechargeEvent = setTimeout(function(){source.recharging = true;}, source.rechargeSpeed);
 			}
+		}
+	}
+	this.sufferDamage = function(damage){
+		if (this.resistanceType == 'f'){
+			var actualDamage = damage - resistance;
+			if (actualDamage > 0){
+					this.current -= actualDamage;
+			}
+		}
+		else{
+			var actualDamage = damage * resistance;
+			if (actualDamage > 0){
+					this.current -= actualDamage;
+			}			
+		}
+		if (this.current < 0){
+			var exceedingDamage = this.current * -1;
+			this.current = 0;
+		}
+		else{
+			exceedingDamage = 0;
+		}
+		return exceedingDamage;
+	}
+}
+var Hull = function(max = 100, resistance = 0){
+	this.max = max;
+	this.current = this.max;
+	this.resistance = resistance;
+	this.resistanceType = 'f'; // same as shield defense type -- 'f' for flat resistance; 'p' for porcentual
+	this.sufferDamage = function(damage){
+		if (this.resistanceType == 'f'){
+			var actualDamage = damage - resistance;
+			if (actualDamage > 0){
+					this.current -= actualDamage;
+			}
+		}
+		else{
+			var actualDamage = damage * resistance;
+			if (actualDamage > 0){
+					this.current -= actualDamage;
+			}			
 		}
 	}
 }
@@ -429,6 +473,7 @@ var Ship = function(x, y, l1){
 	this.auxHitbox = new Triangle(x, y - l1, l1, 0, 0, 0, 0);
 	this.powerSupply = new EnergySource(100, 10);
 	this.hp = 100;
+	this.damageResistance = 0;
 	this.immunity = false;
 	this.weapons = [];
 	this.currentWeapon = 0;
@@ -834,6 +879,20 @@ var Ship = function(x, y, l1){
 			this.weapons[this.currentWeapon].enabled = true;			
 		}
 	}
+	this.sufferDamage = function(damage){
+		if (this.immunity == true){
+			return;
+		}
+		if (this.shield != undefined && this.shield.enabled && this.shield.current > 0){
+			shield.current -= damage; // subtract shield points
+		}		
+		else{
+			this.hp -= damage;
+			if (this.hp <= 0){
+				this.dead=true;
+			}
+		}
+	}
 }
 
 function killObjects(objects){
@@ -1022,6 +1081,7 @@ var lastDate = new Date();
 var fps = new Fps();
 var maxFPS = 1000;
 var interval = 1000/maxFPS;
+var COLLISION_DAMAGE = 10;
 
 var score = new Score();
 var level = new Level();
@@ -1152,9 +1212,7 @@ function mainLoop(){
 				
 				elasticCollision(player.hitbox, mtv, objects[i]);
 				elasticCollision(player.auxHitbox, mtv, objects[i]);
-				if (player.immunity == false){
-					player.hp -=10;
-				}
+				player.sufferDamage(COLLISION_DAMAGE);	// fixed amount of damage on Collision, probably 
 			}
 		}
 		for (var u = 0; u < player.weapons.length; u++){
