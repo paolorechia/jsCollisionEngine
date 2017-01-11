@@ -1246,7 +1246,7 @@ var objects = [];
 //player = new Stellar("#F0F0F0", "#FF00FF"); // pink
 //player = new EnergySucker("#666666", "#FF0000");
 //player = new Stellar();
-player = new EnergySucker();
+//player = new EnergySucker();
 
 /*
 player.addWeapon(asteroidShooter());
@@ -1281,7 +1281,9 @@ var Button = function(x, y, width, height, string=" "){
 	this.width = width;
 	this.height = height;
 	this.string = string;
-	this.onClick;
+	this.onClick = function(){
+			console.log(this.string);
+	}
 	this.draw = function(){
 		ctx.fillStyle="#FFFFFF";
 		ctx.fillRect(this.x, this.y, this.width, this.height);
@@ -1294,21 +1296,49 @@ var Button = function(x, y, width, height, string=" "){
 function drawLobbyBackground(){
 	ctx.fillStyle="#000000";
 	ctx.fillRect(0,0,c.width,c.height);
+	ctx.fillStyle="#FFFFFF";
+	ctx.font="28px arial";
+	ctx.fillText("Select your ship", c.width/3, 80);
 }
 
 var buttons = [];
-buttons.push(new Button(200, 200, 150, 50, "Stellar"));
-buttons.push(new Button(400, 200, 150, 50, "EnergySucker"));
-var instruct = false;
+myButton = (new Button(200, 200, 150, 50, "Stellar"));
+myButton.onClick = function(){
+	player = new Stellar();
+	selected = true;
+}
+buttons.push(myButton);
 
+myButton = (new Button(400, 200, 150, 50, "EnergySucker"));
+myButton.onClick = function(){
+	player = new EnergySucker();
+	selected = true;
+}
+buttons.push(myButton);
+
+var instruct = false;
 var game = new Game();
+var selected = false;
 function selectShipLoop(){
 	drawLobbyBackground();
 	for (var i = 0; i < buttons.length; i++){
 		buttons[i].draw();
 	}
-
-	requestAnimationFrame(selectShipLoop);
+	if (!selected){
+		requestAnimationFrame(selectShipLoop);
+	}
+	else{
+		c.removeEventListener("touchstart", buttonModeClick, false);
+		c.removeEventListener("click", function(event){ buttonModeClick(event);
+                                                },
+                                                false);					
+		c.addEventListener("click", function(event){ mouseClick(event);
+                                                },
+                                                false);
+ 
+		c.addEventListener("touchstart", pegaCoordenadasMobile, false);
+		requestAnimationFrame(mainLoop);
+	}
 }
 function mainLoop(){
 	newDate = new Date();
