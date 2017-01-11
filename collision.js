@@ -200,6 +200,7 @@ function times2(a){
 }
 
 function drawPolygon(polygon, strokeColor="#0000FF", hitColor="#FF0000", joints=true, center=true, centerColor="#00F0FF", jointColor="#0000FF"){
+		ctx.save();
 		ctx.beginPath();
 		if (polygon.hit == true){
 			ctx.strokeStyle=hitColor;
@@ -238,6 +239,7 @@ function drawPolygon(polygon, strokeColor="#0000FF", hitColor="#FF0000", joints=
 				ctx.fill();
 			}
 		}
+		ctx.restore();
 }
 midPoint = function(pointA, pointB){
 	vector = new Vector(0, 0);
