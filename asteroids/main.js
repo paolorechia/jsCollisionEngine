@@ -1161,14 +1161,16 @@ var Stellar = function(primaryColor="#0000FF", secondaryColor = "#F000FF"){
 	return ship;
 }
 var EnergySucker = function(primaryColor="#0000FF", secondaryColor = "#F000FF"){
-	var ship = new Ship(c.width/2, c.height/2, 20, primaryColor, secondaryColor);
+	var ship = new Ship(c.width/2, c.height/2, 30, primaryColor, secondaryColor);
 	ship.updateDirection();
-	ship.hull = new Hull(100, 1);
+	ship.hull = new Hull(200, 5);
 	ship.shield = new Shield(20, 0, 5, 0.5, 300);
 	ship.powerSupply = new EnergySource(500, 10, 100);
 	ship.shield.setPowerSupply(ship.powerSupply);
 	ship.shield.setEnabled(true);
-
+	ship.acceleration = 0.08;
+	ship.maxSpeed = 7;
+	ship.turnRate = 2;
 	
 	ship.addWeapon(heavyLaserBlaster());
 	ship.changeWeapon();
