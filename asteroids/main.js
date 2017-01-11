@@ -919,6 +919,7 @@ function killObjects(objects){
 	}
 }
 function drawAsteroid(polygon, color="#FFFFFF", hitcolor="#FF0000"){
+	ctx.save();
 	ctx.beginPath();
 	ctx.lineWidth=3;
 	if (polygon.hit == true){
@@ -938,6 +939,7 @@ function drawAsteroid(polygon, color="#FFFFFF", hitcolor="#FF0000"){
 			   polygon.vertices[0].y);
 			   
 	ctx.stroke();
+	ctx.restore();
 //	ctx.fillStyle=color;
 }
 function asteroidSufferDamage(damage){
