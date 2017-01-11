@@ -1077,7 +1077,6 @@ function lightLaserBeam(){
 		else{
 			ctx.strokeStyle=this.owner.secondaryColor;
 		}
-
 		oldWidth = ctx.lineWidth;
 		ctx.lineWidth=this.projectileWidth;
 		for (var i = 0; i < this.projectiles.length; i++){
@@ -1091,7 +1090,8 @@ function lightLaserBeam(){
 	return beam;
 }
 function heavyLaserBeam(){
-	beam = new Weapon(velocity = 100, width = 8, range = 2000, limit = 1, damage = 5, mass=1, rateOfFire = 1000);
+	beam = new Weapon(velocity = 100, width = 8, range = 2000, limit = 1, damage = 5, mass=1, rateOfFire = 1000, spin=0, hasAmmo=false, ammo=1,
+					  energyUsage=9);
 	beam.type = 'l'; // laser type
 
 	beam.draw = function(){
@@ -1188,7 +1188,7 @@ var EnergySucker = function(primaryColor="#0000FF", secondaryColor = "#F000FF"){
 	ship.weapon.enabled=true;
 
 	
-	ship.addWeapon(lightLaserBeam());
+	ship.addWeapon(heavyLaserBeam());
 	ship.changeWeapon();
 	ship.weapon.setOwner(ship);
 	ship.weapon.setPowerSupply(ship.powerSupply);
