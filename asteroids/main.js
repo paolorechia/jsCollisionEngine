@@ -1243,10 +1243,10 @@ var instructions = buildInstructions();
 
 var objects = [];
 
-player = new Stellar("#F0F0F0", "#FF00FF"); // pink
+//player = new Stellar("#F0F0F0", "#FF00FF"); // pink
 //player = new EnergySucker("#666666", "#FF0000");
 //player = new Stellar();
-//player = new EnergySucker();
+player = new EnergySucker();
 
 /*
 player.addWeapon(asteroidShooter());
@@ -1275,6 +1275,19 @@ player.changeWeapon();
 player.weapon.setPosition(player.front);
 player.weapon.setCenter(player.hitbox.center);
 */
+var Button = new function(x, y, width, height){
+	this.x = x;
+	this.y = y;
+	this.width = width;
+	this.height = height;
+	
+}
+
+function drawLobbyBackground(){
+	ctx.fillStyle="#000000";
+	ctx.fillRect(0,0,c.width,c.height);
+}
+var buttons = [];
 
 var instruct = false;
 
