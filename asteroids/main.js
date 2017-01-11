@@ -7,7 +7,7 @@ updateResEvent = function(canvas) {
 
 var Score = function(color = "#000FFF"){
 	this.player = 0;
-	this.draw = function(){
+	this.draw = function(color){
 		ctx.beginPath();
 		ctx.fillStyle=color;
 		ctx.font="14px Arial";
@@ -34,7 +34,7 @@ function generateAsteroids(maxSize, minSize, maxSpeed, maxSpin, numberRectangles
 var Level = function(color="#000FFF"){
 	this.current = 1;
 	this.max = 20;
-	this.draw = function(){
+	this.draw = function(color){
 		ctx.beginPath();
 		ctx.fillStyle=color;
 		ctx.font="14px Arial";
