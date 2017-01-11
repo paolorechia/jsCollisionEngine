@@ -1066,7 +1066,8 @@ function heavyLaserBlaster(){
 	return blaster;
 }
 function lightLaserBeam(){
-	beam = new Weapon(velocity = 100, width = 2, range = 2000, limit = 1, damage = 1, mass=1, rateOfFire = 1000);
+	beam = new Weapon(velocity = 100, width = 2, range = 2000, limit = 1, damage = 1, mass=1, rateOfFire = 1000, spin=0, hasAmmo=false, ammo=1,
+					  energyUsage=4);
 	beam.type = 'l'; // laser type
 	beam.draw = function(){
 		if (beam.owner == undefined){
@@ -1121,8 +1122,12 @@ function killProjectile(projectile){
 var Stellar = function(primaryColor="#0000FF", secondaryColor = "#F000FF"){
 	var ship = new Ship(c.width/2, c.height/2, 20, primaryColor, secondaryColor);
 	ship.updateDirection();
-	ship.hull = new Hull(100, 1);
+	ship.hull = new Hull(100, 0);
 	ship.shield = new Shield(50, 0, 5, 0.5, 300);
+
+	ship.shield.setPowerSupply(ship.powerSupply);
+	ship.shield.setEnabled(true);
+
 	
 	ship.addWeapon(machineGun());
 	ship.changeWeapon();
@@ -1141,6 +1146,7 @@ var Stellar = function(primaryColor="#0000FF", secondaryColor = "#F000FF"){
 
 	ship.weapon.enabled=true;
 
+	
 	ship.addWeapon(lightLaserBlaster());
 	ship.changeWeapon();
 	ship.weapon.setOwner(ship);
@@ -1148,8 +1154,8 @@ var Stellar = function(primaryColor="#0000FF", secondaryColor = "#F000FF"){
 	ship.weapon.setPosition(ship.front);
 	ship.weapon.setCenter(ship.hitbox.center);
 	ship.weapon.enabled=true;
-	ship.shield.setPowerSupply(ship.powerSupply);
-	ship.shield.setEnabled(true);
+	
+
 
 	return ship;
 }
@@ -1159,6 +1165,9 @@ var EnergySucker = function(primaryColor="#0000FF", secondaryColor = "#F000FF"){
 	ship.hull = new Hull(100, 1);
 	ship.shield = new Shield(20, 0, 5, 0.5, 300);
 	ship.powerSupply = new EnergySource(500, 10, 100);
+	ship.shield.setPowerSupply(ship.powerSupply);
+	ship.shield.setEnabled(true);
+
 	
 	ship.addWeapon(heavyLaserBlaster());
 	ship.changeWeapon();
@@ -1177,6 +1186,7 @@ var EnergySucker = function(primaryColor="#0000FF", secondaryColor = "#F000FF"){
 	ship.weapon.setPowerSupply(ship.powerSupply);
 	ship.weapon.enabled=true;
 
+	
 	ship.addWeapon(lightLaserBeam());
 	ship.changeWeapon();
 	ship.weapon.setOwner(ship);
@@ -1185,8 +1195,7 @@ var EnergySucker = function(primaryColor="#0000FF", secondaryColor = "#F000FF"){
 	ship.weapon.setPosition(ship.front);
 	ship.weapon.setCenter(ship.hitbox.center);
 	ship.weapon.enabled=true;
-	ship.shield.setPowerSupply(ship.powerSupply);
-	ship.shield.setEnabled(true);
+
 
 	return ship;
 }
@@ -1214,7 +1223,7 @@ var instructions = buildInstructions();
 var objects = [];
 
 //player = new Stellar("#F0F0F0", "#FF00FF");
-player = new EnergySucker("#FFF000", "#000FFF");
+player = new EnergySucker("#00AA33", "#BBBB00");
 
 /*
 player.addWeapon(asteroidShooter());
