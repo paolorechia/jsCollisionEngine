@@ -1127,7 +1127,7 @@ function killProjectile(projectile){
 	
 }
 //var Shield = function(max = 100, resistance=0, drainRate=10, rechargeEfficiency = 0.5, drainSpeed = 250){
-var Stellar = function(primaryColor="#0000FF", secondaryColor = "#F000FF"){
+var Stellar = function(primaryColor="#000FFF", secondaryColor = "#0FF0FF"){
 	var ship = new Ship(c.width/2, c.height/2, 20, primaryColor, secondaryColor);
 	ship.updateDirection();
 	ship.hull = new Hull(100, 0);
@@ -1168,7 +1168,7 @@ var Stellar = function(primaryColor="#0000FF", secondaryColor = "#F000FF"){
 
 	return ship;
 }
-var EnergySucker = function(primaryColor="#0000FF", secondaryColor = "#F000FF"){
+var EnergySucker = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF"){
 	var ship = new Ship(c.width/2, c.height/2, 30, primaryColor, secondaryColor);
 	ship.updateDirection();
 	ship.hull = new Hull(200, 5);
@@ -1232,8 +1232,9 @@ var instructions = buildInstructions();
 
 var objects = [];
 
-player = new Stellar("#F0F0F0", "#FF00FF");
-//player = new EnergySucker("#00AA33", "#BBBB00");
+//player = new Stellar("#F0F0F0", "#FF00FF"); // pink
+//player = new EnergySucker("#666666", "#FF0000");
+player = new Stellar();
 
 /*
 player.addWeapon(asteroidShooter());
