@@ -1031,8 +1031,16 @@ function lightLaserBlaster(){
 	blaster = new Weapon(velocity = 30, width = 1, range = 1000, limit = 12, damage = 5, mass=1, rateOfFire = 12,  spin=0, hasAmmo=false, ammo=1,
 						 energyUsage = 5);
 	blaster.draw = function(){
-		for (var i = 0; i < this.projectiles.length; i++){
-			drawPolygon(this.projectiles[i], strokeColor="#0000FF", hitColor="#0FF0FF", joints=false, center=false, fillColor="#0F00FF");
+		if (blaster.owner == undefined){
+			for (var i = 0; i < this.projectiles.length; i++){
+				drawPolygon(this.projectiles[i], strokeColor="#0000FF", hitColor="#0FF0FF", joints=false, center=false, fillColor="#0F00FF");
+			}
+		}
+		else{
+			for (var i = 0; i < this.projectiles.length; i++){
+				drawPolygon(this.projectiles[i], strokeColor=this.owner.primaryColor,
+							hitColor=this.owner.secondaryColor, joints=false, center=false, fillColor="#0F00FF");
+			}
 		}
 	}
 	blaster.name = "Light Laser Blaster";
@@ -1041,8 +1049,10 @@ function lightLaserBlaster(){
 function heavyLaserBlaster(){
 	blaster = new Weapon(velocity = 30, width = 12, range = 1000, limit = 8, damage = 20, mass=1, rateOfFire = 6);
 	blaster.draw = function(){
-		for (var i = 0; i < this.projectiles.length; i++){
-			drawHeavyBlaster(this.projectiles[i], strokeColor="#0000FF", hitColor="#0FF0FF", joints=false, center=false, fillColor="#0F00FF");
+		if (blaster.owner == undefined){
+			for (var i = 0; i < this.projectiles.length; i++){
+				drawHeavyBlaster(this.projectiles[i], strokeColor="#0000FF", hitColor="#0FF0FF", joints=false, center=false, fillColor="#0F00FF");
+			}
 		}
 	}
 	blaster.name = "Heavy Laser Blaster";
@@ -1051,10 +1061,15 @@ function heavyLaserBlaster(){
 function lightLaserBeam(){
 	beam = new Weapon(velocity = 100, width = 2, range = 2000, limit = 1, damage = 1, mass=1, rateOfFire = 1000);
 	beam.type = 'l'; // laser type
-
 	beam.draw = function(){
+		if (blaster.owner == undefined){
+			ctx.strokeStyle="#009099";
+		}
+		else{
+			ctx.strokeColor=this.owner.secondaryColor;
+		}
 		ctx.beginPath();
-		ctx.strokeStyle="#009099";
+
 		oldWidth = ctx.lineWidth;
 		ctx.lineWidth=beam.projectileWidth;
 		for (var i = 0; i < this.projectiles.length; i++){
@@ -1072,8 +1087,13 @@ function heavyLaserBeam(){
 	beam.type = 'l'; // laser type
 
 	beam.draw = function(){
+		if (blaster.owner == undefined){
+			ctx.strokeStyle="#009099";
+		}
+		else{
+			ctx.strokeColor=this.owner.secondaryColor;
+		}
 		ctx.beginPath();
-		ctx.strokeStyle="#009099";
 		oldWidth = ctx.lineWidth;
 		ctx.lineWidth=beam.projectileWidth;
 		for (var i = 0; i < this.projectiles.length; i++){
