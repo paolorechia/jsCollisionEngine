@@ -1047,11 +1047,18 @@ function lightLaserBlaster(){
 	return blaster;
 }
 function heavyLaserBlaster(){
-	blaster = new Weapon(velocity = 30, width = 12, range = 1000, limit = 8, damage = 20, mass=1, rateOfFire = 6);
+	blaster = new Weapon(velocity = 30, width = 12, range = 1000, limit = 8, damage = 20, mass=1, rateOfFire = 6, spin=0, hasAmmo=false, ammo=1,
+						 energyUsage = 20);
 	blaster.draw = function(){
 		if (blaster.owner == undefined){
 			for (var i = 0; i < this.projectiles.length; i++){
 				drawHeavyBlaster(this.projectiles[i], strokeColor="#0000FF", hitColor="#0FF0FF", joints=false, center=false, fillColor="#0F00FF");
+			}
+		}
+		else{
+			for (var i = 0; i < this.projectiles.length; i++){
+				drawHeavyBlaster(this.projectiles[i], strokeColor=this.owner.primaryColor,
+								 hitColor=this.owner.secondaryColor, joints=false, center=false, fillColor="#0F00FF");
 			}
 		}
 	}
@@ -1062,7 +1069,7 @@ function lightLaserBeam(){
 	beam = new Weapon(velocity = 100, width = 2, range = 2000, limit = 1, damage = 1, mass=1, rateOfFire = 1000);
 	beam.type = 'l'; // laser type
 	beam.draw = function(){
-		if (blaster.owner == undefined){
+		if (beam.owner == undefined){
 			ctx.strokeStyle="#009099";
 		}
 		else{
@@ -1146,6 +1153,43 @@ var Stellar = function(primaryColor="#0000FF", secondaryColor = "#F000FF"){
 
 	return ship;
 }
+var EnergySucker = function(primaryColor="#0000FF", secondaryColor = "#F000FF"){
+	var ship = new Ship(c.width/2, c.height/2, 20, primaryColor, secondaryColor);
+	ship.updateDirection();
+	ship.hull = new Hull(100, 1);
+	ship.shield = new Shield(20, 0, 5, 0.5, 300);
+	ship.powerSupply = new EnergySource(500, 10, 100);
+	
+	ship.addWeapon(heavyLaserBlaster());
+	ship.changeWeapon();
+	ship.weapon.setOwner(ship);
+	ship.weapon.setPowerSupply(ship.powerSupply);
+	ship.weapon.setCenter(ship.hitbox.vertices[0]);
+	ship.weapon.setPosition(ship.auxHitbox.vertices[0]);
+
+	ship.weapon.enabled=true;
+
+	ship.addWeapon(heavyLaserBlaster());
+	ship.changeWeapon();
+	ship.weapon.setOwner(ship);
+	ship.weapon.setCenter(ship.hitbox.vertices[1]);
+	ship.weapon.setPosition(ship.auxHitbox.vertices[1]);
+	ship.weapon.setPowerSupply(ship.powerSupply);
+	ship.weapon.enabled=true;
+
+	ship.addWeapon(lightLaserBeam());
+	ship.changeWeapon();
+	ship.weapon.setOwner(ship);
+	
+	ship.weapon.setPowerSupply(ship.powerSupply);
+	ship.weapon.setPosition(ship.front);
+	ship.weapon.setCenter(ship.hitbox.center);
+	ship.weapon.enabled=true;
+	ship.shield.setPowerSupply(ship.powerSupply);
+	ship.shield.setEnabled(true);
+
+	return ship;
+}
 
 c.width = window.innerWidth-20;
 c.height = window.innerHeight-20;
@@ -1169,7 +1213,8 @@ var instructions = buildInstructions();
 
 var objects = [];
 
-player = new Stellar("#F0F0F0", "#FF00FF");
+//player = new Stellar("#F0F0F0", "#FF00FF");
+player = new EnergySucker("#FFF000", "#000FFF");
 
 /*
 player.addWeapon(asteroidShooter());
