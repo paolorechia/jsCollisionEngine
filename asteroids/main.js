@@ -1232,8 +1232,8 @@ var instructions = buildInstructions();
 
 var objects = [];
 
-//player = new Stellar("#F0F0F0", "#FF00FF");
-player = new EnergySucker("#00AA33", "#BBBB00");
+player = new Stellar("#F0F0F0", "#FF00FF");
+//player = new EnergySucker("#00AA33", "#BBBB00");
 
 /*
 player.addWeapon(asteroidShooter());
@@ -1266,6 +1266,10 @@ player.weapon.setCenter(player.hitbox.center);
 var instruct = false;
 
 var game = new Game();
+function selectShipLoop(){
+	
+	
+}
 function mainLoop(){
 	newDate = new Date();
 	elapsedTime = newDate - lastDate;

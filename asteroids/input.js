@@ -9,7 +9,9 @@ var coord = new Point(c.width/2, c.height/2);
         coord.x = event.touches[0].clientX;
         coord.y = event.touches[0].clientY;
 		player.lock = true;
-		player.weapon.firing = true;
+		for (var i= 0; i < player.weapons.length; i++){
+				player.weapons[i].fire(true);
+			}
 		player.setupAutoPilot(coord);
    }
 	keyboardDown = function(event){
