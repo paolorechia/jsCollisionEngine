@@ -452,8 +452,16 @@ var Weapon = function(velocity = 10, width = 1, range = 1000, limit = 10, damage
 		}
 	}
 	this.draw = function(){
-		for (var i =0; i < this.projectiles.length; i++){
-			drawPolygon(this.projectiles[i]);
+		if (this.owner != undefined){
+			for (var i =0; i < this.projectiles.length; i++){
+				drawPolygon(this.projectiles[i], strokeColor=this.owner.primaryColor, 
+						hitColor="#FF0000", joints=false, center=false, fillColor=this.owner.secondaryColor);
+			}
+		}
+		else{
+			for (var i =0; i < this.projectiles.length; i++){
+				drawPolygon(this.projectiles[i]);
+			}
 		}
 	}
 }
@@ -1082,7 +1090,7 @@ var Stellar = function(primaryColor="#0000FF", secondaryColor = "#00F0FF"){
 	
 	ship.addWeapon(machineGun());
 	ship.changeWeapon();
-//	ship.weapon.setOwner(ship);
+	ship.weapon.setOwner(ship);
 
 	ship.weapon.setCenter(ship.hitbox.vertices[0]);
 	ship.weapon.setPosition(ship.auxHitbox.vertices[0]);
@@ -1091,6 +1099,7 @@ var Stellar = function(primaryColor="#0000FF", secondaryColor = "#00F0FF"){
 
 	ship.addWeapon(machineGun());
 	ship.changeWeapon();
+	ship.weapon.setOwner(ship);
 	ship.weapon.setCenter(ship.hitbox.vertices[1]);
 	ship.weapon.setPosition(ship.auxHitbox.vertices[1]);
 
@@ -1098,6 +1107,7 @@ var Stellar = function(primaryColor="#0000FF", secondaryColor = "#00F0FF"){
 
 	ship.addWeapon(lightLaserBlaster());
 	ship.changeWeapon();
+	ship.weapon.setOwner(ship);
 	ship.weapon.setPowerSupply(ship.powerSupply);
 	ship.weapon.setPosition(ship.front);
 	ship.weapon.setCenter(ship.hitbox.center);
