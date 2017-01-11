@@ -818,6 +818,8 @@ var Ship = function(x, y, l1, primaryColor = "#0000FF", secondaryColor = "#00F0F
 		}
 	}
 	this.draw = function(polygon = this.hitbox){
+		ctx.save();
+		ctx.lineWidth=3;
 		ctx.beginPath();
 		if (polygon.hit == true){
 			ctx.strokeStyle="#FF0000";
@@ -852,7 +854,7 @@ var Ship = function(x, y, l1, primaryColor = "#0000FF", secondaryColor = "#00F0F
 		}
 			
 		if (polygon.center != undefined){
-			ctx.fillStyle=this.secondaryColor
+			ctx.fillStyle=this.secondaryColor;
 			ctx.beginPath();
 			ctx.arc(polygon.center.x,
 					polygon.center.y,
@@ -867,6 +869,7 @@ var Ship = function(x, y, l1, primaryColor = "#0000FF", secondaryColor = "#00F0F
 					polygon.side + 2, 0, 2*Math.PI);
 			ctx.stroke();	
 		}
+		ctx.restore();
 	}
 	this.setImmunity = function(seconds){
 		this.immunity = true;
@@ -949,6 +952,7 @@ function asteroidSufferDamage(damage){
 	}
 }
 function drawHeavyBlaster(polygon, strokeColor="#0000FF", hitColor="#FF0000", joints=true, center=true, centerColor="#00F0FF", jointColor="#0000FF"){
+		ctx.save();
 		ctx.beginPath();
 		if (polygon.hit == true){
 			ctx.strokeStyle=hitColor;
@@ -986,6 +990,7 @@ function drawHeavyBlaster(polygon, strokeColor="#0000FF", hitColor="#FF0000", jo
 				ctx.fill();
 				}
 		}
+		ctx.restore();
 }
 /*
 var Weapon = function(velocity = 10, width = 1, range = 1000, limit = 10, damage = 10, 
@@ -1084,7 +1089,7 @@ function killProjectile(projectile){
 	
 }
 //var Shield = function(max = 100, resistance=0, drainRate=10, rechargeEfficiency = 0.5, drainSpeed = 250){
-var Stellar = function(primaryColor="#0000FF", secondaryColor = "#00F0FF"){
+var Stellar = function(primaryColor="#0000FF", secondaryColor = "#F000FF"){
 	var ship = new Ship(c.width/2, c.height/2, 20, primaryColor, secondaryColor);
 	ship.updateDirection();
 	ship.hull = new Hull(100, 1);
@@ -1123,11 +1128,12 @@ var Stellar = function(primaryColor="#0000FF", secondaryColor = "#00F0FF"){
 c.width = window.innerWidth-20;
 c.height = window.innerHeight-20;
 updateResEvent(c);
-
+ctx.lineWidth=3;
 var j = 0;
 
 
 var objects = [];
+
 
 var lastDate = new Date();
 var fps = new Fps();
@@ -1141,7 +1147,7 @@ var instructions = buildInstructions();
 
 var objects = [];
 
-player = new Stellar("#F0F0F0F", "#FF00FF");
+player = new Stellar("#F0F0F0", "#FF00FF");
 
 /*
 player.addWeapon(asteroidShooter());
