@@ -455,7 +455,9 @@ var Weapon = function(velocity = 10, width = 1, range = 1000, limit = 10, damage
 		if (this.owner != undefined){
 			for (var i =0; i < this.projectiles.length; i++){
 				drawPolygon(this.projectiles[i], strokeColor=this.owner.primaryColor, 
-						hitColor="#FF0000", joints=false, center=false, fillColor=this.owner.secondaryColor);
+							hitColor=this.owner.secondaryColor, joints=true, center=false,
+							fillColor=this.owner.secondaryColor, centerColor=this.owner.secondaryColor,
+							jointColor=this.owner.secondaryColor);
 			}
 		}
 		else{
