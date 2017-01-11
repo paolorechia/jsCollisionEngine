@@ -1275,26 +1275,40 @@ player.changeWeapon();
 player.weapon.setPosition(player.front);
 player.weapon.setCenter(player.hitbox.center);
 */
-var Button = new function(x, y, width, height){
+var Button = function(x, y, width, height, string=" "){
 	this.x = x;
 	this.y = y;
 	this.width = width;
 	this.height = height;
-	
+	this.string = string;
+	this.onClick;
+	this.draw = function(){
+		ctx.fillStyle="#FFFFFF";
+		ctx.fillRect(this.x, this.y, this.width, this.height);
+		ctx.fillStyle="#000000";
+		ctx.font="14px arial";
+		ctx.fillText(string, this.x + this.width/10, this.y + this.height/2);
+	}
 }
 
 function drawLobbyBackground(){
 	ctx.fillStyle="#000000";
 	ctx.fillRect(0,0,c.width,c.height);
 }
-var buttons = [];
 
+var buttons = [];
+buttons.push(new Button(200, 200, 150, 50, "Stellar"));
+buttons.push(new Button(400, 200, 150, 50, "EnergySucker"));
 var instruct = false;
 
 var game = new Game();
 function selectShipLoop(){
-	
-	
+	drawLobbyBackground();
+	for (var i = 0; i < buttons.length; i++){
+		buttons[i].draw();
+	}
+
+	requestAnimationFrame(selectShipLoop);
 }
 function mainLoop(){
 	newDate = new Date();
@@ -1408,5 +1422,5 @@ function mainLoop(){
 	drawFPS(fps.mean, player.secondaryColor);
 	setTimeout(function(){requestAnimationFrame(mainLoop)}, interval);
 }
-
-mainLoop();
+selectShipLoop();
+//mainLoop();
