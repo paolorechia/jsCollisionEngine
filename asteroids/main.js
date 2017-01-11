@@ -876,7 +876,18 @@ var Ship = function(x, y, l1, primaryColor = "#0000FF", secondaryColor = "#00F0F
 			ctx.arc(polygon.center.x,
 					polygon.center.y,
 					polygon.side + 2, 0, 2*Math.PI);
+			ctx.stroke();
+		}
+		if (this.shield.enabled && this.shield.current > 0){
+			ctx.save();
+			ctx.strokeStyle=this.secondaryColor;
+			ctx.beginPath();
+			ctx.lineWidth = Math.floor(this.shield.current / 25);
+			ctx.arc(polygon.center.x,
+					polygon.center.y,
+					polygon.side + this.shield.max / 25, 0, 2*Math.PI);
 			ctx.stroke();	
+			ctx.restore();
 		}
 		ctx.restore();
 	}
@@ -1232,9 +1243,10 @@ var instructions = buildInstructions();
 
 var objects = [];
 
-//player = new Stellar("#F0F0F0", "#FF00FF"); // pink
+player = new Stellar("#F0F0F0", "#FF00FF"); // pink
 //player = new EnergySucker("#666666", "#FF0000");
-player = new Stellar();
+//player = new Stellar();
+//player = new EnergySucker();
 
 /*
 player.addWeapon(asteroidShooter());
