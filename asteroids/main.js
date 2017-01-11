@@ -1070,16 +1070,16 @@ function lightLaserBeam(){
 					  energyUsage=4);
 	beam.type = 'l'; // laser type
 	beam.draw = function(){
-		if (beam.owner == undefined){
+		ctx.beginPath();
+		if (this.owner == undefined){
 			ctx.strokeStyle="#009099";
 		}
 		else{
-			ctx.strokeColor=this.owner.secondaryColor;
+			ctx.strokeStyle=this.owner.secondaryColor;
 		}
-		ctx.beginPath();
 
 		oldWidth = ctx.lineWidth;
-		ctx.lineWidth=beam.projectileWidth;
+		ctx.lineWidth=this.projectileWidth;
 		for (var i = 0; i < this.projectiles.length; i++){
 			ctx.moveTo(this.position.x, this.position.y);
 			ctx.lineTo(this.projectiles[i].vertices[3].x, this.projectiles[i].vertices[3].y);
@@ -1099,7 +1099,7 @@ function heavyLaserBeam(){
 			ctx.strokeStyle="#009099";
 		}
 		else{
-			ctx.strokeColor=this.owner.secondaryColor;
+			ctx.strokeStyle=this.owner.secondaryColor;
 		}
 		ctx.beginPath();
 		oldWidth = ctx.lineWidth;
@@ -1150,9 +1150,10 @@ var Stellar = function(primaryColor="#0000FF", secondaryColor = "#F000FF"){
 	ship.addWeapon(lightLaserBlaster());
 	ship.changeWeapon();
 	ship.weapon.setOwner(ship);
-	ship.weapon.setPowerSupply(ship.powerSupply);
-	ship.weapon.setPosition(ship.front);
 	ship.weapon.setCenter(ship.hitbox.center);
+	ship.weapon.setPosition(ship.front);
+	ship.weapon.setPowerSupply(ship.powerSupply);
+
 	ship.weapon.enabled=true;
 	
 
@@ -1190,7 +1191,6 @@ var EnergySucker = function(primaryColor="#0000FF", secondaryColor = "#F000FF"){
 	ship.addWeapon(lightLaserBeam());
 	ship.changeWeapon();
 	ship.weapon.setOwner(ship);
-	
 	ship.weapon.setPowerSupply(ship.powerSupply);
 	ship.weapon.setPosition(ship.front);
 	ship.weapon.setCenter(ship.hitbox.center);
@@ -1324,7 +1324,7 @@ function mainLoop(){
 				
 				elasticCollision(player.hitbox, mtv, objects[i]);
 				elasticCollision(player.auxHitbox, mtv, objects[i]);
-				player.sufferDamage(COLLISION_DAMAGE);	// fixed amount of damage on Collision, probably 
+				player.sufferDamage(COLLISION_DAMAGE);	// fixed amount of damage on Collision
 			}
 		}
 		for (var u = 0; u < player.weapons.length; u++){
