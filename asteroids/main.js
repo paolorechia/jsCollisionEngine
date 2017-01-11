@@ -1298,18 +1298,18 @@ function drawLobbyBackground(){
 	ctx.fillRect(0,0,c.width,c.height);
 	ctx.fillStyle="#FFFFFF";
 	ctx.font="28px arial";
-	ctx.fillText("Select your ship", c.width/3, 80);
+	ctx.fillText("Select your ship", 20, 40);
 }
 
 var buttons = [];
-myButton = (new Button(200, 200, 150, 50, "Stellar"));
+myButton = (new Button(20, 200, 150, 50, "Stellar"));
 myButton.onClick = function(){
 	player = new Stellar();
 	selected = true;
 }
 buttons.push(myButton);
 
-myButton = (new Button(400, 200, 150, 50, "EnergySucker"));
+myButton = (new Button(20, 260, 150, 50, "EnergySucker"));
 myButton.onClick = function(){
 	player = new EnergySucker();
 	selected = true;
