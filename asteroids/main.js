@@ -44,8 +44,9 @@ var Level = function(color="#000FFF"){
 	this.start = function(){
 
 		player.setImmunity(3);
-		player.hull.current += 10;
+
 		if (this.current <= 12){
+			player.hull.recover(10);
 			var maxSize = c.width/20 + (this.current * 2);
 			var minSize = c.width/100 + (this.current * 2);
 			var maxSpeed = Math.round(this.current * 0.7);
@@ -306,6 +307,12 @@ var Hull = function(max = 100, resistance = 0){
 			if (actualDamage > 0){
 					this.current -= actualDamage;
 			}			
+		}
+	}
+	this.recover = function(heal){
+		this.current += heal;
+		if (this.current > this.max){
+			this.current = this.max;
 		}
 	}
 }
@@ -956,6 +963,7 @@ function asteroidSufferDamage(damage){
 function drawHeavyBlaster(polygon, strokeColor="#0000FF", hitColor="#FF0000", joints=true, center=true, centerColor="#00F0FF", jointColor="#0000FF"){
 		ctx.save();
 		ctx.beginPath();
+		ctx.lineWidth=4;
 		if (polygon.hit == true){
 			ctx.strokeStyle=hitColor;
 		}
