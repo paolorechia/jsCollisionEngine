@@ -35,7 +35,7 @@ var Level = function(color="#000FFF"){
 	this.current = 1;
 	this.max = 20;
 	this.draw = function(color){
-		ctx.beginPath();
+            ctx.beginPath();
 		ctx.fillStyle=color;
 		ctx.font="14px Arial";
 		string = "Level: " + this.current;
@@ -1295,6 +1295,28 @@ var Button = function(x, y, width, height, string=" "){
 	}
 }
 
+var CircularButton = function(x, y, radius, color, string){
+	this.x = x;
+	this.y = y;
+	this.radius = radius;
+    this.color = color;
+	this.string = string;
+	this.onClick = function(){
+			console.log(this.string);
+	}
+	this.draw = function(){
+		ctx.fillStyle=this.color;
+        ctx.beginPath();
+		ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
+        ctx.fill();
+		ctx.fillStyle="#000000";
+		ctx.font="14px arial";
+		ctx.fillText(string, this.x - this.radius/6, this.y + this.radius/10);
+	}
+}
+
+
+
 function drawLobbyBackground(){
 	ctx.fillStyle="#000000";
 	ctx.fillRect(0,0,c.width,c.height);
@@ -1317,6 +1339,10 @@ myButton.onClick = function(){
 	selected = true;
 }
 buttons.push(myButton);
+
+myButton = new CircularButton(50, 360, 20, "#FF0000" ,"B");
+buttons.push(myButton);
+
 
 var instruct = false;
 var game = new Game();
