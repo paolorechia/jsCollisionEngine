@@ -1337,6 +1337,9 @@ function selectShipLoop(){
                                                 false);
  
 		c.addEventListener("touchstart", pegaCoordenadasMobile, false);
+        for (var i = 0; i < buttons.length; i++){
+            buttons.pop();
+        }
 		requestAnimationFrame(mainLoop);
 	}
 }
