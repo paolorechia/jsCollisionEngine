@@ -1049,6 +1049,7 @@ function asteroidShooter(){
 function lightLaserBlaster(){
 	blaster = new Weapon(velocity = 30, width = 1, range = 1000, limit = 12, damage = 5, mass=1, rateOfFire = 12,  spin=0, hasAmmo=false, ammo=1,
 						 energyUsage = 5);
+    blaster.type = 'p';
 	blaster.draw = function(){
 		if (blaster.owner == undefined){
 			for (var i = 0; i < this.projectiles.length; i++){
@@ -1068,6 +1069,7 @@ function lightLaserBlaster(){
 function heavyLaserBlaster(){
 	blaster = new Weapon(velocity = 30, width = 12, range = 1000, limit = 8, damage = 20, mass=1, rateOfFire = 6, spin=0, hasAmmo=false, ammo=1,
 						 energyUsage = 20);
+    blaster.type = 'p';
 	blaster.draw = function(){
 		if (blaster.owner == undefined){
 			for (var i = 0; i < this.projectiles.length; i++){
