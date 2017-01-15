@@ -31,6 +31,15 @@ function generateAsteroids(maxSize, minSize, maxSpeed, maxSpin, numberRectangles
 				objects.push(triangle);
 			}	
 }
+function generateTurrets(n){
+    for (var i = 0; i < n; i++){
+        var x = Math.random() * c.width;
+        var y = Math.random() * c.height;
+
+        turret = new lightLaserTurret("#FFFFFF", "#FF0000", 1, x, y);
+        enemies.push(turret);
+    }
+}
 var Level = function(color="#000FFF"){
 	this.current = 1;
 	this.max = 20;
@@ -54,6 +63,7 @@ var Level = function(color="#000FFF"){
 			var numberRectangles = Math.round(this.current * 0.6);
 			var numberTriangles = Math.round(this.current * 0.4);
 			generateAsteroids(maxSize, minSize, maxSpeed, maxSpin, numberRectangles, numberTriangles);
+            generateTurrets(this.current);
 		}
 		else if (this.current >= 13 && this.current <= 15){
 			var maxSize = c.width/400;
@@ -486,9 +496,7 @@ var Weapon = function(velocity = 10, width = 1, range = 1000, limit = 10, damage
 		}
 	}
 	this.draw = function(){
-        if (this.enabled){
-            this.drawCannon(); 
-        }
+        this.drawCannon(); 
 		if (this.owner != undefined){
 			for (var i =0; i < this.projectiles.length; i++){
 				drawPolygon(this.projectiles[i], strokeColor=this.owner.primaryColor, 
@@ -1100,10 +1108,8 @@ function lightLaserBlaster(){
     console.log(blaster);
     blaster.type = 'p';
 	blaster.draw = function(){
-        if (this.enabled){
             if (this.owner != undefined){
                 color = this.owner.secondaryColor;
-            }
             ctx.beginPath();
             ctx.lineWidth=2;
             ctx.strokeStyle=color;
@@ -1138,10 +1144,8 @@ function heavyLaserBlaster(){
 						 energyUsage = 20);
     blaster.type = 'p';
 	blaster.draw = function(){
-        if (this.enabled){
             if (this.owner != undefined){
                 color = this.owner.secondaryColor;
-            }
             ctx.beginPath();
             ctx.lineWidth=this.projectileWidth;
             ctx.strokeStyle=color;
@@ -1336,8 +1340,8 @@ var Colossal = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF"){
 
 	return ship;
 }
-var lightLaserTurret = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF", cannons = 1){
-	var ship = new Ship(c.width/2, c.height/2, 8, primaryColor, secondaryColor);
+var lightLaserTurret = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF", cannons = 1, x = c.width/2, y = c.height/2){
+	var ship = new Ship(x, y, 8, primaryColor, secondaryColor);
 	ship.updateDirection();
 	ship.hull = new Hull(50, 3);
 	ship.shield = new Shield(20, 0, 5, 0.5, 300);
@@ -1380,9 +1384,6 @@ ctx.lineWidth=3;
 var j = 0;
 
 
-var objects = [];
-
-
 var lastDate = new Date();
 var fps = new Fps();
 var maxFPS = 1000;
@@ -1394,6 +1395,7 @@ var level = new Level();
 var instructions = buildInstructions();
 
 var objects = [];
+var enemies = [];
 
 //player = new Stellar("#F0F0F0", "#FF00FF"); // pink
 //player = new Gargatuan("#666666", "#FF0000");
@@ -1553,8 +1555,8 @@ function mainLoop(){
 		player.shield.drainEnergy(player.shield);
 
 		for (var i = 0; i < player.weapons.length; i++){
+		    player.weapons[i].updateDirection();
 			if (player.weapons[i].enabled){
-				player.weapons[i].updateDirection();
 				player.weapons[i].updateFiring(player.hitbox.velocity);
 			}
 		}
@@ -1614,6 +1616,9 @@ function mainLoop(){
 		for (var i = 0; i < objects.length; i++){
 			drawAsteroid(objects[i]);
 		}
+        for (var i =0; i < enemies.length; i++){
+            enemies[i].draw();
+        }
 	killObjects(objects);
 	checkColisionsNaive(objects);
 	score.draw(player.secondaryColor);
