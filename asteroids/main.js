@@ -1543,6 +1543,7 @@ function selectShipLoop(){
         for (var i = 0; i <= buttons.length; i++){
             buttons.pop();
         }
+        buttons[0]=null;
 		requestAnimationFrame(mainLoop);
 	}
 }
