@@ -37,6 +37,9 @@ function generateTurrets(n){
         var y = Math.random() * c.height;
 
         turret = new lightLaserTurret("#FFFFFF", "#FF0000", 1, x, y);
+        turret.weapon.setCenter(player.hitbox.center);
+        turret.weapon.setPosition(turret.hitbox.center);
+        turret.firing = true;
         enemies.push(turret);
     }
 }
@@ -1514,6 +1517,66 @@ function selectShipLoop(){
 		requestAnimationFrame(mainLoop);
 	}
 }
+
+function updateShip(ship){
+		ship.updateDirection();
+		ship.updateStrafe();
+		ship.updatePosition();
+		ship.updateTurn();
+		ship.powerSupply.recharge(ship.powerSupply);
+		ship.shield.drainEnergy(ship.shield);
+
+		for (var i = 0; i < ship.weapons.length; i++){
+		    ship.weapons[i].updateDirection();
+			if (ship.weapons[i].enabled){
+				ship.weapons[i].updateFiring(ship.hitbox.velocity);
+			}
+		}
+		
+		for (var u = 0; u < ship.weapons.length; u++){
+			for (var i = 0; i < ship.weapons[u].projectiles.length; i++){
+				for (var j = 0; j < objects.length; j++){
+					calculateAxes(ship.weapons[u].projectiles[i])
+					smartCollision(ship.weapons[u].projectiles[i], objects[j], function(){ship.weapons[u].onHit(objects[j])});
+					smartCollision(ship.weapons[u].projectiles[i], objects[j], function(){ship.weapons[u].onHit(objects[j])});
+				}
+			}
+		}
+		checkBorder(ship.hitbox, function(){ship.auxHitbox.applyVector(diff)});
+		calculateAxes(ship.hitbox);
+		rotatePolygon(ship.hitbox, ship.hitbox.spin);	
+		for (var i = 0; i < objects.length; i++){
+			mtv = collisionSTA(ship.hitbox, objects[i]);
+			if (mtv){
+				
+				elasticCollision(ship.hitbox, mtv, objects[i]);
+				elasticCollision(ship.auxHitbox, mtv, objects[i]);
+				ship.sufferDamage(COLLISION_DAMAGE);	// fixed amount of damage on Collision
+			}
+		}
+		for (var u = 0; u < ship.weapons.length; u++){
+			ship.weapons[u].draw();
+		}
+		for (var i = 0; i < ship.weapons.length; i++){		
+			ship.weapons[i].updateDuration();		
+			ship.weapons[i].removeProjectiles();
+		}
+		for (u = 0; u < ship.weapons.length; u++){
+				for (var k = 0; k < ship.weapons[u].projectiles.length; k++){
+					ship.weapons[u].projectiles[k].update();
+					if (ship.weapons[u].type == 'p'){
+						checkBorder(ship.weapons[u].projectiles[k], function(){ship.weapons[u].rotateAtBorder(axis, ship.weapons[u].projectiles[k])});
+					}
+					else if (ship.weapons[u].type =='l'){
+						projectile = ship.weapons[u].projectiles[k];
+						var hit = checkBorder(projectile);
+						if (hit) {killProjectile(projectile)};
+					}
+					rotatePolygon(ship.weapons[u].projectiles[k], ship.weapons[u].projectiles[k].spin);	
+			}
+		}
+}
+
 function mainLoop(){
 	newDate = new Date();
 	elapsedTime = newDate - lastDate;
@@ -1617,6 +1680,7 @@ function mainLoop(){
 			drawAsteroid(objects[i]);
 		}
         for (var i =0; i < enemies.length; i++){
+            updateShip(enemies[i]);
             enemies[i].draw();
         }
 	killObjects(objects);
