@@ -1098,14 +1098,26 @@ function asteroidShooter(){
 function lightLaserBlaster(){
 	blaster = new Weapon(velocity = 30, width = 1, range = 1000, limit = 12, damage = 5, mass=1, rateOfFire = 12,  spin=0, hasAmmo=false, ammo=1,
 						 energyUsage = 5);
-    console.log(blaster.drawCannon);
+    console.log(blaster);
     blaster.type = 'p';
 	blaster.draw = function(){
-/* cannon drawing not working well for more than 1 blaster, unknown reasons
-   disabled for time being
-*/
         if (this.enabled){
-            blaster.drawCannon();
+            if (this.owner != undefined){
+                color = this.owner.secondaryColor;
+            }
+            ctx.beginPath();
+            ctx.lineWidth=2;
+            ctx.strokeStyle=color;
+            var size = 20;
+            if (this.turret ==false){
+                ctx.moveTo(this.center.x, this.center.y);
+                ctx.lineTo(this.center.x + this.direction.x * size, this.center.y + this.direction.y * size);
+            }
+            else{
+                ctx.moveTo(this.position.x, this.position.y);
+                ctx.lineTo(this.position.x + this.direction.x * size, this.position.y + this.direction.y * size);
+            }
+            ctx.stroke();
         }
 		if (blaster.owner == undefined){
 			for (var i = 0; i < this.projectiles.length; i++){
@@ -1127,12 +1139,24 @@ function heavyLaserBlaster(){
 						 energyUsage = 20);
     blaster.type = 'p';
 	blaster.draw = function(){
-/* cannon drawing not working well for heavy blaster, unknown reasons
-   disabled for time being
         if (this.enabled){
-            blaster.drawCannon();
+            if (this.owner != undefined){
+                color = this.owner.secondaryColor;
+            }
+            ctx.beginPath();
+            ctx.lineWidth=this.projectileWidth;
+            ctx.strokeStyle=color;
+            var size = 20;
+            if (this.turret ==false){
+                ctx.moveTo(this.center.x, this.center.y);
+                ctx.lineTo(this.center.x + this.direction.x * size, this.center.y + this.direction.y * size);
+            }
+            else{
+                ctx.moveTo(this.position.x, this.position.y);
+                ctx.lineTo(this.position.x + this.direction.x * size, this.position.y + this.direction.y * size);
+            }
+            ctx.stroke();
         }
-*/
 		if (blaster.owner == undefined){
 			for (var i = 0; i < this.projectiles.length; i++){
 				drawHeavyBlaster(this.projectiles[i], strokeColor="#0000FF", hitColor="#0FF0FF", joints=false, center=false, fillColor="#0F00FF");
@@ -1237,11 +1261,11 @@ var Stellar = function(primaryColor="#000FFF", secondaryColor = "#0FF0FF"){
 	return ship;
 }
 var EnergySucker = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF"){
-	var ship = new Ship(c.width/2, c.height/2, 30, primaryColor, secondaryColor);
+	var ship = new Ship(c.width/2, c.height/2, 50, primaryColor, secondaryColor);
 	ship.updateDirection();
 	ship.hull = new Hull(200, 5);
-	ship.shield = new Shield(20, 0, 5, 0.5, 300);
-	ship.powerSupply = new EnergySource(500, 10, 100);
+	ship.shield = new Shield(300, 0, 20, 0.5, 300);
+	ship.powerSupply = new EnergySource(1000, 20, 100);
 	ship.shield.setPowerSupply(ship.powerSupply);
 	ship.shield.setEnabled(true);
 	ship.acceleration = 0.08;
@@ -1298,6 +1322,14 @@ var Turret = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF"){
     ship.weapon.setTurretMode(true);
 	ship.weapon.enabled=true;
 
+	ship.addWeapon(lightLaserBlaster());
+	ship.changeWeapon();
+	ship.weapon.setOwner(ship);
+	ship.weapon.setPowerSupply(ship.powerSupply);
+	ship.weapon.setCenter(coord);
+	ship.weapon.setPosition(ship.hitbox.vertices[0]);
+    ship.weapon.setTurretMode(true);
+	ship.weapon.enabled=true;
 
 	return ship;
 }
