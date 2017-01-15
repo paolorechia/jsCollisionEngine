@@ -486,6 +486,9 @@ var Weapon = function(velocity = 10, width = 1, range = 1000, limit = 10, damage
 		}
 	}
 	this.draw = function(){
+        if (this.enabled){
+            this.drawCannon(); 
+        }
 		if (this.owner != undefined){
 			for (var i =0; i < this.projectiles.length; i++){
 				drawPolygon(this.projectiles[i], strokeColor=this.owner.primaryColor, 
@@ -500,6 +503,18 @@ var Weapon = function(velocity = 10, width = 1, range = 1000, limit = 10, damage
 			}
 		}
 	}
+    this.drawCannon = function(color = "#0000FF"){
+        if (this.owner != undefined){
+            color = this.owner.secondaryColor;
+        }
+        ctx.beginPath();
+        ctx.lineWidth=this.projectileWidth;
+        ctx.strokeStyle=color;
+        var size = 20;
+        ctx.moveTo(this.center.x, this.center.y);
+        ctx.lineTo(this.center.x + this.direction.x * size, this.center.y + this.direction.y * size);
+        ctx.stroke();
+    }
 }
 
 
@@ -517,6 +532,7 @@ var Ship = function(x, y, l1, primaryColor = "#0000FF", secondaryColor = "#00F0F
 	this.immunity = false;
 	this.dead = false;
 	this.weapons = [];
+
 	this.currentWeapon = 0;
 	this.lock = false;
 	this.engineOn = false;
@@ -1079,11 +1095,28 @@ function lightLaserBlaster(){
     blaster.type = 'p';
 	blaster.draw = function(){
 		if (blaster.owner == undefined){
+            if (this.enabled){
+                ctx.beginPath();
+                ctx.lineWidth=this.projectileWidth;
+                ctx.strokeStyle=this.owner.secondaryColor;
+                var size = 20;
+                ctx.moveTo(this.position.x, this.position.y);
+                ctx.lineTo(this.position.x + this.direction.x * size, this.position.y + this.direction.y * size);
+                ctx.stroke();
+            }
 			for (var i = 0; i < this.projectiles.length; i++){
 				drawPolygon(this.projectiles[i], strokeColor="#0000FF", hitColor="#0FF0FF", joints=false, center=false, fillColor="#0F00FF");
 			}
 		}
 		else{
+            if (this.enabled){
+                ctx.beginPath();
+                ctx.lineWidth=this.projectileWidth;
+                var size = 20;
+                ctx.moveTo(this.position.x, this.position.y);
+                ctx.lineTo(this.position.x + this.direction.x * size, this.position.y + this.direction.y * size);
+                ctx.stroke();
+            }
 			for (var i = 0; i < this.projectiles.length; i++){
 				drawPolygon(this.projectiles[i], strokeColor=this.owner.primaryColor,
 							hitColor=this.owner.secondaryColor, joints=false, center=false, fillColor="#0F00FF");
@@ -1099,11 +1132,28 @@ function heavyLaserBlaster(){
     blaster.type = 'p';
 	blaster.draw = function(){
 		if (blaster.owner == undefined){
+            if (this.enabled){
+                ctx.beginPath();
+                ctx.lineWidth=this.projectileWidth;
+                ctx.strokeStyle=this.owner.secondaryColor;
+                var size = 20;
+                ctx.moveTo(this.position.x, this.position.y);
+                ctx.lineTo(this.position.x + this.direction.x * size, this.position.y + this.direction.y * size);
+                ctx.stroke();
+            }
 			for (var i = 0; i < this.projectiles.length; i++){
 				drawHeavyBlaster(this.projectiles[i], strokeColor="#0000FF", hitColor="#0FF0FF", joints=false, center=false, fillColor="#0F00FF");
 			}
 		}
 		else{
+            if (this.enabled){
+                ctx.beginPath();
+                ctx.lineWidth=this.projectileWidth;
+                var size = 20;
+                ctx.moveTo(this.position.x, this.position.y);
+                ctx.lineTo(this.position.x + this.direction.x * size, this.position.y + this.direction.y * size);
+                ctx.stroke();
+            }
 			for (var i = 0; i < this.projectiles.length; i++){
 				drawHeavyBlaster(this.projectiles[i], strokeColor=this.owner.primaryColor,
 								 hitColor=this.owner.secondaryColor, joints=false, center=false, fillColor="#0F00FF");
