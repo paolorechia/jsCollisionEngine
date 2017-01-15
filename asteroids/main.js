@@ -1301,7 +1301,7 @@ var EnergySucker = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF"){
 
 	return ship;
 }
-var Turret = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF"){
+var lightLaserTurret = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF", cannons = 1){
 	var ship = new Ship(c.width/2, c.height/2, 8, primaryColor, secondaryColor);
 	ship.updateDirection();
 	ship.hull = new Hull(50, 3);
@@ -1313,24 +1313,28 @@ var Turret = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF"){
 	ship.maxSpeed = 3;
 	ship.turnRate = 0.5;
 
-	ship.addWeapon(lightLaserBlaster());
-	ship.changeWeapon();
-	ship.weapon.setOwner(ship);
-	ship.weapon.setPowerSupply(ship.powerSupply);
-	ship.weapon.setCenter(coord);
-	ship.weapon.setPosition(ship.hitbox.center);
-    ship.weapon.setTurretMode(true);
-	ship.weapon.enabled=true;
-
-	ship.addWeapon(lightLaserBlaster());
-	ship.changeWeapon();
-	ship.weapon.setOwner(ship);
-	ship.weapon.setPowerSupply(ship.powerSupply);
-	ship.weapon.setCenter(coord);
-	ship.weapon.setPosition(ship.hitbox.vertices[0]);
-    ship.weapon.setTurretMode(true);
-	ship.weapon.enabled=true;
-
+    if (cannons == 1){
+        ship.addWeapon(lightLaserBlaster());
+        ship.changeWeapon();
+        ship.weapon.setOwner(ship);
+        ship.weapon.setPowerSupply(ship.powerSupply);
+        ship.weapon.setCenter(coord);
+        ship.weapon.setPosition(ship.hitbox.center);
+        ship.weapon.setTurretMode(true);
+        ship.weapon.enabled=true;
+    }
+    else{
+        for (var i = 0; i < cannons; i++){
+            ship.addWeapon(lightLaserBlaster());
+            ship.changeWeapon();
+            ship.weapon.setOwner(ship);
+            ship.weapon.setPowerSupply(ship.powerSupply);
+            ship.weapon.setCenter(coord);
+            ship.weapon.setPosition(ship.hitbox.vertices[i % 3]);
+            ship.weapon.setTurretMode(true);
+            ship.weapon.enabled=true;
+        }
+    }
 	return ship;
 }
 
@@ -1427,7 +1431,7 @@ buttons.push(myButton);
 
 myButton = (new Button(20, 320, 150, 50, "Turret"));
 myButton.onClick = function(){
-	player = new Turret();
+	player = new lightLaserTurret("#000FFF", "#00F0FF", 3);
 	selected = true;
 }
 buttons.push(myButton);
