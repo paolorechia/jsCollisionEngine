@@ -31,7 +31,7 @@ function generateAsteroids(maxSize, minSize, maxSpeed, maxSpin, numberRectangles
 				objects.push(triangle);
 			}	
 }
-function generateTurrets(n, cannons){
+function generateTurrets(n, cannons, moving=false){
     for (var i = 0; i < n; i++){
         var x = Math.random() * c.width;
         var y = Math.random() * c.height;
@@ -63,6 +63,12 @@ function generateTurrets(n, cannons){
             turret.weapons[j].firing=true;
         }
         turret.weapon.setOwner(turret);
+        if (moving){
+            turret.engineOn=true;
+            turret.hitbox.versor.x = Math.random();
+            turret.hitbox.versor.y = Math.random();
+//            turret.velocity = 3;
+        }
         enemies.push(turret);
     }
 }
@@ -91,7 +97,7 @@ var Level = function(color="#000FFF"){
                 var numberTriangles = Math.round(this.current * 0.4);
                 generateAsteroids(maxSize, minSize, maxSpeed, maxSpin, numberRectangles, numberTriangles);
             }
-            else generateTurrets(Math.floor(this.current/2), 1);
+            else generateTurrets(Math.floor(this.current/2), 1, true);
 		}
 		else if (this.current >= 13 && this.current <= 15){
             if (this.current % 2 != 0){
@@ -115,7 +121,7 @@ var Level = function(color="#000FFF"){
                 var numberTriangles = Math.round(this.current);
                 generateAsteroids(maxSize, minSize, maxSpeed, maxSpin, numberRectangles, numberTriangles);
             }
-            else generateTurrets(Math.floor(this.current/3), 2);
+            else generateTurrets(Math.floor(this.current/4), 3);
 		}
 	}
 	this.next = function(){
@@ -1568,7 +1574,16 @@ function updateEnemy(ship){
 	            smartCollision(ship.weapons[u].projectiles[i], players[0].hitbox, function(){ship.weapons[u].onHit(players[0])});
 			}
 		}
-		checkBorder(ship.hitbox, function(){ship.auxHitbox.applyVector(diff)});
+		checkBorder(ship.hitbox, function(){ship.auxHitbox.applyVector(diff);
+                                            if (ship.engineOn){
+                                               ship.engineOn = false;
+                                               ship.reverseEngineOn = true;
+                                            }
+                                            else{
+                                               ship.engineOn = true;
+                                               ship.reverseEngineOn = false; 
+                                            }});
+                                            
 		calculateAxes(ship.hitbox);
 		rotatePolygon(ship.hitbox, ship.hitbox.spin);	
 		for (var i = 0; i < objects.length; i++){
