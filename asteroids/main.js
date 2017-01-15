@@ -1321,7 +1321,9 @@ var Colossal = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF"){
         ship.weapon.setCenter(ship.hitbox.vertices[i]);
         ship.weapon.setPosition(ship.auxHitbox.vertices[i]);
         ship.weapon.enabled=true;
+    }
 
+    for (var i = 0; i < ship.hitbox.vertices.length; i++){
         ship.addWeapon(lightLaserBlaster());
         ship.changeWeapon();
         ship.weapon.setOwner(ship);
