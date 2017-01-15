@@ -514,13 +514,12 @@ var Weapon = function(velocity = 10, width = 1, range = 1000, limit = 10, damage
         if (this.turret ==false){
             ctx.moveTo(this.center.x, this.center.y);
             ctx.lineTo(this.center.x + this.direction.x * size, this.center.y + this.direction.y * size);
-            ctx.stroke();
         }
         else{
             ctx.moveTo(this.position.x, this.position.y);
             ctx.lineTo(this.position.x + this.direction.x * size, this.position.y + this.direction.y * size);
-            ctx.stroke();
         }
+        ctx.stroke();
     }
 }
 
@@ -1099,8 +1098,12 @@ function asteroidShooter(){
 function lightLaserBlaster(){
 	blaster = new Weapon(velocity = 30, width = 1, range = 1000, limit = 12, damage = 5, mass=1, rateOfFire = 12,  spin=0, hasAmmo=false, ammo=1,
 						 energyUsage = 5);
+    console.log(blaster.drawCannon);
     blaster.type = 'p';
 	blaster.draw = function(){
+/* cannon drawing not working well for more than 1 blaster, unknown reasons
+   disabled for time being
+*/
         if (this.enabled){
             blaster.drawCannon();
         }
@@ -1277,15 +1280,15 @@ var EnergySucker = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF"){
 var Turret = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF"){
 	var ship = new Ship(c.width/2, c.height/2, 8, primaryColor, secondaryColor);
 	ship.updateDirection();
-	ship.hull = new Hull(200, 5);
+	ship.hull = new Hull(50, 3);
 	ship.shield = new Shield(20, 0, 5, 0.5, 300);
 	ship.powerSupply = new EnergySource(500, 10, 100);
 	ship.shield.setPowerSupply(ship.powerSupply);
 	ship.shield.setEnabled(true);
 	ship.acceleration = 0.08;
-	ship.maxSpeed = 7;
-	ship.turnRate = 2;
-	
+	ship.maxSpeed = 3;
+	ship.turnRate = 0.5;
+
 	ship.addWeapon(lightLaserBlaster());
 	ship.changeWeapon();
 	ship.weapon.setOwner(ship);
@@ -1293,8 +1296,9 @@ var Turret = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF"){
 	ship.weapon.setCenter(coord);
 	ship.weapon.setPosition(ship.hitbox.center);
     ship.weapon.setTurretMode(true);
-
 	ship.weapon.enabled=true;
+
+
 	return ship;
 }
 
@@ -1325,33 +1329,6 @@ var objects = [];
 //player = new Stellar();
 //player = new EnergySucker();
 
-/*
-player.addWeapon(asteroidShooter());
-player.changeWeapon();
-player.weapon.setPosition(player.front);
-player.weapon.setCenter(player.hitbox.center);
-
-
-player.addWeapon(lightLaserBlaster());
-player.changeWeapon();
-player.weapon.setPosition(player.front);
-player.weapon.setCenter(player.hitbox.center);
-
-player.addWeapon(heavyLaserBlaster());
-player.changeWeapon();
-player.weapon.setPosition(player.front);
-player.weapon.setCenter(player.hitbox.center);
-
-player.addWeapon(lightLaserBeam());
-player.changeWeapon();
-player.weapon.setPosition(player.front);
-player.weapon.setCenter(player.hitbox.center);
-
-player.addWeapon(heavyLaserBeam());
-player.changeWeapon();
-player.weapon.setPosition(player.front);
-player.weapon.setCenter(player.hitbox.center);
-*/
 var Button = function(x, y, width, height, string=" "){
 	this.x = x;
 	this.y = y;
