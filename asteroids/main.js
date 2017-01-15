@@ -931,10 +931,9 @@ var Ship = function(x, y, l1, primaryColor = "#0000FF", secondaryColor = "#00F0F
 			ctx.save();
 			ctx.strokeStyle=this.secondaryColor;
 			ctx.beginPath();
-			ctx.lineWidth = Math.floor(this.shield.current / 25);
 			ctx.arc(polygon.center.x,
 					polygon.center.y,
-					polygon.side + this.shield.max / 25, 0, 2*Math.PI);
+					polygon.side + 2, 0, 2*Math.PI);
 			ctx.stroke();	
 			ctx.restore();
 		}
@@ -1260,7 +1259,7 @@ var Stellar = function(primaryColor="#000FFF", secondaryColor = "#0FF0FF"){
 	
 	return ship;
 }
-var EnergySucker = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF"){
+var Gargatuan = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF"){
 	var ship = new Ship(c.width/2, c.height/2, 50, primaryColor, secondaryColor);
 	ship.updateDirection();
 	ship.hull = new Hull(200, 5);
@@ -1298,6 +1297,40 @@ var EnergySucker = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF"){
 	ship.weapon.setCenter(ship.hitbox.center);
 	ship.weapon.enabled=true;
 
+
+	return ship;
+}
+var Colossal = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF"){
+	var ship = new Ship(c.width/2, c.height/2, 100, primaryColor, secondaryColor);
+	ship.updateDirection();
+	ship.hull = new Hull(1000, 10);
+	ship.shield = new Shield(2000, 0, 50, 1, 150);
+	ship.powerSupply = new EnergySource(2000, 20, 100);
+	ship.shield.setPowerSupply(ship.powerSupply);
+	ship.shield.setEnabled(true);
+	ship.acceleration = 0.04;
+	ship.maxSpeed = 9;
+	ship.turnRate = 1;
+	
+    
+    for (var i = 0; i < ship.hitbox.vertices.length; i++){
+        ship.addWeapon(heavyLaserBlaster());
+        ship.changeWeapon();
+        ship.weapon.setOwner(ship);
+        ship.weapon.setPowerSupply(ship.powerSupply);
+        ship.weapon.setCenter(ship.hitbox.vertices[i]);
+        ship.weapon.setPosition(ship.auxHitbox.vertices[i]);
+        ship.weapon.enabled=true;
+
+        ship.addWeapon(lightLaserBlaster());
+        ship.changeWeapon();
+        ship.weapon.setOwner(ship);
+        ship.weapon.setPowerSupply(ship.powerSupply);
+        ship.weapon.setCenter(coord);
+        ship.weapon.setPosition(ship.hitbox.vertices[i % 3]);
+        ship.weapon.setTurretMode(true);
+        ship.weapon.enabled=true;
+    }
 
 	return ship;
 }
@@ -1361,9 +1394,9 @@ var instructions = buildInstructions();
 var objects = [];
 
 //player = new Stellar("#F0F0F0", "#FF00FF"); // pink
-//player = new EnergySucker("#666666", "#FF0000");
+//player = new Gargatuan("#666666", "#FF0000");
 //player = new Stellar();
-//player = new EnergySucker();
+//player = new Gargatuan();
 
 var Button = function(x, y, width, height, string=" "){
 	this.x = x;
@@ -1421,17 +1454,26 @@ myButton.onClick = function(){
 }
 buttons.push(myButton);
 
-myButton = (new Button(20, 260, 150, 50, "EnergySucker"));
+myButton = (new Button(20, 260, 150, 50, "Gargatuan"));
 myButton.onClick = function(){
-	player = new EnergySucker();
+	player = new Gargatuan();
 	selected = true;
 }
 buttons.push(myButton);
 
 
+
+
 myButton = (new Button(20, 320, 150, 50, "Turret"));
 myButton.onClick = function(){
 	player = new lightLaserTurret("#000FFF", "#00F0FF", 3);
+	selected = true;
+}
+buttons.push(myButton);
+
+myButton = (new Button(20, 380, 150, 50, "Colossal"));
+myButton.onClick = function(){
+	player = new Colossal();
 	selected = true;
 }
 buttons.push(myButton);
