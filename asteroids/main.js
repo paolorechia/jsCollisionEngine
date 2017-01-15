@@ -320,7 +320,7 @@ var Hull = function(max = 100, resistance = 0){
 var Weapon = function(velocity = 10, width = 1, range = 1000, limit = 10, damage = 10, 
 					  mass = 1, rateOfFire = 8, spin=0, hasAmmo=false, ammo=100, energyUsage=0){
 	
-//	this.owner = new Ship();
+    this.turret = false;
 	this.enabled = false;
 	this.firing=false;
 	this.rateOfFire = rateOfFire;		// shots per second
@@ -345,9 +345,16 @@ var Weapon = function(velocity = 10, width = 1, range = 1000, limit = 10, damage
 	if (energyUsage > 0){
 		this.powerSupply = new EnergySource(0, 0);
 	}
+    this.turnRate = 0;
 	this.projectileHeight = this.projectileVelocity * 2;
 	this.projectiles = [];
 	
+    this.setTurnRate= function(turnRate){
+        this.turnRate = turnRate;
+    }
+    this.setTurretMode = function(isTurret){
+        this.turret = isTurret;
+    }
 	this.setOwner = function(owner){
 		this.owner = owner;
 	}
@@ -361,8 +368,12 @@ var Weapon = function(velocity = 10, width = 1, range = 1000, limit = 10, damage
 		this.powerSupply = powerSupply;
 	}
 	this.updateDirection = function(){
-		calculateVector(this.position, this.center, this.direction);
-		unitVector(this.direction, this.direction);
+        calculateVector(this.position, this.center, this.direction);
+        unitVector(this.direction, this.direction);
+        if (this.turret){
+            this.direction.x *=-1;
+            this.direction.y *=-1;
+        }
 	}
 	
 	this.updateFiring = function(shipSpeed){
@@ -385,14 +396,30 @@ var Weapon = function(velocity = 10, width = 1, range = 1000, limit = 10, damage
 		projectile.hit = false;
 		projectile.mass = this.mass;
 		projectile.duration = this.range/this.velocity;
-		yAxis = new Vector(0, 1);
-		var angle = angleVectors(this.direction, yAxis);
-		if (this.position.x > this.center.x){
-			angle *= -1;
-		}
-		projectile.spin = spin;
-		projectile.duration = this.range/this.projectileVelocity;
-		rotatePolygon(projectile,radiansToDegrees(angle));
+        /* use this rotation to fire projectiles sideways
+            xAxis = new Vector(1, 0);
+            var angle = angleVectors(this.direction, xAxis);
+            if (this.position.y > this.center.y){
+                angle *= -1;
+            }
+            rotatePolygon(projectile,radiansToDegrees(angle));
+        */
+        yAxis = new Vector(0, 1);
+        var angle = angleVectors(this.direction, yAxis);
+            
+        if (this.turret){
+            if (this.position.x < this.center.x){
+                angle *= -1;
+            }
+        }
+        else{
+            if (this.position.x > this.center.x){
+                angle *= -1;
+            }
+        }
+        rotatePolygon(projectile,radiansToDegrees(angle));
+        projectile.spin = spin;
+        projectile.duration = this.range/this.projectileVelocity;
 		this.projectiles.push(projectile);
 		if (this.hasAmmo){
 			this.ammo--;
@@ -1222,6 +1249,29 @@ var EnergySucker = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF"){
 
 	return ship;
 }
+var Turret = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF"){
+	var ship = new Ship(c.width/2, c.height/2, 8, primaryColor, secondaryColor);
+	ship.updateDirection();
+	ship.hull = new Hull(200, 5);
+	ship.shield = new Shield(20, 0, 5, 0.5, 300);
+	ship.powerSupply = new EnergySource(500, 10, 100);
+	ship.shield.setPowerSupply(ship.powerSupply);
+	ship.shield.setEnabled(true);
+	ship.acceleration = 0.08;
+	ship.maxSpeed = 7;
+	ship.turnRate = 2;
+	
+	ship.addWeapon(heavyLaserBlaster());
+	ship.changeWeapon();
+	ship.weapon.setOwner(ship);
+	ship.weapon.setPowerSupply(ship.powerSupply);
+	ship.weapon.setCenter(coord);
+	ship.weapon.setPosition(ship.hitbox.vertices[0]);
+    ship.weapon.setTurretMode(true);
+
+	ship.weapon.enabled=true;
+	return ship;
+}
 
 c.width = window.innerWidth-20;
 c.height = window.innerHeight-20;
@@ -1340,8 +1390,17 @@ myButton.onClick = function(){
 }
 buttons.push(myButton);
 
+
+myButton = (new Button(20, 320, 150, 50, "Turret"));
+myButton.onClick = function(){
+	player = new Turret();
+	selected = true;
+}
+buttons.push(myButton);
+/*
 myButton = new CircularButton(50, 360, 20, "#FF0000" ,"B");
 buttons.push(myButton);
+*/
 
 
 var instruct = false;
