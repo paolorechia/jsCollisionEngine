@@ -65,9 +65,7 @@ function generateTurrets(n, cannons, moving=false){
         turret.weapon.setOwner(turret);
         if (moving){
             turret.engineOn=true;
-            turret.hitbox.versor.x = Math.random();
-            turret.hitbox.versor.y = Math.random();
-//            turret.velocity = 3;
+            rotatePolygon(turret.hitbox, 360 * Math.random());
         }
         enemies.push(turret);
     }
@@ -109,7 +107,7 @@ var Level = function(color="#000FFF"){
                 var numberTriangles = Math.round(this.current);
                 generateAsteroids(maxSize, minSize, maxSpeed, maxSpin, numberRectangles, numberTriangles);
             }
-            else generateTurrets(Math.floor(this.current/3), 2);
+            else generateTurrets(Math.floor(this.current/3), 2, true);
 		}
 		else{
             if (this.current % 2 != 0){
@@ -121,7 +119,7 @@ var Level = function(color="#000FFF"){
                 var numberTriangles = Math.round(this.current);
                 generateAsteroids(maxSize, minSize, maxSpeed, maxSpin, numberRectangles, numberTriangles);
             }
-            else generateTurrets(Math.floor(this.current/4), 3);
+            else generateTurrets(Math.floor(this.current/4), 3, true);
 		}
 	}
 	this.next = function(){
