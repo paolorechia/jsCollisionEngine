@@ -82,41 +82,40 @@ var Level = function(color="#000FFF"){
 
 		if (this.current <= 12){
 			player.hull.recover(10);
-			var maxSize = c.width/20 + (this.current * 2);
-			var minSize = c.width/100 + (this.current * 2);
-			var maxSpeed = Math.round(this.current * 0.7);
-			var maxSpin = Math.floor(this.current *0.2);
-			var numberRectangles = Math.round(this.current * 0.6);
-			var numberTriangles = Math.round(this.current * 0.4);
-			generateAsteroids(maxSize, minSize, maxSpeed, maxSpin, numberRectangles, numberTriangles);
-            generateTurrets(Math.floor(this.current/2), 1);
+            if (this.current % 2 != 0){
+                var maxSize = c.width/20 + (this.current * 2);
+                var minSize = c.width/100 + (this.current * 2);
+                var maxSpeed = Math.round(this.current * 0.7);
+                var maxSpin = Math.floor(this.current *0.2);
+                var numberRectangles = Math.round(this.current * 0.6);
+                var numberTriangles = Math.round(this.current * 0.4);
+                generateAsteroids(maxSize, minSize, maxSpeed, maxSpin, numberRectangles, numberTriangles);
+            }
+            else generateTurrets(Math.floor(this.current/2), 1);
 		}
 		else if (this.current >= 13 && this.current <= 15){
-			var maxSize = c.width/400;
-			var minSize = c.width/500;
-			var maxSpeed = Math.round(this.current * 0.5);
-			var maxSpin = Math.floor(this.current * 0.2);
-			var numberRectangles = Math.round(this.current * 2);
-			var numberTriangles = Math.round(this.current);
-			generateAsteroids(maxSize, minSize, maxSpeed, maxSpin, numberRectangles, numberTriangles);
-            generateTurrets(Math.floor(this.current/2), 2);
+            if (this.current % 2 != 0){
+                var maxSize = c.width/400;
+                var minSize = c.width/500;
+                var maxSpeed = Math.round(this.current * 0.5);
+                var maxSpin = Math.floor(this.current * 0.2);
+                var numberRectangles = Math.round(this.current * 2);
+                var numberTriangles = Math.round(this.current);
+                generateAsteroids(maxSize, minSize, maxSpeed, maxSpin, numberRectangles, numberTriangles);
+            }
+            else generateTurrets(Math.floor(this.current/3), 2);
 		}
 		else{
-			var maxSize = c.width/20 + (this.current * 2);
-			var minSize = c.width/100 + (this.current * 2);
-			var maxSpeed = Math.round(this.current * 0.7);
-			var maxSpin = Math.floor(this.current *0.2);
-			var numberRectangles = Math.round(this.current * 0.1);
-			var numberTriangles = Math.round(this.current * 0.1);
-			generateAsteroids(maxSize, minSize, maxSpeed, maxSpin, numberRectangles, numberTriangles);
-			var maxSize = c.width/400;
-			var minSize = c.width/500;
-			var maxSpeed = Math.round(this.current * 0.5);
-			var maxSpin = Math.floor(this.current * 0.2);
-			var numberRectangles = Math.round(this.current * 2);
-			var numberTriangles = Math.round(this.current);
-			generateAsteroids(maxSize, minSize, maxSpeed, maxSpin, numberRectangles, numberTriangles);
-            generateTurrets(Math.floor(this.current/2), 3);
+            if (this.current % 2 != 0){
+                var maxSize = c.width/400;
+                var minSize = c.width/500;
+                var maxSpeed = Math.round(this.current * 0.5);
+                var maxSpin = Math.floor(this.current * 0.2);
+                var numberRectangles = Math.round(this.current * 2);
+                var numberTriangles = Math.round(this.current);
+                generateAsteroids(maxSize, minSize, maxSpeed, maxSpin, numberRectangles, numberTriangles);
+            }
+            else generateTurrets(Math.floor(this.current/3), 2);
 		}
 	}
 	this.next = function(){
