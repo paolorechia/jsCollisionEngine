@@ -1124,9 +1124,12 @@ function heavyLaserBlaster(){
 						 energyUsage = 20);
     blaster.type = 'p';
 	blaster.draw = function(){
+/* cannon drawing not working well for heavy blaster, unknown reasons
+   disabled for time being
         if (this.enabled){
             blaster.drawCannon();
         }
+*/
 		if (blaster.owner == undefined){
 			for (var i = 0; i < this.projectiles.length; i++){
 				drawHeavyBlaster(this.projectiles[i], strokeColor="#0000FF", hitColor="#0FF0FF", joints=false, center=false, fillColor="#0F00FF");
@@ -1209,10 +1212,8 @@ var Stellar = function(primaryColor="#000FFF", secondaryColor = "#0FF0FF"){
 	ship.addWeapon(machineGun());
 	ship.changeWeapon();
 	ship.weapon.setOwner(ship);
-
 	ship.weapon.setCenter(ship.hitbox.vertices[0]);
 	ship.weapon.setPosition(ship.auxHitbox.vertices[0]);
-
 	ship.weapon.enabled=true;
 
 	ship.addWeapon(machineGun());
@@ -1220,21 +1221,16 @@ var Stellar = function(primaryColor="#000FFF", secondaryColor = "#0FF0FF"){
 	ship.weapon.setOwner(ship);
 	ship.weapon.setCenter(ship.hitbox.vertices[1]);
 	ship.weapon.setPosition(ship.auxHitbox.vertices[1]);
-
 	ship.weapon.enabled=true;
 
-	
 	ship.addWeapon(lightLaserBlaster());
 	ship.changeWeapon();
 	ship.weapon.setOwner(ship);
 	ship.weapon.setCenter(ship.hitbox.center);
 	ship.weapon.setPosition(ship.front);
 	ship.weapon.setPowerSupply(ship.powerSupply);
-
 	ship.weapon.enabled=true;
 	
-
-
 	return ship;
 }
 var EnergySucker = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF"){
@@ -1290,7 +1286,7 @@ var Turret = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF"){
 	ship.maxSpeed = 7;
 	ship.turnRate = 2;
 	
-	ship.addWeapon(heavyLaserBlaster());
+	ship.addWeapon(lightLaserBlaster());
 	ship.changeWeapon();
 	ship.weapon.setOwner(ship);
 	ship.weapon.setPowerSupply(ship.powerSupply);
