@@ -40,7 +40,7 @@ function generateTurrets(n){
         turret.weapon.setCenter(player.hitbox.center);
         turret.weapon.setPosition(turret.hitbox.center);
         turret.weapon.setOwner(turret);
-        turret.firing = true;
+        turret.weapon.firing=true;
         enemies.push(turret);
     }
 }
@@ -1518,7 +1518,9 @@ function selectShipLoop(){
 	}
 }
 
-function updateShip(ship){
+function updateEnemy(ship){
+        var players = [];
+        players.push(player);
 		ship.updateDirection();
 		ship.updateStrafe();
 		ship.updatePosition();
@@ -1532,14 +1534,13 @@ function updateShip(ship){
 				ship.weapons[i].updateFiring(ship.hitbox.velocity);
 			}
 		}
-		
 		for (var u = 0; u < ship.weapons.length; u++){
 			for (var i = 0; i < ship.weapons[u].projectiles.length; i++){
 				for (var j = 0; j < objects.length; j++){
 					calculateAxes(ship.weapons[u].projectiles[i])
 					smartCollision(ship.weapons[u].projectiles[i], objects[j], function(){ship.weapons[u].onHit(objects[j])});
-					smartCollision(ship.weapons[u].projectiles[i], objects[j], function(){ship.weapons[u].onHit(objects[j])});
 				}
+			    smartCollision(ship.weapons[u].projectiles[i], players[0].hitbox, function(){ship.weapons[u].onHit(players[0])});
 			}
 		}
 		checkBorder(ship.hitbox, function(){ship.auxHitbox.applyVector(diff)});
@@ -1692,7 +1693,7 @@ function mainLoop(){
 			drawAsteroid(objects[i]);
 		}
         for (var i =0; i < enemies.length; i++){
-            updateShip(enemies[i]);
+            updateEnemy(enemies[i]);
             enemies[i].draw();
         }
 	killObjects(objects);
