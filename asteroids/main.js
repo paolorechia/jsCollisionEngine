@@ -36,12 +36,29 @@ function generateTurrets(n){
         var x = Math.random() * c.width;
         var y = Math.random() * c.height;
 
-        turret = new lightLaserTurret("#FFFFFF", "#FF0000", 1, x, y, 40);
-        turret.weapon.setCenter(player.hitbox.center);
-        turret.weapon.setPosition(turret.hitbox.center);
+        myRandom = Math.random();
+        if (myRandom > 0.7){
+            cannons = 1;
+            turret = new lightLaserTurret("#FFFFFF", "#FF0000", cannons, x, y, 40);
+            turret.weapon.setCenter(player.hitbox.center);
+            turret.weapon.setPosition(turret.hitbox.center);
+            turret.hitbox.spin = 20;
+            turret.weapon.firing=true;
+        }
+        else{
+            cannons = 2;
+            turret = new machineGunTurret("#FFFFFF", "#FF0000", cannons, x, y, 40);
+            turret.weapon.setCenter(player.hitbox.center);
+            turret.weapon.setPosition(turret.hitbox.center);
+            turret.weapon.firing=true;
+            /*
+            turret.changeWeapon();
+            turret.weapon.setCenter(player.hitbox.center);
+            turret.weapon.setPosition(turret.hitbox.vertices[1]);
+            turret.weapon.firing=true;
+            */
+        }
         turret.weapon.setOwner(turret);
-        turret.weapon.firing=true;
-        turret.hitbox.spin = 20;
         enemies.push(turret);
     }
 }
@@ -1369,6 +1386,42 @@ var lightLaserTurret = function(primaryColor="#0000FF", secondaryColor = "#0FF0F
     else{
         for (var i = 0; i < cannons; i++){
             ship.addWeapon(lightLaserBlaster());
+            ship.changeWeapon();
+            ship.weapon.setOwner(ship);
+            ship.weapon.setPowerSupply(ship.powerSupply);
+            ship.weapon.setCenter(coord);
+            ship.weapon.setPosition(ship.hitbox.vertices[i % 3]);
+            ship.weapon.setTurretMode(true);
+            ship.weapon.enabled=true;
+        }
+    }
+	return ship;
+}
+var machineGunTurret= function(primaryColor="#0000FF", secondaryColor = "#0FF0FF", cannons = 1, x = c.width/2, y = c.height/2, size = 15){
+	var ship = new Ship(x, y, size, primaryColor, secondaryColor);
+	ship.updateDirection();
+	ship.hull = new Hull(50, 3);
+	ship.shield = new Shield(20, 0, 5, 0.5, 300);
+	ship.powerSupply = new EnergySource(500, 10, 100);
+	ship.shield.setPowerSupply(ship.powerSupply);
+	ship.shield.setEnabled(true);
+	ship.acceleration = 0.08;
+	ship.maxSpeed = 3;
+	ship.turnRate = 0.5;
+
+    if (cannons == 1){
+        ship.addWeapon(machineGun());
+        ship.changeWeapon();
+        ship.weapon.setOwner(ship);
+        ship.weapon.setPowerSupply(ship.powerSupply);
+        ship.weapon.setCenter(coord);
+        ship.weapon.setPosition(ship.hitbox.center);
+        ship.weapon.setTurretMode(true);
+        ship.weapon.enabled=true;
+    }
+    else{
+        for (var i = 0; i < cannons; i++){
+            ship.addWeapon(machineGun());
             ship.changeWeapon();
             ship.weapon.setOwner(ship);
             ship.weapon.setPowerSupply(ship.powerSupply);
