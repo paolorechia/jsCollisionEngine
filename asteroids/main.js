@@ -39,6 +39,7 @@ function generateTurrets(n){
         turret = new lightLaserTurret("#FFFFFF", "#FF0000", 1, x, y);
         turret.weapon.setCenter(player.hitbox.center);
         turret.weapon.setPosition(turret.hitbox.center);
+        turret.weapon.setOwner(turret);
         turret.firing = true;
         enemies.push(turret);
     }
@@ -992,10 +993,10 @@ var Ship = function(x, y, l1, primaryColor = "#0000FF", secondaryColor = "#00F0F
 	}
 }
 
-function killObjects(objects){
-	for (i = 0; i < objects.length; i++){
-		if (objects[i].dead == true){
-			objects.splice(i, 1);
+function killObjects(array){
+	for (i = 0; i < array.length; i++){
+		if (array[i].dead == true){
+			array.splice(i, 1);
 			score.player++;
 		}
 	}
@@ -1108,7 +1109,6 @@ function asteroidShooter(){
 function lightLaserBlaster(){
 	blaster = new Weapon(velocity = 30, width = 1, range = 1000, limit = 12, damage = 5, mass=1, rateOfFire = 12,  spin=0, hasAmmo=false, ammo=1,
 						 energyUsage = 5);
-    console.log(blaster);
     blaster.type = 'p';
 	blaster.draw = function(){
             if (this.owner != undefined){
@@ -1343,8 +1343,8 @@ var Colossal = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF"){
 
 	return ship;
 }
-var lightLaserTurret = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF", cannons = 1, x = c.width/2, y = c.height/2){
-	var ship = new Ship(x, y, 8, primaryColor, secondaryColor);
+var lightLaserTurret = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF", cannons = 1, x = c.width/2, y = c.height/2, size = 15){
+	var ship = new Ship(x, y, size, primaryColor, secondaryColor);
 	ship.updateDirection();
 	ship.hull = new Hull(50, 3);
 	ship.shield = new Shield(20, 0, 5, 0.5, 300);
@@ -1593,7 +1593,7 @@ function mainLoop(){
 		weaponStatus = buildWeaponsStatus(player.weapons);
 		drawWeaponsStatus(weaponStatus, player.secondaryColor);
 	}
-	if (objects.length == 0 && level.current <= level.max){
+	if (objects.length == 0 && enemies.length == 0 && level.current <= level.max){
 		level.next();
 		if (level.current <= level.max){
 			level.start();
@@ -1626,10 +1626,13 @@ function mainLoop(){
 		
 		for (var u = 0; u < player.weapons.length; u++){
 			for (var i = 0; i < player.weapons[u].projectiles.length; i++){
+			    calculateAxes(player.weapons[u].projectiles[i])
 				for (var j = 0; j < objects.length; j++){
-					calculateAxes(player.weapons[u].projectiles[i])
 					smartCollision(player.weapons[u].projectiles[i], objects[j], function(){player.weapons[u].onHit(objects[j])});
 				}
+                for (var k = 0; k < enemies.length; k++){
+                    smartCollision(player.weapons[u].projectiles[i], enemies[k].hitbox, function(){player.weapons[u].onHit(enemies[k])});
+                }
 			}
 		}
 		checkBorder(player.hitbox, function(){player.auxHitbox.applyVector(diff)});
@@ -1645,6 +1648,15 @@ function mainLoop(){
 				
 				elasticCollision(player.hitbox, mtv, objects[i]);
 				elasticCollision(player.auxHitbox, mtv, objects[i]);
+				player.sufferDamage(COLLISION_DAMAGE);	// fixed amount of damage on Collision
+			}
+		}
+		for (var i = 0; i < enemies.length; i++){
+			mtv = collisionSTA(player.hitbox, enemies[i].hitbox);
+			if (mtv){
+				
+				elasticCollision(player.hitbox, mtv, enemies[i].hitbox);
+				elasticCollision(player.auxHitbox, mtv, enemies[i].hitbox);
 				player.sufferDamage(COLLISION_DAMAGE);	// fixed amount of damage on Collision
 			}
 		}
@@ -1684,6 +1696,7 @@ function mainLoop(){
             enemies[i].draw();
         }
 	killObjects(objects);
+	killObjects(enemies);
 	checkColisionsNaive(objects);
 	score.draw(player.secondaryColor);
 	level.draw(player.secondaryColor);
