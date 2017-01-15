@@ -1269,7 +1269,7 @@ var Stellar = function(primaryColor="#000FFF", secondaryColor = "#0FF0FF"){
 var Gargatuan = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF"){
 	var ship = new Ship(c.width/2, c.height/2, 50, primaryColor, secondaryColor);
 	ship.updateDirection();
-	ship.hull = new Hull(200, 5);
+	ship.hull = new Hull(200, 1);
 	ship.shield = new Shield(300, 0, 20, 0.5, 300);
 	ship.powerSupply = new EnergySource(1000, 20, 100);
 	ship.shield.setPowerSupply(ship.powerSupply);
@@ -1310,7 +1310,7 @@ var Gargatuan = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF"){
 var Colossal = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF"){
 	var ship = new Ship(c.width/2, c.height/2, 100, primaryColor, secondaryColor);
 	ship.updateDirection();
-	ship.hull = new Hull(1000, 10);
+	ship.hull = new Hull(1000, 2);
 	ship.shield = new Shield(2000, 0, 50, 1, 150);
 	ship.powerSupply = new EnergySource(2000, 20, 100);
 	ship.shield.setPowerSupply(ship.powerSupply);
@@ -1536,11 +1536,11 @@ function updateEnemy(ship){
 		}
 		for (var u = 0; u < ship.weapons.length; u++){
 			for (var i = 0; i < ship.weapons[u].projectiles.length; i++){
+			    calculateAxes(ship.weapons[u].projectiles[i])
 				for (var j = 0; j < objects.length; j++){
-					calculateAxes(ship.weapons[u].projectiles[i])
 					smartCollision(ship.weapons[u].projectiles[i], objects[j], function(){ship.weapons[u].onHit(objects[j])});
 				}
-			    smartCollision(ship.weapons[u].projectiles[i], players[0].hitbox, function(){ship.weapons[u].onHit(players[0])});
+	            smartCollision(ship.weapons[u].projectiles[i], players[0].hitbox, function(){ship.weapons[u].onHit(players[0])});
 			}
 		}
 		checkBorder(ship.hitbox, function(){ship.auxHitbox.applyVector(diff)});
