@@ -661,7 +661,13 @@ var Ship = function(x, y, l1, primaryColor = "#0000FF", secondaryColor = "#00F0F
 				this.auxHitbox.versor = this.hitbox.versor;
 			}				
 		}
-
+        else{
+            unitVector(aux, aux);
+            this.hitbox.versor.x = aux.x;
+            this.hitbox.versor.y = aux.y;
+            this.auxHitbox.velocity = this.hitbox.velocity;
+            this.auxHitbox.versor = this.hitbox.versor;
+        }
 	}
 	this.updatePosition = function(){
 		this.hitbox.update(); 
@@ -729,6 +735,11 @@ var Ship = function(x, y, l1, primaryColor = "#0000FF", secondaryColor = "#00F0F
 				this.hitbox.versor.y = aux.y;
 			}				
 		}
+        else{
+            unitVector(aux, aux);
+            this.hitbox.versor.x = aux.x;
+            this.hitbox.versor.y = aux.y;
+        }
 		this.auxHitbox.velocity = this.hitbox.velocity;
 		this.auxHitbox.versor = this.hitbox.versor;
 	}
@@ -1543,7 +1554,6 @@ function selectShipLoop(){
         for (var i = 0; i <= buttons.length; i++){
             buttons.pop();
         }
-        buttons[0]=null;
 		requestAnimationFrame(mainLoop);
 	}
 }
