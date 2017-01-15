@@ -36,11 +36,12 @@ function generateTurrets(n){
         var x = Math.random() * c.width;
         var y = Math.random() * c.height;
 
-        turret = new lightLaserTurret("#FFFFFF", "#FF0000", 1, x, y);
+        turret = new lightLaserTurret("#FFFFFF", "#FF0000", 1, x, y, 40);
         turret.weapon.setCenter(player.hitbox.center);
         turret.weapon.setPosition(turret.hitbox.center);
         turret.weapon.setOwner(turret);
         turret.weapon.firing=true;
+        turret.hitbox.spin = 20;
         enemies.push(turret);
     }
 }
@@ -1310,7 +1311,7 @@ var Gargatuan = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF"){
 var Colossal = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF"){
 	var ship = new Ship(c.width/2, c.height/2, 100, primaryColor, secondaryColor);
 	ship.updateDirection();
-	ship.hull = new Hull(1000, 2);
+	ship.hull = new Hull(1000, 1);
 	ship.shield = new Shield(2000, 0, 50, 1, 150);
 	ship.powerSupply = new EnergySource(2000, 20, 100);
 	ship.shield.setPowerSupply(ship.powerSupply);
