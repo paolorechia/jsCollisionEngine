@@ -503,17 +503,24 @@ var Weapon = function(velocity = 10, width = 1, range = 1000, limit = 10, damage
 			}
 		}
 	}
-    this.drawCannon = function(color = "#0000FF"){
+    this.drawCannon = function(color = "#000FFF"){
         if (this.owner != undefined){
             color = this.owner.secondaryColor;
         }
         ctx.beginPath();
-        ctx.lineWidth=this.projectileWidth;
+        ctx.lineWidth=2;
         ctx.strokeStyle=color;
         var size = 20;
-        ctx.moveTo(this.center.x, this.center.y);
-        ctx.lineTo(this.center.x + this.direction.x * size, this.center.y + this.direction.y * size);
-        ctx.stroke();
+        if (this.turret ==false){
+            ctx.moveTo(this.center.x, this.center.y);
+            ctx.lineTo(this.center.x + this.direction.x * size, this.center.y + this.direction.y * size);
+            ctx.stroke();
+        }
+        else{
+            ctx.moveTo(this.position.x, this.position.y);
+            ctx.lineTo(this.position.x + this.direction.x * size, this.position.y + this.direction.y * size);
+            ctx.stroke();
+        }
     }
 }
 
@@ -1094,29 +1101,15 @@ function lightLaserBlaster(){
 						 energyUsage = 5);
     blaster.type = 'p';
 	blaster.draw = function(){
+        if (this.enabled){
+            blaster.drawCannon();
+        }
 		if (blaster.owner == undefined){
-            if (this.enabled){
-                ctx.beginPath();
-                ctx.lineWidth=this.projectileWidth;
-                ctx.strokeStyle=this.owner.secondaryColor;
-                var size = 20;
-                ctx.moveTo(this.position.x, this.position.y);
-                ctx.lineTo(this.position.x + this.direction.x * size, this.position.y + this.direction.y * size);
-                ctx.stroke();
-            }
 			for (var i = 0; i < this.projectiles.length; i++){
 				drawPolygon(this.projectiles[i], strokeColor="#0000FF", hitColor="#0FF0FF", joints=false, center=false, fillColor="#0F00FF");
 			}
 		}
 		else{
-            if (this.enabled){
-                ctx.beginPath();
-                ctx.lineWidth=this.projectileWidth;
-                var size = 20;
-                ctx.moveTo(this.position.x, this.position.y);
-                ctx.lineTo(this.position.x + this.direction.x * size, this.position.y + this.direction.y * size);
-                ctx.stroke();
-            }
 			for (var i = 0; i < this.projectiles.length; i++){
 				drawPolygon(this.projectiles[i], strokeColor=this.owner.primaryColor,
 							hitColor=this.owner.secondaryColor, joints=false, center=false, fillColor="#0F00FF");
@@ -1131,29 +1124,15 @@ function heavyLaserBlaster(){
 						 energyUsage = 20);
     blaster.type = 'p';
 	blaster.draw = function(){
+        if (this.enabled){
+            blaster.drawCannon();
+        }
 		if (blaster.owner == undefined){
-            if (this.enabled){
-                ctx.beginPath();
-                ctx.lineWidth=this.projectileWidth;
-                ctx.strokeStyle=this.owner.secondaryColor;
-                var size = 20;
-                ctx.moveTo(this.position.x, this.position.y);
-                ctx.lineTo(this.position.x + this.direction.x * size, this.position.y + this.direction.y * size);
-                ctx.stroke();
-            }
 			for (var i = 0; i < this.projectiles.length; i++){
 				drawHeavyBlaster(this.projectiles[i], strokeColor="#0000FF", hitColor="#0FF0FF", joints=false, center=false, fillColor="#0F00FF");
 			}
 		}
 		else{
-            if (this.enabled){
-                ctx.beginPath();
-                ctx.lineWidth=this.projectileWidth;
-                var size = 20;
-                ctx.moveTo(this.position.x, this.position.y);
-                ctx.lineTo(this.position.x + this.direction.x * size, this.position.y + this.direction.y * size);
-                ctx.stroke();
-            }
 			for (var i = 0; i < this.projectiles.length; i++){
 				drawHeavyBlaster(this.projectiles[i], strokeColor=this.owner.primaryColor,
 								 hitColor=this.owner.secondaryColor, joints=false, center=false, fillColor="#0F00FF");
@@ -1316,7 +1295,7 @@ var Turret = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF"){
 	ship.weapon.setOwner(ship);
 	ship.weapon.setPowerSupply(ship.powerSupply);
 	ship.weapon.setCenter(coord);
-	ship.weapon.setPosition(ship.hitbox.vertices[0]);
+	ship.weapon.setPosition(ship.hitbox.center);
     ship.weapon.setTurretMode(true);
 
 	ship.weapon.enabled=true;
