@@ -1767,16 +1767,17 @@ var displaying = false;
 var confirmed = false;
 function selectShipLoop(){
 	drawLobbyBackground();
-	for (var i = 0; i < buttons.length; i++){
-		buttons[i].draw();
-	}
     if (selected){
         if (!displaying){
             buttons.push(confirmButton);
             displaying = true;
         }
         displayShip(player);
+        drawStats(player);
     }
+	for (var i = 0; i < buttons.length; i++){
+		buttons[i].draw();
+	}
     if (!confirmed){
 		requestAnimationFrame(selectShipLoop);
 	}
@@ -1829,6 +1830,42 @@ function describeShipConsole(ship){
         console.log(string);
 }
 
+function drawStats(ship){
+        ctx.save();
+        ctx.beginPath();
+        ctx.fillStyle="#FFFFFF";
+        ctx.fillRect(c.width/3 -20, 20, c.width/1.5, c.height/4);
+    
+        ctx.fillStyle="#000000";
+        ctx.font="11px arial";
+        string = "Hull--"; 
+        string += JSON.stringify(ship.hull.describe());
+        for (var i = 0; i < 10; i++){
+            string = string.replace('"', '');
+        }
+        ctx.fillText(string, c.width/3, 40);
+        string = "Engine--"; 
+        string += JSON.stringify(ship.describeEngine());
+        for (var i = 0; i < 10; i++){
+            string = string.replace('"', '');
+        }
+
+        ctx.fillText(string, c.width/3, 70);
+        string = "Energy Source--"; 
+        string += JSON.stringify(ship.powerSupply.describe());
+        for (var i = 0; i < 10; i++){
+            string = string.replace('"', '');
+        }
+        ctx.fillText(string, c.width/3, 100);
+        ctx.font="10px arial";
+        var string = "Shield --"; 
+        string += JSON.stringify(ship.shield.describe());
+        for (var i = 0; i < 10; i++){
+            string = string.replace('"', '');
+        }
+        ctx.fillText(string, c.width/3, 130);
+        ctx.restore();
+}
 
 
 function displayShip(ship){
