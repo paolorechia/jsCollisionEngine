@@ -1918,8 +1918,9 @@ function mainLoop(){
         if (score.max < score.player){
             document.cookie="maxScore = " + score.player;
         }
-        document.cookie="coins = " + score.player * 50;
-	}
+        score.coins = score.player * 50;
+        document.cookie="coins = " + score.coins;
+   	}
 	else{
 		player.updateDirection();
 		player.updateStrafe();
