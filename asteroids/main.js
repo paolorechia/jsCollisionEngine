@@ -21,6 +21,7 @@ function generateAsteroids(maxSize, minSize, maxSpeed, maxSpin, numberRectangles
 				rect.hp= Math.round(Math.sqrt(rect.mass));
 				rect.dead = false;
 				rect.sufferDamage = asteroidSufferDamage;
+                rect.value = Math.round(rect.hp/40);
 				objects.push(rect);
 			}
 			for (i = 0; i < numberTriangles; i++){
@@ -28,6 +29,7 @@ function generateAsteroids(maxSize, minSize, maxSpeed, maxSpin, numberRectangles
 				triangle.hp = Math.round(Math.sqrt(triangle.mass));
 				triangle.dead == false;		
 				triangle.sufferDamage = asteroidSufferDamage;				
+                triangle.value = Math.round(triangle.hp/40);
 				objects.push(triangle);
 			}	
 }
@@ -68,6 +70,8 @@ function generateTurrets(n, cannons, moving=false, rateOfFire=1){
             turret.engineOn=true;
             rotatePolygon(turret.hitbox, 360 * Math.random());
         }
+        turret.value = Math.round(myRandom * 10);
+        turret.value *= cannons;
         enemies.push(turret);
     }
 }
@@ -1022,8 +1026,8 @@ var Ship = function(x, y, l1, primaryColor = "#0000FF", secondaryColor = "#00F0F
 function killObjects(array){
 	for (i = 0; i < array.length; i++){
 		if (array[i].dead == true){
+            score.player += array[i].value; 
 			array.splice(i, 1);
-			score.player++;
 		}
 	}
 }
