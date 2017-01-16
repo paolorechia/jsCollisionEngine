@@ -1340,7 +1340,7 @@ function killProjectile(projectile){
 //var Shield = function(max = 100, resistance=0, drainRate=10, rechargeEfficiency = 0.5, drainSpeed = 250){
 var Stellar = function(primaryColor="#000FFF", secondaryColor = "#0FF0FF"){
 	var ship = new Ship(c.width/2, c.height/2, 20, primaryColor, secondaryColor);
-    var.name="Stellar";
+    ship.name="Stellar";
 	ship.updateDirection();
 	ship.hull = new Hull(100, 0);
 	ship.shield = new Shield(50, 0, 5, 1, 300);
@@ -1378,7 +1378,7 @@ var Stellar = function(primaryColor="#000FFF", secondaryColor = "#0FF0FF"){
 }
 var Gargatuan = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF"){
 	var ship = new Ship(c.width/2, c.height/2, 50, primaryColor, secondaryColor);
-    var.name="Gargatuan";
+    ship.name="Gargatuan";
 	ship.updateDirection();
 	ship.hull = new Hull(200, 1);
 	ship.shield = new Shield(300, 0, 20, 0.5, 300);
@@ -1555,6 +1555,13 @@ var Turret = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF", cannon
 	return ship;
 }
 
+function fetchShipByName(name){
+    if (name == "Stellar"){
+        var ship = new Stellar();
+    }
+    return ship;
+}
+
 ctx.lineWidth=3;
 var j = 0;
 
@@ -1694,6 +1701,9 @@ values = [];
 confirmButton = new Button(c.width/2 - 100, c.height - 100,
                            200, 50, "Confirm");
 confirmButton.onClick = function(){
+    if (player.name == "Stellar"){
+        confirmed=true;
+    }
     if (score.coins > player.getValue()){
         confirmed=true;
     }
@@ -1708,6 +1718,7 @@ var selected = false;
 var displaying = false;
 var confirmed = false;
 function selectShipLoop(){
+    console.log(confirmButton);
 	drawLobbyBackground();
 	for (var i = 0; i < buttons.length; i++){
 		buttons[i].draw();
@@ -1737,6 +1748,8 @@ function selectShipLoop(){
         c.width = window.innerWidth-20;
         c.height = window.innerHeight-20;
         updateResEvent(c);
+        console.log(fetchShipByName("Stellar"));
+        player = fetchShipByName(player.name);
 		requestAnimationFrame(mainLoop);
 	}
 }
@@ -1777,7 +1790,6 @@ function displayShip(ship){
 			ship.weapons[i].removeProjectiles();
 		}
 		for (u = 0; u < ship.weapons.length; u++){
-                  console.log(ship.weapons[0].projectiles.length);
 				for (var k = 0; k < ship.weapons[u].projectiles.length; k++){
                     ship.weapons[u].projectiles[k].update();
 				    projectile = ship.weapons[u].projectiles[k];
