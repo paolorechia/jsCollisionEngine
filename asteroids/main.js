@@ -227,6 +227,13 @@ var EnergySource = function(max = 100, rechargeRate = 10, rechargeSpeed=500){ //
 	this.rechargeSpeed = rechargeSpeed;
 	this.rechargeEvent = undefined;
 	this.recharging = true;
+    this.getValue = function(){
+        var value = this.max * this.rechargeRate;
+        value /= 1000;
+        value *= 1000 - rechargeSpeed;
+        value = Math.round(value);
+        return value;
+    }
 	this.recharge = function(source){
 		if (this.recharging){
 			if (this.current < this.max){
@@ -264,6 +271,13 @@ var Shield = function(max = 100, resistance=0, drainRate=10, rechargeEfficiency 
 	this.resistanceType = 'f'; // defense type can be either 'f' (flat) or 'p' (porcentual)
 							// The first case will simply subtract a constant from the received damage; the second will multiply the damage by the constant
 	
+    this.getValue = function(){
+        value = this.max * (this.resistance + 1); //assumes a flat resistance
+        value *= this.rechargeEfficiency;
+        value *= 1000 - this.drainSpeed;
+        value = Math.round(value/100);
+        return value;
+    }
 	this.setPowerSupply = function(powerSupply){
 		this.powerSupply = powerSupply;
 	}
@@ -323,6 +337,11 @@ var Hull = function(max = 100, resistance = 0){
 	this.current = this.max;
 	this.resistance = resistance;
 	this.resistanceType = 'f'; // same as shield defense type -- 'f' for flat resistance; 'p' for porcentual
+
+    this.getValue = function(){
+        value = this.max * (this.resistance + 1); //assumes a flat resistance
+        return value;
+    }
 	this.sufferDamage = function(damage){
 		if (this.resistanceType == 'f'){
 			var actualDamage = damage - resistance;
@@ -1627,6 +1646,10 @@ function selectShipLoop(){
  
 		c.addEventListener("touchstart", pegaCoordenadasMobile, false);
         buttons = [];
+        console.log("hull:" + player.hull.getValue());
+        console.log("shield:" + player.shield.getValue());
+        console.log("power source:" + player.powerSupply.getValue());
+        console.log("weapons:");
         for (var i =0; i < player.weapons.length; i++){
             console.log(player.weapons[i].getValue());
         }
