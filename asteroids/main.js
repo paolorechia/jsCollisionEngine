@@ -626,7 +626,23 @@ var Ship = function(x, y, l1, primaryColor = "#0000FF", secondaryColor = "#00F0F
 	this.strafingVector = new Vector(0, 0);
 	
 	this.autoPath = new Point(0, 0);
-	
+
+    this.getEngineValue = function(){
+        var value = this.maxSpeed * 10;
+        value += this.acceleration * 1000;
+        value += this.turnRate * 100;
+        return Math.round(value);
+    }
+    this.getValue = function(){
+        var value = this.getEngineValue();
+        value += this.hull.getValue();
+        value += this.shield.getValue();
+        value += this.powerSupply.getValue();
+        for (var i =0; i < this.weapons.length; i++){
+            value += this.weapons[i].getValue();
+        }
+        return value; 
+    }	
 	this.updateDirection = function(){
 
 		if (!this.engineOn && !this.reverseEngineOn && this.braking == false){
@@ -1331,10 +1347,11 @@ var Stellar = function(primaryColor="#000FFF", secondaryColor = "#0FF0FF"){
 	ship.addWeapon(lightLaserBlaster());
 	ship.changeWeapon();
 	ship.weapon.setOwner(ship);
-	ship.weapon.setCenter(ship.hitbox.center);
-	ship.weapon.setPosition(ship.front);
 	ship.weapon.setPowerSupply(ship.powerSupply);
-	ship.weapon.enabled=true;
+	ship.weapon.setPosition(ship.hitbox.center);
+    ship.weapon.setCenter(coord);
+    ship.weapon.setTurretMode(true);
+    ship.weapon.enabled=true;
 	
 	return ship;
 }
@@ -1646,15 +1663,22 @@ function selectShipLoop(){
  
 		c.addEventListener("touchstart", pegaCoordenadasMobile, false);
         buttons = [];
-        console.log("hull:" + player.hull.getValue());
-        console.log("shield:" + player.shield.getValue());
-        console.log("power source:" + player.powerSupply.getValue());
-        console.log("weapons:");
-        for (var i =0; i < player.weapons.length; i++){
-            console.log(player.weapons[i].getValue());
-        }
+        displayValue(player);
 		requestAnimationFrame(mainLoop);
 	}
+}
+
+function displayValue(ship){
+        console.log("engine: " + ship.getEngineValue());
+        console.log("hull:" + ship.hull.getValue());
+        console.log("shield:" + ship.shield.getValue());
+        console.log("power source:" + ship.powerSupply.getValue());
+        console.log("Weapons");
+        for (var i =0; i < ship.weapons.length; i++){
+            console.log(ship.weapons[i].name + ": " + ship.weapons[i].getValue());
+        }
+        console.log("ship total: " + ship.getValue());
+
 }
 
 function updateEnemy(ship){
