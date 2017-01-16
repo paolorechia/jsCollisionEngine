@@ -8,6 +8,7 @@ updateResEvent = function(canvas) {
 var Score = function(color = "#000FFF"){
 	this.player = 0;
     this.max = 0;
+    this.coins = 0;
     this.getMax = function(){
         this.max = getCookie("maxScore");
         if (this.max.length == 0){
@@ -15,6 +16,14 @@ var Score = function(color = "#000FFF"){
             this.max = getCookie("maxScore");
         }
         this.max = Number(this.max);
+    }
+    this.getCoins = function(){
+        this.coins = getCookie("coins");
+        if (this.coins.length == 0){
+            document.cookie = "coins= 0";
+            this.coins = getCookie("coins");
+        }
+        this.coins = Number(this.coins);
     }
 	this.draw = function(color){
 		ctx.beginPath();
@@ -1554,6 +1563,7 @@ var COLLISION_DAMAGE = 10;
 
 var score = new Score();
 score.getMax();
+score.getCoins();
 var level = new Level();
 var instructions = buildInstructions();
 
@@ -1660,6 +1670,9 @@ myButton = new CircularButton(50, 360, 20, "#FF0000" ,"B");
 buttons.push(myButton);
 */
 
+myButton = (new Button(20, 100, 200, 50, "Coins: " + score.coins));
+myButton.onHover= function(){}
+buttons.push(myButton);
 
 var instruct = false;
 var game = new Game();
