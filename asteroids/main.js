@@ -1340,6 +1340,7 @@ function killProjectile(projectile){
 //var Shield = function(max = 100, resistance=0, drainRate=10, rechargeEfficiency = 0.5, drainSpeed = 250){
 var Stellar = function(primaryColor="#000FFF", secondaryColor = "#0FF0FF"){
 	var ship = new Ship(c.width/2, c.height/2, 20, primaryColor, secondaryColor);
+    var.name="Stellar";
 	ship.updateDirection();
 	ship.hull = new Hull(100, 0);
 	ship.shield = new Shield(50, 0, 5, 1, 300);
@@ -1377,6 +1378,7 @@ var Stellar = function(primaryColor="#000FFF", secondaryColor = "#0FF0FF"){
 }
 var Gargatuan = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF"){
 	var ship = new Ship(c.width/2, c.height/2, 50, primaryColor, secondaryColor);
+    var.name="Gargatuan";
 	ship.updateDirection();
 	ship.hull = new Hull(200, 1);
 	ship.shield = new Shield(300, 0, 20, 0.5, 300);
@@ -1418,6 +1420,7 @@ var Gargatuan = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF"){
 }
 var Colossal = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF"){
 	var ship = new Ship(c.width/2, c.height/2, 100, primaryColor, secondaryColor);
+    ship.name = "Colossal";
 	ship.updateDirection();
 	ship.hull = new Hull(1000, 1);
 	ship.shield = new Shield(2000, 0, 50, 1, 150);
@@ -1454,6 +1457,7 @@ var Colossal = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF"){
 }
 var Turret = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF", cannons = 1, x = c.width/2, y = c.height/2, size = 15, weapon=machineGun){
 	var ship = new Ship(x, y, size, primaryColor, secondaryColor);
+    ship.name = "Turret";
 	ship.updateDirection();
 	ship.hull = new Hull(50, 3);
 	ship.shield = new Shield(20, 0, 5, 0.5, 300);
@@ -1701,6 +1705,7 @@ confirmButton.onClick = function(){
 var instruct = false;
 var game = new Game();
 var selected = false;
+var displaying = false;
 var confirmed = false;
 function selectShipLoop(){
 	drawLobbyBackground();
@@ -1708,9 +1713,13 @@ function selectShipLoop(){
 		buttons[i].draw();
 	}
     if (selected){
-        buttons.push(confirmButton);
+        if (!displaying){
+            buttons.push(confirmButton);
+            displaying = true;
+        }
+        displayShip(player);
     }
-	if (!confirmed){
+    if (!confirmed){
 		requestAnimationFrame(selectShipLoop);
 	}
 	else{
@@ -1743,6 +1752,46 @@ function displayValueConsole(ship){
         }
         console.log("ship total: " + ship.getValue());
 
+}
+
+function displayShip(ship){
+        ship.draw();
+		ship.updateDirection();
+		ship.updateStrafe();
+		ship.updatePosition();
+
+		ship.updateTurn();
+
+		ship.powerSupply.recharge(ship.powerSupply);
+		ship.shield.drainEnergy(ship.shield);
+
+		for (var i = 0; i < ship.weapons.length; i++){
+		    ship.weapons[i].firing=true;
+    	    ship.weapons[i].updateDirection();
+			if (ship.weapons[i].enabled){
+				ship.weapons[i].updateFiring(ship.hitbox.velocity);
+			}
+		}
+		for (var i = 0; i < ship.weapons.length; i++){		
+			ship.weapons[i].updateDuration();		
+			ship.weapons[i].removeProjectiles();
+		}
+		for (u = 0; u < ship.weapons.length; u++){
+                  console.log(ship.weapons[0].projectiles.length);
+				for (var k = 0; k < ship.weapons[u].projectiles.length; k++){
+                    ship.weapons[u].projectiles[k].update();
+				    projectile = ship.weapons[u].projectiles[k];
+					var hit = checkBorder(projectile);
+				    if (hit) {killProjectile(projectile)};
+					rotatePolygon(ship.weapons[u].projectiles[k], ship.weapons[u].projectiles[k].spin);	
+			    }
+			}
+		for (var u = 0; u < ship.weapons.length; u++){
+			for (var i = 0; i < ship.weapons[u].projectiles.length; i++){
+			    calculateAxes(ship.weapons[u].projectiles[i])
+                ship.weapons[u].draw();
+		    }	
+		}
 }
 
 function updateEnemy(ship){
