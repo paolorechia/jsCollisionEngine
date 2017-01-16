@@ -254,6 +254,15 @@ var EnergySource = function(max = 100, rechargeRate = 10, rechargeSpeed=500){ //
         value = Math.round(value);
         return value;
     }
+    this.describe = function(){
+        var list = [];
+        var max = "Max points: " + this.max;
+        var rechargeRate = "Recharge Rate: " + this.rechargeRate;
+        var rechargeSpeed = "Recharge Speed: " + this.rechargeSpeed/1000 + " seconds";
+        var resistance = "Resistance: " + this.resistance;
+        list.push(max, rechargeRate, rechargeSpeed);
+        return list;
+    }
 	this.recharge = function(source){
 		if (this.recharging){
 			if (this.current < this.max){
@@ -297,6 +306,16 @@ var Shield = function(max = 100, resistance=0, drainRate=10, rechargeEfficiency 
         value *= 1000 - this.drainSpeed;
         value = Math.round(value/100);
         return value;
+    }
+    this.describe = function(){
+        var list = [];
+        var max = "Max points: " + this.max;
+        var drainRate = "Drain Rate: " + this.drainRate;
+        var drainSpeed = "Drain Speed: " + this.drainSpeed/1000 + " seconds";
+        var rechargeEfficiency = "Recharge Efficiency: " + this.rechargeEfficiency;
+        var resistance = "Resistance: " + this.resistance;
+        list.push(max, drainRate, rechargeEfficiency, drainSpeed, resistance);
+        return list;
     }
 	this.setPowerSupply = function(powerSupply){
 		this.powerSupply = powerSupply;
@@ -361,6 +380,13 @@ var Hull = function(max = 100, resistance = 0){
     this.getValue = function(){
         value = this.max * (this.resistance + 1); //assumes a flat resistance
         return value;
+    }
+    this.describe = function(){
+        var list = [];
+        var max = "Max points: " + this.max;
+        var resistance = "Resistance: " + this.resistance;
+        list.push(max, resistance);
+        return list;
     }
 	this.sufferDamage = function(damage){
 		if (this.resistanceType == 'f'){
@@ -652,6 +678,14 @@ var Ship = function(x, y, l1, primaryColor = "#0000FF", secondaryColor = "#00F0F
         value += this.acceleration * 1000;
         value += this.turnRate * 100;
         return Math.round(value);
+    }
+    this.describeEngine = function(){
+        var list = [];
+        var maxSpeed = "Max Speed: " + this.maxSpeed;
+        var acceleration = "Acceleration : " + this.acceleration;
+        var turnRate = "Turn Rate: " + this.turnRate;
+        list.push(maxSpeed, acceleration, turnRate);
+        return list;
     }
     this.getValue = function(){
         var value = this.getEngineValue();
@@ -1657,6 +1691,7 @@ myButton = (new Button(20, 200, 150, 50, "Stellar"));
 myButton.onClick = function(){
 	player = new Stellar();
 	selected = true;
+    describeShipConsole(player);
 }
 buttons.push(myButton);
 
@@ -1664,6 +1699,7 @@ myButton = (new Button(20, 260, 150, 50, "Gargatuan"));
 myButton.onClick = function(){
 	player = new Gargatuan();
     selected = true;
+    describeShipConsole(player);
 }
 buttons.push(myButton);
 
@@ -1676,6 +1712,7 @@ myButton.onClick = function(){
 	player = new Turret("#000FFF", "#00F0FF", 3,
                         c.width/2, c.height/2, 20, lightLaserBlaster);
     selected = true;
+    describeShipConsole(player);
 }
 buttons.push(myButton);
 
@@ -1683,6 +1720,7 @@ myButton = (new Button(20, 380, 150, 50, "Colossal"));
 myButton.onClick = function(){
 	player = new Colossal();
     selected = true;
+    describeShipConsole(player);
 }
 buttons.push(myButton);
 /*
@@ -1773,8 +1811,21 @@ function displayValueConsole(ship){
             console.log(ship.weapons[i].name + ": " + ship.weapons[i].getValue());
         }
         console.log("ship total: " + ship.getValue());
-
 }
+
+function describeShipConsole(ship){
+        console.log(ship.name);
+        var string = JSON.stringify(ship.shield.describe());
+        console.log(string);
+        var string = JSON.stringify(ship.hull.describe());
+        console.log(string);
+        var string = JSON.stringify(ship.powerSupply.describe());
+        console.log(string);
+        var string = JSON.stringify(ship.describeEngine());
+        console.log(string);
+}
+
+
 
 function displayShip(ship){
         ship.draw();
