@@ -71,7 +71,7 @@ function generateTurrets(n, cannons, moving=false){
     }
 }
 var Level = function(color="#000FFF"){
-	this.current = 1;
+	this.current = 0;
 	this.max = 20;
 	this.draw = function(color){
             ctx.beginPath();
@@ -1417,6 +1417,63 @@ var Turret = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF", cannon
             ship.weapon.enabled=true;
         }
     }
+	ship.draw = function(polygon = this.hitbox){
+		ctx.save();
+		ctx.lineWidth=3;
+		ctx.beginPath();
+		if (polygon.hit == true){
+			ctx.strokeStyle="#FF0000";
+			ctx.fillStyle="#FF0000";
+		}
+		else{
+			ctx.strokeStyle=this.primaryColor;
+			ctx.fillStyle=this.primaryColor;
+		}
+		
+		for (var i = 0; i < polygon.vertices.length; i++){
+			ctx.beginPath();
+			ctx.arc(polygon.vertices[i].x,
+			polygon.vertices[i].y,
+			3, 0, 2*Math.PI);
+			if (i == 2){
+				ctx.fillStyle=this.secondaryColor;
+			}
+			ctx.fill();
+		}
+		for (var i = 0; i < polygon.vertices.length; i++){
+			ctx.beginPath();
+			ctx.moveTo(polygon.center.x, polygon.center.y);
+			ctx.lineTo(polygon.vertices[i].x, polygon.vertices[i].y);
+			ctx.stroke();
+		}
+		if (polygon.center != undefined){
+			ctx.fillStyle=this.secondaryColor;
+			ctx.beginPath();
+			ctx.arc(polygon.center.x,
+					polygon.center.y,
+					3, 0, 2*Math.PI);
+			ctx.fill();
+		}
+		if (this.immunity == true){
+			ctx.strokeStyle=this.secondaryColor;
+			ctx.beginPath();
+			ctx.arc(polygon.center.x,
+					polygon.center.y,
+					polygon.side + 2, 0, 2*Math.PI);
+			ctx.stroke();
+		}
+		if (this.shield.enabled && this.shield.current > 0){
+			ctx.save();
+			ctx.strokeStyle=this.secondaryColor;
+			ctx.beginPath();
+			ctx.arc(polygon.center.x,
+					polygon.center.y,
+					polygon.side + 2, 0, 2*Math.PI);
+			ctx.stroke();	
+			ctx.restore();
+		}
+		ctx.restore();
+	}
 	return ship;
 }
 
@@ -1733,10 +1790,6 @@ function mainLoop(){
 		}
 		player.autoPilot();
 
-		if (player.dead == false){
-			player.drawAutoPath();
-			player.draw();
-		}
 		player.drawStatus();
 		for (var i = 0; i < objects.length; i++){
 			drawAsteroid(objects[i]);
@@ -1745,6 +1798,10 @@ function mainLoop(){
             updateEnemy(enemies[i]);
             enemies[i].draw();
         }
+		if (player.dead == false){
+			player.drawAutoPath();
+			player.draw();
+		}
 	killObjects(objects);
 	killObjects(enemies);
 	checkColisionsNaive(objects);
