@@ -1815,13 +1815,17 @@ function displayValueConsole(ship){
 
 function describeShipConsole(ship){
         console.log(ship.name);
-        var string = JSON.stringify(ship.shield.describe());
+        var string = "Shield --"; 
+        string += JSON.stringify(ship.shield.describe());
         console.log(string);
-        var string = JSON.stringify(ship.hull.describe());
+        string = "Hull--"; 
+        string += JSON.stringify(ship.hull.describe());
         console.log(string);
-        var string = JSON.stringify(ship.powerSupply.describe());
+        string = "Energy Source--"; 
+        string += JSON.stringify(ship.powerSupply.describe());
         console.log(string);
-        var string = JSON.stringify(ship.describeEngine());
+        string = "Engine--"; 
+        string += JSON.stringify(ship.describeEngine());
         console.log(string);
 }
 
