@@ -1559,6 +1559,16 @@ function fetchShipByName(name){
     if (name == "Stellar"){
         var ship = new Stellar();
     }
+    else if (name == "Gargatuan"){
+        var ship = new Gargatuan();
+    }
+    else if (name == "Colossal"){
+        var ship = new Colossal();
+    }
+    else if (name == "Turret"){
+	    var ship = new Turret("#000FFF", "#00F0FF", 3,
+                        c.width/2, c.height/2, 20, lightLaserBlaster);
+    }
     return ship;
 }
 
@@ -1717,8 +1727,8 @@ var game = new Game();
 var selected = false;
 var displaying = false;
 var confirmed = false;
+score.coins=999999;
 function selectShipLoop(){
-    console.log(confirmButton);
 	drawLobbyBackground();
 	for (var i = 0; i < buttons.length; i++){
 		buttons[i].draw();
