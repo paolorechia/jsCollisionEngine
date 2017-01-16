@@ -31,7 +31,7 @@ function generateAsteroids(maxSize, minSize, maxSpeed, maxSpin, numberRectangles
 				objects.push(triangle);
 			}	
 }
-function generateTurrets(n, cannons, moving=false){
+function generateTurrets(n, cannons, moving=false, rateOfFire=1){
     for (var i = 0; i < n; i++){
         var x = Math.random() * c.width;
         var y = Math.random() * c.height;
@@ -58,6 +58,7 @@ function generateTurrets(n, cannons, moving=false){
             turret = Turret("#FFFFFF", "#FF0000", cannons, x, y, 40, machineGun);
         }
         for (var j =0; j < cannons; j++){
+            turret.weapons[j].rateOfFire *= rateOfFire;
             turret.weapons[j].setCenter(player.hitbox.center);
             turret.weapons[j].setPosition(turret.hitbox.vertices[j]);
             turret.weapons[j].firing=true;
@@ -95,31 +96,13 @@ var Level = function(color="#000FFF"){
                 var numberTriangles = Math.round(this.current * 0.4);
                 generateAsteroids(maxSize, minSize, maxSpeed, maxSpin, numberRectangles, numberTriangles);
             }
-            else generateTurrets(Math.floor(this.current/2), 1, true);
+            else generateTurrets(Math.floor(this.current/2), 1, true, 0.25);
 		}
 		else if (this.current >= 13 && this.current <= 15){
-            if (this.current % 2 != 0){
-                var maxSize = c.width/400;
-                var minSize = c.width/500;
-                var maxSpeed = Math.round(this.current * 0.5);
-                var maxSpin = Math.floor(this.current * 0.2);
-                var numberRectangles = Math.round(this.current * 2);
-                var numberTriangles = Math.round(this.current);
-                generateAsteroids(maxSize, minSize, maxSpeed, maxSpin, numberRectangles, numberTriangles);
-            }
-            else generateTurrets(Math.floor(this.current/3), 2, true);
+            generateTurrets(Math.floor(this.current/3), 2, true, 0.5);
 		}
 		else{
-            if (this.current % 2 != 0){
-                var maxSize = c.width/400;
-                var minSize = c.width/500;
-                var maxSpeed = Math.round(this.current * 0.5);
-                var maxSpin = Math.floor(this.current * 0.2);
-                var numberRectangles = Math.round(this.current * 2);
-                var numberTriangles = Math.round(this.current);
-                generateAsteroids(maxSize, minSize, maxSpeed, maxSpin, numberRectangles, numberTriangles);
-            }
-            else generateTurrets(Math.floor(this.current/4), 3, true);
+            generateTurrets(Math.floor(this.current/4), 3, true, 0.75);
 		}
 	}
 	this.next = function(){
@@ -929,7 +912,7 @@ var Ship = function(x, y, l1, primaryColor = "#0000FF", secondaryColor = "#00F0F
 		ctx.save();
 		ctx.lineWidth=3;
 		ctx.beginPath();
-		if (polygon.hit == true){
+		if (polygon.hit == true && this.shield.current == 0){
 			ctx.strokeStyle="#FF0000";
 			ctx.fillStyle="#FF0000";
 		}
@@ -979,7 +962,12 @@ var Ship = function(x, y, l1, primaryColor = "#0000FF", secondaryColor = "#00F0F
 		}
 		if (this.shield.enabled && this.shield.current > 0){
 			ctx.save();
-			ctx.strokeStyle=this.secondaryColor;
+            if (polygon.hit == true){
+			    ctx.strokeStyle=this.primaryColor;
+            } 
+            else{
+			    ctx.strokeStyle=this.secondaryColor;
+            }
 			ctx.beginPath();
 			ctx.arc(polygon.center.x,
 					polygon.center.y,
@@ -1024,10 +1012,10 @@ var Ship = function(x, y, l1, primaryColor = "#0000FF", secondaryColor = "#00F0F
 		}		
 		else{
 			this.hull.sufferDamage(damage);
-			if (this.hull.current <= 0){
-				this.dead=true;
-			}
 		}
+	    if (this.hull.current < 0){
+		    this.dead=true;
+	    }
 	}
 }
 
@@ -1421,13 +1409,19 @@ var Turret = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF", cannon
 		ctx.save();
 		ctx.lineWidth=3;
 		ctx.beginPath();
-		if (polygon.hit == true){
+		if (polygon.hit == true && this.shield.current == 0){
 			ctx.strokeStyle="#FF0000";
 			ctx.fillStyle="#FF0000";
 		}
 		else{
 			ctx.strokeStyle=this.primaryColor;
 			ctx.fillStyle=this.primaryColor;
+		}
+		for (var i = 0; i < polygon.vertices.length; i++){
+			ctx.beginPath();
+			ctx.moveTo(polygon.center.x, polygon.center.y);
+			ctx.lineTo(polygon.vertices[i].x, polygon.vertices[i].y);
+			ctx.stroke();
 		}
 		
 		for (var i = 0; i < polygon.vertices.length; i++){
@@ -1439,12 +1433,6 @@ var Turret = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF", cannon
 				ctx.fillStyle=this.secondaryColor;
 			}
 			ctx.fill();
-		}
-		for (var i = 0; i < polygon.vertices.length; i++){
-			ctx.beginPath();
-			ctx.moveTo(polygon.center.x, polygon.center.y);
-			ctx.lineTo(polygon.vertices[i].x, polygon.vertices[i].y);
-			ctx.stroke();
 		}
 		if (polygon.center != undefined){
 			ctx.fillStyle=this.secondaryColor;
@@ -1464,7 +1452,12 @@ var Turret = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF", cannon
 		}
 		if (this.shield.enabled && this.shield.current > 0){
 			ctx.save();
-			ctx.strokeStyle=this.secondaryColor;
+            if (polygon.hit == true){
+                ctx.strokeStyle=this.primaryColor;
+            }
+            else{
+			    ctx.strokeStyle=this.secondaryColor;
+            }
 			ctx.beginPath();
 			ctx.arc(polygon.center.x,
 					polygon.center.y,
@@ -1730,6 +1723,10 @@ function mainLoop(){
 				player.weapons[i].updateFiring(player.hitbox.velocity);
 			}
 		}
+
+        for (var i =0; i < enemies.length; i++){
+            updateEnemy(enemies[i]);
+        }
 		
 		for (var u = 0; u < player.weapons.length; u++){
 			for (var i = 0; i < player.weapons[u].projectiles.length; i++){
@@ -1788,20 +1785,18 @@ function mainLoop(){
 					rotatePolygon(player.weapons[u].projectiles[k], player.weapons[u].projectiles[k].spin);	
 			}
 		}
-		player.autoPilot();
-
-		player.drawStatus();
-		for (var i = 0; i < objects.length; i++){
-			drawAsteroid(objects[i]);
-		}
-        for (var i =0; i < enemies.length; i++){
-            updateEnemy(enemies[i]);
-            enemies[i].draw();
-        }
-		if (player.dead == false){
-			player.drawAutoPath();
-			player.draw();
-		}
+    player.autoPilot();
+    player.drawStatus();
+    for (var i = 0; i < objects.length; i++){
+        drawAsteroid(objects[i]);
+    }
+    for (var i =0; i < enemies.length; i++){
+        enemies[i].draw();
+    }
+    if (player.dead == false){
+        player.drawAutoPath();
+        player.draw();
+    }
 	killObjects(objects);
 	killObjects(enemies);
 	checkColisionsNaive(objects);
