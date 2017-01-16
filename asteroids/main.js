@@ -1588,14 +1588,13 @@ var Button = function(x, y, width, height, string=" "){
 	}
     this.onHover = function(){
         this.bgColor = "#666666";
-        console.log(this.string);
     }
 	this.draw = function(){
 		ctx.fillStyle=this.bgColor;
 		ctx.fillRect(this.x, this.y, this.width, this.height);
 		ctx.fillStyle=this.fontColor;
 		ctx.font="14px arial";
-		ctx.fillText(string, this.x + this.width/10, this.y + this.height/2);
+		ctx.fillText(this.string, this.x + this.width/10, this.y + this.height/2);
 	}
     this.reset = function(){
         this.bgColor= "#FFFFFF";
@@ -1643,7 +1642,9 @@ buttons.push(myButton);
 myButton = (new Button(20, 260, 150, 50, "Gargatuan"));
 myButton.onClick = function(){
 	player = new Gargatuan();
-	selected = true;
+    if (score.coins > player.getValue()){
+	    selected = true;
+    }
 }
 buttons.push(myButton);
 
@@ -1655,14 +1656,18 @@ myButton = (new Button(20, 320, 150, 50, "Turret"));
 myButton.onClick = function(){
 	player = new Turret("#000FFF", "#00F0FF", 3,
                         c.width/2, c.height/2, 20, lightLaserBlaster);
-	selected = true;
+    if (score.coins > player.getValue()){
+	    selected = true;
+    }
 }
 buttons.push(myButton);
 
 myButton = (new Button(20, 380, 150, 50, "Colossal"));
 myButton.onClick = function(){
 	player = new Colossal();
-	selected = true;
+    if (score.coins > player.getValue()){
+	    selected = true;
+    }
 }
 buttons.push(myButton);
 /*
@@ -1673,6 +1678,20 @@ buttons.push(myButton);
 myButton = (new Button(20, 100, 200, 50, "Coins: " + score.coins));
 myButton.onHover= function(){}
 buttons.push(myButton);
+
+var coord = new Point(c.width/2, c.height/2);
+
+var values = [];
+values.push(new Stellar());
+values.push(new Gargatuan());
+values.push(new Turret());
+values.push(new Colossal());
+
+for (var i = 1; i < values.length; i++){
+    buttons[i].string += ": " + values[i].getValue();
+}
+values = [];
+
 
 var instruct = false;
 var game = new Game();
@@ -1696,7 +1715,7 @@ function selectShipLoop(){
  
 		c.addEventListener("touchstart", pegaCoordenadasMobile, false);
         buttons = [];
-        displayValue(player);
+        displayValueConsole(player);
         c.width = window.innerWidth-20;
         c.height = window.innerHeight-20;
         updateResEvent(c);
@@ -1704,7 +1723,7 @@ function selectShipLoop(){
 	}
 }
 
-function displayValue(ship){
+function displayValueConsole(ship){
         console.log("engine: " + ship.getEngineValue());
         console.log("hull:" + ship.hull.getValue());
         console.log("shield:" + ship.shield.getValue());
@@ -1820,7 +1839,7 @@ function mainLoop(){
         if (score.max < score.player){
             document.cookie="maxScore = " + score.player;
         }
-        document.cookie="coins = " + score.player * 10;
+        document.cookie="coins = " + score.player * 50;
 	}
 	else{
 		player.updateDirection();
