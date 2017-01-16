@@ -116,6 +116,22 @@ var coord = new Point(c.width/2, c.height/2);
 			}
 		}
 	}
+    buttonModeHover = function(){
+		for (var i = 0; i < buttons.length; i++){
+			var bound = {left: buttons[i].x,
+						  right: buttons[i].x + buttons[i].width,
+						 up: buttons[i].y,
+						down: buttons[i].y + buttons[i].height};
+						
+			if (coord.x > bound.left && coord.x < bound.right){
+				if (coord.y > bound.up && coord.y < bound.down){
+					buttons[i].onHover();
+                    continue;
+				}
+			}
+            buttons[i].reset();
+		}
+    }
 	mouseClick = function(){
 	//	console.log("System locked!");
 		player.lock = true;
@@ -131,6 +147,8 @@ var coord = new Point(c.width/2, c.height/2);
     window.addEventListener("keyup", function(event){ keyboardUp(event)}, false);
 
 	c.addEventListener("mousemove", pegaCoordenadas, false);
+
+	c.addEventListener("mousemove", buttonModeHover, false);
 
 	c.addEventListener("touchstart", buttonModeClick, false);
 /*

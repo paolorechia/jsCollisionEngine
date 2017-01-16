@@ -1531,9 +1531,6 @@ var Turret = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF", cannon
 	return ship;
 }
 
-c.width = window.innerWidth-20;
-c.height = window.innerHeight-20;
-updateResEvent(c);
 ctx.lineWidth=3;
 var j = 0;
 
@@ -1562,16 +1559,25 @@ var Button = function(x, y, width, height, string=" "){
 	this.width = width;
 	this.height = height;
 	this.string = string;
+    this.bgColor = "#FFFFFF";
+    this.fontColor = "#000000";
 	this.onClick = function(){
 			console.log(this.string);
 	}
+    this.onHover = function(){
+        this.bgColor = "#666666";
+        console.log(this.string);
+    }
 	this.draw = function(){
-		ctx.fillStyle="#FFFFFF";
+		ctx.fillStyle=this.bgColor;
 		ctx.fillRect(this.x, this.y, this.width, this.height);
-		ctx.fillStyle="#000000";
+		ctx.fillStyle=this.fontColor;
 		ctx.font="14px arial";
 		ctx.fillText(string, this.x + this.width/10, this.y + this.height/2);
 	}
+    this.reset = function(){
+        this.bgColor= "#FFFFFF";
+    }
 }
 
 var CircularButton = function(x, y, radius, color, string){
@@ -1666,6 +1672,9 @@ function selectShipLoop(){
 		c.addEventListener("touchstart", pegaCoordenadasMobile, false);
         buttons = [];
         displayValue(player);
+        c.width = window.innerWidth-20;
+        c.height = window.innerHeight-20;
+        updateResEvent(c);
 		requestAnimationFrame(mainLoop);
 	}
 }
