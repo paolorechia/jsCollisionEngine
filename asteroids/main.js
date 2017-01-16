@@ -1642,9 +1642,7 @@ buttons.push(myButton);
 myButton = (new Button(20, 260, 150, 50, "Gargatuan"));
 myButton.onClick = function(){
 	player = new Gargatuan();
-    if (score.coins > player.getValue()){
-	    selected = true;
-    }
+    selected = true;
 }
 buttons.push(myButton);
 
@@ -1656,18 +1654,14 @@ myButton = (new Button(20, 320, 150, 50, "Turret"));
 myButton.onClick = function(){
 	player = new Turret("#000FFF", "#00F0FF", 3,
                         c.width/2, c.height/2, 20, lightLaserBlaster);
-    if (score.coins > player.getValue()){
-	    selected = true;
-    }
+    selected = true;
 }
 buttons.push(myButton);
 
 myButton = (new Button(20, 380, 150, 50, "Colossal"));
 myButton.onClick = function(){
 	player = new Colossal();
-    if (score.coins > player.getValue()){
-	    selected = true;
-    }
+    selected = true;
 }
 buttons.push(myButton);
 /*
@@ -1684,7 +1678,8 @@ var coord = new Point(c.width/2, c.height/2);
 var values = [];
 values.push(new Stellar());
 values.push(new Gargatuan());
-values.push(new Turret());
+values.push(new Turret("#000FFF", "#00F0FF", 3,
+                        c.width/2, c.height/2, 20, lightLaserBlaster));
 values.push(new Colossal());
 
 for (var i = 1; i < values.length; i++){
@@ -1692,16 +1687,30 @@ for (var i = 1; i < values.length; i++){
 }
 values = [];
 
+confirmButton = new Button(c.width/2 - 100, c.height - 100,
+                           200, 50, "Confirm");
+confirmButton.onClick = function(){
+    if (score.coins > player.getValue()){
+        confirmed=true;
+    }
+    else{
+
+    }
+}
 
 var instruct = false;
 var game = new Game();
 var selected = false;
+var confirmed = false;
 function selectShipLoop(){
 	drawLobbyBackground();
 	for (var i = 0; i < buttons.length; i++){
 		buttons[i].draw();
 	}
-	if (!selected){
+    if (selected){
+        buttons.push(confirmButton);
+    }
+	if (!confirmed){
 		requestAnimationFrame(selectShipLoop);
 	}
 	else{
