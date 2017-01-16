@@ -1727,7 +1727,6 @@ var game = new Game();
 var selected = false;
 var displaying = false;
 var confirmed = false;
-score.coins=999999;
 function selectShipLoop(){
 	drawLobbyBackground();
 	for (var i = 0; i < buttons.length; i++){
