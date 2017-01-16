@@ -1621,10 +1621,12 @@ buttons.push(myButton);
 
 
 
+//Turret = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF", cannons = 1, x = c.width/2, y = c.height/2, size = 15, weapon=machineGun){
 
 myButton = (new Button(20, 320, 150, 50, "Turret"));
 myButton.onClick = function(){
-	player = new Turret("#000FFF", "#00F0FF", 3);
+	player = new Turret("#000FFF", "#00F0FF", 3,
+                        c.width/2, c.height/2, 20, lightLaserBlaster);
 	selected = true;
 }
 buttons.push(myButton);
