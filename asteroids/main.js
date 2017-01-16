@@ -395,6 +395,27 @@ var Weapon = function(velocity = 10, width = 1, range = 1000, limit = 10, damage
 	this.setPowerSupply = function(powerSupply){
 		this.powerSupply = powerSupply;
 	}
+    this.getValue = function(){
+        var value = 0;
+        if (this.type = 'l'){
+            value = this.damage * 20;
+        }
+        else{
+            value = this.range/100 + this.projectileVelocity;
+            value += this.damage * this.rateOfFire;
+        }
+        if (this.hasAmmo){
+            value-= this.ammo/500;
+        }
+        else{
+            value -= this.energyUsage;
+        } 
+        value -= this.limit;
+        if (this.turret){
+            value *= 4;
+        }
+        return Math.round(value);
+    }
 	this.updateDirection = function(){
         calculateVector(this.position, this.center, this.direction);
         unitVector(this.direction, this.direction);
@@ -1233,7 +1254,7 @@ function lightLaserBeam(){
 	return beam;
 }
 function heavyLaserBeam(){
-	beam = new Weapon(velocity = 100, width = 8, range = 2000, limit = 1, damage = 5, mass=1, rateOfFire = 1000, spin=0, hasAmmo=false, ammo=1,
+	beam = new Weapon(velocity = 100, width = 8, range = 2000, limit = 1, damage = 5, mass=1, rateOfFire = 60, spin=0, hasAmmo=false, ammo=1,
 					  energyUsage=9);
 	beam.type = 'l'; // laser type
 
@@ -1605,8 +1626,9 @@ function selectShipLoop(){
                                                 false);
  
 		c.addEventListener("touchstart", pegaCoordenadasMobile, false);
-        for (var i = 0; i <= buttons.length; i++){
-            buttons.pop();
+        buttons = [];
+        for (var i =0; i < player.weapons.length; i++){
+            console.log(player.weapons[i].getValue());
         }
 		requestAnimationFrame(mainLoop);
 	}
