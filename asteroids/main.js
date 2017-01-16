@@ -7,12 +7,23 @@ updateResEvent = function(canvas) {
 
 var Score = function(color = "#000FFF"){
 	this.player = 0;
+    this.max = 0;
+    this.getMax = function(){
+        this.max = getCookie("maxScore");
+        if (this.max.length == 0){
+            document.cookie = "maxScore = 0";
+            this.max = getCookie("maxScore");
+        }
+        this.max = Number(this.max);
+    }
 	this.draw = function(color){
 		ctx.beginPath();
 		ctx.fillStyle=color;
 		ctx.font="14px Arial";
 		string = "Score: " + this.player;
 		ctx.fillText(string, c.width/2 - 40, c.height - 20);
+		string = "Max Score: " + this.max;
+		ctx.fillText(string, c.width/2 - 160, c.height - 20);
 	}
 }
 function generateAsteroids(maxSize, minSize, maxSpeed, maxSpin, numberRectangles, numberTriangles){
@@ -1542,6 +1553,7 @@ var interval = 1000/maxFPS;
 var COLLISION_DAMAGE = 10;
 
 var score = new Score();
+score.getMax();
 var level = new Level();
 var instructions = buildInstructions();
 
@@ -1792,6 +1804,10 @@ function mainLoop(){
 	}
 	if (player.dead){
 		drawEndGame(false);
+        if (score.max < score.player){
+            document.cookie="maxScore = " + score.player;
+        }
+        document.cookie="coins = " + score.player * 10;
 	}
 	else{
 		player.updateDirection();
@@ -1892,5 +1908,37 @@ function mainLoop(){
 	drawFPS(fps.mean, player.secondaryColor);
 	setTimeout(function(){requestAnimationFrame(mainLoop)}, interval);
 }
+
+/// cookies!!
+function getCookie(cname) {
+    var name = cname + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(';');
+    for(var i = 0; i <ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+} 
+function setCookie(cname, cvalue, exdays) {
+    var d = new Date();
+    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+    var expires = "expires="+d.toUTCString();
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+var deleteCookie = function(name) {
+    document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+};
+
+console.log(document.cookie);
+
+
+
+// actual start of program
 selectShipLoop();
 //mainLoop();
