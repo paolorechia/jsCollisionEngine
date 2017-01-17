@@ -60,27 +60,28 @@ function generateTurrets(n, cannons, moving=false, rateOfFire=1){
     for (var i = 0; i < n; i++){
         var x = Math.random() * c.width;
         var y = Math.random() * c.height;
+        var size = 20;
 
         myRandom = Math.random();
         if (myRandom > 0.9){
-            turret = new Turret("#FFFFFF", "#FF0000", cannons, x, y, 40, heavyLaserBlaster);
+            turret = new Turret("#FFFFFF", "#FF0000", cannons, x, y, size, heavyLaserBlaster);
             turret.hitbox.spin = 20;
         }
         else if (myRandom > 0.8){
-            turret = Turret("#FFFFFF", "#FF0000", cannons, x, y, 40, asteroidShooter);
+            turret = Turret("#FFFFFF", "#FF0000", cannons, x, y, size, asteroidShooter);
         }
         else if (myRandom > 0.7){
-            turret = Turret("#FFFFFF", "#FF0000", cannons, x, y, 40, heavyCannon);
+            turret = Turret("#FFFFFF", "#FF0000", cannons, x, y, size, heavyCannon);
         }
         else if (myRandom > 0.6){
-            turret = new Turret("#FFFFFF", "#FF0000", cannons, x, y, 40, lightLaserBlaster);
+            turret = new Turret("#FFFFFF", "#FF0000", cannons, x, y, size, lightLaserBlaster);
             turret.hitbox.spin = 20;
         }
         else if (myRandom > 0.5){
-            turret = Turret("#FFFFFF", "#FF0000", cannons, x, y, 40, lightCannon);
+            turret = Turret("#FFFFFF", "#FF0000", cannons, x, y, size, lightCannon);
         }
         else{
-            turret = Turret("#FFFFFF", "#FF0000", cannons, x, y, 40, machineGun);
+            turret = Turret("#FFFFFF", "#FF0000", cannons, x, y, size, machineGun);
         }
         for (var j =0; j < cannons; j++){
             turret.weapons[j].rateOfFire *= rateOfFire;
@@ -147,7 +148,7 @@ function buildInstructions(){
 	var string;
 	string = "W: Main Engine Throttle";
 	instructions.push(string);
-	string = "Q: Reverse Engine Throttle";
+	string = "X: Reverse Engine Throttle";
 	instructions.push(string);
 	string = "A: Left turning";
 	instructions.push(string);
@@ -161,13 +162,15 @@ function buildInstructions(){
 	instructions.push(string);
 	string = "V: Shoot";
 	instructions.push(string);
-	string = "X: Auto-Fire";
+	string = "C: Auto-Fire";
 	instructions.push(string);
 	string = "R: Cycle Weapons";
 	instructions.push(string);
 	string = "F: Enable Shield";
 	instructions.push(string);
-	string = "Click: Auto-pilot to given point (locks down the ship)";
+	string = "Click: Auto-pilot";
+	instructions.push(string);	
+	string = "Esc: Cancel auto-pilot";
 	instructions.push(string);	
 	return instructions;
 }
@@ -202,18 +205,22 @@ function drawWeaponsStatus(list, color="#00F0FF"){
 	}
 }
 function drawInstructions(instructions, color="#000FFF"){
+    ctx.save();
 	ctx.beginPath();
+    ctx.fillStyle="#000000";
+    ctx.fillRect(0, 0, c.width, c.height/4);
 	ctx.fillStyle=color;
 	ctx.font="14px Arial";
 	var offSet = 0;
 	var xStart = 230;
-	var colSize = 3;
+	var colSize = 5;    // or lines per column
 	for (var i = 0; i < instructions.length; i++){
 		if (i % colSize == 0){
 			offSet += 240;
 		}
 		ctx.fillText(instructions[i], offSet - xStart, 40 + (i % colSize) * 20);
 	}
+    ctx.restore();
 }
 
 function drawEndGame(win, color="#000FFF", lose="#FF0000"){
@@ -228,7 +235,7 @@ function drawEndGame(win, color="#000FFF", lose="#FF0000"){
 		ctx.beginPath();
 		ctx.fillStyle=lose;
 		ctx.font="28px Arial";
-		ctx.fillText("You've died! Press F5 to restart.", c.width/3, c.height/2);
+		ctx.fillText("You've died! Press ESC to restart.", c.width/3, c.height/2);
 	}
 }
 
@@ -1221,28 +1228,28 @@ var Weapon = function(velocity = 10, width = 1, range = 1000, limit = 10, damage
 					  mass = 1, rateOfFire = 8, spin=0, hasAmmo=false, ammo=100, energyUsage=0){
 						  */
 function machineGun(){
-	cannon = new Weapon(velocity = 8, width = 1, range = 500, limit = 12, damage = 6, mass = 100, rateOfFire = 16, spin=0, hasAmmo=true, ammo=2000);
+	cannon = new Weapon(velocity = 8, width = 1, range = c.width/4, limit = 12, damage = 6, mass = 100, rateOfFire = 16, spin=0, hasAmmo=true, ammo=2000);
 	cannon.type = 'p'; // projectile type
 	cannon.name="Machine Gun";
 	return cannon;
 }
 	
 function lightCannon(){
-	cannon = new Weapon(velocity = 2, width = 4, range = 500, limit = 10, damage = 10, mass = 100, rateOfFire = 8, spin = 120, hasAmmo=true, ammo=1000);
+	cannon = new Weapon(velocity = 2, width = 4, range = c.width/4, limit = 10, damage = 10, mass = 100, rateOfFire = 8, spin = 120, hasAmmo=true, ammo=1000);
 	cannon.projectileVelocity = 10;
 	cannon.type = 'p'; // projectile type
 	cannon.name="Light Cannon";
 	return cannon;
 }
 function heavyCannon(){
-	cannon = new Weapon(velocity = 4, width = 8, range = 500, limit = 10, damage = 20, mass = 1000, rateOfFire = 4, spin = 120, hasAmmo=true, ammo=500);
+	cannon = new Weapon(velocity = 4, width = 8, range = c.width/4, limit = 10, damage = 20, mass = 1000, rateOfFire = 4, spin = 120, hasAmmo=true, ammo=500);
 	cannon.projectileVelocity=10;
 	cannon.type = 'p'; // projectile type
 	cannon.name="Heavy Cannon";
 	return cannon;
 }
 function asteroidShooter(){
-	cannon = new Weapon(velocity = 10, width = 20, range = 500, limit = 1, damage = 50, mass = 10000, rateOfFire = 1, spin = 120, hasAmmo=true, ammo=50);
+	cannon = new Weapon(velocity = 10, width = 20, range = c.width/4, limit = 1, damage = 50, mass = 10000, rateOfFire = 1, spin = 120, hasAmmo=true, ammo=50);
 	cannon.projectileVelocity=10;
 	cannon.type = 'p'; // projectile type
 	cannon.name="Asteroid Shooter";
@@ -1250,7 +1257,7 @@ function asteroidShooter(){
 }
 
 function lightLaserBlaster(){
-	blaster = new Weapon(velocity = 30, width = 1, range = 1000, limit = 12, damage = 5, mass=1, rateOfFire = 12,  spin=0, hasAmmo=false, ammo=1,
+	blaster = new Weapon(velocity = 30, width = 1, range = c.width/2, limit = 12, damage = 5, mass=1, rateOfFire = 12,  spin=0, hasAmmo=false, ammo=1,
 						 energyUsage = 5);
     blaster.type = 'p';
 	blaster.draw = function(){
@@ -1286,7 +1293,7 @@ function lightLaserBlaster(){
 	return blaster;
 }
 function heavyLaserBlaster(){
-	blaster = new Weapon(velocity = 30, width = 12, range = 1000, limit = 8, damage = 20, mass=1, rateOfFire = 6, spin=0, hasAmmo=false, ammo=1,
+	blaster = new Weapon(velocity = 30, width = 8, range = c.width/2, limit = 8, damage = 20, mass=1, rateOfFire = 6, spin=0, hasAmmo=false, ammo=1,
 						 energyUsage = 20);
     blaster.type = 'p';
 	blaster.draw = function(){
@@ -1295,7 +1302,7 @@ function heavyLaserBlaster(){
             ctx.beginPath();
             ctx.lineWidth=this.projectileWidth;
             ctx.strokeStyle=color;
-            var size = 20;
+            var size = 10;
             if (this.turret ==false){
                 ctx.moveTo(this.center.x, this.center.y);
                 ctx.lineTo(this.center.x + this.direction.x * size, this.center.y + this.direction.y * size);
@@ -1322,7 +1329,7 @@ function heavyLaserBlaster(){
 	return blaster;
 }
 function lightLaserBeam(){
-	beam = new Weapon(velocity = 100, width = 2, range = 2000, limit = 1, damage = 1, mass=1, rateOfFire = 1000, spin=0, hasAmmo=false, ammo=1,
+	beam = new Weapon(velocity = 100, width = 2, range = c.width, limit = 1, damage = 1, mass=1, rateOfFire = 1000, spin=0, hasAmmo=false, ammo=1,
 					  energyUsage=4);
 	beam.type = 'l'; // laser type
 	beam.draw = function(){
@@ -1346,7 +1353,7 @@ function lightLaserBeam(){
 	return beam;
 }
 function heavyLaserBeam(){
-	beam = new Weapon(velocity = 100, width = 8, range = 2000, limit = 1, damage = 5, mass=1, rateOfFire = 60, spin=0, hasAmmo=false, ammo=1,
+	beam = new Weapon(velocity = 100, width = 8, range = c.width, limit = 1, damage = 5, mass=1, rateOfFire = 60, spin=0, hasAmmo=false, ammo=1,
 					  energyUsage=9);
 	beam.type = 'l'; // laser type
 
@@ -1414,7 +1421,7 @@ var Stellar = function(primaryColor="#000FFF", secondaryColor = "#0FF0FF"){
 	return ship;
 }
 var Gargatuan = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF"){
-	var ship = new Ship(c.width/2, c.height/2, 50, primaryColor, secondaryColor);
+	var ship = new Ship(c.width/2, c.height/2, 30, primaryColor, secondaryColor);
     ship.name="Gargatuan";
 	ship.updateDirection();
 	ship.hull = new Hull(200, 1);
@@ -1456,7 +1463,7 @@ var Gargatuan = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF"){
 	return ship;
 }
 var Colossal = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF"){
-	var ship = new Ship(c.width/2, c.height/2, 100, primaryColor, secondaryColor);
+	var ship = new Ship(c.width/2, c.height/2, 50, primaryColor, secondaryColor);
     ship.name = "Colossal";
 	ship.updateDirection();
 	ship.hull = new Hull(1000, 1);
@@ -1689,85 +1696,88 @@ function drawLobbyBackground(){
 	ctx.fillText("Select your ship", 20, 40);
 }
 
+function buildLobbyButtons(array){
+
+    myButton = (new Button(20, 200, 150, 50, "Stellar"));
+    myButton.onClick = function(){
+        player = new Stellar();
+        selected = true;
+        describeShipConsole(player);
+    }
+    array.push(myButton);
+
+    myButton = (new Button(20, 260, 150, 50, "Gargatuan"));
+    myButton.onClick = function(){
+        player = new Gargatuan();
+        selected = true;
+        describeShipConsole(player);
+    }
+    array.push(myButton);
+
+
+
+    //Turret = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF", cannons = 1, x = c.width/2, y = c.height/2, size = 15, weapon=machineGun)
+
+    myButton = (new Button(20, 320, 150, 50, "Turret"));
+    myButton.onClick = function(){
+        player = new Turret("#000FFF", "#00F0FF", 3,
+                            c.width/2, c.height/2, 20, lightLaserBlaster);
+        selected = true;
+        describeShipConsole(player);
+    }
+    array.push(myButton);
+
+    myButton = (new Button(20, 380, 150, 50, "Colossal"));
+    myButton.onClick = function(){
+        player = new Colossal();
+        selected = true;
+        describeShipConsole(player);
+    }
+    array.push(myButton);
+    /*
+    myButton = new CircularButton(50, 360, 20, "#FF0000" ,"B");
+    array.push(myButton);
+    */
+
+    myButton = (new Button(20, 100, 200, 50, "Coins: " + score.coins));
+    myButton.onHover= function(){}
+    array.push(myButton);
+
+    var coord = new Point(c.width/2, c.height/2);
+
+    var values = [];
+    values.push(new Stellar()); values.push(new Gargatuan()); values.push(new Turret("#000FFF", "#00F0FF", 3, c.width/2, c.height/2, 20, lightLaserBlaster));
+    values.push(new Colossal());
+
+    for (var i = 1; i < values.length; i++){
+        array[i].string += ": " + values[i].getValue();
+    }
+    values = [];
+
+    confirmButton = new Button(c.width/2 - 100, c.height - 100,
+                               200, 50, "Confirm");
+    confirmButton.onClick = function(){
+        if (player.name == "Stellar"){
+            confirmed=true;
+        }
+        if (score.coins > player.getValue()){
+            confirmed=true;
+        }
+        else{
+
+        }
+    }
+}
+
 var buttons = [];
-myButton = (new Button(20, 200, 150, 50, "Stellar"));
-myButton.onClick = function(){
-	player = new Stellar();
-	selected = true;
-    describeShipConsole(player);
-}
-buttons.push(myButton);
-
-myButton = (new Button(20, 260, 150, 50, "Gargatuan"));
-myButton.onClick = function(){
-	player = new Gargatuan();
-    selected = true;
-    describeShipConsole(player);
-}
-buttons.push(myButton);
-
-
-
-//Turret = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF", cannons = 1, x = c.width/2, y = c.height/2, size = 15, weapon=machineGun){
-
-myButton = (new Button(20, 320, 150, 50, "Turret"));
-myButton.onClick = function(){
-	player = new Turret("#000FFF", "#00F0FF", 3,
-                        c.width/2, c.height/2, 20, lightLaserBlaster);
-    selected = true;
-    describeShipConsole(player);
-}
-buttons.push(myButton);
-
-myButton = (new Button(20, 380, 150, 50, "Colossal"));
-myButton.onClick = function(){
-	player = new Colossal();
-    selected = true;
-    describeShipConsole(player);
-}
-buttons.push(myButton);
-/*
-myButton = new CircularButton(50, 360, 20, "#FF0000" ,"B");
-buttons.push(myButton);
-*/
-
-myButton = (new Button(20, 100, 200, 50, "Coins: " + score.coins));
-myButton.onHover= function(){}
-buttons.push(myButton);
-
-var coord = new Point(c.width/2, c.height/2);
-
-var values = [];
-values.push(new Stellar());
-values.push(new Gargatuan());
-values.push(new Turret("#000FFF", "#00F0FF", 3,
-                        c.width/2, c.height/2, 20, lightLaserBlaster));
-values.push(new Colossal());
-
-for (var i = 1; i < values.length; i++){
-    buttons[i].string += ": " + values[i].getValue();
-}
-values = [];
-
-confirmButton = new Button(c.width/2 - 100, c.height - 100,
-                           200, 50, "Confirm");
-confirmButton.onClick = function(){
-    if (player.name == "Stellar"){
-        confirmed=true;
-    }
-    if (score.coins > player.getValue()){
-        confirmed=true;
-    }
-    else{
-
-    }
-}
+buildLobbyButtons(buttons);
 
 var instruct = false;
 var game = new Game();
 var selected = false;
 var displaying = false;
 var confirmed = false;
+var playing = false;
 function selectShipLoop(){
 	drawLobbyBackground();
     if (selected){
@@ -1796,11 +1806,14 @@ function selectShipLoop(){
 		c.addEventListener("touchstart", pegaCoordenadasMobile, false);
         buttons = [];
         displayValueConsole(player);
+/*
         c.width = window.innerWidth-20;
         c.height = window.innerHeight-20;
         updateResEvent(c);
+*/
         console.log(fetchShipByName("Stellar"));
         player = fetchShipByName(player.name);
+        playing = true;
 		requestAnimationFrame(mainLoop);
 	}
 }
@@ -1872,7 +1885,6 @@ function drawStats(ship){
 
 
 function displayShip(ship){
-        ship.draw();
 		ship.updateDirection();
 		ship.updateStrafe();
 		ship.updatePosition();
@@ -1908,6 +1920,7 @@ function displayShip(ship){
                 ship.weapons[u].draw();
 		    }	
 		}
+        ship.draw();
 }
 
 function updateEnemy(ship){
@@ -1987,14 +2000,8 @@ function mainLoop(){
 
 	ctx.fillStyle="#000000";
 	ctx.fillRect(0,0,c.width,c.height);
+//    ctx.scale(0.5, 0.5);
 
-	if (instruct){
-		drawInstructions(instructions, player.secondaryColor);
-	}
-	else{
-		weaponStatus = buildWeaponsStatus(player.weapons);
-		drawWeaponsStatus(weaponStatus, player.secondaryColor);
-	}
 	if (objects.length == 0 && enemies.length == 0 && level.current <= level.max){
 		level.next();
 		if (level.current <= level.max){
@@ -2013,8 +2020,13 @@ function mainLoop(){
         if (score.max < score.player){
             document.cookie="maxScore = " + score.player;
         }
-        score.coins = score.player * 50;
+        score.coins += score.player * 30;
         document.cookie="coins = " + score.coins;
+        selected = false;
+        confirmed = false;
+        displaying = false;
+        var buttons = [];
+        buildLobbyButtons(buttons);
    	}
 	else{
 		player.updateDirection();
@@ -2094,6 +2106,13 @@ function mainLoop(){
 		}
     player.autoPilot();
     player.drawStatus();
+	if (instruct){
+		drawInstructions(instructions, player.secondaryColor);
+	}
+	else{
+		weaponStatus = buildWeaponsStatus(player.weapons);
+		drawWeaponsStatus(weaponStatus, player.secondaryColor);
+	}
     for (var i = 0; i < objects.length; i++){
         drawAsteroid(objects[i]);
     }
@@ -2113,7 +2132,12 @@ function mainLoop(){
 	
 	fps.calculateMean();
 	drawFPS(fps.mean, player.secondaryColor);
-	setTimeout(function(){requestAnimationFrame(mainLoop)}, interval);
+    if (playing){
+    	setTimeout(function(){requestAnimationFrame(mainLoop)}, interval);
+    }
+    else{
+        requestAnimationFrame(selectShipLoop);
+    }
 }
 
 /// cookies!!

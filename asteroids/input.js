@@ -23,8 +23,11 @@ console.log(coord);
         }
         if (event.key == 'Escape'){
 			instruct = true;
+            if (player.dead){
+                playing=false;
+            }
         }
-		if (event.key == 'x'){
+		if (event.key == 'c'){
             for (var i = 0; i < player.weapons.length; i++){
                 player.weapons[i].autoFire();
             }
@@ -46,7 +49,7 @@ console.log(coord);
         if (event.key == 'w'){
 			player.throttle(true);
         }
-        if (event.key == 'z'){
+        if (event.key == 'x'){
 			player.reverseThrottle(true);
 		}
 		if (event.key == 'q'){
@@ -85,7 +88,7 @@ console.log(coord);
         if (event.key == 'w'){
 			player.throttle(false);
         }
-        if (event.key == 'z'){
+        if (event.key == 'x'){
 			player.reverseThrottle(false);
 		}
 		if (event.key == 'q'){
