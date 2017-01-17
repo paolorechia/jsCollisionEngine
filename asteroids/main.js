@@ -451,6 +451,22 @@ var Weapon = function(velocity = 10, width = 1, range = 1000, limit = 10, damage
     this.turnRate = 0;
 	this.projectileHeight = this.projectileVelocity * 2;
 	this.projectiles = [];
+
+    this.describe = function(){
+        var list = [];
+        var name = "Name: " + this.name;
+        var damage = "Damage: " + this.damage;
+        if (this.hasAmmo){
+            var usage = "Ammo: " + this.ammo;
+        }
+        else{
+            var usage = "Energy Usage: " + this.energyUsage;
+        }
+        var range = "Range: " + this.range;
+        
+        list.push(name, damage, range, usage);
+        return list;
+    }
 	
     this.setTurnRate= function(turnRate){
         this.turnRate = turnRate;
@@ -1850,7 +1866,9 @@ function drawStats(ship){
         ctx.save();
         ctx.beginPath();
         ctx.fillStyle="#FFFFFF";
-        ctx.fillRect(c.width/3 -20, 20, c.width/1.5, c.height/4);
+        var spacing = 20;
+        var height = spacing * (6 + ship.weapons.length)
+        ctx.fillRect(c.width/3 -20, 20, c.width/1.5, height);
     
         ctx.fillStyle="#000000";
         ctx.font="11px arial";
@@ -1866,21 +1884,32 @@ function drawStats(ship){
             string = string.replace('"', '');
         }
 
-        ctx.fillText(string, c.width/3, 70);
+        ctx.fillText(string, c.width/3, 60);
         string = "Energy Source--"; 
         string += JSON.stringify(ship.powerSupply.describe());
         for (var i = 0; i < 10; i++){
             string = string.replace('"', '');
         }
-        ctx.fillText(string, c.width/3, 100);
+        ctx.fillText(string, c.width/3, 80);
         ctx.font="10px arial";
         var string = "Shield --"; 
         string += JSON.stringify(ship.shield.describe());
         for (var i = 0; i < 10; i++){
             string = string.replace('"', '');
         }
-        ctx.fillText(string, c.width/3, 130);
+        ctx.fillText(string, c.width/3, 100);
+        var string = "Weapons --"; 
+        ctx.fillText(string, c.width/3, 120);
+        var start = 140;
+        for (var j = 0; j < ship.weapons.length; j++){
+            string = JSON.stringify(ship.weapons[j].describe());
+            for (var i = 0; i < 10; i++){
+                string = string.replace('"', '');
+            }
+            ctx.fillText(string, c.width/3, start + j * spacing);
+        }
         ctx.restore();
+
 }
 
 
