@@ -5,7 +5,10 @@ updateResEvent = function(canvas) {
 		  });
 }
 
-var Score = function(color = "#000FFF"){
+var Score = function(color){
+    if (color == undefined){
+       color = "#000FFF";
+    }
 	this.player = 0;
     this.max = 0;
     this.coins = 0;
@@ -47,7 +50,7 @@ function generateAsteroids(maxSize, minSize, maxSpeed, maxSpin, numberRectangles
 			for (i = 0; i < numberTriangles; i++){
 				triangle = new randomTriangle(maxSize, minSize, maxSpeed, maxSpin);
 				triangle.hp = Math.round(Math.sqrt(triangle.mass));
-				triangle.dead == false;		
+				triangle.dead = false;		
 				triangle.sufferDamage = asteroidSufferDamage;				
                 triangle.value = Math.round(triangle.hp/40);
 				objects.push(triangle);
@@ -1500,7 +1503,7 @@ var Turret = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF", cannon
 	ship.shield.setEnabled(true);
 	ship.acceleration = 0.08;
 	ship.maxSpeed = 3;
-	ship.turnRate = 0.5;
+	ship.turnRate = 3;
 
     if (cannons == 1){
         ship.addWeapon(weapon());
