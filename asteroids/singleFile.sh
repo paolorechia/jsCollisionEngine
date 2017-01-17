@@ -1,14 +1,12 @@
 file=index.html
+touch index.html
 cat << DOCSTART >$file
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/> <!--320-->
 </head>
 <body>
-<canvas id="umCanvas" width="800" height="600">
-<script>  <script src="main.js"> </script>
-
-<script src="input.js"> </script>
+<script> 
 DOCSTART
 scripts=$(ls | grep .js | grep -v compressed | tr '\n' '@')
 scripts=$(echo $scripts | tr ' ' '@' )
@@ -20,6 +18,7 @@ while [ $i -ne $numberFiles ]; do
     index=`expr $index - 1`
     substring=${scripts:0:$index}
     echo $substring
+    java -jar ~/bin/closure-compiler-v20161201.jar $substring >> $file
     index=`expr $index + 1`
     scripts=${scripts:$index}
     i=`expr $i + 1`
