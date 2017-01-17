@@ -1675,7 +1675,7 @@ var Button = function(x, y, width, height, string=" "){
     this.bgColor = "#FFFFFF";
     this.fontColor = "#000000";
 	this.onClick = function(){
-			console.log(this.string);
+			//console.log(this.string);
 	}
     this.onHover = function(){
         this.bgColor = "#666666";
@@ -1699,7 +1699,7 @@ var CircularButton = function(x, y, radius, color, string){
     this.color = color;
 	this.string = string;
 	this.onClick = function(){
-			console.log(this.string);
+			//console.log(this.string);
 	}
 	this.draw = function(){
 		ctx.fillStyle=this.color;
@@ -1730,7 +1730,7 @@ function buildLobbyButtons(array){
     myButton.onClick = function(){
         player = new Stellar(primaryColor, secondaryColor, c.width/2, c.height/2 + 150);
         selected = true;
-        describeShipConsole(player);
+        //describeShipConsole(player);
     }
     array.push(myButton);
 
@@ -1738,7 +1738,7 @@ function buildLobbyButtons(array){
     myButton.onClick = function(){
         player = new Gargatuan(primaryColor, secondaryColor, c.width/2, c.height/2 + 150);
         selected = true;
-        describeShipConsole(player);
+        //describeShipConsole(player);
     }
     array.push(myButton);
 
@@ -1751,7 +1751,7 @@ function buildLobbyButtons(array){
         player = new Turret("#000FFF", "#00F0FF", 3,
                             c.width/2, c.height/2 + 150, 20, lightLaserBlaster);
         selected = true;
-        describeShipConsole(player);
+        //describeShipConsole(player);
     }
     array.push(myButton);
 
@@ -1759,7 +1759,7 @@ function buildLobbyButtons(array){
     myButton.onClick = function(){
         player = new Colossal(primaryColor, secondaryColor, c.width/2, c.height/2 + 150);
         selected = true;
-        describeShipConsole(player);
+//        describeShipConsole(player);
     }
     array.push(myButton);
     /*
@@ -1833,15 +1833,16 @@ function selectShipLoop(){
  
 		c.addEventListener("touchstart", pegaCoordenadasMobile, false);
         buttons = [];
-        displayValueConsole(player);
+        //displayValueConsole(player);
 /*
         c.width = window.innerWidth-20;
         c.height = window.innerHeight-20;
         updateResEvent(c);
 */
-        console.log(fetchShipByName("Stellar"));
+        //console.log(fetchShipByName("Stellar"));
         player = fetchShipByName(player.name);
         playing = true;
+        rewarded = false;
 		requestAnimationFrame(mainLoop);
 	}
 }
@@ -2061,13 +2062,11 @@ function mainLoop(){
         if (score.max < score.player){
             document.cookie="maxScore = " + score.player;
         }
-        score.coins += score.player * 30;
-        document.cookie="coins = " + score.coins;
-        selected = false;
-        confirmed = false;
-        displaying = false;
-        var buttons = [];
-        buildLobbyButtons(buttons);
+        if (!rewarded){
+            score.coins += score.player * 30;
+            document.cookie="coins = " + score.coins;
+            rewarded=true;
+        }
    	}
 	else{
 		player.updateDirection();
@@ -2207,7 +2206,7 @@ var deleteCookie = function(name) {
     document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
 };
 
-console.log(document.cookie);
+//console.log(document.cookie);
 
 
 

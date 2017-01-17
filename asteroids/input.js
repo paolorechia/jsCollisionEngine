@@ -1,5 +1,4 @@
 var coord = new Point(c.width/2, c.height/2);
-console.log(coord);
 
     function pegaCoordenadas(event){
         coord.x = event.clientX;
