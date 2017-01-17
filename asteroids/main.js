@@ -1444,8 +1444,9 @@ var Stellar = function(primaryColor="#000FFF", secondaryColor = "#0FF0FF",
 	
 	return ship;
 }
-var Gargatuan = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF"){
-	var ship = new Ship(c.width/2, c.height/2, 30, primaryColor, secondaryColor);
+var Gargatuan = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF",
+                       x = c.width/2, y = c.height/2){
+	var ship = new Ship(x, y, 30, primaryColor, secondaryColor);
     ship.name="Gargatuan";
 	ship.updateDirection();
 	ship.hull = new Hull(200, 1);
@@ -1486,8 +1487,9 @@ var Gargatuan = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF"){
 
 	return ship;
 }
-var Colossal = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF"){
-	var ship = new Ship(c.width/2, c.height/2, 50, primaryColor, secondaryColor);
+var Colossal = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF",
+                       x = c.width/2, y = c.height/2){
+	var ship = new Ship(x, y, 50, primaryColor, secondaryColor);
     ship.name = "Colossal";
 	ship.updateDirection();
 	ship.hull = new Hull(1000, 1);
@@ -1720,11 +1722,13 @@ function drawLobbyBackground(){
 	ctx.fillText("Select your ship", 20, 40);
 }
 
+var primaryColor = "#000FFF";
+var secondaryColor = "#00F0FF";
 function buildLobbyButtons(array){
 
     myButton = (new Button(20, 200, 150, 50, "Stellar"));
     myButton.onClick = function(){
-        player = new Stellar();
+        player = new Stellar(primaryColor, secondaryColor, c.width/2, c.height/2 + 150);
         selected = true;
         describeShipConsole(player);
     }
@@ -1732,7 +1736,7 @@ function buildLobbyButtons(array){
 
     myButton = (new Button(20, 260, 150, 50, "Gargatuan"));
     myButton.onClick = function(){
-        player = new Gargatuan();
+        player = new Gargatuan(primaryColor, secondaryColor, c.width/2, c.height/2 + 150);
         selected = true;
         describeShipConsole(player);
     }
@@ -1745,7 +1749,7 @@ function buildLobbyButtons(array){
     myButton = (new Button(20, 320, 150, 50, "Turret"));
     myButton.onClick = function(){
         player = new Turret("#000FFF", "#00F0FF", 3,
-                            c.width/2, c.height/2, 20, lightLaserBlaster);
+                            c.width/2, c.height/2 + 150, 20, lightLaserBlaster);
         selected = true;
         describeShipConsole(player);
     }
@@ -1753,7 +1757,7 @@ function buildLobbyButtons(array){
 
     myButton = (new Button(20, 380, 150, 50, "Colossal"));
     myButton.onClick = function(){
-        player = new Colossal();
+        player = new Colossal(primaryColor, secondaryColor, c.width/2, c.height/2 + 150);
         selected = true;
         describeShipConsole(player);
     }
