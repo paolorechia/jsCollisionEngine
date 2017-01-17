@@ -4,6 +4,6 @@
 <br>
 <a href=pongGame/index.php> pong 
 <br>
-<a href=asteroids/index.php> asteroids (unfinished)
+<a href=asteroids/index.php> asteroids_
 
 </html>
