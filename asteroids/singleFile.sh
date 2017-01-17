@@ -32,3 +32,5 @@ cat <<DOCEND >>$file
 
 </html>
 DOCEND
+
+cp index.html index.php

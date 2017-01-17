@@ -1833,11 +1833,9 @@ function selectShipLoop(){
 		c.addEventListener("touchstart", pegaCoordenadasMobile, false);
         window.buttons = [];
         //displayValueConsole(player);
-/*
         c.width = window.innerWidth-20;
         c.height = window.innerHeight-20;
         updateResEvent(c);
-*/
         //console.log(fetchShipByName("Stellar"));
         player = fetchShipByName(player.name);
         window.playing = true;
@@ -2182,6 +2180,10 @@ function mainLoop(){
         window.displaying = false;
         window.confirmed = false;
         window.playing = false;
+        level.current = 0;
+        score.player = 0;
+        objects = [];
+        enemies = [];
         requestAnimationFrame(selectShipLoop);
     }
 }
