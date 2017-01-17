@@ -1797,27 +1797,26 @@ function buildLobbyButtons(array){
     }
 }
 
-var buttons = [];
-buildLobbyButtons(buttons);
+window.buttons = [];
+buildLobbyButtons(window.buttons);
 
-var instruct = false;
-var game = new Game();
-var selected = false;
-var displaying = false;
-var confirmed = false;
-var playing = false;
+window.instruct = false;
+window.selected = false;
+window.displaying = false;
+window.confirmed = false;
+window.playing = false;
 function selectShipLoop(){
 	drawLobbyBackground();
-    if (selected){
-        if (!displaying){
-            buttons.push(confirmButton);
-            displaying = true;
+    if (window.selected){
+        if (!window.displaying){
+            window.buttons.push(confirmButton);
+            window.displaying = true;
         }
         displayShip(player);
         drawStats(player);
     }
 	for (var i = 0; i < buttons.length; i++){
-		buttons[i].draw();
+		window.buttons[i].draw();
 	}
     if (!confirmed){
 		requestAnimationFrame(selectShipLoop);
@@ -1832,7 +1831,7 @@ function selectShipLoop(){
                                                 false);
  
 		c.addEventListener("touchstart", pegaCoordenadasMobile, false);
-        buttons = [];
+        window.buttons = [];
         //displayValueConsole(player);
 /*
         c.width = window.innerWidth-20;
@@ -1841,8 +1840,8 @@ function selectShipLoop(){
 */
         //console.log(fetchShipByName("Stellar"));
         player = fetchShipByName(player.name);
-        playing = true;
-        rewarded = false;
+        window.playing = true;
+        window.rewarded = false;
 		requestAnimationFrame(mainLoop);
 	}
 }
@@ -2062,10 +2061,10 @@ function mainLoop(){
         if (score.max < score.player){
             document.cookie="maxScore = " + score.player;
         }
-        if (!rewarded){
+        if (!window.rewarded){
             score.coins += score.player * 30;
             document.cookie="coins = " + score.coins;
-            rewarded=true;
+            window.rewarded=true;
         }
    	}
 	else{
@@ -2172,10 +2171,17 @@ function mainLoop(){
 	
 	fps.calculateMean();
 	drawFPS(fps.mean, player.secondaryColor);
-    if (playing){
+    if (window.playing){
     	setTimeout(function(){requestAnimationFrame(mainLoop)}, interval);
     }
     else{
+        window.buttons = [];
+        buildLobbyButtons(window.buttons);
+        window.instruct = false;
+        window.selected = false;
+        window.displaying = false;
+        window.confirmed = false;
+        window.playing = false;
         requestAnimationFrame(selectShipLoop);
     }
 }
