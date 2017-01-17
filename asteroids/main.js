@@ -463,8 +463,15 @@ var Weapon = function(velocity = 10, width = 1, range = 1000, limit = 10, damage
             var usage = "Energy Usage: " + this.energyUsage;
         }
         var range = "Range: " + this.range;
+        if (this.turret){
+            var turret = "Turret: " + "yes"
+        }
+        else{
+            var turret = "Turret: " + "no"
+        }
+        var rateOfFire = "Rate Of Fire: " + this.rateOfFire;
         
-        list.push(name, damage, range, usage);
+        list.push(name, damage, rateOfFire, range, usage, turret);
         return list;
     }
 	
@@ -1398,8 +1405,9 @@ function killProjectile(projectile){
 	
 }
 //var Shield = function(max = 100, resistance=0, drainRate=10, rechargeEfficiency = 0.5, drainSpeed = 250){
-var Stellar = function(primaryColor="#000FFF", secondaryColor = "#0FF0FF"){
-	var ship = new Ship(c.width/2, c.height/2, 20, primaryColor, secondaryColor);
+var Stellar = function(primaryColor="#000FFF", secondaryColor = "#0FF0FF", 
+                       x = c.width/2, y = c.height/2){
+	var ship = new Ship(x, y, 20, primaryColor, secondaryColor);
     ship.name="Stellar";
 	ship.updateDirection();
 	ship.hull = new Hull(100, 0);
