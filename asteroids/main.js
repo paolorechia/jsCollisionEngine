@@ -159,7 +159,7 @@ function buildInstructions(){
 	instructions.push(string);
 	string = "S: Advanced Braking System";
 	instructions.push(string);
-	string = "Space: Shoot";
+	string = "V: Shoot";
 	instructions.push(string);
 	string = "X: Auto-Fire";
 	instructions.push(string);

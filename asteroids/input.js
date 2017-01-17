@@ -16,7 +16,7 @@ console.log(coord);
 		player.setupAutoPilot(coord);
    }
 	keyboardDown = function(event){
-		if (event.key == ' '){
+		if (event.key == 'v'){
 			for (var i= 0; i < player.weapons.length; i++){
 				player.weapons[i].fire(true);
 			}
@@ -25,7 +25,9 @@ console.log(coord);
 			instruct = true;
         }
 		if (event.key == 'x'){
-			player.weapon.autoFire();
+            for (var i = 0; i < player.weapons.length; i++){
+                player.weapon.autoFire();
+            }
 		}
 		if (event.key == 'r'){
 			player.cycleEnabledWeapons();
@@ -72,7 +74,7 @@ console.log(coord);
 				player.lock = false;
 		   }
         }
-        if (event.key == ' '){
+        if (event.key == 'v'){
 			for (var i= 0; i < player.weapons.length; i++){
 				player.weapons[i].fire(false);
 			}
