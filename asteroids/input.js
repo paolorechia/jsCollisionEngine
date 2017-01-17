@@ -26,7 +26,7 @@ console.log(coord);
         }
 		if (event.key == 'x'){
             for (var i = 0; i < player.weapons.length; i++){
-                player.weapon.autoFire();
+                player.weapons[i].autoFire();
             }
 		}
 		if (event.key == 'r'){
