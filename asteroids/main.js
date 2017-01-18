@@ -1800,54 +1800,6 @@ function buildLobbyButtons(array){
         }
     }
 }
-
-window.buttons = [];
-buildLobbyButtons(window.buttons);
-
-window.instruct = false;
-window.selected = false;
-window.displaying = false;
-window.confirmed = false;
-window.playing = false;
-function selectShipLoop(){
-	drawLobbyBackground();
-    if (window.selected){
-        if (!window.displaying){
-            window.buttons.push(confirmButton);
-            window.displaying = true;
-        }
-        displayShip(player);
-        drawStats(player);
-    }
-	for (var i = 0; i < buttons.length; i++){
-		window.buttons[i].draw();
-	}
-    if (!confirmed){
-		requestAnimationFrame(selectShipLoop);
-	}
-	else{
-		c.removeEventListener("touchstart", buttonModeClick, false);
-		c.removeEventListener("click", function(event){ buttonModeClick(event);
-                                                },
-                                                false);					
-		c.addEventListener("click", function(event){ mouseClick(event);
-                                                },
-                                                false);
- 
-		c.addEventListener("touchstart", pegaCoordenadasMobile, false);
-        window.buttons = [];
-        //displayValueConsole(player);
-        c.width = window.innerWidth-20;
-        c.height = window.innerHeight-20;
-        updateResEvent(c);
-        //console.log(fetchShipByName("Stellar"));
-        player = fetchShipByName(player.name);
-        window.playing = true;
-        window.rewarded = false;
-		requestAnimationFrame(mainLoop);
-	}
-}
-
 function displayValueConsole(ship){
         console.log("engine: " + ship.getEngineValue());
         console.log("hull:" + ship.hull.getValue());
@@ -2035,6 +1987,61 @@ function updateEnemy(ship){
 		}
 }
 
+window.buttons = [];
+buildLobbyButtons(window.buttons);
+
+window.instruct = false;
+window.selected = false;
+window.displaying = false;
+window.confirmed = false;
+window.playing = false;
+function selectShipLoop(){
+	drawLobbyBackground();
+    if (window.selected){
+        if (!window.displaying){
+            window.buttons.push(confirmButton);
+            window.displaying = true;
+        }
+        displayShip(player);
+        drawStats(player);
+    }
+	for (var i = 0; i < buttons.length; i++){
+		window.buttons[i].draw();
+	}
+    if (!confirmed){
+		requestAnimationFrame(selectShipLoop);
+	}
+	else{
+		c.removeEventListener("touchstart", buttonModeClick, false);
+		c.removeEventListener("click", function(event){ buttonModeClick(event);
+                                                },
+                                                false);					
+		c.addEventListener("click", function(event){ mouseClick(event);
+                                                },
+                                                false);
+ 
+		c.addEventListener("touchstart", pegaCoordenadasMobile, false);
+        window.buttons = [];
+        //displayValueConsole(player);
+        c.width = window.innerWidth-20;
+        c.height = window.innerHeight-20;
+        updateResEvent(c);
+        //console.log(fetchShipByName("Stellar"));
+        player = fetchShipByName(player.name);
+        window.playing = true;
+        window.rewarded = false;
+        selectMusic.pause();
+        music = document.getElementById("loopA");
+        music.play();
+        music.addEventListener('ended', function(){
+                this.currentTime = 0;
+                this.play();
+        }, false);
+		requestAnimationFrame(mainLoop);
+	}
+}
+
+
 function mainLoop(){
 	newDate = new Date();
 	elapsedTime = newDate - lastDate;
@@ -2196,6 +2203,8 @@ function mainLoop(){
         score.player = 0;
         objects = [];
         enemies = [];
+        music.pause();
+        selectMusic.play();
         requestAnimationFrame(selectShipLoop);
     }
 }
@@ -2228,13 +2237,13 @@ var deleteCookie = function(name) {
 
 //console.log(document.cookie);
 
-music = document.getElementById("music");
-music.play();
-music.addEventListener('ended', function(){
+selectMusic = document.getElementById("selectLoop");
+selectMusic.play();
+selectMusic.addEventListener('ended', function(){
         this.currentTime = 0;
         this.play();
     }, false);
-music.volume = 0.5;
+selectMusic.volume = 0.5;
 // actual start of program
 selectShipLoop();
 //mainLoop();

@@ -7,7 +7,10 @@ cat << DOCSTART >$file
 </head>
 <body>
 <canvas id="umCanvas" width="800" height="600">
-<audio id="music">
+<audio id="selectLoop">
+<source src="music/selectLoop.mp3" type ="audio/mpeg">
+</audio>
+<audio id="loopA">
 <source src="music/loopA.mp3" type ="audio/mpeg">
 </audio>
  
