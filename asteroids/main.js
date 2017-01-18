@@ -2101,6 +2101,14 @@ function mainLoop(){
 	}
 	if (level.current > level.max){
 		drawEndGame(true);
+        if (score.max < score.player){
+            document.cookie="maxScore = " + score.player;
+        }
+        if (!window.rewarded){
+            score.coins += score.player * 30;
+            document.cookie="coins = " + score.coins;
+            window.rewarded=true;
+        }
 	}
 		for (var i = 0; i < objects.length; i++){
 			mtv = collisionSTA(player.hitbox, objects[i]);
@@ -2216,7 +2224,8 @@ var deleteCookie = function(name) {
 
 //console.log(document.cookie);
 
-
+music = document.getElementById("music");
+music.play();
 
 // actual start of program
 selectShipLoop();
