@@ -15,6 +15,16 @@ var coord = new Point(c.width/2, c.height/2);
 		player.setupAutoPilot(coord);
    }
 	keyboardDown = function(event){
+		if (event.key == '.'){
+            if (music.volume < 1){
+                music.volume += 0.1;
+            }
+        }
+		if (event.key == ','){
+            if (music.volume > 0){
+                music.volume -= 0.1;
+            }
+        }
 		if (event.key == 'v'){
 			for (var i= 0; i < player.weapons.length; i++){
 				player.weapons[i].fire(true);

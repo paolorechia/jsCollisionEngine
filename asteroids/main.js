@@ -172,6 +172,10 @@ function buildInstructions(){
 	instructions.push(string);	
 	string = "Esc: Cancel auto-pilot";
 	instructions.push(string);	
+	string = ",: Decrease volume";
+	instructions.push(string);	
+	string = ".: Increase volume";
+	instructions.push(string);	
 	return instructions;
 }
 function buildWeaponsStatus(weapons){
@@ -2230,6 +2234,7 @@ music.addEventListener('ended', function(){
         this.currentTime = 0;
         this.play();
     }, false);
+music.volume = 0.5;
 // actual start of program
 selectShipLoop();
 //mainLoop();
