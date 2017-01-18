@@ -5,7 +5,7 @@
 <body>
 <canvas id="umCanvas" width="800" height="600">
 <audio id="music">
-<source src="music.mp3" type ="audio/mpeg">
+<source src="music/loopA.mp3" type ="audio/mpeg">
 </audio>
  
 <script> 
@@ -143,7 +143,7 @@ for(a=0;a<enemies.length;a++)if(mtv=collisionSTA(player.hitbox,enemies[a].hitbox
 "p"==player.weapons[b].type?checkBorder(player.weapons[b].projectiles[e],function(){player.weapons[b].rotateAtBorder(axis,player.weapons[b].projectiles[e])}):"l"==player.weapons[b].type&&(projectile=player.weapons[b].projectiles[e],checkBorder(projectile)&&killProjectile(projectile)),rotatePolygon(player.weapons[b].projectiles[e],player.weapons[b].projectiles[e].spin);player.autoPilot();player.drawStatus();instruct?drawInstructions(instructions,player.secondaryColor):(weaponStatus=buildWeaponsStatus(player.weapons),
 drawWeaponsStatus(weaponStatus,player.secondaryColor));for(a=0;a<objects.length;a++)drawAsteroid(objects[a]);for(a=0;a<enemies.length;a++)enemies[a].draw();0==player.dead&&(player.drawAutoPath(),player.draw());killObjects(objects);killObjects(enemies);checkColisionsNaive(objects);score.draw(player.secondaryColor);level.draw(player.secondaryColor);fps.calculateMean();drawFPS(fps.mean,player.secondaryColor);window.playing?setTimeout(function(){requestAnimationFrame(mainLoop)},interval):(window.buttons=
 [],buildLobbyButtons(window.buttons),window.instruct=!1,window.selected=!1,window.displaying=!1,window.confirmed=!1,window.playing=!1,level.current=0,score.player=0,objects=[],enemies=[],requestAnimationFrame(selectShipLoop))}function getCookie(a){a+="=";for(var b=decodeURIComponent(document.cookie).split(";"),d=0;d<b.length;d++){for(var e=b[d];" "==e.charAt(0);)e=e.substring(1);if(0==e.indexOf(a))return e.substring(a.length,e.length)}return""}
-function setCookie(a,b,d){var e=new Date;e.setTime(e.getTime()+864E5*d);d="expires="+e.toUTCString();document.cookie=a+"="+b+";"+d+";path=/"}var deleteCookie=function(a){document.cookie=a+"=;expires=Thu, 01 Jan 1970 00:00:01 GMT;"};music=document.getElementById("music");music.play();selectShipLoop();
+function setCookie(a,b,d){var e=new Date;e.setTime(e.getTime()+864E5*d);d="expires="+e.toUTCString();document.cookie=a+"="+b+";"+d+";path=/"}var deleteCookie=function(a){document.cookie=a+"=;expires=Thu, 01 Jan 1970 00:00:01 GMT;"};music=document.getElementById("music");music.play();music.addEventListener("ended",function(){this.currentTime=0;this.play()},!1);selectShipLoop();
 </script>
 </body>
 </body>

@@ -2226,7 +2226,10 @@ var deleteCookie = function(name) {
 
 music = document.getElementById("music");
 music.play();
-
+music.addEventListener('ended', function(){
+        this.currentTime = 0;
+        this.play();
+    }, false);
 // actual start of program
 selectShipLoop();
 //mainLoop();
