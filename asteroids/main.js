@@ -15,7 +15,7 @@ var Score = function(color){
     this.getMax = function(){
         this.max = getCookie("maxScore");
         if (this.max.length == 0){
-            document.cookie = "maxScore = 0";
+            setCookie("maxScore", 0, 365);
             this.max = getCookie("maxScore");
         }
         this.max = Number(this.max);
@@ -23,7 +23,7 @@ var Score = function(color){
     this.getCoins = function(){
         this.coins = getCookie("coins");
         if (this.coins.length == 0){
-            document.cookie = "coins= 0";
+            setCookie("coins", 0, 365);
             this.coins = getCookie("coins");
         }
         this.coins = Number(this.coins);
@@ -2068,11 +2068,11 @@ function mainLoop(){
 	if (player.dead){
 		drawEndGame(false);
         if (score.max < score.player){
-            document.cookie="maxScore = " + score.player;
+            setCookie("maxScore", score.player, 365);
         }
         if (!window.rewarded){
             score.coins += score.player * 30;
-            document.cookie="coins = " + score.coins;
+            setCookie("coins", score.coins, 365);
             window.rewarded=true;
         }
    	}
@@ -2113,11 +2113,11 @@ function mainLoop(){
 	if (level.current > level.max){
 		drawEndGame(true);
         if (score.max < score.player){
-            document.cookie="maxScore = " + score.player;
+            setCookie("maxScore", score.player, 365);
         }
         if (!window.rewarded){
             score.coins += score.player * 30;
-            document.cookie="coins = " + score.coins;
+            setCookie("coins", score.coins, 365);
             window.rewarded=true;
         }
 	}
@@ -2236,6 +2236,8 @@ var deleteCookie = function(name) {
 };
 
 //console.log(document.cookie);
+deleteCookie("maxScore");
+deleteCookie("coins");
 
 selectMusic = document.getElementById("selectLoop");
 selectMusic.play();
