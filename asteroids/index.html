@@ -5,10 +5,10 @@
 <body>
 <canvas id="umCanvas" width="800" height="600">
 <audio id="selectLoop">
-<source src="music/selectLoop.mp3" type ="audio/mpeg">
+<source src="selectLoop.mp3" type ="audio/mpeg">
 </audio>
 <audio id="loopA">
-<source src="music/loopA.mp3" type ="audio/mpeg">
+<source src="loopA.mp3" type ="audio/mpeg">
 </audio>
  
 <script> 
