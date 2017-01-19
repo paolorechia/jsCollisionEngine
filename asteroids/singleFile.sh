@@ -18,6 +18,8 @@ cat << DOCSTART >$file
 DOCSTART
 
 java -jar ~/bin/closure-compiler-v20161201.jar ../collision.js >> $file
+java -jar ~/bin/closure-compiler-v20161201.jar weapon.js         >> $file
+java -jar ~/bin/closure-compiler-v20161201.jar ship.js         >> $file
 java -jar ~/bin/closure-compiler-v20161201.jar main.js         >> $file
 java -jar ~/bin/closure-compiler-v20161201.jar input.js        >> $file
 cat <<DOCEND >>$file
