@@ -175,20 +175,6 @@ function buildInstructions(){
 	return instructions;
 }
 
-function drawWeaponsStatus(list, color="#00F0FF"){
-	ctx.beginPath();
-	ctx.fillStyle=color;
-	ctx.font="14px Arial";
-	var offSet = 0;
-	var xStart = 230;
-	var colSize = 3;
-	for (var i = 0; i < list.length; i++){
-		if (i % colSize == 0){
-			offSet += 240;
-		}
-		ctx.fillText(list[i], offSet - xStart, 40 + (i % colSize) * 20);
-	}
-}
 function drawInstructions(instructions, color="#000FFF"){
     ctx.save();
 	ctx.beginPath();
@@ -208,7 +194,7 @@ function drawInstructions(instructions, color="#000FFF"){
     ctx.restore();
 }
 
-function drawEndGame(win, color="#000FFF", lose="#FF0000"){
+function drawEndGame(win, color="#000FFF", loseColor="#FF0000"){
 	if (win){
 		ctx.beginPath();
 		ctx.fillStyle=color;
@@ -217,7 +203,7 @@ function drawEndGame(win, color="#000FFF", lose="#FF0000"){
 	}
 	else{
 		ctx.beginPath();
-		ctx.fillStyle=lose;
+		ctx.fillStyle=loseColor;
 		ctx.font="28px Arial";
 		ctx.fillText("You've died! Press ESC to restart.", c.width/3, c.height/2);
 	}
@@ -255,7 +241,7 @@ function drawAsteroid(polygon, color="#FFFFFF", hitcolor="#FF0000"){
 			   
 	ctx.stroke();
 	ctx.restore();
-//	ctx.fillStyle=color;
+
 }
 function asteroidSufferDamage(damage){
 	this.hp -= damage;
@@ -264,76 +250,6 @@ function asteroidSufferDamage(damage){
 	}
 }
 
-
-ctx.lineWidth=3;
-var j = 0;
-
-
-var lastDate = new Date();
-var fps = new Fps();
-var maxFPS = 1000;
-var interval = 1000/maxFPS;
-var COLLISION_DAMAGE = 10;
-
-var score = new Score();
-score.getMax();
-score.getCoins();
-var level = new Level();
-var instructions = buildInstructions();
-
-var objects = [];
-var enemies = [];
-
-//player = new Stellar("#F0F0F0", "#FF00FF"); // pink
-//player = new Gargatuan("#666666", "#FF0000");
-//player = new Stellar();
-//player = new Gargatuan();
-
-var Button = function(x, y, width, height, string=" "){
-	this.x = x;
-	this.y = y;
-	this.width = width;
-	this.height = height;
-	this.string = string;
-    this.bgColor = "#FFFFFF";
-    this.fontColor = "#000000";
-	this.onClick = function(){
-			//console.log(this.string);
-	}
-    this.onHover = function(){
-        this.bgColor = "#666666";
-    }
-	this.draw = function(){
-		ctx.fillStyle=this.bgColor;
-		ctx.fillRect(this.x, this.y, this.width, this.height);
-		ctx.fillStyle=this.fontColor;
-		ctx.font="14px arial";
-		ctx.fillText(this.string, this.x + this.width/10, this.y + this.height/2);
-	}
-    this.reset = function(){
-        this.bgColor= "#FFFFFF";
-    }
-}
-
-var CircularButton = function(x, y, radius, color, string){
-	this.x = x;
-	this.y = y;
-	this.radius = radius;
-    this.color = color;
-	this.string = string;
-	this.onClick = function(){
-			//console.log(this.string);
-	}
-	this.draw = function(){
-		ctx.fillStyle=this.color;
-        ctx.beginPath();
-		ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
-        ctx.fill();
-		ctx.fillStyle="#000000";
-		ctx.font="14px arial";
-		ctx.fillText(string, this.x - this.radius/6, this.y + this.radius/10);
-	}
-}
 
 
 
@@ -420,14 +336,6 @@ function buildLobbyButtons(array){
     }
 }
 
-window.buttons = [];
-buildLobbyButtons(window.buttons);
-
-window.instruct = false;
-window.selected = false;
-window.displaying = false;
-window.confirmed = false;
-window.playing = false;
 function selectShipLoop(){
 	drawLobbyBackground();
     if (window.selected){
@@ -644,36 +552,7 @@ function mainLoop(){
     }
 }
 
-/// cookies!!
-function getCookie(cname) {
-    var name = cname + "=";
-    var decodedCookie = decodeURIComponent(document.cookie);
-    var ca = decodedCookie.split(';');
-    for(var i = 0; i <ca.length; i++) {
-        var c = ca[i];
-        while (c.charAt(0) == ' ') {
-            c = c.substring(1);
-        }
-        if (c.indexOf(name) == 0) {
-            return c.substring(name.length, c.length);
-        }
-    }
-    return "";
-} 
-function setCookie(cname, cvalue, exdays) {
-    var d = new Date();
-    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
-    var expires = "expires="+d.toUTCString();
-    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-}
-var deleteCookie = function(name) {
-    document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-};
-
-//console.log(document.cookie);
-deleteCookie("maxScore");
-deleteCookie("coins");
-
+// actual start of program
 selectMusic = document.getElementById("selectLoop");
 selectMusic.play();
 selectMusic.addEventListener('ended', function(){
@@ -681,6 +560,33 @@ selectMusic.addEventListener('ended', function(){
         this.play();
     }, false);
 selectMusic.volume = 0.5;
-// actual start of program
+
+
+ctx.lineWidth=3;
+var j = 0;
+
+
+var lastDate = new Date();
+var fps = new Fps();
+var maxFPS = 1000;
+var interval = 1000/maxFPS;
+var COLLISION_DAMAGE = 10;
+
+var score = new Score();
+score.getMax();
+score.getCoins();
+var level = new Level();
+var instructions = buildInstructions();
+
+var objects = [];
+var enemies = [];
+
+window.buttons = [];
+buildLobbyButtons(window.buttons);
+
+window.instruct = false;
+window.selected = false;
+window.displaying = false;
+window.confirmed = false;
+window.playing = false;
 selectShipLoop();
-//mainLoop();

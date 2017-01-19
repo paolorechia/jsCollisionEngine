@@ -1,4 +1,6 @@
-
+// Weapon module //
+// Depends on: collision.js
+// Recommended to use with ship.js
 var Weapon = function(velocity = 10, width = 1, range = 1000, limit = 10, damage = 10, 
 					  mass = 1, rateOfFire = 8, spin=0, hasAmmo=false, ammo=100, energyUsage=0){
 	
@@ -462,4 +464,19 @@ function buildWeaponsStatus(weapons){
 		list.push(string);
 	}
 	return list;
+}
+
+function drawWeaponsStatus(list, color="#00F0FF"){
+	ctx.beginPath();
+	ctx.fillStyle=color;
+	ctx.font="14px Arial";
+	var offSet = 0;
+	var xStart = 230;
+	var colSize = 3;
+	for (var i = 0; i < list.length; i++){
+		if (i % colSize == 0){
+			offSet += 240;
+		}
+		ctx.fillText(list[i], offSet - xStart, 40 + (i % colSize) * 20);
+	}
 }
