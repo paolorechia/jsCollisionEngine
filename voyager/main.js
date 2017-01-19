@@ -1,3 +1,11 @@
+var map = document.getElementById("umCanvas");
+
+var camera = document.getElementById("camera");
+ctx = camera.getContext("2d");
+
+
+
+
 coord = new Point(c.width/2, c.height/2);
 player = new Stellar();
 function mainLoop(){
