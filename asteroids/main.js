@@ -261,8 +261,7 @@ function drawLobbyBackground(){
 	ctx.fillText("Select your ship", 20, 40);
 }
 
-var primaryColor = "#000FFF";
-var secondaryColor = "#00F0FF";
+
 function buildLobbyButtons(array){
 
     myButton = (new Button(20, 200, 150, 50, "Stellar"));
@@ -565,7 +564,8 @@ selectMusic.volume = 0.5;
 ctx.lineWidth=3;
 var j = 0;
 
-
+var primaryColor = "#000FFF";
+var secondaryColor = "#00F0FF";
 var lastDate = new Date();
 var fps = new Fps();
 var maxFPS = 1000;

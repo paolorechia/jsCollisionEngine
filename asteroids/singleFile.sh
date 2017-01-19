@@ -18,11 +18,11 @@ cat << DOCSTART >$file
 DOCSTART
 
 java -jar ~/bin/closure-compiler-v20161201.jar ../collision.js >> $file
-java -jar ~/bin/closure-compiler-v20161201.jar shipBase.js         >> $file
-java -jar ~/bin/closure-compiler-v20161201.jar weapon.js         >> $file
-java -jar ~/bin/closure-compiler-v20161201.jar shipPresets.js         >> $file
-java -jar ~/bin/closure-compiler-v20161201.jar buttons.js         >> $file
-java -jar ~/bin/closure-compiler-v20161201.jar cookies.js         >> $file
+java -jar ~/bin/closure-compiler-v20161201.jar ../shipBase.js         >> $file
+java -jar ~/bin/closure-compiler-v20161201.jar ../weapon.js         >> $file
+java -jar ~/bin/closure-compiler-v20161201.jar ../shipPresets.js         >> $file
+java -jar ~/bin/closure-compiler-v20161201.jar ../buttons.js         >> $file
+java -jar ~/bin/closure-compiler-v20161201.jar ../cookies.js         >> $file
 java -jar ~/bin/closure-compiler-v20161201.jar main.js         >> $file
 java -jar ~/bin/closure-compiler-v20161201.jar input.js        >> $file
 cat <<DOCEND >>$file
