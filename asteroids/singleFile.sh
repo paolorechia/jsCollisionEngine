@@ -16,21 +16,10 @@ cat << DOCSTART >$file
  
 <script> 
 DOCSTART
-scripts=$(ls | grep .js | grep -v compressed | tr '\n' '@')
-scripts=$(echo $scripts | tr ' ' '@' )
-numberFiles=$(echo $scripts | grep -o @ | wc -l)
-index=`expr index $scripts $ `
-i=0
-while [ $i -ne $numberFiles ]; do
-    index=`expr index $scripts @ `
-    index=`expr $index - 1`
-    substring=${scripts:0:$index}
-    echo $substring
-    java -jar ~/bin/closure-compiler-v20161201.jar $substring >> $file
-    index=`expr $index + 1`
-    scripts=${scripts:$index}
-    i=`expr $i + 1`
-done;
+
+java -jar ~/bin/closure-compiler-v20161201.jar ../collision.js >> $file
+java -jar ~/bin/closure-compiler-v20161201.jar main.js         >> $file
+java -jar ~/bin/closure-compiler-v20161201.jar input.js        >> $file
 cat <<DOCEND >>$file
 </script>
 </body>

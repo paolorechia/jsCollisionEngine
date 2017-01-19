@@ -2109,6 +2109,8 @@ function mainLoop(){
 		checkBorder(player.hitbox, function(){player.auxHitbox.applyVector(diff)});
 		calculateAxes(player.hitbox);
 		rotatePolygon(player.hitbox, player.hitbox.spin);	
+    	rotatePolygon(player.auxHitbox, player.hitbox.spin);	
+        player.hitbox.spin=0;
 	}
 	if (level.current > level.max){
 		drawEndGame(true);
