@@ -619,12 +619,21 @@ function partiallyElasticCollision(polygonA, mtv, polygonB){
 		smaller.velocity -= 1;
 	}
 	*/
+/* temporarily disabled until hitboxes are updated to contain the auxHitbox
+   otherwise strange things happens
 	if (smaller.spin < 0){
 		smaller.spin += 1;
+        if (smaller.auxHitbox != undefined){
+		    smaller.spin += 1;
+        }
 	}
 	else{
 		smaller.spin -=1;
+        if (smaller.auxHitbox != undefined){
+		    smaller.spin -= 1;
+        }
 	}
+*/
 }
 
 

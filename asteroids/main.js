@@ -812,6 +812,8 @@ var Ship = function(x, y, l1, primaryColor = "#0000FF", secondaryColor = "#00F0F
 	
 	this.updateTurn = function(){
 		if (this.isTurning){
+            this.hitbox.spin = 0;
+            this.auxHitbox.spin = 0;
 			rotatePolygon(this.hitbox, this.rotate);
 			theta = degreesToRadians(this.rotate);
 			for (var i = 0; i < this.auxHitbox.vertices.length; i++){
@@ -2108,9 +2110,9 @@ function mainLoop(){
 		}
 		checkBorder(player.hitbox, function(){player.auxHitbox.applyVector(diff)});
 		calculateAxes(player.hitbox);
-		rotatePolygon(player.hitbox, player.hitbox.spin);	
-    	rotatePolygon(player.auxHitbox, player.hitbox.spin);	
-        player.hitbox.spin=0;
+//		rotatePolygon(player.hitbox, player.hitbox.spin);	
+//    	rotatePolygon(player.auxHitbox, player.hitbox.spin);	
+//        player.hitbox.spin=0;
 	}
 	if (level.current > level.max){
 		drawEndGame(true);
