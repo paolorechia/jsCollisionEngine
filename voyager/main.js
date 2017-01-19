@@ -17,6 +17,17 @@ function mainLoop(){
 	ctx.fillStyle="#000000";
 	ctx.fillRect(0,0,c.width,c.height);
 
+    weaponStatus = buildWeaponsStatus(player.weapons);
+    drawWeaponsStatus(weaponStatus, player.secondaryColor);
+    
+    ctx.save();
+    var x = player.hitbox.center.x;
+    var y = player.hitbox.center.y;
+    
+    x *= -1;
+    y *= -1;
+    ctx.translate(x + camera.width/2 , y + camera.height/2);
+
     player.updateDirection();
     player.updateStrafe();
     player.updatePosition();
@@ -60,10 +71,17 @@ function mainLoop(){
     }
     player.autoPilot();
     player.drawStatus();
-    weaponStatus = buildWeaponsStatus(player.weapons);
-    drawWeaponsStatus(weaponStatus, player.secondaryColor);
+
     player.drawAutoPath();
+
     player.draw();
+
+/*
+    x *= -1;
+    y *= -1;
+    ctx.translate(x + camera.width/2 , y + camera.height/2);
+*/
+    ctx.restore();
 
 	fps.calculateMean();
 	drawFPS(fps.mean, player.secondaryColor);
