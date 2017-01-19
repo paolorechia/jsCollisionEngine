@@ -1,14 +1,16 @@
 // Ship presets
-//var Shield = function(max = 100, resistance=0, drainRate=10, rechargeEfficiency = 0.5, drainSpeed = 250){
+// Depends on: collision.js; ship.js; weapons;js
+// var Shield = function(max = 100, resistance=0, drainRate=10, rechargeEfficiency = 0.5, drainSpeed = 250)
+
 var Stellar = function(primaryColor="#000FFF", secondaryColor = "#0FF0FF", 
                        x = c.width/2, y = c.height/2){
 	var ship = new Ship(x, y, 20, primaryColor, secondaryColor);
-    ship.name="Stellar";
+        ship.name="Stellar";
 	ship.updateDirection();
 	ship.hull = new Hull(100, 0);
 	ship.shield = new Shield(50, 0, 5, 1, 300);
-    ship.acceleration = 0.21;
-    ship.turnRate = 5;
+        ship.acceleration = 0.21;
+        ship.turnRate = 5;
 
 	ship.shield.setPowerSupply(ship.powerSupply);
 	ship.shield.setEnabled(true);
