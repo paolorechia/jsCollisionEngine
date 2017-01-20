@@ -417,24 +417,17 @@ function mainLoop(){
         }
    	}
 	else{
-		player.updateDirection();
-		player.updateStrafe();
-		player.updatePosition();
-		player.updateTurn();
-		player.powerSupply.recharge(player.powerSupply);
-		player.shield.drainEnergy(player.shield);
-		updateWeaponsShooting(player);
-
-
+		updateShip(player);
+		
 		for (var i =0; i < enemies.length; i++){
 		    updateEnemy(enemies[i]);
 		}
-		updateWeaponsAxes(player);
+
 		collideWeaponsHitboxes(player, objects);
 
 		collideWeaponsShips(player, enemies);
 		checkBorder(player.hitbox, function(){player.auxHitbox.applyVector(diff)});
-		calculateAxes(player.hitbox);
+	
 	}
 	if (level.current > level.max){
 		drawEndGame(true);

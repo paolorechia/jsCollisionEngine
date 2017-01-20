@@ -888,7 +888,6 @@ function collideShipShips(player, enemies){
 		for (var i = 0; i < enemies.length; i++){
 			mtv = collisionSTA(player.hitbox, enemies[i].hitbox);
 			if (mtv){
-				
 				elasticCollision(player.hitbox, mtv, enemies[i].hitbox);
 				elasticCollision(player.auxHitbox, mtv, enemies[i].hitbox);
 				player.sufferDamage(COLLISION_DAMAGE);	// fixed amount of damage on Collision
@@ -896,3 +895,15 @@ function collideShipShips(player, enemies){
 			}
 		}
 }
+function updateShip(player){
+		player.updateDirection();
+		player.updateStrafe();
+		player.updatePosition();
+		player.updateTurn();
+		player.powerSupply.recharge(player.powerSupply);
+		player.shield.drainEnergy(player.shield);
+		calculateAxes(player.hitbox);
+		updateWeaponsShooting(player);
+		updateWeaponsAxes(player);
+}
+
