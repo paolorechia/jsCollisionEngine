@@ -480,16 +480,6 @@ function drawWeaponsStatus(list, color="#00F0FF"){
 		ctx.fillText(list[i], offSet - xStart, 40 + (i % colSize) * 20);
 	}
 }
-
-function updateWeaponsShooting(ship){
-		for (var i = 0; i < ship.weapons.length; i++){
-		    ship.weapons[i].updateDirection();
-			if (ship.weapons[i].enabled){
-				ship.weapons[i].updateFiring(ship.hitbox.velocity);
-			}
-		}
-}
-
 function drawShipWeapons(player){
 		for (var u = 0; u < player.weapons.length; u++){
 			player.weapons[u].draw();

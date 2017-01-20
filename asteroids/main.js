@@ -377,6 +377,7 @@ function selectShipLoop(){
                 this.currentTime = 0;
                 this.play();
         }, false);
+
 		requestAnimationFrame(mainLoop);
 	}
 }
@@ -415,14 +416,15 @@ function mainLoop(){
         }
    	}
 	else{
-		updateShip(player);
-		
+		updateShip(player);	
+		updateWeapons(player);
+		var players = [];
+		players.push(player);
 		for (var i =0; i < enemies.length; i++){
 		    updateEnemy(enemies[i]);
+		    collideWeaponsShips(enemies[i], players);
 		}
-
 		collideWeaponsHitboxes(player, objects);
-
 		collideWeaponsShips(player, enemies);
 		checkBorder(player.hitbox, function(){player.auxHitbox.applyVector(diff)});
 	
@@ -440,7 +442,6 @@ function mainLoop(){
 	}
 	collideShipHitboxes(player, objects, COLLISION_DAMAGE);
 	collideShipShips(player, enemies, COLLISION_DAMAGE);
-	drawShipWeapons(player);
 	updateShipProjectiles(player);
 	checkProjectilesBorder(player);
 
@@ -460,11 +461,13 @@ function mainLoop(){
         enemies[i].draw();
 	drawShipWeapons(enemies[i]);
     }
-
+	
     if (player.dead == false){
+	drawShipWeapons(player);
         player.drawAutoPath();
         player.draw();
     }
+
 	killObjects(objects);
 	killObjects(enemies);
 	checkColisionsNaive(objects);
