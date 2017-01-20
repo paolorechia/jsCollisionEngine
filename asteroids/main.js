@@ -399,11 +399,9 @@ function mainLoop(){
 		}
 	}
 
+
 	for (var i = 0; i < objects.length; i++){
-		objects[i].update();
-		checkBorder(objects[i]);
-		calculateAxes(objects[i]);
-		rotatePolygon(objects[i], objects[i].spin);
+		updateHitbox(objects[i]);
 	}
 	if (player.dead){
 		drawEndGame(false);
@@ -440,8 +438,8 @@ function mainLoop(){
             window.rewarded=true;
         }
 	}
-	collideShipHitboxes(player, objects);
-	collideShipShips(player, enemies);
+	collideShipHitboxes(player, objects, COLLISION_DAMAGE);
+	collideShipShips(player, enemies, COLLISION_DAMAGE);
 	drawShipWeapons(player);
 	updateShipProjectiles(player);
 	checkProjectilesBorder(player);

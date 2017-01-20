@@ -685,75 +685,6 @@ var Ship = function(x, y, l1, primaryColor = "#0000FF", secondaryColor = "#00F0F
 	}
 }
 
-function updateEnemy(ship){
-        var players = [];
-        players.push(player);
-		ship.updateDirection();
-		ship.updateStrafe();
-		ship.updatePosition();
-		ship.updateTurn();
-		ship.powerSupply.recharge(ship.powerSupply);
-		ship.shield.drainEnergy(ship.shield);
-
-		for (var i = 0; i < ship.weapons.length; i++){
-		    ship.weapons[i].updateDirection();
-			if (ship.weapons[i].enabled){
-				ship.weapons[i].updateFiring(ship.hitbox.velocity);
-			}
-		}
-		for (var u = 0; u < ship.weapons.length; u++){
-			for (var i = 0; i < ship.weapons[u].projectiles.length; i++){
-			    calculateAxes(ship.weapons[u].projectiles[i])
-				for (var j = 0; j < objects.length; j++){
-					smartCollision(ship.weapons[u].projectiles[i], objects[j], function(){ship.weapons[u].onHit(objects[j])});
-				}
-	            smartCollision(ship.weapons[u].projectiles[i], players[0].hitbox, function(){ship.weapons[u].onHit(players[0])});
-			}
-		}
-		checkBorder(ship.hitbox, function(){ship.auxHitbox.applyVector(diff);
-                                            if (ship.engineOn){
-                                               ship.engineOn = false;
-                                               ship.reverseEngineOn = true;
-                                            }
-                                            else{
-                                               ship.engineOn = true;
-                                               ship.reverseEngineOn = false; 
-                                            }});
-                                            
-		calculateAxes(ship.hitbox);
-		rotatePolygon(ship.hitbox, ship.hitbox.spin);	
-		for (var i = 0; i < objects.length; i++){
-			mtv = collisionSTA(ship.hitbox, objects[i]);
-			if (mtv){
-				
-				elasticCollision(ship.hitbox, mtv, objects[i]);
-				elasticCollision(ship.auxHitbox, mtv, objects[i]);
-				ship.sufferDamage(COLLISION_DAMAGE);	// fixed amount of damage on Collision
-			}
-		}
-		for (var u = 0; u < ship.weapons.length; u++){
-			ship.weapons[u].draw();
-		}
-		for (var i = 0; i < ship.weapons.length; i++){		
-			ship.weapons[i].updateDuration();		
-			ship.weapons[i].removeProjectiles();
-		}
-		for (u = 0; u < ship.weapons.length; u++){
-				for (var k = 0; k < ship.weapons[u].projectiles.length; k++){
-					ship.weapons[u].projectiles[k].update();
-					if (ship.weapons[u].type == 'p'){
-						checkBorder(ship.weapons[u].projectiles[k], function(){ship.weapons[u].rotateAtBorder(axis, ship.weapons[u].projectiles[k])});
-					}
-					else if (ship.weapons[u].type =='l'){
-						projectile = ship.weapons[u].projectiles[k];
-						var hit = checkBorder(projectile);
-						if (hit) {killProjectile(projectile)};
-					}
-					rotatePolygon(ship.weapons[u].projectiles[k], ship.weapons[u].projectiles[k].spin);	
-			}
-		}
-}
-
 function displayValueConsole(ship){
         console.log("engine: " + ship.getEngineValue());
         console.log("hull:" + ship.hull.getValue());
@@ -872,29 +803,6 @@ function displayShip(ship){
         ship.draw();
 }
 
-function collideShipHitboxes(player, objects){
-		for (var i = 0; i < objects.length; i++){
-			mtv = collisionSTA(player.hitbox, objects[i]);
-			if (mtv){
-				
-				elasticCollision(player.hitbox, mtv, objects[i]);
-				elasticCollision(player.auxHitbox, mtv, objects[i]);
-				player.sufferDamage(COLLISION_DAMAGE);	// fixed amount of damage on Collision
-				objects[i].sufferDamage(COLLISION_DAMAGE);
-			}
-		}
-}
-function collideShipShips(player, enemies){
-		for (var i = 0; i < enemies.length; i++){
-			mtv = collisionSTA(player.hitbox, enemies[i].hitbox);
-			if (mtv){
-				elasticCollision(player.hitbox, mtv, enemies[i].hitbox);
-				elasticCollision(player.auxHitbox, mtv, enemies[i].hitbox);
-				player.sufferDamage(COLLISION_DAMAGE);	// fixed amount of damage on Collision
-				enemies[i].sufferDamage(COLLISION_DAMAGE);			
-			}
-		}
-}
 function updateShip(player){
 		player.updateDirection();
 		player.updateStrafe();
@@ -906,4 +814,81 @@ function updateShip(player){
 		updateWeaponsShooting(player);
 		updateWeaponsAxes(player);
 }
+
+function updateHitbox(hitbox){
+		hitbox.update();
+		checkBorder(hitbox);
+		calculateAxes(hitbox);
+		rotatePolygon(hitbox, hitbox.spin);
+}
+
+function updateEnemy(ship){
+        var players = [];
+        players.push(player);
+		ship.updateDirection();
+		ship.updateStrafe();
+		ship.updatePosition();
+		ship.updateTurn();
+		ship.powerSupply.recharge(ship.powerSupply);
+		ship.shield.drainEnergy(ship.shield);
+
+		for (var i = 0; i < ship.weapons.length; i++){
+		    ship.weapons[i].updateDirection();
+			if (ship.weapons[i].enabled){
+				ship.weapons[i].updateFiring(ship.hitbox.velocity);
+			}
+		}
+		for (var u = 0; u < ship.weapons.length; u++){
+			for (var i = 0; i < ship.weapons[u].projectiles.length; i++){
+			    calculateAxes(ship.weapons[u].projectiles[i])
+				for (var j = 0; j < objects.length; j++){
+					smartCollision(ship.weapons[u].projectiles[i], objects[j], function(){ship.weapons[u].onHit(objects[j])});
+				}
+	            smartCollision(ship.weapons[u].projectiles[i], players[0].hitbox, function(){ship.weapons[u].onHit(players[0])});
+			}
+		}
+		checkBorder(ship.hitbox, function(){ship.auxHitbox.applyVector(diff);
+                                            if (ship.engineOn){
+                                               ship.engineOn = false;
+                                               ship.reverseEngineOn = true;
+                                            }
+                                            else{
+                                               ship.engineOn = true;
+                                               ship.reverseEngineOn = false; 
+                                            }});
+                                            
+		calculateAxes(ship.hitbox);
+		rotatePolygon(ship.hitbox, ship.hitbox.spin);	
+		for (var i = 0; i < objects.length; i++){
+			mtv = collisionSTA(ship.hitbox, objects[i]);
+			if (mtv){
+				
+				elasticCollision(ship.hitbox, mtv, objects[i]);
+				elasticCollision(ship.auxHitbox, mtv, objects[i]);
+				ship.sufferDamage(COLLISION_DAMAGE);	// fixed amount of damage on Collision
+			}
+		}
+		for (var u = 0; u < ship.weapons.length; u++){
+			ship.weapons[u].draw();
+		}
+		for (var i = 0; i < ship.weapons.length; i++){		
+			ship.weapons[i].updateDuration();		
+			ship.weapons[i].removeProjectiles();
+		}
+		for (u = 0; u < ship.weapons.length; u++){
+				for (var k = 0; k < ship.weapons[u].projectiles.length; k++){
+					ship.weapons[u].projectiles[k].update();
+					if (ship.weapons[u].type == 'p'){
+						checkBorder(ship.weapons[u].projectiles[k], function(){ship.weapons[u].rotateAtBorder(axis, ship.weapons[u].projectiles[k])});
+					}
+					else if (ship.weapons[u].type =='l'){
+						projectile = ship.weapons[u].projectiles[k];
+						var hit = checkBorder(projectile);
+						if (hit) {killProjectile(projectile)};
+					}
+					rotatePolygon(ship.weapons[u].projectiles[k], ship.weapons[u].projectiles[k].spin);	
+			}
+		}
+}
+
 
