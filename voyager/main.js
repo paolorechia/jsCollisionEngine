@@ -32,12 +32,8 @@ function mainLoop(){
     y *= -1;
     ctx.translate(x + camera.width/2 , y + camera.height/2);
     
-    player.updateDirection();
-    player.updateStrafe();
-    player.updatePosition();
-    player.updateTurn();
-    player.powerSupply.recharge(player.powerSupply);
-    player.shield.drainEnergy(player.shield);
+    updateShip(player);
+    updateWeapons(player);
 
     for (var i = 0; i < player.weapons.length; i++){
         player.weapons[i].updateDirection();
