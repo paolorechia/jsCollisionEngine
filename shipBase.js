@@ -872,3 +872,27 @@ function displayShip(ship){
         ship.draw();
 }
 
+function collideShipHitboxes(player, objects){
+		for (var i = 0; i < objects.length; i++){
+			mtv = collisionSTA(player.hitbox, objects[i]);
+			if (mtv){
+				
+				elasticCollision(player.hitbox, mtv, objects[i]);
+				elasticCollision(player.auxHitbox, mtv, objects[i]);
+				player.sufferDamage(COLLISION_DAMAGE);	// fixed amount of damage on Collision
+				objects[i].sufferDamage(COLLISION_DAMAGE);
+			}
+		}
+}
+function collideShipShips(player, enemies){
+		for (var i = 0; i < enemies.length; i++){
+			mtv = collisionSTA(player.hitbox, enemies[i].hitbox);
+			if (mtv){
+				
+				elasticCollision(player.hitbox, mtv, enemies[i].hitbox);
+				elasticCollision(player.auxHitbox, mtv, enemies[i].hitbox);
+				player.sufferDamage(COLLISION_DAMAGE);	// fixed amount of damage on Collision
+				enemies[i].sufferDamage(COLLISION_DAMAGE);			
+			}
+		}
+}

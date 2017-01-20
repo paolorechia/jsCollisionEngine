@@ -423,34 +423,18 @@ function mainLoop(){
 		player.updateTurn();
 		player.powerSupply.recharge(player.powerSupply);
 		player.shield.drainEnergy(player.shield);
+		updateWeaponsShooting(player);
 
-		for (var i = 0; i < player.weapons.length; i++){
-		    player.weapons[i].updateDirection();
-			if (player.weapons[i].enabled){
-				player.weapons[i].updateFiring(player.hitbox.velocity);
-			}
-		}
 
-        for (var i =0; i < enemies.length; i++){
-            updateEnemy(enemies[i]);
-        }
-		
-		for (var u = 0; u < player.weapons.length; u++){
-			for (var i = 0; i < player.weapons[u].projectiles.length; i++){
-			    calculateAxes(player.weapons[u].projectiles[i])
-				for (var j = 0; j < objects.length; j++){
-					smartCollision(player.weapons[u].projectiles[i], objects[j], function(){player.weapons[u].onHit(objects[j])});
-				}
-                for (var k = 0; k < enemies.length; k++){
-                    smartCollision(player.weapons[u].projectiles[i], enemies[k].hitbox, function(){player.weapons[u].onHit(enemies[k])});
-                }
-			}
+		for (var i =0; i < enemies.length; i++){
+		    updateEnemy(enemies[i]);
 		}
+		updateWeaponsAxes(player);
+		collideWeaponsHitboxes(player, objects);
+
+		collideWeaponsShips(player, enemies);
 		checkBorder(player.hitbox, function(){player.auxHitbox.applyVector(diff)});
 		calculateAxes(player.hitbox);
-//		rotatePolygon(player.hitbox, player.hitbox.spin);	
-//    	rotatePolygon(player.auxHitbox, player.hitbox.spin);	
-//        player.hitbox.spin=0;
 	}
 	if (level.current > level.max){
 		drawEndGame(true);
@@ -463,45 +447,12 @@ function mainLoop(){
             window.rewarded=true;
         }
 	}
-		for (var i = 0; i < objects.length; i++){
-			mtv = collisionSTA(player.hitbox, objects[i]);
-			if (mtv){
-				
-				elasticCollision(player.hitbox, mtv, objects[i]);
-				elasticCollision(player.auxHitbox, mtv, objects[i]);
-				player.sufferDamage(COLLISION_DAMAGE);	// fixed amount of damage on Collision
-			}
-		}
-		for (var i = 0; i < enemies.length; i++){
-			mtv = collisionSTA(player.hitbox, enemies[i].hitbox);
-			if (mtv){
-				
-				elasticCollision(player.hitbox, mtv, enemies[i].hitbox);
-				elasticCollision(player.auxHitbox, mtv, enemies[i].hitbox);
-				player.sufferDamage(COLLISION_DAMAGE);	// fixed amount of damage on Collision
-			}
-		}
-		for (var u = 0; u < player.weapons.length; u++){
-			player.weapons[u].draw();
-		}
-		for (var i = 0; i < player.weapons.length; i++){		
-			player.weapons[i].updateDuration();		
-			player.weapons[i].removeProjectiles();
-		}
-		for (u = 0; u < player.weapons.length; u++){
-				for (var k = 0; k < player.weapons[u].projectiles.length; k++){
-					player.weapons[u].projectiles[k].update();
-					if (player.weapons[u].type == 'p'){
-						checkBorder(player.weapons[u].projectiles[k], function(){player.weapons[u].rotateAtBorder(axis, player.weapons[u].projectiles[k])});
-					}
-					else if (player.weapons[u].type =='l'){
-						projectile = player.weapons[u].projectiles[k];
-						var hit = checkBorder(projectile);
-						if (hit) {killProjectile(projectile)};
-					}
-					rotatePolygon(player.weapons[u].projectiles[k], player.weapons[u].projectiles[k].spin);	
-			}
-		}
+	collideShipHitboxes(player, objects);
+	collideShipShips(player, enemies);
+	drawShipWeapons(player);
+	updateShipProjectiles(player);
+	checkProjectilesBorder(player);
+
     player.autoPilot();
     player.drawStatus();
 	if (instruct){
@@ -590,4 +541,5 @@ window.selected = false;
 window.displaying = false;
 window.confirmed = false;
 window.playing = false;
+var coord = new Point(c.width/2, c.height/2);
 selectShipLoop();

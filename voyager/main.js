@@ -8,6 +8,10 @@ ctx = camera.getContext("2d");
 
 coord = new Point(c.width/2, c.height/2);
 player = new Stellar();
+enemies = [];
+objects = [];
+enemies.push(new Gargatuan());
+enemies.engineOn=true;
 function mainLoop(){
 	newDate = new Date();
 	elapsedTime = newDate - lastDate;
@@ -70,6 +74,9 @@ function mainLoop(){
                 rotatePolygon(player.weapons[u].projectiles[k], player.weapons[u].projectiles[k].spin);	
         }
     }
+    updateEnemy(enemies[0]);
+    enemies[0].draw();
+      
     player.autoPilot();
     player.drawAutoPath();
 
