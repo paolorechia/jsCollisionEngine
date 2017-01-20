@@ -480,13 +480,7 @@ function drawWeaponsStatus(list, color="#00F0FF"){
 		ctx.fillText(list[i], offSet - xStart, 40 + (i % colSize) * 20);
 	}
 }
-function updateWeaponsAxes(ship){
-		for (var u = 0; u < ship.weapons.length; u++){
-			for (var i = 0; i < ship.weapons[u].projectiles.length; i++){
-			    calculateAxes(ship.weapons[u].projectiles[i]);
-			}
-		}
-}
+
 function updateWeaponsShooting(ship){
 		for (var i = 0; i < ship.weapons.length; i++){
 		    ship.weapons[i].updateDirection();
@@ -501,12 +495,7 @@ function drawShipWeapons(player){
 			player.weapons[u].draw();
 		}
 }
-function updateShipProjectiles(player){
-		for (var i = 0; i < player.weapons.length; i++){		
-			player.weapons[i].updateDuration();		
-			player.weapons[i].removeProjectiles();
-		}
-}
+
 function checkProjectilesBorder(player){
 		for (u = 0; u < player.weapons.length; u++){
 				for (var k = 0; k < player.weapons[u].projectiles.length; k++){

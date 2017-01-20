@@ -458,7 +458,9 @@ function mainLoop(){
     }
     for (var i =0; i < enemies.length; i++){
         enemies[i].draw();
+	drawShipWeapons(enemies[i]);
     }
+
     if (player.dead == false){
         player.drawAutoPath();
         player.draw();

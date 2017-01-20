@@ -4,7 +4,6 @@ function collideShipHitboxes(ship, objects, damage){
 		for (var i = 0; i < objects.length; i++){
 			mtv = collisionSTA(ship.hitbox, objects[i]);
 			if (mtv){
-				
 				elasticCollision(ship.hitbox, mtv, objects[i]);
 				elasticCollision(ship.auxHitbox, mtv, objects[i]);
 				ship.sufferDamage(damage);	// fixed amount of damage on Collision
