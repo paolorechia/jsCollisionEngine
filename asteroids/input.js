@@ -55,7 +55,7 @@ var coord = new Point(c.width/2, c.height/2);
 		if (player.lock){
 			return;
 		}
-        if (event.key == 'w'){
+        if (event.key == 'w' || event.key =="ArrowUp"){
 			player.throttle(true);
         }
         if (event.key == 'x'){
@@ -67,14 +67,18 @@ var coord = new Point(c.width/2, c.height/2);
         if (event.key == 'e'){
 			player.strafe('r', true);
 		}
-        if (event.key == 's'){
+        if (event.key == 's' || event.key == "ArrowDown"){
 			player.brake(true);
         }
-        if (event.key == 'd'){
+        if (event.key == 'd' || event.key == "ArrowRight"){
 			player.turn('r', true);
         }
-        if (event.key == 'a'){
+        if (event.key == 'a' || event.key == "ArrowLeft"){
 			player.turn('l', true);
+		}
+        if (event.key == 't'){
+		    player.lock = true;
+    		player.setupAutoPilot(coord);
 		}
  
     }
@@ -94,7 +98,7 @@ var coord = new Point(c.width/2, c.height/2);
 		if (player.lock){
 			return;
 		}
-        if (event.key == 'w'){
+        if (event.key == 'w' || event.key == "ArrowUp"){
 			player.throttle(false);
         }
         if (event.key == 'x'){
@@ -106,18 +110,21 @@ var coord = new Point(c.width/2, c.height/2);
         if (event.key == 'e'){
 			player.strafe('r', false);
 		}
-        if (event.key == 's'){
+        if (event.key == 's' || event.key == "ArrowDown"){
 			player.brake(false);
         }
-        if (event.key == 'd'){
+        if (event.key == 'd' || event.key == "ArrowRight"){
 			player.turn('r', false);
         }
-        if (event.key == 'a'){
+        if (event.key == 'a' || event.key == "ArrowLeft"){
 			player.turn('l', false);
-        }
+		}
 
     }
 	buttonModeClick = function(){
+        if (buttons == undefined){
+            return;
+        }
 		for (var i = 0; i < buttons.length; i++){
 			var bound = {left: buttons[i].x,
 						  right: buttons[i].x + buttons[i].width,
@@ -132,6 +139,9 @@ var coord = new Point(c.width/2, c.height/2);
 		}
 	}
     buttonModeHover = function(){
+        if (buttons == undefined){
+            return;
+        }
 		for (var i = 0; i < buttons.length; i++){
 			var bound = {left: buttons[i].x,
 						  right: buttons[i].x + buttons[i].width,
@@ -147,17 +157,16 @@ var coord = new Point(c.width/2, c.height/2);
             buttons[i].reset();
 		}
     }
-	mouseClick = function(){
-	//	console.log("System locked!");
-		player.lock = true;
-		player.setupAutoPilot(coord);
-	}
-    mouseDown = function(state){
-//		console.log(state);
-    };
-	mouseUp = function(state){
-//		console.log(state);
-    };
+    function mouseDown(){
+		for (var i= 0; i < player.weapons.length; i++){
+				player.weapons[i].fire(true);
+        }
+    }
+	function mouseUp(){
+		for (var i= 0; i < player.weapons.length; i++){
+				player.weapons[i].fire(false);
+    	}
+    }
     window.addEventListener("keydown", function(event){ keyboardDown(event)}, false);
     window.addEventListener("keyup", function(event){ keyboardUp(event)}, false);
 
@@ -166,14 +175,8 @@ var coord = new Point(c.width/2, c.height/2);
 	c.addEventListener("mousemove", buttonModeHover, false);
 
 	c.addEventListener("touchstart", buttonModeClick, false);
-/*
-    c.addEventListener("mousedown", function(){ mouseDown(true); 
-                                                     },
-                                                     false);
-    c.addEventListener("mouseup", function(){ mouseUp(false);
-                                                   }, 
-                                                   false);
-*/
+    c.addEventListener("mousedown", mouseDown, false);
+    c.addEventListener("mouseup", mouseUp, false);
 	c.addEventListener("click", function(event){ buttonModeClick(event);
                                                 },
                                                 false);											   

@@ -621,7 +621,6 @@ var Ship = function(x, y, l1, primaryColor = "#0000FF", secondaryColor = "#00F0F
 			ctx.stroke();
 		}
 		if (this.shield.enabled && this.shield.current > 0){
-			ctx.save();
             if (polygon.hit == true){
 			    ctx.strokeStyle=this.primaryColor;
             } 
@@ -633,7 +632,6 @@ var Ship = function(x, y, l1, primaryColor = "#0000FF", secondaryColor = "#00F0F
 					polygon.center.y,
 					polygon.side + 2, 0, 2*Math.PI);
 			ctx.stroke();	
-			ctx.restore();
 		}
 		ctx.restore();
 	}

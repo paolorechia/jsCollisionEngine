@@ -142,21 +142,21 @@ function buildInstructions(){
 	var instructions = [];
 	
 	var string;
-	string = "W: Main Engine Throttle";
+	string = "W/UpArrow: Main Engine Throttle";
 	instructions.push(string);
 	string = "X: Reverse Engine Throttle";
 	instructions.push(string);
-	string = "A: Left turning";
+	string = "A/LeftArrow: Left turning";
 	instructions.push(string);
-	string = "D: Right turning";
+	string = "D/RightArrow: Right turning";
 	instructions.push(string);
 	string = "Q: Left strafe";
 	instructions.push(string);
 	string = "E: Right strafe";
 	instructions.push(string);
-	string = "S: Advanced Braking System";
+	string = "S/DownArrow: Brake";
 	instructions.push(string);
-	string = "V: Shoot";
+	string = "V/Mouse Click: Shoot";
 	instructions.push(string);
 	string = "C: Auto-Fire";
 	instructions.push(string);
@@ -164,7 +164,7 @@ function buildInstructions(){
 	instructions.push(string);
 	string = "F: Enable Shield";
 	instructions.push(string);
-	string = "Click: Auto-pilot";
+	string = "T: Auto-pilot";
 	instructions.push(string);	
 	string = "Esc: Cancel auto-pilot";
 	instructions.push(string);	
