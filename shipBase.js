@@ -548,15 +548,22 @@ var Ship = function(x, y, l1, primaryColor = "#0000FF", secondaryColor = "#00F0F
 		this.autoStatus.current = 0;
 	}
 	this.drawStatus = function(){
+        if (camera == undefined){
+            canvas = c;
+        }
+        else{
+            canvas = camera;
+        }
+
 		ctx.beginPath();
 		ctx.font="14px Arial";
 		ctx.fillStyle=this.secondaryColor;
 		string = "Hull: " + this.hull.current;
-		ctx.fillText(string, c.width - 200, 30);
+		ctx.fillText(string, canvas.width - 200, 30);
 		string = "Immunity: " + this.immunity;
-		ctx.fillText(string, c.width - 200, 60);
+		ctx.fillText(string, canvas.width - 200, 60);
 		string = "Energy: " + this.powerSupply.current;
-		ctx.fillText(string, c.width - 200, 90);		
+		ctx.fillText(string, canvas.width - 200, 90);		
 		if (this.shield != undefined){
 			if (this.shield.enabled){
 				string = "Shield enabled: " + this.shield.current;
@@ -564,7 +571,7 @@ var Ship = function(x, y, l1, primaryColor = "#0000FF", secondaryColor = "#00F0F
 			else{
 				string = "Shield disabled: " + this.shield.current;	
 			}
-			ctx.fillText(string, c.width - 200, 120);					
+			ctx.fillText(string, canvas.width - 200, 120);					
 		}
 	}
 	this.draw = function(polygon = this.hitbox){

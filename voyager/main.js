@@ -15,11 +15,11 @@ function mainLoop(){
 	fps.add(elapsedTime);
 
 	ctx.fillStyle="#000000";
-	ctx.fillRect(0,0,c.width,c.height);
+	ctx.fillRect(0,0,camera.width,camera.height);
 
     weaponStatus = buildWeaponsStatus(player.weapons);
     drawWeaponsStatus(weaponStatus, player.secondaryColor);
-    
+    player.drawStatus();
     ctx.save();
     var x = player.hitbox.center.x;
     var y = player.hitbox.center.y;
@@ -27,7 +27,7 @@ function mainLoop(){
     x *= -1;
     y *= -1;
     ctx.translate(x + camera.width/2 , y + camera.height/2);
-
+    
     player.updateDirection();
     player.updateStrafe();
     player.updatePosition();
@@ -48,6 +48,7 @@ function mainLoop(){
             }
         }
 		checkBorder(player.hitbox, function(){player.auxHitbox.applyVector(diff)});
+
 		for (var u = 0; u < player.weapons.length; u++){
 			player.weapons[u].draw();
 		}
@@ -70,18 +71,12 @@ function mainLoop(){
         }
     }
     player.autoPilot();
-    player.drawStatus();
-
     player.drawAutoPath();
 
     player.draw();
-
-/*
-    x *= -1;
-    y *= -1;
-    ctx.translate(x + camera.width/2 , y + camera.height/2);
-*/
     ctx.restore();
+
+
 
 	fps.calculateMean();
 	drawFPS(fps.mean, player.secondaryColor);

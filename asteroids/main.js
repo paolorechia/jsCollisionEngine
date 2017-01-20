@@ -571,6 +571,7 @@ var fps = new Fps();
 var maxFPS = 1000;
 var interval = 1000/maxFPS;
 var COLLISION_DAMAGE = 10;
+var camera = undefined;
 
 var score = new Score();
 score.getMax();
