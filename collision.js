@@ -26,7 +26,7 @@ function distance(pointA, pointB){
 	x = x * x;
 	var y = pointA.y - pointB.y;
 	y = y * y;
-	return Math.sqrt(Math.abs(x - y));
+	return Math.sqrt(x + y);
 }
 
 function calculateVector(pointA, pointB, vector){
@@ -104,7 +104,18 @@ function projection(vertices, axis){
 	return projection;
 }
 
-function collisionCircles(circle, circle){
+function collisionCircles(circleA, circleB){
+      
+    var dist = distance(circleA.position, circleB.position);
+    console.log(dist);
+    if (dist < circleA.radius + circleB.radius){
+        console.log("collide!");
+        /*
+        circleA.findAxis(circleB.position);
+        console.log(circleA.axis);
+        return circleA.axis;    
+        */
+    }
     return false;
 }
 
@@ -115,7 +126,6 @@ function circleSTA(circle, polygon){
 function collisionSTA(polygonA, polygonB){
     if (polygonA.sides == 1 && polygonB.sides == 1){
         return collisionCircles(polygonA, polygonB);
-        
     }
     else if (polygonA.sides == 1){
         return circleSTA(polygonA, polygonB);
@@ -522,6 +532,7 @@ function checkBorderCircle(circle, action){
     leftBound  = circle.position.x - circle.radius;
     lowerBound = circle.position.y + circle.radius;
     upperBound = circle.position.y - circle.radius;
+    var hit = false;
 	if (rightBound > c.width || leftBound < 0){
 		circle.versor.x *= -1;
 		if (action != undefined){
@@ -729,6 +740,14 @@ function partiallyElasticCollision(polygonA, mtv, polygonB){
         }
 	}
 */
+}
+function checkElasticCollisionsNaive(array){
+	var i, j, mtv;
+	for (i = 0; i < array.length; i++){
+		for (j=i+1; j < array.length; j++){
+            elasticCollision(array[j], mtv, array[i]);
+        }
+	}
 }
 
 
