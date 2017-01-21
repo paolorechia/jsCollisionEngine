@@ -4,7 +4,7 @@ var minSize = c.width/100;
 var maxSpeed = 0;
 var maxSpin = 0;
 var numberRectangles = 1;
-var numberTriangles = 1;
+var numberTriangles = 0;
 var numberCircles= 0;
 var objects = [];
 
@@ -24,13 +24,12 @@ var fps = new Fps();
 var maxFPS = 1000;
 var interval = 1000/maxFPS;
 
-
 function mainLoop(){
 	newDate = new Date();
 	elapsedTime = newDate - lastDate;
 	lastDate = new Date();
 	fps.add(elapsedTime);
-
+    objects[0].moveTo(coord);
 	ctx.fillStyle="#FFFF00";
 	ctx.fillRect(0,0,c.width,c.height);
 

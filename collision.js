@@ -422,7 +422,7 @@ function drawFPS(number, color="#000FFF"){
 	ctx.stroke();
 }
 
-Rect = function(x, y, width, height, vx, vy, velocity, spin){
+var Rect = function(x, y, width, height, vx, vy, velocity, spin){
 	var list = [];
 	// ponto1
 	list.push(x);
@@ -476,7 +476,21 @@ Rect = function(x, y, width, height, vx, vy, velocity, spin){
 		incrementRect(this, xIncrement, yIncrement);
 		this.hit=false;
 	}
-
+    this.moveTo = function(point){
+        console.log(point);
+        this.center.x = point.x;
+        this.center.y = point.y;
+        this.vertices[0].x = this.center.x - this.width * 0.5;
+        this.vertices[0].y = this.center.y - this.height* 0.5;
+        this.vertices[1].x = this.center.x + this.width * 0.5;
+        this.vertices[1].y = this.center.y - this.height* 0.5;
+        this.vertices[2].x = this.center.x + this.width * 0.5;
+        this.vertices[2].y = this.center.y + this.height* 0.5;
+        this.vertices[3].x = this.center.x - this.width * 0.5;
+        this.vertices[3].y = this.center.y + this.height* 0.5;
+        this.position.x = this.vertices[0].x;
+        this.position.y = this.vertices[0].y;
+    }
 }
 
 Triangle = function(x, y, l1, vx, vy, velocity, spin){
