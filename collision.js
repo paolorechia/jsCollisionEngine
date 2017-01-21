@@ -183,34 +183,46 @@ function collisionSTA(polygonA, polygonB){
     }
 	var smallestOverlap = 999999;
 	var smallestAxis = null;
-    color="#000000";
+    colorA="#FF0000";
+    colorB="#0000FF";
+    overlaps = [];
 	for (var i = 0; i < polygonA.axes.length; i++){
 		projA = projection(polygonA.vertices, polygonA.axes[i]);
 		projB = projection(polygonB.vertices, polygonA.axes[i]);
-        drawProjection(projA, polygonA.axes[i], color);
-        drawProjection(projB, polygonA.axes[i], color);
+        drawProjection(projA, polygonA.axes[i], colorA);
+        drawProjection(projB, polygonA.axes[i], colorB);
 		over = (overlap(projA, projB));
+        overlaps.push(over);
 		if (over == 0){
+            console.log(overlaps);
 			return false;
 		}
 		if (over < smallestOverlap){
 			smallestOverlap = over;
 			smallestAxis = polygonA.axes[i];
 		}
+            console.log(overlaps);
 	}
-    color="#888888";
+/*
+    colorA="#FFFFFF";
+    colorB="#00FFFF";
+*/
 	for (var i = 0; i < polygonB.axes.length; i++){
 		projA = projection(polygonA.vertices, polygonB.axes[i]);
 		projB = projection(polygonB.vertices, polygonB.axes[i]);
-        drawProjection(projA, polygonA.axes[i], color);
-        drawProjection(projB, polygonA.axes[i], color);
+        drawProjection(projA, polygonA.axes[i], colorA);
+        drawProjection(projB, polygonA.axes[i], colorB);
+		over = (overlap(projA, projB));
+        overlaps.push(over);
 		if (over == 0){
+            console.log(overlaps);
 			return false;
 		}
 		if (over < smallestOverlap){
 			smallestOverlap=over;
 			smallestAxis = polygonB.axes[i];
 		}
+            console.log(overlaps);
 	}
 	polygonA.hit=true;
 	polygonB.hit=true;

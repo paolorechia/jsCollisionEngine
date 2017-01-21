@@ -24,6 +24,7 @@ var fps = new Fps();
 var maxFPS = 1000;
 var interval = 1000/maxFPS;
 
+objects[1].moveTo(new Point(400, 300));
 //objects[0].moveTo(new Point(300, 300));
 function mainLoop(){
 	newDate = new Date();
