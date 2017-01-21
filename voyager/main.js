@@ -54,12 +54,23 @@ function generateStars (ctx, num, c){
             ctx.fill();
         }
 }
+var bg = document.getElementById("background");
+bg.width = c.width;
+bg.height = c.height;
+
 background = new Image();
+ctx = bg.getContext("2d");
+bg.color = "#222222";
+ctx.fillStyle=bg.color;
+ctx.fillRect(0, 0, bg.width, bg.height);
 ctx.fillStyle="#000000";
-ctx.fillRect(0,0, c.width, c.height);
-generateStars(ctx, c.width/20, c);
+ctx.fillRect(camera.width/2, camera.height/2,
+             c.width - camera.width, c.height - camera.height);
+//ctx.fillRect(camera.width/2, camera.height/2, 
+//            bg.width - camera.width/2, bg.height - camera.height/2);
+ctx = bg.getContext("2d");
+generateStars(ctx, c.width/20, bg);
 background.src = ctx.canvas.toDataURL("image/png");
-document.getElementById("umCanvas").setAttribute("style", "display: none");
 
 ctx = camera.getContext("2d");
 //ctx.drawImage(background.imagem, ship.x - camera.width/2, ship.y - camera.height/2, camera.width, camera.height,0, 0, camera.width, camera.height);
@@ -86,7 +97,7 @@ function mainLoop(){
 	fps.add(elapsedTime);
 
 
-	ctx.fillStyle="#000000";
+	ctx.fillStyle="#444444";
 	ctx.fillRect(0,0,camera.width,camera.height);
     ctx.drawImage(background, player.hitbox.center.x - camera.width/2, player.hitbox.center.y - camera.height/2, camera.width, camera.height, 0, 0, camera.width, camera.height);
 
