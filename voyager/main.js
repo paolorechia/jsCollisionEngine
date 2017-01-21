@@ -3,16 +3,39 @@ var map = document.getElementById("umCanvas");
 var camera = document.getElementById("camera");
 ctx = camera.getContext("2d");
 
+var Cursor = function(){
+    this.x;
+    this.y;
+    this.update = function(player, camera, coord){
+        coord.x = player.hitbox.center.x + this.x - camera.width/2;
+        coord.y = player.hitbox.center.y + this.y - camera.height/2;
+    }
+}
 
+function mouseMoveCamera(event){
+    player.weapon.setCenter(coord);
+    cursor.x = event.clientX;
+    cursor.y = event.clientY;
+    coord.x = player.hitbox.center.x + event.clientX - camera.width/2;
+    coord.y = player.hitbox.center.y + event.clientY - camera.height/2;
+}
 
+camera.addEventListener("mousemove", mouseMoveCamera, false);
 
 coord = new Point(c.width/2, c.height/2);
-player = new Stellar();
+function initPlayer(){
+    player = new Stellar();
+    return player;
+}
+player = initPlayer();
 enemies = [];
 objects = [];
 enemies.push(new Gargatuan());
 enemies.engineOn=true;
+cursor = new Cursor();
 function mainLoop(){
+    cursor.update(player, camera, coord);
+    console.log(coord.x, cursor.x);
 	newDate = new Date();
 	elapsedTime = newDate - lastDate;
 	lastDate = new Date();
