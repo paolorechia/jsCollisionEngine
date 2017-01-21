@@ -23,19 +23,15 @@ function mouseMoveCamera(event){
 camera.addEventListener("mousemove", mouseMoveCamera, false);
 
 coord = new Point(c.width/2, c.height/2);
-function initPlayer(){
-    player = new Stellar();
-    return player;
-}
-player = initPlayer();
+player = new Stellar("#999999", "#00F0FF", 300, 200); // arctic
 enemies = [];
 objects = [];
-enemies.push(new Gargatuan());
+var players = [];
+players.push(player);
+enemies.push(new Gargatuan("#F0000F", "#FFFFFF"));
 enemies.engineOn=true;
 cursor = new Cursor();
 function mainLoop(){
-    cursor.update(player, camera, coord);
-    console.log(coord.x, cursor.x);
 	newDate = new Date();
 	elapsedTime = newDate - lastDate;
 	lastDate = new Date();
@@ -44,6 +40,7 @@ function mainLoop(){
 	ctx.fillStyle="#000000";
 	ctx.fillRect(0,0,camera.width,camera.height);
 
+    cursor.update(player, camera, coord);
     weaponStatus = buildWeaponsStatus(player.weapons);
     drawWeaponsStatus(weaponStatus, player.secondaryColor);
     player.drawStatus();
@@ -57,49 +54,21 @@ function mainLoop(){
     
     updateShip(player);
     updateWeapons(player);
+    updateShipProjectiles(player);
+    checkProjectilesBorder(player);
+    collideShipShips(player, enemies, 5);
 
-    for (var i = 0; i < player.weapons.length; i++){
-        player.weapons[i].updateDirection();
-        if (player.weapons[i].enabled){
-            player.weapons[i].updateFiring(player.hitbox.velocity);
-        }
-    }
-		
-		for (var u = 0; u < player.weapons.length; u++){
-			for (var i = 0; i < player.weapons[u].projectiles.length; i++){
-			    calculateAxes(player.weapons[u].projectiles[i])
-            }
-        }
-		checkBorder(player.hitbox, function(){player.auxHitbox.applyVector(diff)});
-
-		for (var u = 0; u < player.weapons.length; u++){
-			player.weapons[u].draw();
-		}
-		for (var i = 0; i < player.weapons.length; i++){		
-			player.weapons[i].updateDuration();		
-			player.weapons[i].removeProjectiles();
-		}
-		for (u = 0; u < player.weapons.length; u++){
-		    for (var k = 0; k < player.weapons[u].projectiles.length; k++){
-                player.weapons[u].projectiles[k].update();
-                if (player.weapons[u].type == 'p'){
-                    checkBorder(player.weapons[u].projectiles[k], function(){player.weapons[u].rotateAtBorder(axis, player.weapons[u].projectiles[k])});
-                }
-                else if (player.weapons[u].type =='l'){
-                    projectile = player.weapons[u].projectiles[k];
-                    var hit = checkBorder(projectile);
-                    if (hit) {killProjectile(projectile)};
-                }
-                rotatePolygon(player.weapons[u].projectiles[k], player.weapons[u].projectiles[k].spin);	
-        }
-    }
+    checkBorder(player.hitbox, function(){player.auxHitbox.applyVector(diff)});
     updateEnemy(enemies[0]);
     enemies[0].draw();
+    drawShipWeapons(enemies[0]);
+    updateShipProjectiles(enemies[0]);
+    checkProjectilesBorder(enemies[0]);
       
     player.autoPilot();
     player.drawAutoPath();
-
     player.draw();
+    drawShipWeapons(player);
     ctx.restore();
 
 

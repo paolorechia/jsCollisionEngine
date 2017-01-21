@@ -44,7 +44,7 @@ var Stellar = function(primaryColor="#000FFF", secondaryColor = "#0FF0FF",
 var Gargatuan = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF",
                        x = c.width/2, y = c.height/2){
 	var ship = new Ship(x, y, 30, primaryColor, secondaryColor);
-    ship.name="Gargatuan";
+    ship.name="Gargantuan";
 	ship.updateDirection();
 	ship.hull = new Hull(200, 1);
 	ship.shield = new Shield(300, 0, 20, 0.5, 300);
