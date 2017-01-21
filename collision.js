@@ -107,14 +107,10 @@ function projection(vertices, axis){
 function collisionCircles(circleA, circleB){
       
     var dist = distance(circleA.position, circleB.position);
-    console.log(dist);
     if (dist < circleA.radius + circleB.radius){
-        console.log("collide!");
-        /*
         circleA.findAxis(circleB.position);
-        console.log(circleA.axis);
+        unitVector(circleA.axis, circleA.axis);
         return circleA.axis;    
-        */
     }
     return false;
 }
@@ -494,7 +490,7 @@ function incrementRect(rect, xIncrement, yIncrement){
 	rect.center.x = rect.position.x + rect.width * 0.5;
 	rect.center.y = rect.position.y + rect.height * 0.5;
 }
-Circle = function(x, y, radius, vx, vy, velocity, spin){
+var Circle = function(x, y, radius, vx, vy, velocity, spin){
 	var list = [];
 	// ponto1
 	list.push(x);
@@ -510,11 +506,9 @@ Circle = function(x, y, radius, vx, vy, velocity, spin){
 	this.axis = new Vector(0, 0);
 	this.projections = [];
 	this.applyVector = function(vector){
-		for (var i = 0; i < this.vertices.length; i++){
 			this.position.x += vector.x;
 			this.position.y += vector.y;
-		}
-	}
+    }
 	this.update = function(){
 		xIncrement = this.versor.x * this.velocity;
 		yIncrement = this.versor.y * this.velocity;
@@ -533,14 +527,37 @@ function checkBorderCircle(circle, action){
     lowerBound = circle.position.y + circle.radius;
     upperBound = circle.position.y - circle.radius;
     var hit = false;
-	if (rightBound > c.width || leftBound < 0){
+	if (rightBound > c.width){ 
+		diff = new Vector(-(rightBound - c.width), 0);
+		circle.applyVector(diff);
 		circle.versor.x *= -1;
 		if (action != undefined){
 			action(axis = 'x');
 		}
 		hit = true;
 	}
-	if (lowerBound > c.height || upperBound < 0){
+    else if( leftBound < 0){
+		diff = new Vector(-(leftBound), 0);
+		circle.applyVector(diff);
+		circle.versor.x *= -1;
+		if (action != undefined){
+			action(axis = 'x');
+		}
+		hit = true;
+
+    }
+	if (lowerBound > c.height){
+		diff = new Vector(-(lowerBound - c.height), 0);
+		circle.applyVector(diff);
+		circle.versor.y *= -1;
+		if (action != undefined){
+			action(axis = 'y');
+		}
+		hit = true;
+	}
+    else if(upperBound < 0){
+		diff = new Vector(-(upperBound), 0);
+		circle.applyVector(diff);
 		circle.versor.y *= -1;
 		if (action != undefined){
 			action(axis = 'y');

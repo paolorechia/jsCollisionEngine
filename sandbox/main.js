@@ -5,7 +5,7 @@ var maxSpeed = 6;
 var maxSpin = 4;
 var numberRectangles = 0;
 var numberTriangles = 0;
-var numberCircles= 2;
+var numberCircles= 8;
 var objects = [];
 
 for (i = 0; i < numberRectangles; i++){
