@@ -57,7 +57,7 @@ function generateStars (ctx, num, c){
 background = new Image();
 ctx.fillStyle="#000000";
 ctx.fillRect(0,0, c.width, c.height);
-generateStars(ctx, 100, c);
+generateStars(ctx, c.width/20, c);
 background.src = ctx.canvas.toDataURL("image/png");
 document.getElementById("umCanvas").setAttribute("style", "display: none");
 

@@ -296,28 +296,28 @@ var Weapon = function(velocity = 10, width = 1, range = 1000, limit = 10, damage
 					  mass = 1, rateOfFire = 8, spin=0, hasAmmo=false, ammo=100, energyUsage=0){
 						  */
 function machineGun(){
-	cannon = new Weapon(velocity = 8, width = 1, range = c.width/4, limit = 12, damage = 6, mass = 100, rateOfFire = 16, spin=0, hasAmmo=true, ammo=2000);
+	cannon = new Weapon(velocity = 8, width = 1, range = 200, limit = 12, damage = 6, mass = 100, rateOfFire = 16, spin=0, hasAmmo=true, ammo=2000);
 	cannon.type = 'p'; // projectile type
 	cannon.name="Machine Gun";
 	return cannon;
 }
 	
 function lightCannon(){
-	cannon = new Weapon(velocity = 2, width = 4, range = c.width/4, limit = 10, damage = 10, mass = 100, rateOfFire = 8, spin = 120, hasAmmo=true, ammo=1000);
+	cannon = new Weapon(velocity = 2, width = 4, range = 250, limit = 10, damage = 10, mass = 100, rateOfFire = 8, spin = 120, hasAmmo=true, ammo=1000);
 	cannon.projectileVelocity = 10;
 	cannon.type = 'p'; // projectile type
 	cannon.name="Light Cannon";
 	return cannon;
 }
 function heavyCannon(){
-	cannon = new Weapon(velocity = 4, width = 8, range = c.width/4, limit = 10, damage = 20, mass = 1000, rateOfFire = 4, spin = 120, hasAmmo=true, ammo=500);
+	cannon = new Weapon(velocity = 4, width = 8, range = 280, limit = 10, damage = 20, mass = 1000, rateOfFire = 4, spin = 120, hasAmmo=true, ammo=500);
 	cannon.projectileVelocity=10;
 	cannon.type = 'p'; // projectile type
 	cannon.name="Heavy Cannon";
 	return cannon;
 }
 function asteroidShooter(){
-	cannon = new Weapon(velocity = 10, width = 20, range = c.width/4, limit = 1, damage = 50, mass = 10000, rateOfFire = 1, spin = 120, hasAmmo=true, ammo=50);
+	cannon = new Weapon(velocity = 10, width = 20, range = 280, limit = 1, damage = 50, mass = 10000, rateOfFire = 1, spin = 120, hasAmmo=true, ammo=50);
 	cannon.projectileVelocity=10;
 	cannon.type = 'p'; // projectile type
 	cannon.name="Asteroid Shooter";
@@ -325,7 +325,7 @@ function asteroidShooter(){
 }
 
 function lightLaserBlaster(){
-	blaster = new Weapon(velocity = 30, width = 1, range = c.width/2, limit = 12, damage = 5, mass=1, rateOfFire = 12,  spin=0, hasAmmo=false, ammo=1,
+	blaster = new Weapon(velocity = 30, width = 1, range = 400, limit = 12, damage = 5, mass=1, rateOfFire = 12,  spin=0, hasAmmo=false, ammo=1,
 						 energyUsage = 5);
     blaster.type = 'p';
 	blaster.draw = function(){
@@ -361,7 +361,7 @@ function lightLaserBlaster(){
 	return blaster;
 }
 function heavyLaserBlaster(){
-	blaster = new Weapon(velocity = 30, width = 8, range = c.width/2, limit = 8, damage = 20, mass=1, rateOfFire = 6, spin=0, hasAmmo=false, ammo=1,
+	blaster = new Weapon(velocity = 30, width = 8, range = 400, limit = 8, damage = 20, mass=1, rateOfFire = 6, spin=0, hasAmmo=false, ammo=1,
 						 energyUsage = 20);
     blaster.type = 'p';
 	blaster.draw = function(){
@@ -397,7 +397,7 @@ function heavyLaserBlaster(){
 	return blaster;
 }
 function lightLaserBeam(){
-	beam = new Weapon(velocity = 100, width = 2, range = c.width, limit = 1, damage = 1, mass=1, rateOfFire = 1000, spin=0, hasAmmo=false, ammo=1,
+	beam = new Weapon(velocity = 100, width = 2, range = 800, limit = 1, damage = 1, mass=1, rateOfFire = 1000, spin=0, hasAmmo=false, ammo=1,
 					  energyUsage=4);
 	beam.type = 'l'; // laser type
 	beam.draw = function(){
@@ -421,7 +421,7 @@ function lightLaserBeam(){
 	return beam;
 }
 function heavyLaserBeam(){
-	beam = new Weapon(velocity = 100, width = 8, range = c.width, limit = 1, damage = 5, mass=1, rateOfFire = 60, spin=0, hasAmmo=false, ammo=1,
+	beam = new Weapon(velocity = 100, width = 8, range = 800, limit = 1, damage = 5, mass=1, rateOfFire = 60, spin=0, hasAmmo=false, ammo=1,
 					  energyUsage=9);
 	beam.type = 'l'; // laser type
 
