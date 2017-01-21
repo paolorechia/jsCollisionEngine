@@ -116,7 +116,27 @@ function collisionCircles(circleA, circleB){
 }
 
 function circleSTA(circle, polygon){
-    return false;
+    circle.findAxis(polygon.center);
+    unitVector(circle.axis, circle.axis);
+    var projPolygon = projection(polygon.vertices, circle.axis);
+    var imaginaryVertex = new Point(circle.position.x, circle.position.y);
+    imaginaryVertex.x += circle.axis.x * circle.radius;
+    imaginaryVertex.y += circle.axis.x * circle.radius;
+    imaginaryVertices = [];
+    imaginaryVertices.push(imaginaryVertex);
+    var imaginaryVertex = new Point(circle.position.x, circle.position.y);
+    imaginaryVertex.x -= circle.axis.x * circle.radius;
+    imaginaryVertex.y -= circle.axis.x * circle.radius;
+    imaginaryVertices.push(imaginaryVertex);
+    var projCircle = projection(imaginaryVertices, circle.axis);
+    over = (overlap(projPolygon, projCircle));
+    if (over == 0){
+        return false;
+    }
+    else{
+	    var mtv = new Vector(circle.axis.x, circle.axis.y);
+        return mtv;
+    }
 }
 
 function collisionSTA(polygonA, polygonB){
