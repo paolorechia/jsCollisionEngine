@@ -11,13 +11,12 @@ var coord = new Point(0, 0);
 //			console.log('w');
         }
         if (event.key == 's'){
-
         }
         if (event.key == 'd'){
- 
+            rotatePolygon(objects[0], 1);
         }
         if (event.key == 'a'){
-
+            rotatePolygon(objects[0], -1);
         }
         if (event.key == ' '){
 
@@ -41,4 +40,4 @@ var coord = new Point(0, 0);
     c.addEventListener("click", function(){
                                                 console.log("click!");},
                                                 false);
-    c.addEventListener("keydown", function(event){ keyboard(event)}, false);
+    window.addEventListener("keydown", keyboard, false);

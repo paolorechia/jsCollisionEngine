@@ -3,7 +3,7 @@ var maxSize = c.width/10;
 var minSize = c.width/100;
 var maxSpeed = 0;
 var maxSpin = 0;
-var numberRectangles = 1;
+var numberRectangles = 2;
 var numberTriangles = 0;
 var numberCircles= 0;
 var objects = [];
@@ -24,6 +24,7 @@ var fps = new Fps();
 var maxFPS = 1000;
 var interval = 1000/maxFPS;
 
+//objects[0].moveTo(new Point(300, 300));
 function mainLoop(){
 	newDate = new Date();
 	elapsedTime = newDate - lastDate;

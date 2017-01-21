@@ -195,6 +195,7 @@ function collisionSTA(polygonA, polygonB){
 			smallestAxis = polygonA.axes[i];
 		}
         drawProjection(projA, polygonA.axes[i]);
+        drawProjection(projB, polygonA.axes[i]);
 	}
 	for (var i = 0; i < polygonB.axes.length; i++){
 		projA = projection(polygonA.vertices, polygonB.axes[i]);
@@ -206,6 +207,8 @@ function collisionSTA(polygonA, polygonB){
 			smallestOverlap=over;
 			smallestAxis = polygonB.axes[i];
 		}
+        drawProjection(projA, polygonB.axes[i]);
+        drawProjection(projB, polygonB.axes[i]);
 	}
 	polygonA.hit=true;
 	polygonB.hit=true;
@@ -285,7 +288,6 @@ function drawProjection(proj, axis){
     ctx.strokeStyle="#000000";
     var start = new Point(proj.min * axis.x, proj.min * axis.y);
     var end = new Point(proj.max * axis.x, proj.max* axis.y);
-    console.log(start, end);
     ctx.moveTo(start.x, start.y);
     ctx.lineTo(end.x, end.y);
     ctx.stroke();
@@ -477,19 +479,10 @@ var Rect = function(x, y, width, height, vx, vy, velocity, spin){
 		this.hit=false;
 	}
     this.moveTo = function(point){
-        console.log(point);
-        this.center.x = point.x;
-        this.center.y = point.y;
-        this.vertices[0].x = this.center.x - this.width * 0.5;
-        this.vertices[0].y = this.center.y - this.height* 0.5;
-        this.vertices[1].x = this.center.x + this.width * 0.5;
-        this.vertices[1].y = this.center.y - this.height* 0.5;
-        this.vertices[2].x = this.center.x + this.width * 0.5;
-        this.vertices[2].y = this.center.y + this.height* 0.5;
-        this.vertices[3].x = this.center.x - this.width * 0.5;
-        this.vertices[3].y = this.center.y + this.height* 0.5;
-        this.position.x = this.vertices[0].x;
-        this.position.y = this.vertices[0].y;
+        console.log(this.center);
+        var vector = new Vector(0, 0);
+        calculateVector(point, this.center, vector);
+        this.applyVector(vector);
     }
 }
 
