@@ -547,7 +547,7 @@ var Ship = function(x, y, l1, primaryColor = "#0000FF", secondaryColor = "#00F0F
 		this.autoStatus.phase6 = true;
 		this.autoStatus.current = 0;
 	}
-	this.drawStatus = function(){
+	this.drawStatus = function(color = this.secondaryColor){
         if (camera == undefined){
             canvas = c;
         }
@@ -557,7 +557,7 @@ var Ship = function(x, y, l1, primaryColor = "#0000FF", secondaryColor = "#00F0F
 
 		ctx.beginPath();
 		ctx.font="14px Arial";
-		ctx.fillStyle=this.secondaryColor;
+		ctx.fillStyle=color;
 		string = "Hull: " + this.hull.current;
 		ctx.fillText(string, canvas.width - 200, 30);
 		string = "Immunity: " + this.immunity;

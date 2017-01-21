@@ -28,7 +28,7 @@ function enemyShoot(enemy){
 camera.addEventListener("mousemove", mouseMoveCamera, false);
 
 coord = new Point(c.width/2, c.height/2);
-player = new Stellar("#999999", "#00F0FF", 300, 200); // arctic
+player = new Stellar("#999999", "#000FFF", 300, 200); // arctic
 enemies = [];
 objects = [];
 var players = [];
@@ -38,6 +38,7 @@ enemies[0].engineOn=true;
 enemyShoot(enemies[0]);
 
 cursor = new Cursor();
+var statusColor = "#00F0FF";
 function mainLoop(){
 	newDate = new Date();
 	elapsedTime = newDate - lastDate;
@@ -49,8 +50,8 @@ function mainLoop(){
 
     cursor.update(player, camera, coord);
     weaponStatus = buildWeaponsStatus(player.weapons);
-    drawWeaponsStatus(weaponStatus, player.secondaryColor);
-    player.drawStatus();
+    drawWeaponsStatus(weaponStatus, statusColor);
+    player.drawStatus(statusColor);
     ctx.save();
     var x = player.hitbox.center.x;
     var y = player.hitbox.center.y;
@@ -85,7 +86,7 @@ function mainLoop(){
 
 
 	fps.calculateMean();
-	drawFPS(fps.mean, player.secondaryColor);
+	drawFPS(fps.mean, statusColor);
    	setTimeout(function(){requestAnimationFrame(mainLoop)}, interval);
 }
 

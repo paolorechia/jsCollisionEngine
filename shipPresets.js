@@ -226,7 +226,7 @@ function fetchShipByName(name){
     if (name == "Stellar"){
         var ship = new Stellar();
     }
-    else if (name == "Gargatuan"){
+    else if (name == "Gargantuan"){
         var ship = new Gargatuan();
     }
     else if (name == "Colossal"){
