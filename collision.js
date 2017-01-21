@@ -183,9 +183,12 @@ function collisionSTA(polygonA, polygonB){
     }
 	var smallestOverlap = 999999;
 	var smallestAxis = null;
+    color="#000000";
 	for (var i = 0; i < polygonA.axes.length; i++){
 		projA = projection(polygonA.vertices, polygonA.axes[i]);
 		projB = projection(polygonB.vertices, polygonA.axes[i]);
+        drawProjection(projA, polygonA.axes[i], color);
+        drawProjection(projB, polygonA.axes[i], color);
 		over = (overlap(projA, projB));
 		if (over == 0){
 			return false;
@@ -194,12 +197,13 @@ function collisionSTA(polygonA, polygonB){
 			smallestOverlap = over;
 			smallestAxis = polygonA.axes[i];
 		}
-        drawProjection(projA, polygonA.axes[i]);
-        drawProjection(projB, polygonA.axes[i]);
 	}
+    color="#888888";
 	for (var i = 0; i < polygonB.axes.length; i++){
 		projA = projection(polygonA.vertices, polygonB.axes[i]);
 		projB = projection(polygonB.vertices, polygonB.axes[i]);
+        drawProjection(projA, polygonA.axes[i], color);
+        drawProjection(projB, polygonA.axes[i], color);
 		if (over == 0){
 			return false;
 		}
@@ -207,8 +211,6 @@ function collisionSTA(polygonA, polygonB){
 			smallestOverlap=over;
 			smallestAxis = polygonB.axes[i];
 		}
-        drawProjection(projA, polygonB.axes[i]);
-        drawProjection(projB, polygonB.axes[i]);
 	}
 	polygonA.hit=true;
 	polygonB.hit=true;
@@ -281,11 +283,17 @@ function times2(a){
 	return a * 2;
 }
 
-function drawProjection(proj, axis){
+function drawProjection(proj, axis, color="#000000"){
     ctx.save();
     ctx.beginPath();
-    ctx.lineWidth=6;
-    ctx.strokeStyle="#000000";
+    if (axis.x < 0){
+        axis.x *= -1;
+    }
+    if (axis.y < 0){
+        axis.y *=-1;
+    }
+    ctx.lineWidth=12;
+    ctx.strokeStyle=color;
     var start = new Point(proj.min * axis.x, proj.min * axis.y);
     var end = new Point(proj.max * axis.x, proj.max* axis.y);
     ctx.moveTo(start.x, start.y);
@@ -479,14 +487,13 @@ var Rect = function(x, y, width, height, vx, vy, velocity, spin){
 		this.hit=false;
 	}
     this.moveTo = function(point){
-        console.log(this.center);
         var vector = new Vector(0, 0);
         calculateVector(point, this.center, vector);
         this.applyVector(vector);
     }
 }
 
-Triangle = function(x, y, l1, vx, vy, velocity, spin){
+var Triangle = function(x, y, l1, vx, vy, velocity, spin){
 	var list = [];
 	// ponto1
 	list.push(x);
@@ -537,6 +544,11 @@ Triangle = function(x, y, l1, vx, vy, velocity, spin){
 		this.center.y = y/3;
 		this.hit = false;
 	}
+    this.moveTo = function(point){
+        var vector = new Vector(0, 0);
+        calculateVector(point, this.center, vector);
+        this.applyVector(vector);
+    }
 }
 
 function applyVectorToRect(rect, vector){
@@ -590,6 +602,11 @@ var Circle = function(x, y, radius, vx, vy, velocity, spin){
 	}
     this.findAxis = function(point){
         calculateVector(this.position, point, this.axis);    
+    }
+    this.moveTo = function(point){
+        var vector = new Vector(0, 0);
+        calculateVector(point, this.center, vector);
+        this.applyVector(vector);
     }
 }
 
