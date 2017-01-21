@@ -517,9 +517,30 @@ Circle = function(x, y, radius, vx, vy, velocity, spin){
     }
 }
 
-
+function checkBorderCircle(circle, action){
+    rightBound = circle.position.x + circle.radius;
+    leftBound  = circle.position.x - circle.radius;
+    lowerBound = circle.position.y + circle.radius;
+    upperBound = circle.position.y - circle.radius;
+	if (rightBound > c.width || leftBound < 0){
+		circle.versor.x *= -1;
+		if (action != undefined){
+			action(axis = 'x');
+		}
+		hit = true;
+	}
+	if (lowerBound > c.height || upperBound < 0){
+		circle.versor.y *= -1;
+		if (action != undefined){
+			action(axis = 'y');
+		}
+		hit = true;
+	}
+	return hit;
+}
 function checkBorder(polygon, action){
     if (polygon.sides == 1){
+        checkBorderCircle(polygon, action);
         return;
     }
 	yAxis = new Vector(0, 1);
