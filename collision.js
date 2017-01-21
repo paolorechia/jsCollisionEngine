@@ -126,6 +126,7 @@ function collisionCircles(circleA, circleB){
 
 
 function circleSTA(circle, polygon){
+    var count = 0;
     dist = 10000;
     closest = - 1;
     for (var i = 0; i < polygon.vertices.length; i++){
@@ -146,6 +147,7 @@ function circleSTA(circle, polygon){
     if (over == 0){
         return false;
     }
+    count++;
     if (over < smallestOverlap){
         smallestOverlap = over;
         smallestAxis = circle.axis;
@@ -158,11 +160,13 @@ function circleSTA(circle, polygon){
 		if (over == 0){
 			return false;
 		}
+        count++;
 		if (over < smallestOverlap){
 			smallestOverlap = over;
 			smallestAxis = polygon.axes[i];
 		}
     }
+    console.log(count);
 	var mtv = new Vector(circle.axis.x, circle.axis.y);
     return mtv;
 }
@@ -190,7 +194,7 @@ function collisionSTA(polygonA, polygonB){
 			smallestOverlap = over;
 			smallestAxis = polygonA.axes[i];
 		}
-		
+        drawProjection(projA, polygonA.axes[i]);
 	}
 	for (var i = 0; i < polygonB.axes.length; i++){
 		projA = projection(polygonA.vertices, polygonB.axes[i]);
@@ -274,6 +278,19 @@ function times2(a){
 	return a * 2;
 }
 
+function drawProjection(proj, axis){
+    ctx.save();
+    ctx.beginPath();
+    ctx.lineWidth=6;
+    ctx.strokeStyle="#000000";
+    var start = new Point(proj.min * axis.x, proj.min * axis.y);
+    var end = new Point(proj.max * axis.x, proj.max* axis.y);
+    console.log(start, end);
+    ctx.moveTo(start.x, start.y);
+    ctx.lineTo(end.x, end.y);
+    ctx.stroke();
+    ctx.restore();
+}
 function drawCircle(circle, strokeColor="#0000FF", hitColor="#FF0000", center=false, centerColor="#00F0FF"){
         ctx.save();
         ctx.beginPath();
