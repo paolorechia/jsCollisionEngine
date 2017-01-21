@@ -104,6 +104,15 @@ function projection(vertices, axis){
 	return projection;
 }
 
+function projectionCircle(circle, axis){
+	var product;
+    product = dotProduct(circle.position, axis);
+    min = product - circle.radius;
+    max = product + circle.radius;
+	var projection = new Projection(min, max);
+	return projection;
+}
+
 function collisionCircles(circleA, circleB){
       
     var dist = distance(circleA.position, circleB.position);
@@ -115,28 +124,47 @@ function collisionCircles(circleA, circleB){
     return false;
 }
 
+
 function circleSTA(circle, polygon){
-    circle.findAxis(polygon.center);
+    dist = 10000;
+    closest = - 1;
+    for (var i = 0; i < polygon.vertices.length; i++){
+        aux = distance(circle.position, polygon.vertices[i]);
+        if (aux < dist){
+            dist=aux;
+            closest = i;
+        }
+    }
+    circle.findAxis(polygon.vertices[closest]);
     unitVector(circle.axis, circle.axis);
+	var smallestOverlap = 999999;
+
+    var projCircle = projectionCircle(circle, circle.axis);
     var projPolygon = projection(polygon.vertices, circle.axis);
-    var imaginaryVertex = new Point(circle.position.x, circle.position.y);
-    imaginaryVertex.x += circle.axis.x * circle.radius;
-    imaginaryVertex.y += circle.axis.x * circle.radius;
-    imaginaryVertices = [];
-    imaginaryVertices.push(imaginaryVertex);
-    var imaginaryVertex = new Point(circle.position.x, circle.position.y);
-    imaginaryVertex.x -= circle.axis.x * circle.radius;
-    imaginaryVertex.y -= circle.axis.x * circle.radius;
-    imaginaryVertices.push(imaginaryVertex);
-    var projCircle = projection(imaginaryVertices, circle.axis);
-    over = (overlap(projPolygon, projCircle));
+
+    over = (overlap(projCircle, projPolygon));
     if (over == 0){
         return false;
     }
-    else{
-	    var mtv = new Vector(circle.axis.x, circle.axis.y);
-        return mtv;
+    if (over < smallestOverlap){
+        smallestOverlap = over;
+        smallestAxis = circle.axis;
     }
+    for (var i = 0 ; i < polygon.axes.length; i++){
+        var projCircle = projectionCircle(circle, polygon.axes[i]);
+        var projPolygon = projection(polygon.vertices, polygon.axes[i]);
+
+		over = (overlap(projCircle, projPolygon));
+		if (over == 0){
+			return false;
+		}
+		if (over < smallestOverlap){
+			smallestOverlap = over;
+			smallestAxis = polygon.axes[i];
+		}
+    }
+	var mtv = new Vector(circle.axis.x, circle.axis.y);
+    return mtv;
 }
 
 function collisionSTA(polygonA, polygonB){
