@@ -104,7 +104,25 @@ function projection(vertices, axis){
 	return projection;
 }
 
+function collisionCircles(circle, circle){
+    return false;
+}
+
+function circleSTA(circle, polygon){
+    return false;
+}
+
 function collisionSTA(polygonA, polygonB){
+    if (polygonA.sides == 1 && polygonB.sides == 1){
+        return collisionCircles(polygonA, polygonB);
+        
+    }
+    else if (polygonA.sides == 1){
+        return circleSTA(polygonA, polygonB);
+    }
+    else if (polygonB.sides == 1){
+        return circleSTA(polygonB, polygonA);
+    }
 	var smallestOverlap = 999999;
 	var smallestAxis = null;
 	for (var i = 0; i < polygonA.axes.length; i++){
@@ -153,11 +171,14 @@ function overlap(projA, projB){
 function rotatePolygon(polygon, theta){
 		theta = degreesToRadians(theta);
 		if (polygon.sides == 1){ // special case: circle;
+            return;
+/*
 			cos = Math.cos(degreesToRadians(polygon.angle));
 			sin = Math.sin(degreesToRadians(polygon.angle));
 			polygon.front.x = polygon.center.x + cos * polygon.radius;
 			polygon.front.y = polygon.center.y + sin * polygon.radius;
-			return
+			return;
+*/
 		}
 		for (i = 0; i < polygon.vertices.length; i++){
 			polygon.vertices[i].x -= polygon.center.x;
@@ -197,6 +218,29 @@ function listToVertices(list){
 
 function times2(a){
 	return a * 2;
+}
+
+function drawCircle(circle, strokeColor="#0000FF", hitColor="#FF0000", center=false, centerColor="#00F0FF"){
+        ctx.save();
+        ctx.beginPath();
+		if (circle.hit == true){
+			ctx.strokeStyle=hitColor;
+		}
+		else{
+			ctx.strokeStyle=strokeColor;
+		}
+        ctx.arc(circle.position.x, circle.position.y,
+                circle.radius, 0, 2*Math.PI);
+        ctx.stroke()
+		if(center){
+				ctx.fillStyle=centerColor;
+				ctx.beginPath();
+				ctx.arc(circle.position.x,
+						circle.position.y,
+						3, 0, 2*Math.PI);
+				ctx.fill();
+	    }
+        ctx.restore();
 }
 
 function drawPolygon(polygon, strokeColor="#0000FF", hitColor="#FF0000", joints=true, center=true, centerColor="#00F0FF", jointColor="#0000FF"){
@@ -284,12 +328,7 @@ function calculateAxes(polygon){
 function drawAxes(polygon, length){
 	var axis = new Vector(0, 0);
 	if (polygon.sides == 1){ //circle
-		for (var i = 0; i < polygon.vertices.length; i++){
-			axis.x = polygon.axes[i].x * polygon.radius;
-			axis.y = polygon.axes[i].y * polygon.radius;
-			drawVector(polygon.center, axis);
-		}	
-		return;
+        return;
 	}
 	for (var i = 0; i < polygon.vertices.length-1; i++){
 		var midpoint = new midPoint(polygon.vertices[i], polygon.vertices[i+1]);
@@ -445,9 +484,44 @@ function incrementRect(rect, xIncrement, yIncrement){
 	rect.center.x = rect.position.x + rect.width * 0.5;
 	rect.center.y = rect.position.y + rect.height * 0.5;
 }
+Circle = function(x, y, radius, vx, vy, velocity, spin){
+	var list = [];
+	// ponto1
+	list.push(x);
+	list.push(y);
+	this.position = new Point(x, y);
+	this.radius= radius;
+	this.mass = radius*radius;
+	this.hit=false;
+	this.versor = new Versor(vx, vy);
+	this.velocity = velocity;
+	this.spin = spin;
+	this.sides = 1;
+	this.axis = new Vector(0, 0);
+	this.projections = [];
+	this.applyVector = function(vector){
+		for (var i = 0; i < this.vertices.length; i++){
+			this.position.x += vector.x;
+			this.position.y += vector.y;
+		}
+	}
+	this.update = function(){
+		xIncrement = this.versor.x * this.velocity;
+		yIncrement = this.versor.y * this.velocity;
+	    this.position.x += xIncrement;
+	    this.position.y += yIncrement;
+		this.hit = false;
+	}
+    this.findAxis = function(point){
+        calculateVector(this.position, point, this.axis);    
+    }
+}
 
 
 function checkBorder(polygon, action){
+    if (polygon.sides == 1){
+        return;
+    }
 	yAxis = new Vector(0, 1);
 	xAxis = new Vector(1, 0);
 
@@ -699,4 +773,16 @@ function randomTriangle(maxSize, minSize, maxSpeed, maxSpin){
 							Math.random(), Math.random(),
 							maxSpeed, spin);
 	return triangle;
+}
+function randomCircle(maxSize, minSize, maxSpeed, maxSpin){
+	var xpos = Math.ceil(Math.random() * c.width/2) + maxSize;
+	var ypos = Math.ceil(Math.random() * c.height/2) + maxSize;
+	var radius = Math.ceil(Math.random() * maxSize) + minSize;
+	var direction = Math.round(Math.random() + 1);
+	direction = Math.pow(-1, direction);
+	var spin = Math.ceil(Math.random() * maxSpin * direction);
+	circle = new Circle(xpos, ypos, radius,
+							Math.random(), Math.random(),
+							maxSpeed, spin);
+	return circle;
 }
