@@ -194,14 +194,14 @@ function collisionSTA(polygonA, polygonB){
 		over = (overlap(projA, projB));
         overlaps.push(over);
 		if (over == 0){
-            console.log(overlaps);
+//            console.log(overlaps);
 			return false;
 		}
 		if (over < smallestOverlap){
 			smallestOverlap = over;
 			smallestAxis = polygonA.axes[i];
 		}
-            console.log(overlaps);
+//            console.log(overlaps);
 	}
 /*
     colorA="#FFFFFF";
@@ -212,17 +212,17 @@ function collisionSTA(polygonA, polygonB){
 		projB = projection(polygonB.vertices, polygonB.axes[i]);
         drawProjection(projA, polygonA.axes[i], colorA);
         drawProjection(projB, polygonA.axes[i], colorB);
-		over = (overlap(projA, projB));
-        overlaps.push(over);
+//		over = (overlap(projA, projB));
+//        overlaps.push(over);
 		if (over == 0){
-            console.log(overlaps);
+          //  console.log(overlaps);
 			return false;
 		}
 		if (over < smallestOverlap){
 			smallestOverlap=over;
 			smallestAxis = polygonB.axes[i];
 		}
-            console.log(overlaps);
+         //   console.log(overlaps);
 	}
 	polygonA.hit=true;
 	polygonB.hit=true;
@@ -233,11 +233,12 @@ function collisionSTA(polygonA, polygonB){
 }
 
 function overlap(projA, projB){
+    console.log(projA, projB);
 	var overlap = 0;
-	if (projB.min < projA.max){
+	if (projB.min < projA.max && projB.max > projA.max){
 		overlap = projB.min - projA.max;
 	}
-	else if(projA.min > projB.max){
+	else if(projB.max > projA.min && projB.min < projA.min){
 		overlap = projA.min - projB.max;
 	}
 	return overlap;
