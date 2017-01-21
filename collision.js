@@ -546,8 +546,8 @@ function checkBorderCircle(circle, action){
 		hit = true;
 
     }
-	if (lowerBound > c.height){
-		diff = new Vector(-(lowerBound - c.height), 0);
+	else if (lowerBound > c.height){
+		diff = new Vector(0, -(lowerBound - c.height));
 		circle.applyVector(diff);
 		circle.versor.y *= -1;
 		if (action != undefined){
@@ -556,7 +556,7 @@ function checkBorderCircle(circle, action){
 		hit = true;
 	}
     else if(upperBound < 0){
-		diff = new Vector(-(upperBound), 0);
+		diff = new Vector(0, -upperBound);
 		circle.applyVector(diff);
 		circle.versor.y *= -1;
 		if (action != undefined){
