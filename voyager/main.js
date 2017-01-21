@@ -19,6 +19,11 @@ function mouseMoveCamera(event){
     coord.x = player.hitbox.center.x + event.clientX - camera.width/2;
     coord.y = player.hitbox.center.y + event.clientY - camera.height/2;
 }
+function enemyShoot(enemy){
+    for (var i = 0; i < enemy.weapons.length; i++){
+        enemy.weapons[i].firing = true;
+    }
+}
 
 camera.addEventListener("mousemove", mouseMoveCamera, false);
 
@@ -28,8 +33,10 @@ enemies = [];
 objects = [];
 var players = [];
 players.push(player);
-enemies.push(new Gargatuan("#F0000F", "#FFFFFF"));
-enemies.engineOn=true;
+enemies.push(new Gargatuan("#009900", "#FFFFFF"));
+enemies[0].engineOn=true;
+enemyShoot(enemies[0]);
+
 cursor = new Cursor();
 function mainLoop(){
 	newDate = new Date();
@@ -54,23 +61,27 @@ function mainLoop(){
     
     updateShip(player);
     updateWeapons(player);
-    updateShipProjectiles(player);
-    checkProjectilesBorder(player);
-    collideShipShips(player, enemies, 5);
 
     checkBorder(player.hitbox, function(){player.auxHitbox.applyVector(diff)});
     updateEnemy(enemies[0]);
-    enemies[0].draw();
-    drawShipWeapons(enemies[0]);
     updateShipProjectiles(enemies[0]);
+
     checkProjectilesBorder(enemies[0]);
+    collideWeaponsShips(enemies[0], players);
+
+    updateShipProjectiles(player);
+    checkProjectilesBorder(player);
+
+    collideShipShips(player, enemies, 5);
+    collideWeaponsShips(player, enemies);
       
+    drawShipWeapons(enemies[0]);
+    enemies[0].draw();
     player.autoPilot();
     player.drawAutoPath();
     player.draw();
     drawShipWeapons(player);
     ctx.restore();
-
 
 
 	fps.calculateMean();
