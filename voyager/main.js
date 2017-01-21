@@ -1,7 +1,5 @@
 var map = document.getElementById("umCanvas");
-
 var camera = document.getElementById("camera");
-ctx = camera.getContext("2d");
 
 var Cursor = function(){
     this.x;
@@ -25,6 +23,47 @@ function enemyShoot(enemy){
     }
 }
 
+
+function generateStars (ctx, num, c){
+        var i;
+        for (i=0; i<num; i++){
+            var color1 = Math.floor(Math.random() * 254 + 1);
+            var color2 = Math.floor(Math.random() * 254 + 1);
+            var color3 = Math.floor(Math.random() * 254 + 1);
+            var alpha = 0.1;
+            var x = Math.floor((Math.random() * c.width) + 1);
+            var y = Math.floor((Math.random() * c.height) + 1);
+            var width = Math.floor(Math.random() * 2 + 1);
+
+            ctx.beginPath();
+            ctx.fillStyle = "rgba(" + color1 + "," + color2 + "," + color3 + "," + alpha+ ")";
+            ctx.arc(x, y, width * 5, 0, 2*Math.PI);
+
+            ctx.fill();
+
+
+            ctx.beginPath();
+            ctx.fillStyle = "rgba(" + color1 + "," + color2 + "," + color3 + "," + alpha * 2+ ")";
+            ctx.arc(x, y, width * 3, 0, 2*Math.PI);
+
+            ctx.fill();
+
+            ctx.beginPath(); 
+            ctx.fillStyle = "rgba(" + color1 + "," + color2 + "," + color3 + +"," + 1 + ")";
+            ctx.arc(x, y, width/2, 0, 2*Math.PI);
+            ctx.fill();
+        }
+}
+background = new Image();
+ctx.fillStyle="#000000";
+ctx.fillRect(0,0, c.width, c.height);
+generateStars(ctx, 100, c);
+background.src = ctx.canvas.toDataURL("image/png");
+document.getElementById("umCanvas").setAttribute("style", "display: none");
+
+ctx = camera.getContext("2d");
+//ctx.drawImage(background.imagem, ship.x - camera.width/2, ship.y - camera.height/2, camera.width, camera.height,0, 0, camera.width, camera.height);
+
 camera.addEventListener("mousemove", mouseMoveCamera, false);
 
 coord = new Point(c.width/2, c.height/2);
@@ -40,13 +79,16 @@ enemyShoot(enemies[0]);
 cursor = new Cursor();
 var statusColor = "#00F0FF";
 function mainLoop(){
+
 	newDate = new Date();
 	elapsedTime = newDate - lastDate;
 	lastDate = new Date();
 	fps.add(elapsedTime);
 
+
 	ctx.fillStyle="#000000";
 	ctx.fillRect(0,0,camera.width,camera.height);
+    ctx.drawImage(background, player.hitbox.center.x - camera.width/2, player.hitbox.center.y - camera.height/2, camera.width, camera.height, 0, 0, camera.width, camera.height);
 
     cursor.update(player, camera, coord);
     weaponStatus = buildWeaponsStatus(player.weapons);
