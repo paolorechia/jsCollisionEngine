@@ -187,6 +187,13 @@ function circleSTA(circle, polygon){
             contains=intersect.contains;
 		}
     }
+    console.log(contains);
+    // when circle and polygon dimensions are close enough, 
+    // one of the shapes must be pushed out as if if contained, even
+    // when the projection overlap algorithm does not flag a containment
+    if (distance(circle.position, polygon.center) < circle.radius){
+        contains=true;
+    }
     polygon.hit = true;
     circle.hit = true;
 	var mtv = new MTV(new Vector(circle.axis.x, circle.axis.y),
@@ -847,7 +854,7 @@ function unilateralElasticCollision(polygonA, mtv, polygonB){
 	}
 }
 function elasticCollision(polygonA, mtv, polygonB, 
-                          bindedA, bindedB, bounce = 0.3){
+                          bindedA, bindedB, bounce){
 	var mtv = collisionSTA(polygonA, polygonB);
 	if (mtv == false){
 		return;
@@ -976,7 +983,8 @@ function checkElasticCollisionsNaive(array, bounce){
 	var i, j, mtv;
 	for (i = 0; i < array.length; i++){
 		for (j=i+1; j < array.length; j++){
-            elasticCollision(array[j], mtv, array[i], bounce);
+            elasticCollision(array[j], mtv, array[i],
+                            undefined, undefined, bounce);
         }
 	}
 }

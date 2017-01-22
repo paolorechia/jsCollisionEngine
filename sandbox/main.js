@@ -1,11 +1,11 @@
 var j = 0;
-var maxSize = c.width/10;
-var minSize = c.width/100;
+var maxSize = c.width/20;
+var minSize = c.width/30;
 var maxSpeed = 6;
 var maxSpin = 4;
-var numberRectangles = 0;
-var numberTriangles = 0;
-var numberCircles= 8;
+var numberRectangles = 6;
+var numberTriangles = 6;
+var numberCircles= 6;
 var objects = [];
 
 for (i = 0; i < numberRectangles; i++){
@@ -16,7 +16,7 @@ for (i = 0; i < numberTriangles; i++){
 	objects.push(new randomTriangle(maxSize, minSize, maxSpeed, maxSpin));
 }
 for (i = 0; i < numberCircles; i++){
-	objects.push(new randomCircle(maxSize, minSize, maxSpeed, maxSpin));
+	objects.push(new randomCircle(maxSize/2, minSize/2, maxSpeed, maxSpin));
 }
 var axis_length = 20;
 var lastDate = new Date();
