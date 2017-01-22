@@ -16,7 +16,6 @@ cat << DOCSTART >$file
  
 <script> 
 DOCSTART
-
 java -jar ~/bin/closure-compiler-v20161201.jar ../collision.js >> $file
 java -jar ~/bin/closure-compiler-v20161201.jar ../shipBase.js         >> $file
 java -jar ~/bin/closure-compiler-v20161201.jar ../weapon.js         >> $file

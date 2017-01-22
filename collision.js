@@ -257,56 +257,51 @@ function debugSTA(polygonA, polygonB){
     }
 	var smallestOverlap = 999999;
 	var smallestAxis = null;
+    var contains = false;
     colorA="#FF0000";
     colorB="#0000FF";
     overlaps = [];
-    var j  = 0 ;
+    var intersect = new Intersecction();
 	for (var i = 0; i < polygonA.axes.length; i++){
 		projA = projection(polygonA.vertices, polygonA.axes[i]);
 		projB = projection(polygonB.vertices, polygonA.axes[i]);
         drawProjection(projA, polygonA.axes[i], colorA);
         drawProjection(projB, polygonA.axes[i], colorB);
-		over = (overlap(projA, projB));
-        over.id = j;
-        j++;
-        overlaps.push(over);
-		if (over == 0){
+		intersect = (overlap(projA, projB));
+        overlaps.push(intersect.overlap);
+		if (intersect.overlap == 0){
             console.log(overlaps);
 			return false;
 		}
-		if (over < smallestOverlap){
-			smallestOverlap = over;
+		if (intersect.overlap < smallestOverlap){
+			smallestOverlap = intersect.overlap;
 			smallestAxis = polygonA.axes[i];
+            contains=intersect.contains;
 		}
 	}
-/*
-    colorA="#FFFFFF";
-    colorB="#00FFFF";
-*/
 	for (var i = 0; i < polygonB.axes.length; i++){
 		projA = projection(polygonA.vertices, polygonB.axes[i]);
 		projB = projection(polygonB.vertices, polygonB.axes[i]);
         drawProjection(projA, polygonB.axes[i], colorA);
         drawProjection(projB, polygonB.axes[i], colorB);
-		over = (overlap(projA, projB));
-        over.id = j;
-        j++;
-        overlaps.push(over);
-		if (over == 0){
+		intersect = (overlap(projA, projB));
+        overlaps.push(intersect.overlap);
+		if (intersect.overlap == 0){
             console.log(overlaps);
 			return false;
 		}
-		if (over < smallestOverlap){
-			smallestOverlap=over;
+		if (intersect.overlap < smallestOverlap){
+			smallestOverlap=intersect.overlap;
 			smallestAxis = polygonB.axes[i];
+            contains=intersect.contains;
 		}
-        console.log(overlaps);
 	}
+    console.log(overlaps);
 	polygonA.hit=true;
 	polygonB.hit=true;
 	var x = smallestAxis.x;
 	var y = smallestAxis.y;
-	var mtv = new Vector(x, y);
+	var mtv = new MTV(new Vector(x, y), smallestOverlap, contains);
 	return mtv;
 }
 
