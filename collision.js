@@ -1,6 +1,11 @@
 var c = document.getElementById("umCanvas");
 var ctx = c.getContext("2d");
 
+Intersecction = function(overlap, contains){
+    this.overlap = overlap;
+    this.contains = contains;
+}
+
 MTV = function(axis, magnitude){
     this.axis = axis;
     this.magnitude = magnitude;
@@ -288,18 +293,19 @@ function debugSTA(polygonA, polygonB){
 
 
 function overlap(projA, projB){
-	var overlap = 0;
+    var intersect = new Intersecction(0, false);
     if (projB.min < projA.max && projB.max > projA.max){
-            overlap = projB.min - projA.max;
+            intersect.overlap = projB.min - projA.max;
         }
     else if(projB.max > projA.min && projB.min < projA.min){
-        overlap = projA.min - projB.max;
+        intersect.overlap = projA.min - projB.max;
     }
+    // containment case
     else if (projB.min > projA.min && projB.max < projA.max){
-        overlap = projA.max - projB.max;
+        intersect.overlap = projA.max - projB.max;
+        intersect.contains=true;
     }
-
-	return overlap;
+	return intersect;
 }
 function rotatePolygon(polygon, theta){
 		theta = degreesToRadians(theta);
@@ -825,8 +831,8 @@ function elasticCollision(polygonA, mtv, polygonB){
 		return;
 	}
     var vector = new Vector(0, 0);
-    vector.x = mtv.axis.x * mtv.magnitude * 0.1;
-    vector.y = mtv.axis.y * mtv.magnitude * 0.1;
+    vector.x = mtv.axis.x * mtv.magnitude * 0.05;
+    vector.y = mtv.axis.y * mtv.magnitude * 0.05;
     polygonB.applyVector(vector); 
     vector.x *=-1;
     vector.y *=-1;
