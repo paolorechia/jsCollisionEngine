@@ -131,7 +131,8 @@ function collisionCircles(circleA, circleB){
     if (diff < 0){
         circleA.findAxis(circleB.position);
         unitVector(circleA.axis, circleA.axis);
-	    var mtv = new MTV(new Vector(circle.axis.x, circle.axis.y), -diff);
+	    var mtv = new MTV(new Vector(circleA.axis.x, circleA.axis.y), -diff, false);
+        console.log(mtv);
         return mtv;
     }
     return false;
@@ -150,36 +151,39 @@ function circleSTA(circle, polygon){
     }
     circle.findAxis(polygon.vertices[closest]);
     unitVector(circle.axis, circle.axis);
-	var smallestOverlap = 999999;
 
     var projCircle = projectionCircle(circle, circle.axis);
     var projPolygon = projection(polygon.vertices, circle.axis);
 
-    over = (overlap(projCircle, projPolygon));
-    if (over == 0){
+	var smallestOverlap = 999999;
+    var contains = false;
+    intersect = (overlap(projCircle, projPolygon));
+    if (intersect.overlap== 0){
         return false;
     }
-    if (over < smallestOverlap){
-        smallestOverlap = over;
+    if (intersect.overlap< smallestOverlap){
+        smallestOverlap = intersect.overlap;
         smallestAxis = circle.axis;
+        contains=intersect.contains;
     }
     for (var i = 0 ; i < polygon.axes.length; i++){
         var projCircle = projectionCircle(circle, polygon.axes[i]);
         var projPolygon = projection(polygon.vertices, polygon.axes[i]);
 
-		over = (overlap(projCircle, projPolygon));
-		if (over == 0){
+		intersect = (overlap(projCircle, projPolygon));
+		if (intersect.overlap== 0){
 			return false;
 		}
-		if (over < smallestOverlap){
-			smallestOverlap = over;
+		if (intersect.overlap< smallestOverlap){
+			smallestOverlap = intersect.overlap;
 			smallestAxis = polygon.axes[i];
+            contains=intersect.contains;
 		}
     }
     polygon.hit = true;
     circle.hit = true;
 	var mtv = new MTV(new Vector(circle.axis.x, circle.axis.y),
-                      smallestOverlap);
+                      smallestOverlap, contains);
     return mtv;
 }
 function collisionSTA(polygonA, polygonB){
@@ -961,11 +965,11 @@ function partiallyElasticCollision(polygonA, mtv, polygonB){
 	}
 */
 }
-function checkElasticCollisionsNaive(array){
+function checkElasticCollisionsNaive(array, bounce){
 	var i, j, mtv;
 	for (i = 0; i < array.length; i++){
 		for (j=i+1; j < array.length; j++){
-            elasticCollision(array[j], mtv, array[i]);
+            elasticCollision(array[j], mtv, array[i], bounce);
         }
 	}
 }
