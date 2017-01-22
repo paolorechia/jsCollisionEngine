@@ -1,6 +1,11 @@
 var c = document.getElementById("umCanvas");
 var ctx = c.getContext("2d");
 
+MTV = function(axis, magnitude){
+    this.axis = axis;
+    this.magnitude = magnitude;
+}
+
 Versor = function(x, y){
 	this.x=x;
 	this.y=y;
@@ -116,10 +121,11 @@ function projectionCircle(circle, axis){
 function collisionCircles(circleA, circleB){
       
     var dist = distance(circleA.position, circleB.position);
-    if (dist < circleA.radius + circleB.radius){
+    var diff = dist - (circleA.radius + circleB.radius);
+    if (diff < 0){
         circleA.findAxis(circleB.position);
         unitVector(circleA.axis, circleA.axis);
-        return circleA.axis;    
+	    var mtv = new MTV(new Vector(circle.axis.x, circle.axis.y), -diff);
     }
     return false;
 }
@@ -166,7 +172,8 @@ function circleSTA(circle, polygon){
     }
     polygon.hit = true;
     circle.hit = true;
-	var mtv = new Vector(circle.axis.x, circle.axis.y);
+	var mtv = new MTV(new Vector(circle.axis.x, circle.axis.y),
+                      smallestOverlap);
     return mtv;
 }
 function collisionSTA(polygonA, polygonB){
@@ -209,7 +216,8 @@ function collisionSTA(polygonA, polygonB){
 	polygonB.hit=true;
 	var x = smallestAxis.x;
 	var y = smallestAxis.y;
-	var mtv = new Vector(x, y);
+	var mtv = new MTV(new Vector(x, y), smallestOverlap);
+    console.log(mtv);
 	return mtv;
 }
 
@@ -816,10 +824,18 @@ function elasticCollision(polygonA, mtv, polygonB){
 	if (mtv == false){
 		return;
 	}
-	changeDirection(polygonA, mtv);
-	mtv.x = - mtv.x;
-	mtv.y = - mtv.y;
-	changeDirection(polygonB, mtv);
+    console.log(mtv);
+    var vector = new Vector(0, 0);
+    vector.x = mtv.axis.x * mtv.magnitude * 0.5;
+    vector.y = mtv.axis.y * mtv.magnitude * 0.5;
+    polygonB.applyVector(vector); 
+
+
+	changeDirection(polygonA, mtv.axis);
+	mtv.axis.x = - mtv.axis.x;
+	mtv.axis.y = - mtv.axis.y;
+	changeDirection(polygonB, mtv.axis);
+
 }
 
 function getInertiaNorm(polygon){

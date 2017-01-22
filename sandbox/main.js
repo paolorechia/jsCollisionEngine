@@ -3,9 +3,9 @@ var maxSize = c.width/10;
 var minSize = c.width/100;
 var maxSpeed = 6;
 var maxSpin = 4;
-var numberRectangles = 4;
-var numberTriangles = 4;
-var numberCircles= 4;
+var numberRectangles = 2;
+var numberTriangles = 2;
+var numberCircles= 2;
 var objects = [];
 
 for (i = 0; i < numberRectangles; i++){
