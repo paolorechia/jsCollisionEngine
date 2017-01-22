@@ -6,9 +6,10 @@ Intersecction = function(overlap, contains){
     this.contains = contains;
 }
 
-MTV = function(axis, magnitude){
+MTV = function(axis, magnitude, contains){
     this.axis = axis;
     this.magnitude = magnitude;
+    this.contains=contains;
 }
 
 Versor = function(x, y){
@@ -193,36 +194,38 @@ function collisionSTA(polygonA, polygonB){
     }
 	var smallestOverlap = 999999;
 	var smallestAxis = null;
+    var contains = false;
 	for (var i = 0; i < polygonA.axes.length; i++){
 		projA = projection(polygonA.vertices, polygonA.axes[i]);
 		projB = projection(polygonB.vertices, polygonA.axes[i]);
-		over = (overlap(projA, projB));
-		if (over == 0){
+		intersect = (overlap(projA, projB));
+		if (intersect.overlap == 0){
 			return false;
 		}
-		if (over < smallestOverlap){
-			smallestOverlap = over;
+		if (intersect.overlap < smallestOverlap){
+			smallestOverlap = intersect.overlap;
 			smallestAxis = polygonA.axes[i];
+            contains=intersect.contains;
 		}
 	}
 	for (var i = 0; i < polygonB.axes.length; i++){
 		projA = projection(polygonA.vertices, polygonB.axes[i]);
 		projB = projection(polygonB.vertices, polygonB.axes[i]);
-		over = (overlap(projA, projB));
-		if (over == 0){
+		intersect = (overlap(projA, projB));
+		if (intersect.overlap == 0){
 			return false;
 		}
-		if (over < smallestOverlap){
-			smallestOverlap=over;
+		if (intersect.overlap < smallestOverlap){
+			smallestOverlap=intersect.overlap;
 			smallestAxis = polygonB.axes[i];
+            contains=intersect.contains;
 		}
 	}
 	polygonA.hit=true;
 	polygonB.hit=true;
 	var x = smallestAxis.x;
 	var y = smallestAxis.y;
-	var mtv = new MTV(new Vector(x, y), smallestOverlap);
-    console.log(mtv);
+	var mtv = new MTV(new Vector(x, y), smallestOverlap, contains);
 	return mtv;
 }
 
@@ -291,7 +294,6 @@ function debugSTA(polygonA, polygonB){
 	return mtv;
 }
 
-
 function overlap(projA, projB){
     var intersect = new Intersecction(0, false);
     if (projB.min < projA.max && projB.max > projA.max){
@@ -303,6 +305,14 @@ function overlap(projA, projB){
     // containment case
     else if (projB.min > projA.min && projB.max < projA.max){
         intersect.overlap = projA.max - projB.max;
+        var min = Math.abs(projA.min - projB.min);
+        var max = Math.abs(projA.max - projB.max);
+        if (min < max){
+            intersect.overlap += min;
+        }
+            else{
+            intersect.overlap += max; 
+        }
         intersect.contains=true;
     }
 	return intersect;
@@ -825,25 +835,40 @@ function unilateralElasticCollision(polygonA, mtv, polygonB){
 		changeDirection(polygonA, mtv);
 	}
 }
-function elasticCollision(polygonA, mtv, polygonB){
+function elasticCollision(polygonA, mtv, polygonB, 
+                          bindedA, bindedB, bounce = 0.3){
 	var mtv = collisionSTA(polygonA, polygonB);
 	if (mtv == false){
 		return;
 	}
     var vector = new Vector(0, 0);
-    vector.x = mtv.axis.x * mtv.magnitude * 0.05;
-    vector.y = mtv.axis.y * mtv.magnitude * 0.05;
+    if (mtv.contains){
+        console.log(mtv);
+        vector.x = mtv.axis.x * mtv.magnitude;
+        vector.y = mtv.axis.y * mtv.magnitude;
+    }
+    else{
+        vector.x = mtv.axis.x * mtv.magnitude * bounce;
+        vector.y = mtv.axis.y * mtv.magnitude * bounce;
+    }
     polygonB.applyVector(vector); 
+    if (bindedB != undefined){
+        for (var i = 0; i < bindedB.length; i++){
+            bindedB[i].applyVector(vector);
+        }
+    }
     vector.x *=-1;
     vector.y *=-1;
     polygonA.applyVector(vector); 
-
-
-	changeDirection(polygonA, mtv.axis);
-	mtv.axis.x = - mtv.axis.x;
-	mtv.axis.y = - mtv.axis.y;
-	changeDirection(polygonB, mtv.axis);
-
+    if (bindedA != undefined){
+        for (var i = 0; i < bindedA.length; i++){
+            bindedA[i].applyVector(vector);
+        }
+    }
+    changeDirection(polygonA, mtv.axis);
+    mtv.axis.x = - mtv.axis.x;
+    mtv.axis.y = - mtv.axis.y;
+    changeDirection(polygonB, mtv.axis);
 }
 
 function getInertiaNorm(polygon){
