@@ -126,6 +126,7 @@ function collisionCircles(circleA, circleB){
         circleA.findAxis(circleB.position);
         unitVector(circleA.axis, circleA.axis);
 	    var mtv = new MTV(new Vector(circle.axis.x, circle.axis.y), -diff);
+        return mtv;
     }
     return false;
 }
