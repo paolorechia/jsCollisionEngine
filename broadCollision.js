@@ -2,27 +2,29 @@
 // depends on collision, shipBase and weapon
 function collideShipHitboxes(ship, objects, damage){
 		for (var i = 0; i < objects.length; i++){
-			mtv = collisionSTA(ship.hitbox, objects[i]);
-			if (mtv){
-				elasticCollision(ship.hitbox, mtv, objects[i]);
-				elasticCollision(ship.auxHitbox, mtv, objects[i]);
-				ship.sufferDamage(damage);	// fixed amount of damage on Collision
-				objects[i].sufferDamage(damage);
+                var bindA = [];
+                bindA.push(ship.auxHitbox);
+				hit = elasticCollision(ship.hitbox, objects[i], bindA, undefined, 0.1);
+                if (hit){
+                    ship.sufferDamage(damage);	// fixed amount of damage on Collision
+                    objects[i].sufferDamage(damage);
+                }
 			}
-		}
 }
 function collideShipShips(ship, enemies, damage){
+        var bindA = [];
+        bindA.push(ship.auxHitbox);
 		for (var i = 0; i < enemies.length; i++){
-			mtv = collisionSTA(ship.hitbox, enemies[i].hitbox);
-			if (mtv){
-				elasticCollision(ship.hitbox, mtv, enemies[i].hitbox);
-				elasticCollision(ship.auxHitbox, mtv, enemies[i].hitbox);
-				ship.sufferDamage(damage);	// fixed amount of damage on Collision
-				enemies[i].sufferDamage(damage);			
-			}
-		}
+                bindB = [];
+                bindB.push(enemies[i].auxHitbox);
+				hit = elasticCollision(ship.hitbox, enemies[i].hitbox,
+                                       bindA, bindB, 0.1);
+                if (hit){
+                    ship.sufferDamage(damage);	// fixed amount of damage on Collision
+                    enemies[i].sufferDamage(damage);			
+                }
+	    }
 }
-
 
 function collideWeaponsHitboxes(shooter, hitboxes){
 		for (var u = 0; u < shooter.weapons.length; u++){

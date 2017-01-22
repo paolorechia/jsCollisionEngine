@@ -818,13 +818,13 @@ function changeDirection(polygon, mtv){
 function smartCollision(polygonA, polygonB, action){
 	var mtv = collisionSTA(polygonA, polygonB);
 	if (mtv == false){
-		return;
+		return false;
 	}
 	var massDiff = polygonA.mass - polygonB.mass;
 	massDiff = Math.abs(massDiff);
 	smaller = Math.min(polygonA.mass, polygonB.mass);
 	if (massDiff <  smaller){
-		elasticCollision(polygonA, mtv, polygonB);
+		elasticCollision(polygonA, polygonB, undefined, undefined, 0.1);
 //		console.log("Elastic colision");
 	}
 	if (massDiff < smaller*4){
@@ -843,23 +843,22 @@ function smartCollision(polygonA, polygonB, action){
 
 function unilateralElasticCollision(polygonA, mtv, polygonB){
 	if (polygonA.mass > polygonB.mass){
-		mtv.x = - mtv.x;
-		mtv.y = - mtv.y;
-		changeDirection(polygonB, mtv);
+		mtv.axis.x = - mtv.axis.x;
+		mtv.axis.y = - mtv.axis.y;
+		changeDirection(polygonB, mtv.axis);
 	}
 	else{
-		changeDirection(polygonA, mtv);
+		changeDirection(polygonA, mtv.axis);
 	}
 }
-function elasticCollision(polygonA, mtv, polygonB, 
+function elasticCollision(polygonA, polygonB, 
                           bindedA, bindedB, bounce){
 	var mtv = collisionSTA(polygonA, polygonB);
-	if (mtv == false){
-		return;
+	if (mtv== false){
+		return false;
 	}
     var vector = new Vector(0, 0);
     if (mtv.contains){
-//        console.log(mtv);
         vector.x = mtv.axis.x * mtv.magnitude;
         vector.y = mtv.axis.y * mtv.magnitude;
     }
@@ -885,6 +884,7 @@ function elasticCollision(polygonA, mtv, polygonB,
     mtv.axis.x = - mtv.axis.x;
     mtv.axis.y = - mtv.axis.y;
     changeDirection(polygonB, mtv.axis);
+    return true;
 }
 
 function getInertiaNorm(polygon){
@@ -930,15 +930,15 @@ function partiallyElasticCollision(polygonA, mtv, polygonB){
 		bigger = polygonB;
 		smaller = polygonA;
 		sign = -1;
-		changeDirection(polygonA, mtv);
+		changeDirection(polygonA, mtv.axis);
 	}
 	else{
 		bigger = polygonA;
 		smaller = polygonB;
 		sign = 1;
-		mtv.x = - mtv.x;
-		mtv.y = - mtv.y;
-		changeDirection(polygonB, mtv);
+		mtv.axis.x = - mtv.axis.x;
+		mtv.axis.y = - mtv.axis.y;
+		changeDirection(polygonB, mtv.axis);
 	}
 	inertiaBig = new Vector(0, 0);
 	inertiaSmaller = new Vector(0, 0);
@@ -978,11 +978,11 @@ function partiallyElasticCollision(polygonA, mtv, polygonB){
 */
 }
 function checkElasticCollisionsNaive(array, bounce){
-	var i, j, mtv;
+	var i, j;
 	for (i = 0; i < array.length; i++){
 		for (j=i+1; j < array.length; j++){
-            elasticCollision(array[j], mtv, array[i],
-                            undefined, undefined, bounce);
+            elasticCollision(array[j], array[i],
+                                undefined, undefined, bounce);
         }
 	}
 }
