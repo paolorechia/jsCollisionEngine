@@ -125,14 +125,21 @@ function projectionCircle(circle, axis){
 }
 
 function collisionCircles(circleA, circleB){
-      
     var dist = distance(circleA.position, circleB.position);
     var diff = dist - (circleA.radius + circleB.radius);
+    var contains = false;
     if (diff < 0){
+        var biggerRadius = circleA.radius;
+        if (circleB.radius > biggerRadius){
+            biggerRadius = circleB.radius;
+        } 
+        if (biggerRadius > dist){
+            contains = true;
+        }
         circleA.findAxis(circleB.position);
         unitVector(circleA.axis, circleA.axis);
-	    var mtv = new MTV(new Vector(circleA.axis.x, circleA.axis.y), -diff, false);
-        console.log(mtv);
+	    var mtv = new MTV(new Vector(circleA.axis.x, circleA.axis.y), -diff, contains);
+        //console.log(mtv);
         return mtv;
     }
     return false;
