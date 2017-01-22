@@ -1,11 +1,12 @@
 var j = 0;
+var bounce = 0.1;
 var maxSize = c.width/20;
 var minSize = c.width/30;
 var maxSpeed = 6;
 var maxSpin = 4;
-var numberRectangles = 6;
-var numberTriangles = 6;
-var numberCircles= 6;
+var numberRectangles = 5;
+var numberTriangles = 5;
+var numberCircles= 5;
 var objects = [];
 
 for (i = 0; i < numberRectangles; i++){
@@ -42,7 +43,7 @@ function mainLoop(){
 		drawAxes(objects[j], axis_length);
 
 	}
-    checkElasticCollisionsNaive(objects, 0.1);
+    checkElasticCollisionsNaive(objects, bounce);
 	for (k = 0; k < objects.length; k++){
             if (objects[k].sides == 1){
                 drawCircle(objects[k], "#0000FF", "#FF0000", true, "#00F0FF");

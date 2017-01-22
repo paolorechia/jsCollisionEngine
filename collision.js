@@ -139,7 +139,6 @@ function collisionCircles(circleA, circleB){
         circleA.findAxis(circleB.position);
         unitVector(circleA.axis, circleA.axis);
 	    var mtv = new MTV(new Vector(circleA.axis.x, circleA.axis.y), -diff, contains);
-        //console.log(mtv);
         return mtv;
     }
     return false;
@@ -187,7 +186,6 @@ function circleSTA(circle, polygon){
             contains=intersect.contains;
 		}
     }
-    console.log(contains);
     // when circle and polygon dimensions are close enough, 
     // one of the shapes must be pushed out as if if contained, even
     // when the projection overlap algorithm does not flag a containment
@@ -861,7 +859,7 @@ function elasticCollision(polygonA, mtv, polygonB,
 	}
     var vector = new Vector(0, 0);
     if (mtv.contains){
-        console.log(mtv);
+//        console.log(mtv);
         vector.x = mtv.axis.x * mtv.magnitude;
         vector.y = mtv.axis.y * mtv.magnitude;
     }
