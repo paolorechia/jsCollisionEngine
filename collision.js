@@ -131,7 +131,6 @@ function collisionCircles(circleA, circleB){
     return false;
 }
 
-
 function circleSTA(circle, polygon){
     var count = 0;
     dist = 10000;
@@ -825,11 +824,13 @@ function elasticCollision(polygonA, mtv, polygonB){
 	if (mtv == false){
 		return;
 	}
-    console.log(mtv);
     var vector = new Vector(0, 0);
-    vector.x = mtv.axis.x * mtv.magnitude * 0.5;
-    vector.y = mtv.axis.y * mtv.magnitude * 0.5;
+    vector.x = mtv.axis.x * mtv.magnitude * 0.1;
+    vector.y = mtv.axis.y * mtv.magnitude * 0.1;
     polygonB.applyVector(vector); 
+    vector.x *=-1;
+    vector.y *=-1;
+    polygonA.applyVector(vector); 
 
 
 	changeDirection(polygonA, mtv.axis);
