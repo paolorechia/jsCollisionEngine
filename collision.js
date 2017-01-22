@@ -147,7 +147,6 @@ function circleSTA(circle, polygon){
     if (over == 0){
         return false;
     }
-    count++;
     if (over < smallestOverlap){
         smallestOverlap = over;
         smallestAxis = circle.axis;
@@ -160,15 +159,58 @@ function circleSTA(circle, polygon){
 		if (over == 0){
 			return false;
 		}
-        count++;
 		if (over < smallestOverlap){
 			smallestOverlap = over;
 			smallestAxis = polygon.axes[i];
 		}
     }
-    console.log(count);
+    polygon.hit = true;
+    circle.hit = true;
 	var mtv = new Vector(circle.axis.x, circle.axis.y);
     return mtv;
+}
+function collisionSTA(polygonA, polygonB){
+    if (polygonA.sides == 1 && polygonB.sides == 1){
+        return collisionCircles(polygonA, polygonB);
+    }
+    else if (polygonA.sides == 1){
+        return circleSTA(polygonA, polygonB);
+    }
+    else if (polygonB.sides == 1){
+        return circleSTA(polygonB, polygonA);
+    }
+	var smallestOverlap = 999999;
+	var smallestAxis = null;
+	for (var i = 0; i < polygonA.axes.length; i++){
+		projA = projection(polygonA.vertices, polygonA.axes[i]);
+		projB = projection(polygonB.vertices, polygonA.axes[i]);
+		over = (overlap(projA, projB));
+		if (over == 0){
+			return false;
+		}
+		if (over < smallestOverlap){
+			smallestOverlap = over;
+			smallestAxis = polygonA.axes[i];
+		}
+	}
+	for (var i = 0; i < polygonB.axes.length; i++){
+		projA = projection(polygonA.vertices, polygonB.axes[i]);
+		projB = projection(polygonB.vertices, polygonB.axes[i]);
+		over = (overlap(projA, projB));
+		if (over == 0){
+			return false;
+		}
+		if (over < smallestOverlap){
+			smallestOverlap=over;
+			smallestAxis = polygonB.axes[i];
+		}
+	}
+	polygonA.hit=true;
+	polygonB.hit=true;
+	var x = smallestAxis.x;
+	var y = smallestAxis.y;
+	var mtv = new Vector(x, y);
+	return mtv;
 }
 
 function debugSTA(polygonA, polygonB){
@@ -236,49 +278,6 @@ function debugSTA(polygonA, polygonB){
 	return mtv;
 }
 
-function collisionSTA(polygonA, polygonB){
-    if (polygonA.sides == 1 && polygonB.sides == 1){
-        return collisionCircles(polygonA, polygonB);
-    }
-    else if (polygonA.sides == 1){
-        return circleSTA(polygonA, polygonB);
-    }
-    else if (polygonB.sides == 1){
-        return circleSTA(polygonB, polygonA);
-    }
-	var smallestOverlap = 999999;
-	var smallestAxis = null;
-	for (var i = 0; i < polygonA.axes.length; i++){
-		projA = projection(polygonA.vertices, polygonA.axes[i]);
-		projB = projection(polygonB.vertices, polygonA.axes[i]);
-		over = (overlap(projA, projB));
-		if (over == 0){
-			return false;
-		}
-		if (over < smallestOverlap){
-			smallestOverlap = over;
-			smallestAxis = polygonA.axes[i];
-		}
-	}
-	for (var i = 0; i < polygonB.axes.length; i++){
-		projA = projection(polygonA.vertices, polygonB.axes[i]);
-		projB = projection(polygonB.vertices, polygonB.axes[i]);
-		over = (overlap(projA, projB));
-		if (over == 0){
-			return false;
-		}
-		if (over < smallestOverlap){
-			smallestOverlap=over;
-			smallestAxis = polygonB.axes[i];
-		}
-	}
-	polygonA.hit=true;
-	polygonB.hit=true;
-	var x = smallestAxis.x;
-	var y = smallestAxis.y;
-	var mtv = new Vector(x, y);
-	return mtv;
-}
 
 function overlap(projA, projB){
 	var overlap = 0;
@@ -671,7 +670,7 @@ var Circle = function(x, y, radius, vx, vy, velocity, spin){
     }
     this.moveTo = function(point){
         var vector = new Vector(0, 0);
-        calculateVector(point, this.center, vector);
+        calculateVector(point, this.position, vector);
         this.applyVector(vector);
     }
 }
