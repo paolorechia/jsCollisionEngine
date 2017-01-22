@@ -186,22 +186,24 @@ function collisionSTA(polygonA, polygonB){
     colorA="#FF0000";
     colorB="#0000FF";
     overlaps = [];
+    var j  = 0 ;
 	for (var i = 0; i < polygonA.axes.length; i++){
 		projA = projection(polygonA.vertices, polygonA.axes[i]);
 		projB = projection(polygonB.vertices, polygonA.axes[i]);
         drawProjection(projA, polygonA.axes[i], colorA);
         drawProjection(projB, polygonA.axes[i], colorB);
 		over = (overlap(projA, projB));
+        over.id = j;
+        j++;
         overlaps.push(over);
 		if (over == 0){
-//            console.log(overlaps);
+            console.log(overlaps);
 			return false;
 		}
 		if (over < smallestOverlap){
 			smallestOverlap = over;
 			smallestAxis = polygonA.axes[i];
 		}
-//            console.log(overlaps);
 	}
 /*
     colorA="#FFFFFF";
@@ -210,19 +212,21 @@ function collisionSTA(polygonA, polygonB){
 	for (var i = 0; i < polygonB.axes.length; i++){
 		projA = projection(polygonA.vertices, polygonB.axes[i]);
 		projB = projection(polygonB.vertices, polygonB.axes[i]);
-        drawProjection(projA, polygonA.axes[i], colorA);
-        drawProjection(projB, polygonA.axes[i], colorB);
-//		over = (overlap(projA, projB));
-//        overlaps.push(over);
+        drawProjection(projA, polygonB.axes[i], colorA);
+        drawProjection(projB, polygonB.axes[i], colorB);
+		over = (overlap(projA, projB));
+        over.id = j;
+        j++;
+        overlaps.push(over);
 		if (over == 0){
-          //  console.log(overlaps);
+            console.log(overlaps);
 			return false;
 		}
 		if (over < smallestOverlap){
 			smallestOverlap=over;
 			smallestAxis = polygonB.axes[i];
 		}
-         //   console.log(overlaps);
+        console.log(overlaps);
 	}
 	polygonA.hit=true;
 	polygonB.hit=true;
@@ -233,17 +237,19 @@ function collisionSTA(polygonA, polygonB){
 }
 
 function overlap(projA, projB){
-    console.log(projA, projB);
 	var overlap = 0;
-	if (projB.min < projA.max && projB.max > projA.max){
-		overlap = projB.min - projA.max;
-	}
-	else if(projB.max > projA.min && projB.min < projA.min){
-		overlap = projA.min - projB.max;
-	}
+    if (projB.min < projA.max && projB.max > projA.max){
+            overlap = projB.min - projA.max;
+        }
+    else if(projB.max > projA.min && projB.min < projA.min){
+        overlap = projA.min - projB.max;
+    }
+    else if (projB.min > projA.min && projB.max < projA.max){
+        overlap = projA.max - projB.max;
+    }
+
 	return overlap;
 }
-
 function rotatePolygon(polygon, theta){
 		theta = degreesToRadians(theta);
 		if (polygon.sides == 1){ // special case: circle;
@@ -299,11 +305,14 @@ function times2(a){
 function drawProjection(proj, axis, color="#000000"){
     ctx.save();
     ctx.beginPath();
-    if (axis.x < 0){
-        axis.x *= -1;
+    if (axis.x < 0 && axis.y < 0){
+        ctx.translate(c.width, c.height);
     }
-    if (axis.y < 0){
-        axis.y *=-1;
+    else if (axis.x < 0){
+        ctx.translate(c.width, 0);
+    }
+    else if (axis.y < 0){
+        ctx.translate(0, c.height);
     }
     ctx.lineWidth=12;
     ctx.strokeStyle=color;
