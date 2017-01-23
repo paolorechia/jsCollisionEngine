@@ -20,6 +20,7 @@ var Weapon = function(velocity = 10, width = 1, range = 1000, limit = 10, damage
 	this.damage = damage;
 	this.hasAmmo = hasAmmo;
 	this.energyUsage = energyUsage;
+    this.sound = null;
 	if (hasAmmo){
 		this.ammo=ammo;
 	}
@@ -117,6 +118,13 @@ var Weapon = function(velocity = 10, width = 1, range = 1000, limit = 10, damage
 			}
 		}
 
+        if (this.sound != null){
+
+            if (this.sound.currentTime > 0.25){
+                this.sound.currentTime = 0.08;
+            }
+            this.sound.play();
+        }
 		this.lockDown = true;
 		var projectile = new Rect(this.position.x, this.position.y - this.projectileHeight/2, this.projectileWidth, this.projectileHeight,
 									   this.direction.x, this.direction.y,
@@ -299,6 +307,8 @@ function machineGun(){
 	cannon = new Weapon(velocity = 8, width = 1, range = 200, limit = 12, damage = 6, mass = 100, rateOfFire = 16, spin=0, hasAmmo=true, ammo=2000);
 	cannon.type = 'p'; // projectile type
 	cannon.name="Machine Gun";
+    cannon.sound= document.getElementById("machineGun");
+    cannon.sound.volume = 0.5;
 	return cannon;
 }
 	
