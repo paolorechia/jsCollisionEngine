@@ -15,7 +15,7 @@ while [ $i -ne $numberFiles ]; do
     output=${substring:0:$index}
     output=${output}mp3
     echo $output
-    ffmpeg -i $substring -codec:a libmp3lame -b:a 8k $output
+    ffmpeg -i $substring -codec:a libmp3lame -b:a ${1}k $output
     index=`expr $index + 4`
     inputFiles=${inputFiles:$index}
     i=`expr $i + 1`

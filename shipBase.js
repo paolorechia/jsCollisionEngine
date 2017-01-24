@@ -176,9 +176,9 @@ var Hull = function(max = 100, resistance = 0){
 			}			
 		}
         if (this.sound != null){
-            console.log(this.sound);
-            this.sound.play();
-        }
+               console.log(this.sound);
+               this.sound.play(); 
+            }
 	}
 	this.recover = function(heal){
 		this.current += heal;

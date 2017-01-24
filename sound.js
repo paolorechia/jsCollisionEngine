@@ -1,13 +1,11 @@
 var SoundArray = function(){
     this.timeOutArray = [];
     this.timeOutId = 0;
-    this.timeOutSound = function(){
-        if (this.sound != null){
+    this.play= function(){
             this.timeOutArray[this.timeOutId].currentTime = 0;
             this.timeOutArray[this.timeOutId].play();
             this.timeOutId++;
             this.timeOutId %= this.timeOutLimit;
-        }
     }
     this.timeOutLimit = 3;
     this.loadSounds = function(sound){
@@ -26,29 +24,29 @@ var SoundArray = function(){
         }
     }
 }
-var BufferedSound = function(sound, buffer){
+var BufferedSound = function(sound, buffer, upperBound = 3, lowerBound = 0.5){
     this.sound=sound;
     this.buffer=buffer;
-    this.playSound2 = function(overlapTime = 200, startTime=200){
+    this.upperBound = upperBound;
+    this.lowerBound = lowerBound;
+    this.playSound2 = function(){
         if (this.sound.currentTime == 0 && this.buffer.currentTime == 0){
             this.sound.play();
             return; 
         }
-        var upperBound = 1.8;
-        var lowerBound = 1.0; 
-        var resetTime = lowerBound - 0.1;
+        var resetTime = this.lowerBound - 0.1;
         
-        if (this.sound.currentTime > upperBound){
+        if (this.sound.currentTime > this.upperBound){
             this.buffer.play(); 
         }
-        if (this.buffer.currentTime > lowerBound && this.buffer.currentTime < upperBound){
+        if (this.buffer.currentTime > this.lowerBound && this.buffer.currentTime < this.upperBound){
             this.sound.pause();
             this.sound.currentTime = resetTime;
         }
-        if (this.buffer.currentTime > upperBound){
+        if (this.buffer.currentTime > this.upperBound){
             this.sound.play();
         }
-        if (this.sound.currentTime > lowerBound && this.sound.currentTime < upperBound){
+        if (this.sound.currentTime > this.lowerBound && this.sound.currentTime < this.upperBound){
             this.buffer.pause();
             this.buffer.currentTime = resetTime;
         }
