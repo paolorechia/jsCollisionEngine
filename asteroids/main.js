@@ -508,7 +508,6 @@ selectMusic.addEventListener('ended', function(){
 selectMusic.volume = 0.5;
 console.log(selectMusic);
 
-
 ctx.lineWidth=3;
 var j = 0;
 

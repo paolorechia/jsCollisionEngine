@@ -21,6 +21,28 @@ var Weapon = function(velocity = 10, width = 1, range = 1000, limit = 10, damage
 	this.hasAmmo = hasAmmo;
 	this.energyUsage = energyUsage;
     this.sound = null;
+    this.buffer = null;
+    this.playSound = function(){
+        if (this.sound != null){ 
+           this.sound.currentTime = 0.00;
+            this.sound.play();
+        }
+    }
+    this.stopSound = function(){
+        if (this.sound != null){
+            this.sound.stop();
+        }
+    }
+    this.loopSound = function(){
+        if (this.sound.currentTime == 0){
+            this.sound.play();
+        }
+        var timeToEnd = this.sound.length;
+        timeToEnd/=1000;
+        if (this.sound.currentTime > timeToEnd){
+                setTimeout(this.playSound(), timeToEnd);
+        }             
+    }
 	if (hasAmmo){
 		this.ammo=ammo;
 	}
@@ -119,11 +141,7 @@ var Weapon = function(velocity = 10, width = 1, range = 1000, limit = 10, damage
 		}
 
         if (this.sound != null){
-
-            if (this.sound.currentTime > 0.25){
-                this.sound.currentTime = 0.08;
-            }
-            this.sound.play();
+//            this.loopSound();
         }
 		this.lockDown = true;
 		var projectile = new Rect(this.position.x, this.position.y - this.projectileHeight/2, this.projectileWidth, this.projectileHeight,
@@ -309,6 +327,7 @@ function machineGun(){
 	cannon.name="Machine Gun";
     cannon.sound= document.getElementById("machineGun");
     cannon.sound.volume = 0.5;
+    cannon.sound.length = 300;
 	return cannon;
 }
 	
