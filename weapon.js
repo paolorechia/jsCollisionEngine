@@ -24,6 +24,7 @@ var Weapon = function(velocity = 10, width = 1, range = 1000, limit = 10, damage
     this.timeOutArray = [];
     this.timeOutId = 0;
     this.timeOutSound = function(){
+        console.log(this.sound);
         if (this.sound != null){
             this.timeOutArray[this.timeOutId].currentTime = 0;
             this.timeOutArray[this.timeOutId].play();

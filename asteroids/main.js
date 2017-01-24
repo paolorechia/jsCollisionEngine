@@ -88,7 +88,7 @@ function generateTurrets(n, cannons, moving=false, rateOfFire=1){
             turret.weapons[j].setCenter(player.hitbox.center);
             turret.weapons[j].setPosition(turret.hitbox.vertices[j]);
             turret.weapons[j].firing=true;
-            turret.weapons.sound=null;
+            turret.weapons.sound=undefined;
             console.log(turret.weapons.sound);
         }
         turret.weapon.setOwner(turret);

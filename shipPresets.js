@@ -53,7 +53,7 @@ var Gargatuan = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF",
 	ship.shield.setEnabled(true);
 	ship.acceleration = 0.08;
 	ship.maxSpeed = 7;
-	ship.turnRate = 2;
+	ship.turnRate = 4;
 	
 	ship.addWeapon(heavyLaserBlaster());
 	ship.changeWeapon();
@@ -96,10 +96,10 @@ var Colossal = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF",
 	ship.shield.setEnabled(true);
 	ship.acceleration = 0.04;
 	ship.maxSpeed = 9;
-	ship.turnRate = 1;
+	ship.turnRate = 2;
 	
     
-    for (var i = 0; i < ship.hitbox.vertices.length; i++){
+    for (var i = 2; i < ship.hitbox.vertices.length; i++){
         ship.addWeapon(heavyLaserBlaster());
         ship.changeWeapon();
         ship.weapon.setOwner(ship);
@@ -109,7 +109,7 @@ var Colossal = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF",
         ship.weapon.enabled=true;
     }
 
-    for (var i = 0; i < ship.hitbox.vertices.length; i++){
+    for (var i = 0; i < ship.hitbox.vertices.length - 1; i++){
         ship.addWeapon(lightLaserBlaster());
         ship.changeWeapon();
         ship.weapon.setOwner(ship);
