@@ -22,6 +22,30 @@ var Weapon = function(velocity = 10, width = 1, range = 1000, limit = 10, damage
 	this.energyUsage = energyUsage;
     this.sound = null;
     this.buffer = null;
+    this.timeOutArray = [];
+    this.timeOutId = 0;
+    this.timeOutSound = function(){
+        this.timeOutArray[this.timeOutId].currentTime = 0;
+        this.timeOutArray[this.timeOutId].play();
+        this.timeOutId++;
+        this.timeOutId %= this.limit;
+    }
+    this.loadSounds = function(sound){
+        for (var i  = 0; i < this.limit; i++){
+            var newSound = document.createElement("audio");
+            newSound.src = sound.src;
+            this.timeOutArray[i] =  newSound;
+        }
+    }
+    this.timeOutDiogo= function(sound){
+        instance = setTimeout(()=>{
+        var newSound = new document.createElement("audio");
+        newSound.src = sound.src;
+        newSound.play();
+        setTimeout(()=>{instance = null; console.log("killing instance")}, 0);
+        }, 0);
+    }
+
     this.playSound2 = function(overlapTime = 100){
         if (this.sound.currentTime == 0 && this.buffer.currentTime == 0){
             this.sound.play();
@@ -34,20 +58,12 @@ var Weapon = function(velocity = 10, width = 1, range = 1000, limit = 10, damage
             this.sound.play();
             if (this.sound.currentTime > timeToEnd){
                 this.buffer.play();
-/*
-                this.sound.pause();
-                this.sound.currentTime = 0.5;
-*/
             }             
         }
         else{
             this.buffer.play();
             if (this.buffer.currentTime > timeToEnd){
                 this.sound.play();
-/*
-                this.buffer.pause();
-                this.buffer.currentTime = 0.5;
-*/
             }             
         }
     }
@@ -69,28 +85,6 @@ var Weapon = function(velocity = 10, width = 1, range = 1000, limit = 10, damage
         if (this.sound != null && this.buffer != null){
             this.sound.pause();
             this.buffer.pause();
-        }
-    }
-    this.loopSound = function(overlapTime = 0){
-        if (this.sound.currentTime == 0 && this.buffer.currentTime == 0){
-            this.sound.play();
-            return; 
-        }
-        var timeToEnd = this.sound.length - overlapTime;
-        timeToEnd /= 1000;
-        if (this.sound.currentTime != 0){
-            if (this.sound.currentTime > timeToEnd){
-                this.buffer.play();
-                this.sound.pause();
-                this.sound.currentTime = 0;
-            }             
-        }
-        else{
-            if (this.buffer.currentTime > timeToEnd){
-                this.sound.play();
-                this.buffer.pause();
-                this.buffer.currentTime = 0;
-            }             
         }
     }
 	if (hasAmmo){
@@ -179,7 +173,7 @@ var Weapon = function(velocity = 10, width = 1, range = 1000, limit = 10, damage
 	
 	this.updateFiring = function(shipSpeed){
 		if (this.projectiles.length >= this.limit || this.firing == false || this.lockDown == true || this.ammo <= 0){
-            this.pauseSound();
+//            this.pauseSound();
 			return;
 		}
 		if (this.energyUsage > 0){
@@ -192,7 +186,9 @@ var Weapon = function(velocity = 10, width = 1, range = 1000, limit = 10, damage
 		}
 
         if (this.sound != null){
-            this.playSound2();
+            this.timeOutSound();
+//              this.timeOutDiogo(this.sound);
+//            this.playSound2();
         }
 		this.lockDown = true;
 		var projectile = new Rect(this.position.x, this.position.y - this.projectileHeight/2, this.projectileWidth, this.projectileHeight,
@@ -376,13 +372,15 @@ function machineGun(){
 	cannon = new Weapon(velocity = 8, width = 1, range = 200, limit = 12, damage = 6, mass = 100, rateOfFire = 16, spin=0, hasAmmo=true, ammo=2000);
 	cannon.type = 'p'; // projectile type
 	cannon.name="Machine Gun";
-    cannon.sound = document.getElementById("machineGun");
+    cannon.sound  = document.createElement("audio");
+    cannon.sound.src = "soundEffects/heavycannon.mp3"
     cannon.buffer = document.createElement("audio");
-    cannon.buffer.src = "soundEffects/machine_gun.mp3"
+    cannon.buffer.src = "soundEffects/heavycannon.mp3"
     cannon.sound.volume = 0.5;
     cannon.sound.length = 300;
     cannon.buffer.volume = 0.5;
     cannon.buffer.length = 300;
+    cannon.loadSounds(cannon.sound);
 	return cannon;
 }
 	
@@ -442,6 +440,15 @@ function lightLaserBlaster(){
 		}
 	}
 	blaster.name = "Light Laser Blaster";
+    blaster.sound  = document.createElement("audio");
+    blaster.sound.src = "soundEffects/Laser_Shoot.mp3"
+    blaster.buffer = document.createElement("audio");
+    blaster.buffer.src = "soundEffects/Laser_Shoot.mp3"
+    blaster.sound.volume = 0.5;
+    blaster.sound.length = 300;
+    blaster.buffer.volume = 0.5;
+    blaster.buffer.length = 300;
+    blaster.loadSounds(blaster.sound);
 	return blaster;
 }
 function heavyLaserBlaster(){
