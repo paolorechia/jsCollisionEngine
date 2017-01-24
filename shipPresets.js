@@ -38,6 +38,14 @@ var Stellar = function(primaryColor="#000FFF", secondaryColor = "#0FF0FF",
     ship.weapon.setCenter(coord);
     ship.weapon.setTurretMode(true);
     ship.weapon.enabled=true;
+
+    ship.hull.sound=document.createElement("audio");
+    ship.hull.sound.src="../soundEffects/Hit_Hurt5.mp3";
+    ship.hull.sound.volume=0.5;
+    ship.shield.sound=document.createElement("audio");
+    ship.shield.sound.src="../soundEffects/Hit_Hurt5.mp3";
+    ship.deadSound=document.createElement("audio");
+    ship.deadSound.src="../soundEffects/Explosion4.mp3";
 	
 	return ship;
 }
@@ -80,6 +88,8 @@ var Gargatuan = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF",
 	ship.weapon.setPosition(ship.front);
 	ship.weapon.setCenter(ship.hitbox.center);
 	ship.weapon.enabled=true;
+    ship.deadSound=document.createElement("audio");
+    ship.deadSound.src="../soundEffects/Explosion4.mp3";
 
 
 	return ship;
@@ -119,6 +129,8 @@ var Colossal = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF",
         ship.weapon.setTurretMode(true);
         ship.weapon.enabled=true;
     }
+    ship.deadSound=document.createElement("audio");
+    ship.deadSound.src="../soundEffects/Explosion4.mp3";
 
 	return ship;
 }
@@ -219,6 +231,8 @@ var Turret = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF", cannon
 		}
 		ctx.restore();
 	}
+    ship.deadSound=document.createElement("audio");
+    ship.deadSound.src="../soundEffects/Explosion4.mp3";
 	return ship;
 }
 

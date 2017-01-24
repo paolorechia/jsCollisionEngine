@@ -331,7 +331,7 @@ function machineGun(){
 	cannon.type = 'p'; // projectile type
 	cannon.name="Machine Gun";
     cannon.sound  = document.createElement("audio");
-    cannon.sound.src = "soundEffects/machine_gun.mp3"
+    cannon.sound.src = "../soundEffects/machine_gun.mp3"
     cannon.sound.volume = 0.1;
     cannon.loadSounds(cannon.sound);
 	return cannon;
@@ -394,7 +394,7 @@ function lightLaserBlaster(){
 	}
 	blaster.name = "Light Laser Blaster";
     blaster.sound  = document.createElement("audio");
-    blaster.sound.src = "soundEffects/Laser_Shoot.mp3"
+    blaster.sound.src = "../soundEffects/Laser_Shoot.mp3"
     blaster.sound.volume = 0.5;
     blaster.loadSounds(blaster.sound);
 	return blaster;
@@ -434,7 +434,7 @@ function heavyLaserBlaster(){
 	}
 	blaster.name = "Heavy Laser Blaster";
     blaster.sound  = document.createElement("audio");
-    blaster.sound.src = "soundEffects/Laser_Shoot2.mp3"
+    blaster.sound.src = "../soundEffects/Laser_Shoot2.mp3"
     blaster.sound.volume = 0.5;
     blaster.loadSounds(blaster.sound);
 	return blaster;
@@ -487,7 +487,7 @@ function heavyLaserBeam(){
 	}
 	beam.name = "Heavy Laser Beam";
     beam.sound  = document.createElement("audio");
-    beam.sound.src = "soundEffects/laser-reapeated.mp3"
+    beam.sound.src = "../soundEffects/laser-reapeated.mp3"
     beam.sound.volume = 0.5;
     beam.loadSounds(beam.sound);
 	return beam;
