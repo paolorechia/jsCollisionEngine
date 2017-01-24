@@ -28,10 +28,11 @@ var Weapon = function(velocity = 10, width = 1, range = 1000, limit = 10, damage
         this.timeOutArray[this.timeOutId].currentTime = 0;
         this.timeOutArray[this.timeOutId].play();
         this.timeOutId++;
-        this.timeOutId %= this.limit;
+        this.timeOutId %= this.timeOutLimit;
     }
+    this.timeOutLimit = 3;
     this.loadSounds = function(sound){
-        for (var i  = 0; i < this.limit; i++){
+        for (var i  = 0; i < this.timeOutLimit; i++){
             var newSound = document.createElement("audio");
             newSound.src = sound.src;
             this.timeOutArray[i] =  newSound;
@@ -45,7 +46,6 @@ var Weapon = function(velocity = 10, width = 1, range = 1000, limit = 10, damage
         setTimeout(()=>{instance = null; console.log("killing instance")}, 0);
         }, 0);
     }
-
     this.playSound2 = function(overlapTime = 100){
         if (this.sound.currentTime == 0 && this.buffer.currentTime == 0){
             this.sound.play();
