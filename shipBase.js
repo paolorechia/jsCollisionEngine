@@ -176,7 +176,6 @@ var Hull = function(max = 100, resistance = 0){
 			}			
 		}
         if (this.sound != null){
-               console.log(this.sound);
                this.sound.play(); 
             }
 	}
@@ -702,7 +701,6 @@ var Ship = function(x, y, l1, primaryColor = "#0000FF", secondaryColor = "#00F0F
 		}
 	    if (this.hull.current < 0){
 		    this.dead=true;
-                console.log(this.deadSound);
             if (this.deadSound != null){
                 this.deadSound.play();
             }

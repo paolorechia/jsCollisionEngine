@@ -2,6 +2,21 @@
 // Depends on: collision.js; ship.js; weapons;js
 // var Shield = function(max = 100, resistance=0, drainRate=10, rechargeEfficiency = 0.5, drainSpeed = 250)
 
+function loadDefaultSounds(ship){
+    ship.hull.sound=new SoundArray();
+    sound=document.createElement("audio");
+    sound.src="../soundEffects/Hit_Hurt5.mp3";
+    sound.volume=0.5;
+    ship.hull.sound.loadSounds(sound);
+
+    ship.shield.sound=new SoundArray();
+    ship.shield.sound.loadSounds(sound);
+
+    ship.deadSound=document.createElement("audio");
+    ship.deadSound.src="../soundEffects/Explosion4.mp3";
+    return ship;
+}
+
 var Stellar = function(primaryColor="#000FFF", secondaryColor = "#0FF0FF", 
                        x = c.width/2, y = c.height/2){
 	var ship = new Ship(x, y, 20, primaryColor, secondaryColor);
@@ -39,19 +54,7 @@ var Stellar = function(primaryColor="#000FFF", secondaryColor = "#0FF0FF",
     ship.weapon.setTurretMode(true);
     ship.weapon.enabled=true;
 
-    ship.hull.sound=new SoundArray();
-    sound=document.createElement("audio");
-    sound.src="../soundEffects/Hit_Hurt5.mp3";
-    sound.volume=0.5;
-    ship.hull.sound.loadSounds(sound);
-
-    ship.shield.sound=new SoundArray();
-    ship.shield.sound.loadSounds(sound);
-    
-
-    ship.deadSound=document.createElement("audio");
-    ship.deadSound.src="../soundEffects/Explosion4.mp3";
-
+    ship=loadDefaultSounds(ship);
 /*  engineSound is too lame right now
     engineSound=document.createElement("audio");
     engineSound.src="../soundEffects/engine.mp3";
@@ -103,10 +106,8 @@ var Gargatuan = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF",
 	ship.weapon.setPosition(ship.front);
 	ship.weapon.setCenter(ship.hitbox.center);
 	ship.weapon.enabled=true;
-    ship.deadSound=document.createElement("audio");
-    ship.deadSound.src="../soundEffects/Explosion4.mp3";
 
-
+    ship=loadDefaultSounds(ship);
 	return ship;
 }
 var Colossal = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF",
@@ -144,8 +145,7 @@ var Colossal = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF",
         ship.weapon.setTurretMode(true);
         ship.weapon.enabled=true;
     }
-    ship.deadSound=document.createElement("audio");
-    ship.deadSound.src="../soundEffects/Explosion4.mp3";
+    ship=loadDefaultSounds(ship);
 
 	return ship;
 }
@@ -246,8 +246,7 @@ var Turret = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF", cannon
 		}
 		ctx.restore();
 	}
-    ship.deadSound=document.createElement("audio");
-    ship.deadSound.src="../soundEffects/Explosion4.mp3";
+    ship=loadDefaultSounds(ship);
 	return ship;
 }
 
