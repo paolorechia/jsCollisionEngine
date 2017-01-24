@@ -29,29 +29,26 @@ var SoundArray = function(){
 var BufferedSound = function(sound, buffer){
     this.sound=sound;
     this.buffer=buffer;
-    this.playSound2 = function(overlapTime = 200){
+    this.playSound2 = function(overlapTime = 200, startTime=200){
         if (this.sound.currentTime == 0 && this.buffer.currentTime == 0){
             this.sound.play();
             return; 
         }
-        var timeToEnd = this.sound.length - overlapTime;
-        timeToEnd /= 1000;
-        console.log(this.sound.currentTime);
-        if (this.sound.currentTime != 0){
+        if (this.sound.currentTime > 2.2){
+            this.buffer.play(); 
+        }
+        if (this.buffer.currentTime > 1.0 && this.buffer.currentTime < 2.2){
+            this.sound.pause();
+            this.sound.currentTime = 0.9;
+        }
+        if (this.buffer.currentTime > 2.2){
             this.sound.play();
-            if (this.sound.currentTime > timeToEnd){
-                this.buffer.play();
-            }             
         }
-        else{
-            this.buffer.play();
-            if (this.buffer.currentTime > overlapTime){
-                this.sound.currentTime = 0;
-            }
-            if (this.buffer.currentTime > timeToEnd){
-                this.sound.play();
-            }             
+        if (this.sound.currentTime > 1.0 && this.sound.currentTime < 2.2){
+            this.buffer.pause();
+            this.buffer.currentTime = 0.9;
         }
+        console.log(this.sound.currentTime, this.buffer.currentTime);
     }
     this.playSound = function(){
         if (this.sound != null && this.buffer != null){ 

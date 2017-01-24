@@ -52,11 +52,12 @@ var Stellar = function(primaryColor="#000FFF", secondaryColor = "#0FF0FF",
     engineSound=document.createElement("audio");
     engineSound.src="../soundEffects/Explosion4_long_engine.mp3";
     buffer=document.createElement("audio");
-    buffer.src=engineSound.src;
+    buffer.src="../soundEffects/Explosion4_long_engine.mp3";
     engineSound.length=2400;
     buffer.length=engineSound.length;
     ship.engineSound = new BufferedSound(engineSound, buffer);
     ship.engineSound.sound.volume=0.5;
+    ship.engineSound.buffer.volume=0.5;
 	
 	return ship;
 }
