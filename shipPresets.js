@@ -5,7 +5,7 @@
 function loadDefaultSounds(ship){
     ship.hull.sound=new SoundArray();
     sound=document.createElement("audio");
-    sound.src="../soundEffects/Hit_Hurt5.mp3";
+    sound.src="Hit_Hurt5.mp3";
     sound.volume=0.5;
     ship.hull.sound.loadSounds(sound);
 
@@ -13,7 +13,7 @@ function loadDefaultSounds(ship){
     ship.shield.sound.loadSounds(sound);
 
     ship.deadSound=document.createElement("audio");
-    ship.deadSound.src="../soundEffects/Explosion4.mp3";
+    ship.deadSound.src="Explosion4.mp3";
     return ship;
 }
 
@@ -57,9 +57,9 @@ var Stellar = function(primaryColor="#000FFF", secondaryColor = "#0FF0FF",
     ship=loadDefaultSounds(ship);
 /*  engineSound is too lame right now
     engineSound=document.createElement("audio");
-    engineSound.src="../soundEffects/engine.mp3";
+    engineSound.src="g/engine.mp3";
     buffer=document.createElement("audio");
-    buffer.src="../soundEffects/engine.mp3";
+    buffer.src="g/engine.mp3";
     ship.engineSound = new BufferedSound(engineSound, buffer);
     ship.engineSound.sound.volume=0.5;
     ship.engineSound.buffer.volume=0.5;

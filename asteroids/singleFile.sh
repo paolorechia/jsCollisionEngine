@@ -13,33 +13,9 @@ cat << DOCSTART >$file
 <audio id="loopA">
 <source src="loopA.mp3" type ="audio/mpeg">
 </audio>
-<audio id="machineGun">
-<source src="soundEffects/machine_gun.mp3" type ="audio/mpeg">
-</audio>
-<audio id="lightLaser">
-<source src="Laser_Shoot.mp3" type ="audio/mpeg">
-</audio>
-<audio id="heavyLaser">
-<source src="Laser_Shoot2.mp3" type ="audio/mpeg">
-</audio>
-<audio id="heavyCannon">
-<source src="heavycannon.mp3" type ="audio/mpeg">
-</audio>
-<audio id="laserBeam">
-<source src="laser-reapeated.mp3" type ="audio/mpeg">
-</audio>
-<audio id="explosion">
-<source src="Explosion4.mp3" type ="audio/mpeg">
-</audio>
-<audio id="hurt">
-<source src="Hit_Hurt5.mp3" type ="audio/mpeg">
-</audio>
-<audio id="explosionLong">
-<source src="Explosion4_long_engine.mp3" type ="audio/mpeg">
-</audio>
- 
 <script> 
 DOCSTART
+java -jar ~/bin/closure-compiler-v20161201.jar ../sound.js >> $file
 java -jar ~/bin/closure-compiler-v20161201.jar ../collision.js >> $file
 java -jar ~/bin/closure-compiler-v20161201.jar ../shipBase.js         >> $file
 java -jar ~/bin/closure-compiler-v20161201.jar ../weapon.js         >> $file
