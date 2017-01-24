@@ -89,6 +89,7 @@ function generateTurrets(n, cannons, moving=false, rateOfFire=1){
             turret.weapons[j].setPosition(turret.hitbox.vertices[j]);
             turret.weapons[j].firing=true;
             turret.weapons.sound=null;
+            console.log(turret.weapons.sound);
         }
         turret.weapon.setOwner(turret);
         if (moving){
@@ -273,7 +274,7 @@ function buildLobbyButtons(array){
     }
     array.push(myButton);
 
-    myButton = (new Button(20, 260, 150, 50, "Gargatuan"));
+    myButton = (new Button(20, 260, 150, 50, "Gargantuan"));
     myButton.onClick = function(){
         player = new Gargatuan(primaryColor, secondaryColor, c.width/2, c.height/2 + 150);
         selected = true;

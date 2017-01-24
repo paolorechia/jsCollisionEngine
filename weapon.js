@@ -426,6 +426,10 @@ function heavyLaserBlaster(){
 		}
 	}
 	blaster.name = "Heavy Laser Blaster";
+    blaster.sound  = document.createElement("audio");
+    blaster.sound.src = "soundEffects/Laser_Shoot2.mp3"
+    blaster.sound.volume = 0.5;
+    blaster.loadSounds(blaster.sound);
 	return blaster;
 }
 function lightLaserBeam(){
