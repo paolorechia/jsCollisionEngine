@@ -255,6 +255,10 @@ var Ship = function(x, y, l1, primaryColor = "#0000FF", secondaryColor = "#00F0F
 	this.updateDirection = function(){
 
 		if (!this.engineOn && !this.reverseEngineOn && this.braking == false){
+            if (this.engineSound != null){
+                this.engineSound.pause();
+                this.engineSound.currentTime = 0.1; 
+            }
 			return;
 		}
 		
@@ -267,6 +271,9 @@ var Ship = function(x, y, l1, primaryColor = "#0000FF", secondaryColor = "#00F0F
 			this.engineVector.x = this.engineVersor.x * this.acceleration;
 			this.engineVector.y = this.engineVersor.y * this.acceleration;
             if (this.engineSound != null){
+                if (this.engineSound.currentTime > 2){
+                    this.engineSound.currentTime=0.1;
+                }
                 this.engineSound.play();
             }
 		}

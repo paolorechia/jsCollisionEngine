@@ -9,8 +9,8 @@ var Stellar = function(primaryColor="#000FFF", secondaryColor = "#0FF0FF",
 	ship.updateDirection();
 	ship.hull = new Hull(100, 0);
 	ship.shield = new Shield(50, 0, 5, 1, 300);
-        ship.acceleration = 0.21;
-        ship.turnRate = 5;
+    ship.acceleration = 0.21;
+    ship.turnRate = 5;
 
 	ship.shield.setPowerSupply(ship.powerSupply);
 	ship.shield.setEnabled(true);
@@ -42,10 +42,16 @@ var Stellar = function(primaryColor="#000FFF", secondaryColor = "#0FF0FF",
     ship.hull.sound=document.createElement("audio");
     ship.hull.sound.src="../soundEffects/Hit_Hurt5.mp3";
     ship.hull.sound.volume=0.5;
+
     ship.shield.sound=document.createElement("audio");
     ship.shield.sound.src="../soundEffects/Hit_Hurt5.mp3";
+
     ship.deadSound=document.createElement("audio");
     ship.deadSound.src="../soundEffects/Explosion4.mp3";
+
+    ship.engineSound=document.createElement("audio");
+    ship.engineSound.src="../soundEffects/Explosion4_long_engine.mp3";
+    ship.engineSound.volume=0.5;
 	
 	return ship;
 }
