@@ -34,19 +34,23 @@ var BufferedSound = function(sound, buffer){
             this.sound.play();
             return; 
         }
-        if (this.sound.currentTime > 2.2){
+        var upperBound = 1.8;
+        var lowerBound = 1.0; 
+        var resetTime = lowerBound - 0.1;
+        
+        if (this.sound.currentTime > upperBound){
             this.buffer.play(); 
         }
-        if (this.buffer.currentTime > 1.0 && this.buffer.currentTime < 2.2){
+        if (this.buffer.currentTime > lowerBound && this.buffer.currentTime < upperBound){
             this.sound.pause();
-            this.sound.currentTime = 0.9;
+            this.sound.currentTime = resetTime;
         }
-        if (this.buffer.currentTime > 2.2){
+        if (this.buffer.currentTime > upperBound){
             this.sound.play();
         }
-        if (this.sound.currentTime > 1.0 && this.sound.currentTime < 2.2){
+        if (this.sound.currentTime > lowerBound && this.sound.currentTime < upperBound){
             this.buffer.pause();
-            this.buffer.currentTime = 0.9;
+            this.buffer.currentTime = resetTime;
         }
         console.log(this.sound.currentTime, this.buffer.currentTime);
     }
