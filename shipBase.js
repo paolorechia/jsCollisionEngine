@@ -56,6 +56,7 @@ var EnergySource = function(max = 100, rechargeRate = 10, rechargeSpeed=500){ //
 }
 
 var Shield = function(max = 100, resistance=0, drainRate=10, rechargeEfficiency = 0.5, drainSpeed = 250){
+    this.sound = null;
 	this.enabled = false;
 	this.max = max;
 	this.current = 0;
@@ -137,10 +138,14 @@ var Shield = function(max = 100, resistance=0, drainRate=10, rechargeEfficiency 
 		else{
 			exceedingDamage = 0;
 		}
+        if (this.sound != null){
+            this.sound.play();
+        }
 		return exceedingDamage;
 	}
 }
 var Hull = function(max = 100, resistance = 0){
+    this.sound = null;
 	this.max = max;
 	this.current = this.max;
 	this.resistance = resistance;
@@ -170,6 +175,9 @@ var Hull = function(max = 100, resistance = 0){
 					this.current -= actualDamage;
 			}			
 		}
+        if (this.sound != null){
+            this.sound.play();
+        }
 	}
 	this.recover = function(heal){
 		this.current += heal;
@@ -194,6 +202,8 @@ var Ship = function(x, y, l1, primaryColor = "#0000FF", secondaryColor = "#00F0F
 	this.dead = false;
 	this.weapons = [];
 
+
+    this.engineSound = null;
 	this.currentWeapon = 0;
 	this.lock = false;
 	this.engineOn = false;
@@ -254,6 +264,9 @@ var Ship = function(x, y, l1, primaryColor = "#0000FF", secondaryColor = "#00F0F
 			unitVector(this.engineVersor, this.engineVersor);
 			this.engineVector.x = this.engineVersor.x * this.acceleration;
 			this.engineVector.y = this.engineVersor.y * this.acceleration;
+            if (this.engineSound != null){
+                this.engineSound.play();
+            }
 		}
 		else{
 			if (this.braking){ //Advanced Braking System

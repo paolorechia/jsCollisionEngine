@@ -486,6 +486,10 @@ function heavyLaserBeam(){
 		ctx.lineWidth = oldWidth;
 	}
 	beam.name = "Heavy Laser Beam";
+    beam.sound  = document.createElement("audio");
+    beam.sound.src = "soundEffects/laser-reapeated.mp3"
+    beam.sound.volume = 0.5;
+    beam.loadSounds(beam.sound);
 	return beam;
 }
 function killProjectile(projectile){
