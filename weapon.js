@@ -40,6 +40,13 @@ var Weapon = function(velocity = 10, width = 1, range = 1000, limit = 10, damage
             this.timeOutArray[i] =  newSound;
         }
     }
+    this.updateVolume = function(volume){
+        if (this.sound != null){
+            for (var i = 0; i < this.timeOutLimit; i++){
+                this.timeOutArray[i].volume = volume;
+            }
+        }
+    }
 	if (hasAmmo){
 		this.ammo=ammo;
 	}
