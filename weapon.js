@@ -331,7 +331,7 @@ function machineGun(){
 	cannon.type = 'p'; // projectile type
 	cannon.name="Machine Gun";
     cannon.sound  = document.createElement("audio");
-    cannon.sound.src = "soundEffects/heavycannon.mp3"
+    cannon.sound.src = "soundEffects/machine_gun.mp3"
     cannon.sound.volume = 0.1;
     cannon.loadSounds(cannon.sound);
 	return cannon;
