@@ -23,25 +23,46 @@ var Weapon = function(velocity = 10, width = 1, range = 1000, limit = 10, damage
     this.sound = null;
     this.buffer = null;
     this.playSound = function(){
-        if (this.sound != null){ 
-           this.sound.currentTime = 0.00;
+        if (this.sound != null && this.buffer != null){ 
             this.sound.play();
+            this.buffer.play();
         }
     }
     this.stopSound = function(){
-        if (this.sound != null){
-            this.sound.stop();
+        if (this.sound != null && this.buffer != null){
+            this.sound.pause();
+            this.sound.currentTime = 0;
+            this.buffer.pause();
+            this.buffer.currentTime = 0;
         }
     }
-    this.loopSound = function(){
-        if (this.sound.currentTime == 0){
-            this.sound.play();
+    this.pauseSound = function(){
+        if (this.sound != null && this.buffer != null){
+            this.sound.pause();
+            this.buffer.pause();
         }
-        var timeToEnd = this.sound.length;
-        timeToEnd/=1000;
-        if (this.sound.currentTime > timeToEnd){
-                setTimeout(this.playSound(), timeToEnd);
-        }             
+    }
+    this.loopSound = function(overlapTime = 0){
+        if (this.sound.currentTime == 0 && this.buffer.currentTime == 0){
+            this.sound.play();
+            return; 
+        }
+        var timeToEnd = this.sound.length - overlapTime;
+        timeToEnd /= 1000;
+        if (this.sound.currentTime != 0){
+            if (this.sound.currentTime > timeToEnd){
+                this.buffer.play();
+                this.sound.pause();
+                this.sound.currentTime = 0;
+            }             
+        }
+        else{
+            if (this.buffer.currentTime > timeToEnd){
+                this.sound.play();
+                this.buffer.pause();
+                this.buffer.currentTime = 0;
+            }             
+        }
     }
 	if (hasAmmo){
 		this.ammo=ammo;
@@ -129,6 +150,7 @@ var Weapon = function(velocity = 10, width = 1, range = 1000, limit = 10, damage
 	
 	this.updateFiring = function(shipSpeed){
 		if (this.projectiles.length >= this.limit || this.firing == false || this.lockDown == true || this.ammo <= 0){
+            this.pauseSound();
 			return;
 		}
 		if (this.energyUsage > 0){
@@ -141,7 +163,7 @@ var Weapon = function(velocity = 10, width = 1, range = 1000, limit = 10, damage
 		}
 
         if (this.sound != null){
-//            this.loopSound();
+            this.playSound();
         }
 		this.lockDown = true;
 		var projectile = new Rect(this.position.x, this.position.y - this.projectileHeight/2, this.projectileWidth, this.projectileHeight,
@@ -325,9 +347,14 @@ function machineGun(){
 	cannon = new Weapon(velocity = 8, width = 1, range = 200, limit = 12, damage = 6, mass = 100, rateOfFire = 16, spin=0, hasAmmo=true, ammo=2000);
 	cannon.type = 'p'; // projectile type
 	cannon.name="Machine Gun";
-    cannon.sound= document.getElementById("machineGun");
+    cannon.sound = document.getElementById("machineGun");
+    cannon.buffer = document.createElement("audio");
+    cannon.buffer.src = "soundEffects/machine_gun.mp3"
     cannon.sound.volume = 0.5;
     cannon.sound.length = 300;
+    cannon.buffer.volume = 0.5;
+    cannon.buffer.length = 300;
+    cannon.buffer.currentTime = 0.5;
 	return cannon;
 }
 	
