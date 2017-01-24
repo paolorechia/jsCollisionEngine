@@ -25,66 +25,20 @@ var Weapon = function(velocity = 10, width = 1, range = 1000, limit = 10, damage
     this.timeOutArray = [];
     this.timeOutId = 0;
     this.timeOutSound = function(){
-        this.timeOutArray[this.timeOutId].currentTime = 0;
-        this.timeOutArray[this.timeOutId].play();
-        this.timeOutId++;
-        this.timeOutId %= this.timeOutLimit;
+        if (this.sound != null){
+            this.timeOutArray[this.timeOutId].currentTime = 0;
+            this.timeOutArray[this.timeOutId].play();
+            this.timeOutId++;
+            this.timeOutId %= this.timeOutLimit;
+        }
     }
     this.timeOutLimit = 3;
     this.loadSounds = function(sound){
         for (var i  = 0; i < this.timeOutLimit; i++){
             var newSound = document.createElement("audio");
             newSound.src = sound.src;
+            newSound.volume = sound.volume
             this.timeOutArray[i] =  newSound;
-        }
-    }
-    this.timeOutDiogo= function(sound){
-        instance = setTimeout(()=>{
-        var newSound = new document.createElement("audio");
-        newSound.src = sound.src;
-        newSound.play();
-        setTimeout(()=>{instance = null; console.log("killing instance")}, 0);
-        }, 0);
-    }
-    this.playSound2 = function(overlapTime = 100){
-        if (this.sound.currentTime == 0 && this.buffer.currentTime == 0){
-            this.sound.play();
-            return; 
-        }
-        var timeToEnd = this.sound.length - overlapTime;
-        timeToEnd /= 1000;
-        console.log(this.sound.currentTime);
-        if (this.sound.currentTime != 0){
-            this.sound.play();
-            if (this.sound.currentTime > timeToEnd){
-                this.buffer.play();
-            }             
-        }
-        else{
-            this.buffer.play();
-            if (this.buffer.currentTime > timeToEnd){
-                this.sound.play();
-            }             
-        }
-    }
-    this.playSound = function(){
-        if (this.sound != null && this.buffer != null){ 
-            this.sound.play();
-            this.buffer.play();
-        }
-    }
-    this.stopSound = function(){
-        if (this.sound != null && this.buffer != null){
-            this.sound.pause();
-            this.sound.currentTime = 0;
-            this.buffer.pause();
-            this.buffer.currentTime = 0;
-        }
-    }
-    this.pauseSound = function(){
-        if (this.sound != null && this.buffer != null){
-            this.sound.pause();
-            this.buffer.pause();
         }
     }
 	if (hasAmmo){
@@ -187,8 +141,6 @@ var Weapon = function(velocity = 10, width = 1, range = 1000, limit = 10, damage
 
         if (this.sound != null){
             this.timeOutSound();
-//              this.timeOutDiogo(this.sound);
-//            this.playSound2();
         }
 		this.lockDown = true;
 		var projectile = new Rect(this.position.x, this.position.y - this.projectileHeight/2, this.projectileWidth, this.projectileHeight,
@@ -376,10 +328,10 @@ function machineGun(){
     cannon.sound.src = "soundEffects/heavycannon.mp3"
     cannon.buffer = document.createElement("audio");
     cannon.buffer.src = "soundEffects/heavycannon.mp3"
-    cannon.sound.volume = 0.5;
+    cannon.sound.volume = 0.1;
     cannon.sound.length = 300;
-    cannon.buffer.volume = 0.5;
-    cannon.buffer.length = 300;
+    cannon.buffer.volume = cannon.sound.volume;
+    cannon.buffer.length = cannon.sound.length;
     cannon.loadSounds(cannon.sound);
 	return cannon;
 }
@@ -445,9 +397,9 @@ function lightLaserBlaster(){
     blaster.buffer = document.createElement("audio");
     blaster.buffer.src = "soundEffects/Laser_Shoot.mp3"
     blaster.sound.volume = 0.5;
-    blaster.sound.length = 300;
-    blaster.buffer.volume = 0.5;
-    blaster.buffer.length = 300;
+    blaster.sound.length = 50;
+    blaster.buffer.length = blaster.sound.length;
+    blaster.buffer.length = blaster.sound.volume;
     blaster.loadSounds(blaster.sound);
 	return blaster;
 }
