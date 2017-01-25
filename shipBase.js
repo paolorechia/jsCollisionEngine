@@ -702,7 +702,7 @@ var Ship = function(x, y, l1, primaryColor = "#0000FF", secondaryColor = "#00F0F
 	    if (this.hull.current < 0){
 		    this.dead=true;
             if (this.deadSound != null){
-                this.deadSound.play();
+                soundPool.ignoreQueue(this.deadSound);
             }
 	    }
 	}

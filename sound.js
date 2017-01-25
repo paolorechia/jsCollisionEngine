@@ -1,5 +1,5 @@
 // volume should range from 0 to 1
-var SoundPool = function(limit = 10, volume = 1){
+var SoundPool = function(limit = 10, volume = 5){
     this.queue = [];
     this.limit = limit;
     this.volume = volume;
@@ -10,7 +10,7 @@ var SoundPool = function(limit = 10, volume = 1){
     }
     this.playQueue = function(){
         while (this.queue.length > 0){
-            vol = Math.round(this.volume * 100) / 100
+            vol = this.volume /10;
             this.queue[0].volume(vol);
             this.queue[0].play();
             this.queue.splice(0,1);
@@ -21,26 +21,37 @@ var SoundPool = function(limit = 10, volume = 1){
     }
     this.decreaseVolume = function(){
         if (this.volume > 0){
-            this.volume -= 0.1;
+            this.volume -= 1;
             this.volume = Math.round(this.volume * 100) / 100
         }
     }
     this.increaseVolume = function(){
-        if(this.volume < 1){
-            this.volume += 0.1;
+        if(this.volume < 10){
+            this.volume += 1;
             this.volume = Math.round(this.volume * 100) / 100
         }
+    }
+    this.ignoreQueue = function (sound){
+            vol = this.volume /10;
+            sound.volume(vol);
+            sound.play();
     }
 }
 function increaseMusicVolume(music){
         if (music.volume < 1){
-            music.volume += 0.1;
+            vol = music.volume * 10;
+            vol += 1;
+            vol = Math.round(vol)/10;
+            music.volume = vol;
         }
     }
 
 function decreaseMusicVolume(music){
         if (music.volume > 0){
-            music.volume -= 0.1;
+            vol = music.volume * 10;
+            vol -= 1;
+            vol = Math.round(vol)/10;
+            music.volume = vol
         }
     }
 

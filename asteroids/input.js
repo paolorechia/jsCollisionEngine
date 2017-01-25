@@ -19,15 +19,16 @@ var coord = new Point(c.width/2, c.height/2);
             increaseMusicVolume(selectMusic);
             increaseMusicVolume(music);
             soundPool.increaseVolume();
-            console.log(soundPool.volume);
-            increaseMusicVolume(player.deadSound);
+            console.log("SoundPool = ", soundPool.volume,
+                    "Music = ", music.volume);
+
         }
 		if (event.key == ','){
             decreaseMusicVolume(selectMusic);
             decreaseMusicVolume(music);
             soundPool.decreaseVolume();
-            console.log(soundPool.volume);
-            decreaseMusicVolume(player.deadSound);
+            console.log("SoundPool = ", soundPool.volume,
+                    "Music = ", music.volume);
         }
 		if (event.key == 'v'){
 			for (var i= 0; i < player.weapons.length; i++){
@@ -56,7 +57,7 @@ var coord = new Point(c.width/2, c.height/2);
 				player.shield.setEnabled(true);
 			}
 		}
-		if (player.lock){
+		if (player == undefined || player.lock){
 			return;
 		}
         if (event.key == 'w' || event.key =="ArrowUp"){
@@ -99,7 +100,7 @@ var coord = new Point(c.width/2, c.height/2);
 				player.weapons[i].fire(false);
 			}
         }
-		if (player.lock){
+		if (player == undefined || player.lock){
 			return;
 		}
         if (event.key == 'w' || event.key == "ArrowUp"){
@@ -162,11 +163,17 @@ var coord = new Point(c.width/2, c.height/2);
 		}
     }
     function mouseDown(){
+        if (player == undefined){
+            return;
+        }
 		for (var i= 0; i < player.weapons.length; i++){
 				player.weapons[i].fire(true);
         }
     }
 	function mouseUp(){
+        if (player == undefined){
+            return;
+        }
 		for (var i= 0; i < player.weapons.length; i++){
 				player.weapons[i].fire(false);
     	}

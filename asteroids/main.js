@@ -543,4 +543,5 @@ window.confirmed = false;
 window.playing = false;
 var coord = new Point(c.width/2, c.height/2);
 soundPool = new SoundPool(maxSounds, 1);
+player = undefined;
 selectShipLoop();
