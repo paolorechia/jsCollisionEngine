@@ -16,6 +16,9 @@ var coord = new Point(c.width/2, c.height/2);
    }
 	keyboardDown = function(event){
 		if (event.key == '.'){
+            window.soundDisplay=true;
+            clearTimeout(soundPool.timeoutId);
+            soundPool.timeoutId=setTimeout(function(){window.soundDisplay=false}, 2000);
             increaseMusicVolume(selectMusic);
             increaseMusicVolume(music);
             soundPool.increaseVolume();
@@ -24,6 +27,9 @@ var coord = new Point(c.width/2, c.height/2);
 
         }
 		if (event.key == ','){
+            window.soundDisplay=true;
+            clearTimeout(soundPool.timeoutId);
+            soundPool.timeoutId=setTimeout(function(){window.soundDisplay=false}, 2000);
             decreaseMusicVolume(selectMusic);
             decreaseMusicVolume(music);
             soundPool.decreaseVolume();

@@ -474,7 +474,9 @@ function mainLoop(){
 	fps.calculateMean();
 	drawFPS(fps.mean, player.secondaryColor);
     soundPool.playQueue();
-    soundPool.display(player.secondaryColor, new Point(c.width/2 - 20, 100));
+    if (window.soundDisplay){
+        soundPool.display(player.secondaryColor, new Point(c.width/2 - 20, 100));
+    }
     if (window.playing){
     	setTimeout(function(){requestAnimationFrame(mainLoop)}, interval);
     }
@@ -497,21 +499,6 @@ function mainLoop(){
 }
 
 // actual start of program
-selectMusic = document.getElementById("selectLoop");
-selectMusic.play();
-selectMusic.addEventListener('ended', function(){
-        this.currentTime = 0;
-        this.play();
-    }, false);
-selectMusic.volume = 0.5;
-music = document.getElementById("loopA");
-music.addEventListener('ended', function(){
-        this.currentTime = 0;
-        this.play();
-}, false);
-music.volume = 0.5;
-console.log(selectMusic);
-
 ctx.lineWidth=3;
 var j = 0;
 
@@ -533,6 +520,23 @@ var instructions = buildInstructions();
 var objects = [];
 var enemies = [];
 var maxSounds= 1;
+var startingVolume=5;
+soundPool = new SoundPool(maxSounds, startingVolume);
+selectMusic = document.getElementById("selectLoop");
+selectMusic.play();
+selectMusic.addEventListener('ended', function(){
+        this.currentTime = 0;
+        this.play();
+    }, false);
+selectMusic.volume = 0.5;
+music = document.getElementById("loopA");
+music.addEventListener('ended', function(){
+        this.currentTime = 0;
+        this.play();
+}, false);
+music.volume = 0.5;
+console.log(selectMusic);
+
 
 window.buttons = [];
 buildLobbyButtons(window.buttons);
@@ -542,7 +546,7 @@ window.selected = false;
 window.displaying = false;
 window.confirmed = false;
 window.playing = false;
+window.soundDisplay = false;
 var coord = new Point(c.width/2, c.height/2);
-soundPool = new SoundPool(maxSounds, 1);
 player = undefined;
 selectShipLoop();
