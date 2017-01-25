@@ -474,6 +474,7 @@ function mainLoop(){
 	fps.calculateMean();
 	drawFPS(fps.mean, player.secondaryColor);
     soundPool.playQueue();
+    soundPool.display(player.secondaryColor, new Point(c.width/2 - 20, 100));
     if (window.playing){
     	setTimeout(function(){requestAnimationFrame(mainLoop)}, interval);
     }

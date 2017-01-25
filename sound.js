@@ -36,6 +36,13 @@ var SoundPool = function(limit = 10, volume = 5){
             sound.volume(vol);
             sound.play();
     }
+    this.display= function(color, point, font = "14px Arial"){
+        ctx.beginPath();
+        ctx.font=font;
+        ctx.fillStyle=color;
+        var string = "Volume: " + this.volume;
+        ctx.fillText(string, point.x, point.y);
+    }
 }
 function increaseMusicVolume(music){
         if (music.volume < 1){
@@ -45,7 +52,6 @@ function increaseMusicVolume(music){
             music.volume = vol;
         }
     }
-
 function decreaseMusicVolume(music){
         if (music.volume > 0){
             vol = music.volume * 10;
