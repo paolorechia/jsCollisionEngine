@@ -478,6 +478,7 @@ function mainLoop(){
 	
 	fps.calculateMean();
 	drawFPS(fps.mean, player.secondaryColor);
+    soundPool.playQueue();
     if (window.playing){
     	setTimeout(function(){requestAnimationFrame(mainLoop)}, interval);
     }
@@ -529,6 +530,7 @@ var instructions = buildInstructions();
 
 var objects = [];
 var enemies = [];
+var maxSounds= 1;
 
 window.buttons = [];
 buildLobbyButtons(window.buttons);
@@ -539,4 +541,5 @@ window.displaying = false;
 window.confirmed = false;
 window.playing = false;
 var coord = new Point(c.width/2, c.height/2);
+soundPool = new SoundPool(maxSounds);
 selectShipLoop();

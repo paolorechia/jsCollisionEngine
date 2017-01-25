@@ -170,7 +170,7 @@ var Weapon = function(velocity = 10, width = 1, range = 1000, limit = 10, damage
 		}
 
         if (this.sound != null){
-            this.sound.play();
+            soundPool.addSound(this.sound);
         }
 		this.lockDown = true;
 		var projectile = new Rect(this.position.x, this.position.y - this.projectileHeight/2, this.projectileWidth, this.projectileHeight,

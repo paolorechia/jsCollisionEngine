@@ -1,3 +1,20 @@
+var SoundPool = function(limit = 10){
+    this.queue = [];
+    this.limit = limit;
+    this.addSound = function(sound){
+        if (this.queue.length >= this.limit){
+            return;        }
+        this.queue.push(sound);
+    }
+    this.playQueue = function(){
+        while (this.queue.length > 0){
+            this.queue[0].play();
+            this.queue.splice(0,1);
+        }
+    }
+}
+
+
 var SoundArray = function(){
     this.timeOutArray = [];
     this.timeOutId = 0;
