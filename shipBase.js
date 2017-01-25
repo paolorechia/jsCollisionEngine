@@ -139,7 +139,7 @@ var Shield = function(max = 100, resistance=0, drainRate=10, rechargeEfficiency 
 			exceedingDamage = 0;
 		}
         if (this.sound != null){
-            this.sound.play();
+            soundPool.addSound(this.sound);
         }
 		return exceedingDamage;
 	}
@@ -176,7 +176,7 @@ var Hull = function(max = 100, resistance = 0){
 			}			
 		}
         if (this.sound != null){
-               this.sound.play(); 
+            soundPool.addSound(this.sound);
             }
 	}
 	this.recover = function(heal){
