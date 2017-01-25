@@ -16,14 +16,18 @@ var coord = new Point(c.width/2, c.height/2);
    }
 	keyboardDown = function(event){
 		if (event.key == '.'){
-            if (music.volume < 1){
-                music.volume += 0.1;
-            }
+            increaseMusicVolume(selectMusic);
+            increaseMusicVolume(music);
+            soundPool.increaseVolume();
+            console.log(soundPool.volume);
+            increaseMusicVolume(player.deadSound);
         }
 		if (event.key == ','){
-            if (music.volume > 0){
-                music.volume -= 0.1;
-            }
+            decreaseMusicVolume(selectMusic);
+            decreaseMusicVolume(music);
+            soundPool.decreaseVolume();
+            console.log(soundPool.volume);
+            decreaseMusicVolume(player.deadSound);
         }
 		if (event.key == 'v'){
 			for (var i= 0; i < player.weapons.length; i++){

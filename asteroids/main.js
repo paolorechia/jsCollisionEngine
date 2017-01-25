@@ -372,12 +372,7 @@ function selectShipLoop(){
         window.playing = true;
         window.rewarded = false;
         selectMusic.pause();
-        music = document.getElementById("loopA");
         music.play();
-        music.addEventListener('ended', function(){
-                this.currentTime = 0;
-                this.play();
-        }, false);
 
 		requestAnimationFrame(mainLoop);
 	}
@@ -508,6 +503,12 @@ selectMusic.addEventListener('ended', function(){
         this.play();
     }, false);
 selectMusic.volume = 0.5;
+music = document.getElementById("loopA");
+music.addEventListener('ended', function(){
+        this.currentTime = 0;
+        this.play();
+}, false);
+music.volume = 0.5;
 console.log(selectMusic);
 
 ctx.lineWidth=3;
@@ -541,5 +542,5 @@ window.displaying = false;
 window.confirmed = false;
 window.playing = false;
 var coord = new Point(c.width/2, c.height/2);
-soundPool = new SoundPool(maxSounds);
+soundPool = new SoundPool(maxSounds, 1);
 selectShipLoop();
