@@ -1,0 +1,31 @@
+<html>
+
+<audio id="test_audio" src="../soundEffects/machine_gun.mp3")>
+
+<script src="base64-binary.js"></script> 
+<script>
+var testUri = "SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU3LjU2LjEwMAAAAAAAAAAAAAAA//tAwAAAAAAAAAAAAAAAAAAAAAAASW5mbwAAAA8AAAAJAAAEYgBBQUFBQUFBQUFBQVlZWVlZWVlZWVlZcHBwcHBwcHBwcHCIiIiIiIiIiIiIiKCgoKCgoKCgoKCguLi4uLi4uLi4uLjQ0NDQ0NDQ0NDQ0Ojo6Ojo6Ojo6Ojo//////////////8AAAAATGF2YzU3LjY0AAAAAAAAAAAAAAAAJALHAAAAAAAABGJjjexVAAAAAAD/+xDEAAAEMF9rVDGAMLIK7oMekAEQoAAMAAAEQQVd3F0wiIiIjvxAAAShAAQgAIREd3dz/CCCxl4jmCq3FkP450LI5PRH5irRupRoLIAMBgGAChRgKFw/U6AgjWRqghO2SWsQBALJhv/7EsQCgEUcWXC89AAAn4gu9p5gAUnTxyKxVo2MdJJlM0nZAaE2oQoWDBEGkHMWxw2sukNGor7kXFKEIuAigDjMhbOkvJ01Q9QsciiaVc5sLLUUoiRrZPff8OmSlfyCuCkH2o4lKiEgTv/7EMQEAAWYW2IZlIAAnolsAzSQAWZMwGszRdcAw1uld+ff5yixNDBCCKKMJoEApWRIoxiwTo57UljNjAUAOADDAJR10jgxegiOttYcSHbn+EwoqS/hgXIElWf+SH0BJBJKI5ZGOroE//sSxAMABSBXYBmUgAimCWrDNpABCPJrurzR2cuo8eeEEQHHbWUFThKzDORlTiJyDIfkZ1JdKZQ10lbCNmb4j39FELXwf6SSSrBdeXRGlshoDkJjaHhSaWanGUiCBCmzmVoJCc0FfvAa//sQxAOABVBbYBmUgACtCWtDNMABkRdeH6WrMpgNBv0la820O1Ey0AUYncos8Lmx2EL33VnxUQnALDCgoXFT4GpPSWzcezdjkqX4zfC7N1ANBTtIGycDYedmWMuXCsSyRvhAMh77sHf/+xLEAgAFNFNKGbYACKWLaEM4kAAmIXBA22jfJYuVImOZdwZ1Au61PCkfrbTJHw1N4LTlpkmKD8wo4C3m7Qa2pSdtCKP0mitzJXjqT8s/3LiCi+8NDqSKP/E6Mg3YT+fpkp8kAESabaj/+xDEAoAFRFVOmbMAAKQKZsM2sADcbEyaqBupvRqinYMmmn0NvG/jNTmNbsEA9aW+UHITPpnY9FaGnzxBE4GCD48O/5dNVVvt/6n1NIZlv+A0OGx4E4JIg1XI/h4JRCjrrSfVTEFNRf/7EsQCA8AAAaQcAAAgAAA0gAAABDMuOTkuNVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/7EMQsA8AAAaQAAAAgAAA0gAAABFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV"
+var context = new AudioContext();
+source = context.createBufferSource();
+var audio = Base64Binary.decodeArrayBuffer(testUri); 
+context.decodeAudioData(audio, function(buffer){
+        source.buffer = buffer;
+        source.connect(context.destination);
+}, function(err){console.log("err(decodeAudioData): " +err); });
+console.log(source);
+source.start(0);
+/*
+oscillator = context.createOscillator();
+
+oscillator.connect(context.destination);
+oscillator.start();
+oscillator.stop();
+*/
+
+var gainNode = context.createGain();
+gainNode.gain.value=1;
+gainNode.connect(context.destination);
+
+</script>
+
+</html>
