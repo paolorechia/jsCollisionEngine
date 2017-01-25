@@ -40,6 +40,7 @@ var Weapon = function(velocity = 10, width = 1, range = 1000, limit = 10, damage
             this.timeOutArray[i] =  newSound;
         }
     }
+/*
     this.updateVolume = function(volume){
         if (this.sound != null){
             for (var i = 0; i < this.timeOutLimit; i++){
@@ -47,6 +48,7 @@ var Weapon = function(velocity = 10, width = 1, range = 1000, limit = 10, damage
             }
         }
     }
+*/
     this.buffer = null;
     this.playSound = function(){
         if (this.sound != null){ 
@@ -168,7 +170,7 @@ var Weapon = function(velocity = 10, width = 1, range = 1000, limit = 10, damage
 		}
 
         if (this.sound != null){
-            this.timeOutSound();
+            this.sound.play();
         }
 		this.lockDown = true;
 		var projectile = new Rect(this.position.x, this.position.y - this.projectileHeight/2, this.projectileWidth, this.projectileHeight,
@@ -352,10 +354,8 @@ function machineGun(){
 	cannon = new Weapon(velocity = 8, width = 1, range = 200, limit = 12, damage = 6, mass = 100, rateOfFire = 16, spin=0, hasAmmo=true, ammo=2000);
 	cannon.type = 'p'; // projectile type
 	cannon.name="Machine Gun";
-    cannon.sound  = document.createElement("audio");
-    cannon.sound.src = "machine_gun.mp3"
-    cannon.sound.volume = 0.1;
-    cannon.loadSounds(cannon.sound);
+    cannon.sound = new Howl({src : ["machine_gun.mp3"]});
+    cannon.sound.volume(0.2);
 	return cannon;
 }
 	
@@ -415,10 +415,8 @@ function lightLaserBlaster(){
 		}
 	}
 	blaster.name = "Light Laser Blaster";
-    blaster.sound  = document.createElement("audio");
-    blaster.sound.src = "Laser_Shoot.mp3"
-    blaster.sound.volume = 0.5;
-    blaster.loadSounds(blaster.sound);
+    blaster.sound = new Howl({src : ["Laser_Shoot.mp3"]});
+    blaster.sound.volume(0.5);
 	return blaster;
 }
 function heavyLaserBlaster(){
