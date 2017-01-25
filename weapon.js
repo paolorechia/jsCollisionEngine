@@ -355,7 +355,7 @@ function machineGun(){
 	cannon.type = 'p'; // projectile type
 	cannon.name="Machine Gun";
     cannon.sound = new Howl({src : ["machine_gun.mp3"]});
-    cannon.sound.volume(0.2);
+    cannon.sound.volumeFilter=0.2;
 	return cannon;
 }
 	

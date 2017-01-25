@@ -22,9 +22,6 @@ var coord = new Point(c.width/2, c.height/2);
             increaseMusicVolume(selectMusic);
             increaseMusicVolume(music);
             soundPool.increaseVolume();
-            console.log("SoundPool = ", soundPool.volume,
-                    "Music = ", music.volume);
-
         }
 		if (event.key == ','){
             window.soundDisplay=true;
@@ -33,8 +30,6 @@ var coord = new Point(c.width/2, c.height/2);
             decreaseMusicVolume(selectMusic);
             decreaseMusicVolume(music);
             soundPool.decreaseVolume();
-            console.log("SoundPool = ", soundPool.volume,
-                    "Music = ", music.volume);
         }
 		if (event.key == 'v'){
 			for (var i= 0; i < player.weapons.length; i++){

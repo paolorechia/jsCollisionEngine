@@ -10,7 +10,12 @@ var SoundPool = function(limit = 10, volume = 5){
     }
     this.playQueue = function(){
         while (this.queue.length > 0){
-            vol = this.volume /10;
+            if (this.queue[0].volumeFilter != undefined){
+                vol = (this.volume * this.queue[0].volumeFilter)/10;
+            }
+            else{
+                vol = this.volume /10;
+            }
             this.queue[0].volume(vol);
             this.queue[0].play();
             this.queue.splice(0,1);
