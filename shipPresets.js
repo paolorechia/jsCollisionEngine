@@ -3,17 +3,12 @@
 // var Shield = function(max = 100, resistance=0, drainRate=10, rechargeEfficiency = 0.5, drainSpeed = 250)
 
 function loadDefaultSounds(ship){
-    ship.hull.sound=new SoundArray();
-    sound=document.createElement("audio");
-    sound.src="Hit_Hurt5.mp3";
-    sound.volume=0.5;
-    ship.hull.sound.loadSounds(sound);
+    ship.hull.sound= new Howl({
+            src: ['Hit_Hurt5.mp3']});
 
-    ship.shield.sound=new SoundArray();
-    ship.shield.sound.loadSounds(sound);
-
-    ship.deadSound=document.createElement("audio");
-    ship.deadSound.src="Explosion4.mp3";
+    ship.shield.sound = ship.hull.sound;
+    ship.deadSound = new Howl({
+            src: ["Explosion4.mp3"]});
     return ship;
 }
 

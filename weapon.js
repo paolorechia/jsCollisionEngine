@@ -21,7 +21,6 @@ var Weapon = function(velocity = 10, width = 1, range = 1000, limit = 10, damage
 	this.hasAmmo = hasAmmo;
 	this.energyUsage = energyUsage;
     this.sound = null;
-<<<<<<< Updated upstream
     this.timeOutArray = [];
     this.timeOutId = 0;
     this.timeOutSound = function(){
@@ -47,7 +46,7 @@ var Weapon = function(velocity = 10, width = 1, range = 1000, limit = 10, damage
                 this.timeOutArray[i].volume = volume;
             }
         }
-=======
+    }
     this.buffer = null;
     this.playSound = function(){
         if (this.sound != null){ 
@@ -69,7 +68,6 @@ var Weapon = function(velocity = 10, width = 1, range = 1000, limit = 10, damage
         if (this.sound.currentTime > timeToEnd){
                 setTimeout(this.playSound(), timeToEnd);
         }             
->>>>>>> Stashed changes
     }
 	if (hasAmmo){
 		this.ammo=ammo;
@@ -170,11 +168,7 @@ var Weapon = function(velocity = 10, width = 1, range = 1000, limit = 10, damage
 		}
 
         if (this.sound != null){
-<<<<<<< Updated upstream
             this.timeOutSound();
-=======
-//            this.loopSound();
->>>>>>> Stashed changes
         }
 		this.lockDown = true;
 		var projectile = new Rect(this.position.x, this.position.y - this.projectileHeight/2, this.projectileWidth, this.projectileHeight,
@@ -358,16 +352,10 @@ function machineGun(){
 	cannon = new Weapon(velocity = 8, width = 1, range = 200, limit = 12, damage = 6, mass = 100, rateOfFire = 16, spin=0, hasAmmo=true, ammo=2000);
 	cannon.type = 'p'; // projectile type
 	cannon.name="Machine Gun";
-<<<<<<< Updated upstream
     cannon.sound  = document.createElement("audio");
     cannon.sound.src = "machine_gun.mp3"
     cannon.sound.volume = 0.1;
     cannon.loadSounds(cannon.sound);
-=======
-    cannon.sound= document.getElementById("machineGun");
-    cannon.sound.volume = 0.5;
-    cannon.sound.length = 300;
->>>>>>> Stashed changes
 	return cannon;
 }
 	
@@ -583,4 +571,3 @@ function checkProjectilesBorder(player){
 			}
 		}
 }
-
