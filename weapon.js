@@ -453,10 +453,8 @@ function heavyLaserBlaster(){
 		}
 	}
 	blaster.name = "Heavy Laser Blaster";
-    blaster.sound  = document.createElement("audio");
-    blaster.sound.src = "Laser_Shoot2.mp3"
-    blaster.sound.volume = 0.5;
-    blaster.loadSounds(blaster.sound);
+    blaster.sound = new Howl({src : ["Laser_Shoot2.mp3"]});
+    blaster.sound.volume(0.5);
 	return blaster;
 }
 function lightLaserBeam(){
@@ -506,10 +504,8 @@ function heavyLaserBeam(){
 		ctx.lineWidth = oldWidth;
 	}
 	beam.name = "Heavy Laser Beam";
-    beam.sound  = document.createElement("audio");
-    beam.sound.src = "laser-reapeated.mp3"
-    beam.sound.volume = 0.5;
-    beam.loadSounds(beam.sound);
+    beam.sound = new Howl({src : ["laser-reapeated.mp3"]});
+    beam.sound.volume(0.5);
 	return beam;
 }
 function killProjectile(projectile){
