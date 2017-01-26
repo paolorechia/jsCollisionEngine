@@ -915,13 +915,13 @@ function elasticCollision(polygonA, polygonB,
     vector.x = mtv.axis.x * mtv.magnitude;
     vector.y = mtv.axis.y * mtv.magnitude;
     polygonB.gradualVector=vector; 
-    polygonB.applyGradualVector(bounce);
+    applyGradualVector(polygonB, bounce);
 
 
     if (bindedB != undefined){
         for (var i = 0; i < bindedB.length; i++){
             bindedB[i].gradualVector=vector;
-            bindedB[i].applyGradualVector(bounce);
+            applyGradualVector(bindedB[i], bounce);
             bindedB[i].colliding=true;
         }
     }
@@ -932,13 +932,13 @@ function elasticCollision(polygonA, polygonB,
 
 
     polygonA.gradualVector=vector; 
-    polygonA.applyGradualVector(bounce);
+    applyGradualVector(polygonA, bounce);
 
 
     if (bindedA != undefined){
         for (var i = 0; i < bindedA.length; i++){
             bindedA[i].gradualVector=vector; 
-            bindedA[i].applyGradualVector(bounce);
+            applyGradualVector(bindedA[i], bounce);
             bindedA[i].colliding=true;
         }
     }
