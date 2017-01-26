@@ -598,6 +598,7 @@ var Rect = function(x, y, width, height, vx, vy, velocity, spin){
     }
     this.applyGradualVector = function(threshold){
         if (this.gradualVector.x == 0 && this.gradualVector.y == 0){
+            this.colliding=false;
             return;
         }
         var magnitude = norm(this.gradualVector);
@@ -948,6 +949,7 @@ function elasticCollision(polygonA, polygonB,
         for (var i = 0; i < bindedB.length; i++){
             bindedB[i].gradualVector=vector;
             bindedB[i].applyGradualVector(bounce);
+            bindedB[i].colliding=true;
         }
     }
 
@@ -961,6 +963,7 @@ function elasticCollision(polygonA, polygonB,
         for (var i = 0; i < bindedA.length; i++){
             bindedA[i].gradualVector=vector; 
             bindedA[i].applyGradualVector(bounce);
+            bindedA[i].colliding=true;
         }
     }
 
