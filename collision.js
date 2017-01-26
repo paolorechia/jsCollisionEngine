@@ -563,11 +563,11 @@ var Rect = function(x, y, width, height, vx, vy, velocity, spin){
 	this.sides = 4;
 	this.axes = [];
 	this.projections = [];
+    this.gradualVector = new Vector(0, 0);
 	for (var i = 0; i < this.sides; i ++){
 		this.axes[i] = new Vector(0, 0);
 		this.projections[i] = new Projection(0, 0);
 	}
-	
 	this.applyVector = function(vector){
 		for (var i = 0; i < this.vertices.length; i++){
 				this.vertices[i].x += vector.x;
@@ -590,6 +590,27 @@ var Rect = function(x, y, width, height, vx, vy, velocity, spin){
         var vector = new Vector(0, 0);
         calculateVector(point, this.center, vector);
         this.applyVector(vector);
+    }
+    this.applyGradualVector = function(threshold){
+        if (this.gradualVector.x == 0 && this.gradualVector.y == 0){
+            return;
+        }
+        var appliedVector = new Vector(0, 0);
+        if (this.gradualVector.x > threshold){
+            appliedVector.x = threshold;
+        }
+        else{
+            appliedVector.x = this.gradualVector.x;
+        }
+        if (this.gradualVector.y > theshold){
+            appliedVector.y = threshold;
+        }
+        else{
+            appliedVector.y = this.gradualVector.y;
+        }
+        this.applyVector(appliedVector);
+        this.gradualVector.x - this.gradualAppliedVector.x;
+        this.gradualVector.y - this.gradualAppliedVector.y;
     }
 }
 

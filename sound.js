@@ -1,14 +1,23 @@
 // volume should range from 0 to 1
-var SoundPool = function(limit = 10, volume = 5){
+var SoundPool = function(limit = 10, volume = 5, clearRate=0){
     this.queue = [];
     this.limit = limit;
     this.volume = volume;
+    this.clearRate = clearRate;
+    this.framesToClear = 0;
     this.addSound = function(sound){
         if (this.queue.length >= this.limit){
-            return;        }
+            return;
+        }
         this.queue.push(sound);
     }
     this.playQueue = function(){
+
+        if (this.framesToClear > 0){
+            this.framesToClear--;
+            return;
+        }
+
         while (this.queue.length > 0){
             if (this.queue[0].volumeFilter != undefined){
                 vol = (this.volume * this.queue[0].volumeFilter)/10;
@@ -19,6 +28,7 @@ var SoundPool = function(limit = 10, volume = 5){
             this.queue[0].volume(vol);
             this.queue[0].play();
             this.queue.splice(0,1);
+            this.framesToClear=this.clearRate;
         }
     }
     this.setVolume = function(volume){
