@@ -1,6 +1,7 @@
 var c = document.getElementById("umCanvas");
 var ctx = c.getContext("2d");
 var globalID = 0;
+var gradualRate = 5;
 
 Intersecction = function(overlap, contains){
     this.overlap = overlap;
@@ -582,7 +583,7 @@ var Rect = function(x, y, width, height, vx, vy, velocity, spin){
 		this.center.y = this.position.y + this.height * 0.5;
 	}
 	this.update = function(){
-        this.applyGradualVector(5);
+        this.applyGradualVector(gradualRate);
 		xIncrement = this.versor.x * this.velocity;
 		yIncrement = this.versor.y * this.velocity;
 
@@ -600,7 +601,6 @@ var Rect = function(x, y, width, height, vx, vy, velocity, spin){
             return;
         }
         var magnitude = norm(this.gradualVector);
-//        console.log(this.gradualVector, magnitude);
         if (magnitude <= threshold){
             this.applyVector(this.gradualVector);
             this.gradualVector.x = 0;
@@ -659,6 +659,7 @@ var Triangle = function(x, y, l1, vx, vy, velocity, spin){
 		}
 	}
 	this.update = function(){
+        this.applyGradualVector(gradualRate);
 		xIncrement = this.versor.x * this.velocity;
 		yIncrement = this.versor.y * this.velocity;
 		incrementVertices(this.vertices, xIncrement, yIncrement);
@@ -682,7 +683,6 @@ var Triangle = function(x, y, l1, vx, vy, velocity, spin){
             return;
         }
         var magnitude = norm(this.gradualVector);
-//        console.log(this.gradualVector, magnitude);
         if (magnitude <= threshold){
             this.applyVector(this.gradualVector);
             this.gradualVector.x = 0;
@@ -746,6 +746,7 @@ var Circle = function(x, y, radius, vx, vy, velocity, spin){
 			this.position.y += vector.y;
     }
 	this.update = function(){
+        this.applyGradualVector(gradualRate);
 		xIncrement = this.versor.x * this.velocity;
 		yIncrement = this.versor.y * this.velocity;
 	    this.position.x += xIncrement;
@@ -765,7 +766,6 @@ var Circle = function(x, y, radius, vx, vy, velocity, spin){
             return;
         }
         var magnitude = norm(this.gradualVector);
-//        console.log(this.gradualVector, magnitude);
         if (magnitude <= threshold){
             this.applyVector(this.gradualVector);
             this.gradualVector.x = 0;
@@ -951,7 +951,7 @@ function elasticCollision(polygonA, polygonB,
     }
     vector.x *=-1;
     vector.y *=-1;
-/*
+
     polygonA.gradualVector=vector; 
     polygonA.applyGradualVector(bounce);
     if (bindedA != undefined){
@@ -960,7 +960,7 @@ function elasticCollision(polygonA, polygonB,
             bindedA[i].applyGradualVector(bounce);
         }
     }
-*/
+
     changeDirection(polygonA, mtv.axis);
     mtv.axis.x = - mtv.axis.x;
     mtv.axis.y = - mtv.axis.y;
