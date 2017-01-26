@@ -536,6 +536,7 @@ function drawFPS(number, color="#000FFF"){
 
 function applyGradualVector(hitbox, threshold){
         if (hitbox.gradualVector.x == 0 && hitbox.gradualVector.y == 0){
+            hitbox.colliding=false;
             return;
         }
         var magnitude = norm(hitbox.gradualVector);
@@ -916,23 +917,29 @@ function elasticCollision(polygonA, polygonB,
     polygonB.gradualVector=vector; 
     polygonB.applyGradualVector(bounce);
 
+
     if (bindedB != undefined){
         for (var i = 0; i < bindedB.length; i++){
             bindedB[i].gradualVector=vector;
             bindedB[i].applyGradualVector(bounce);
+            bindedB[i].colliding=true;
         }
     }
+
 
     vector.x *=-1;
     vector.y *=-1;
 
+
     polygonA.gradualVector=vector; 
     polygonA.applyGradualVector(bounce);
+
 
     if (bindedA != undefined){
         for (var i = 0; i < bindedA.length; i++){
             bindedA[i].gradualVector=vector; 
             bindedA[i].applyGradualVector(bounce);
+            bindedA[i].colliding=true;
         }
     }
 

@@ -477,6 +477,7 @@ function mainLoop(){
     if (window.soundDisplay){
         soundPool.display(player.secondaryColor, new Point(c.width/2 - 20, 100));
     }
+    console.log(player.hitbox.colliding, player.auxHitbox.colliding);
     if (window.playing){
     	setTimeout(function(){requestAnimationFrame(mainLoop)}, interval);
     }
