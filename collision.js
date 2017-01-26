@@ -557,6 +557,7 @@ var Rect = function(x, y, width, height, vx, vy, velocity, spin){
 	this.mass = width * height;
 	this.center = new Point(x + width/2, y + height/2);
 	this.hit=false;
+	this.colliding=false;
 	this.versor = new Versor(vx, vy);
 	this.velocity = velocity;
 	this.spin = spin;
@@ -579,6 +580,7 @@ var Rect = function(x, y, width, height, vx, vy, velocity, spin){
 		this.center.y = this.position.y + this.height * 0.5;
 	}
 	this.update = function(){
+        this.applyGradualVector(5);
 		xIncrement = this.versor.x * this.velocity;
 		yIncrement = this.versor.y * this.velocity;
 
@@ -595,22 +597,22 @@ var Rect = function(x, y, width, height, vx, vy, velocity, spin){
         if (this.gradualVector.x == 0 && this.gradualVector.y == 0){
             return;
         }
-        var appliedVector = new Vector(0, 0);
-        if (this.gradualVector.x > threshold){
-            appliedVector.x = threshold;
+        var magnitude = norm(this.gradualVector);
+        console.log(this.gradualVector, magnitude);
+        if (magnitude <= threshold){
+            this.applyVector(this.gradualVector);
+            this.gradualVector.x = 0;
+            this.gradualVector.y = 0;
+            this.colliding=false;
         }
         else{
-            appliedVector.x = this.gradualVector.x;
+            var appliedVector = new Vector(0,0);
+            unitVector(this.gradualVector, appliedVector);
+            appliedVector.x * threshold;
+            appliedVector.y * threshold;
+            this.gradualVector.x -= appliedVector.x;
+            this.gradualVector.y -= appliedVector.y;
         }
-        if (this.gradualVector.y > theshold){
-            appliedVector.y = threshold;
-        }
-        else{
-            appliedVector.y = this.gradualVector.y;
-        }
-        this.applyVector(appliedVector);
-        this.gradualVector.x - this.gradualAppliedVector.x;
-        this.gradualVector.y - this.gradualAppliedVector.y;
     }
 }
 
@@ -869,31 +871,34 @@ function unilateralElasticCollision(polygonA, mtv, polygonB){
 }
 function elasticCollision(polygonA, polygonB, 
                           bindedA, bindedB, bounce){
+    if (polygonA.colliding == true && polygonB.colliding == true){
+        return;
+    }
 	var mtv = collisionSTA(polygonA, polygonB);
 	if (mtv== false){
 		return false;
 	}
+    polygonA.colliding=true;
+    polygonB.colliding=true;
     var vector = new Vector(0, 0);
-    if (mtv.contains){
-        vector.x = mtv.axis.x * mtv.magnitude;
-        vector.y = mtv.axis.y * mtv.magnitude;
-    }
-    else{
-        vector.x = mtv.axis.x * mtv.magnitude * bounce;
-        vector.y = mtv.axis.y * mtv.magnitude * bounce;
-    }
-    polygonB.applyVector(vector); 
+    vector.x = mtv.axis.x * mtv.magnitude;
+    vector.y = mtv.axis.y * mtv.magnitude;
+    polygonB.gradualVector=vector; 
+    polygonB.applyGradualVector(5);
     if (bindedB != undefined){
         for (var i = 0; i < bindedB.length; i++){
-            bindedB[i].applyVector(vector);
+            bindedB[i].gradualVector=vector;
+            bindedB[i].applyGradualVector(5);
         }
     }
     vector.x *=-1;
     vector.y *=-1;
-    polygonA.applyVector(vector); 
+    polygonA.gradualVector=vector; 
+    polygonA.applyGradualVector(5);
     if (bindedA != undefined){
         for (var i = 0; i < bindedA.length; i++){
-            bindedA[i].applyVector(vector);
+            bindedA[i].gradualVector=vector; 
+            bindedA[i].applyGradualVector(5);
         }
     }
     changeDirection(polygonA, mtv.axis);
