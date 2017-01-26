@@ -534,6 +534,27 @@ function drawFPS(number, color="#000FFF"){
 	ctx.stroke();
 }
 
+function applyGradualVector(hitbox, threshold){
+        if (hitbox.gradualVector.x == 0 && hitbox.gradualVector.y == 0){
+            return;
+        }
+        var magnitude = norm(hitbox.gradualVector);
+        if (magnitude <= threshold){
+            hitbox.applyVector(hitbox.gradualVector);
+            hitbox.gradualVector.x = 0;
+            hitbox.gradualVector.y = 0;
+            hitbox.colliding=false;
+        }
+        else{
+            var appliedVector = new Vector(0,0);
+            unitVector(hitbox.gradualVector, appliedVector);
+            appliedVector.x * threshold;
+            appliedVector.y * threshold;
+            hitbox.gradualVector.x -= appliedVector.x;
+            hitbox.gradualVector.y -= appliedVector.y;
+            hitbox.applyVector(appliedVector);
+        }
+}
 var Rect = function(x, y, width, height, vx, vy, velocity, spin){
 	var list = [];
 	// ponto1
@@ -596,25 +617,8 @@ var Rect = function(x, y, width, height, vx, vy, velocity, spin){
         calculateVector(point, this.center, vector);
         this.applyVector(vector);
     }
-    this.applyGradualVector = function(threshold){
-        if (this.gradualVector.x == 0 && this.gradualVector.y == 0){
-            return;
-        }
-        var magnitude = norm(this.gradualVector);
-        if (magnitude <= threshold){
-            this.applyVector(this.gradualVector);
-            this.gradualVector.x = 0;
-            this.gradualVector.y = 0;
-            this.colliding=false;
-        }
-        else{
-            var appliedVector = new Vector(0,0);
-            unitVector(this.gradualVector, appliedVector);
-            appliedVector.x * threshold;
-            appliedVector.y * threshold;
-            this.gradualVector.x -= appliedVector.x;
-            this.gradualVector.y -= appliedVector.y;
-        }
+    this.applyGradualVector = function(){
+        applyGradualVector(this, gradualRate);
     }
 }
 
@@ -678,28 +682,12 @@ var Triangle = function(x, y, l1, vx, vy, velocity, spin){
         calculateVector(point, this.center, vector);
         this.applyVector(vector);
     }
-    this.applyGradualVector = function(threshold){
-        if (this.gradualVector.x == 0 && this.gradualVector.y == 0){
-            return;
-        }
-        var magnitude = norm(this.gradualVector);
-        if (magnitude <= threshold){
-            this.applyVector(this.gradualVector);
-            this.gradualVector.x = 0;
-            this.gradualVector.y = 0;
-            this.colliding=false;
-        }
-        else{
-            var appliedVector = new Vector(0,0);
-            unitVector(this.gradualVector, appliedVector);
-            appliedVector.x * threshold;
-            appliedVector.y * threshold;
-            this.gradualVector.x -= appliedVector.x;
-            this.gradualVector.y -= appliedVector.y;
-        }
+    this.applyGradualVector = function(){
+        applyGradualVector(this, gradualRate);
     }
 }
 
+/*
 function applyVectorToRect(rect, vector){
 	for (var i = 0; i < rect.vertices.length; i++){
 			rect.vertices[i].x += vector.x;
@@ -710,6 +698,7 @@ function applyVectorToRect(rect, vector){
 	rect.center.x = rect.position.x + rect.width * 0.5;
 	rect.center.y = rect.position.y + rect.height * 0.5;
 }
+*/
 
 function incrementVertices(vertices, xIncrement, yIncrement){
 		for (var i = 0; i < vertices.length; i++){
@@ -761,25 +750,8 @@ var Circle = function(x, y, radius, vx, vy, velocity, spin){
         calculateVector(point, this.position, vector);
         this.applyVector(vector);
     }
-    this.applyGradualVector = function(threshold){
-        if (this.gradualVector.x == 0 && this.gradualVector.y == 0){
-            return;
-        }
-        var magnitude = norm(this.gradualVector);
-        if (magnitude <= threshold){
-            this.applyVector(this.gradualVector);
-            this.gradualVector.x = 0;
-            this.gradualVector.y = 0;
-            this.colliding=false;
-        }
-        else{
-            var appliedVector = new Vector(0,0);
-            unitVector(this.gradualVector, appliedVector);
-            appliedVector.x * threshold;
-            appliedVector.y * threshold;
-            this.gradualVector.x -= appliedVector.x;
-            this.gradualVector.y -= appliedVector.y;
-        }
+    this.applyGradualVector = function(){
+        applyGradualVector(this, gradualRate);
     }
 }
 
