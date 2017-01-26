@@ -478,9 +478,17 @@ function mainLoop(){
         soundPool.display(player.secondaryColor, new Point(c.width/2 - 20, 100));
     }
 //    console.log(player.hitbox.colliding, player.auxHitbox.colliding);
+/*
     if (player.hitbox.colliding || player.auxHitbox.colliding){
-//        console.log(player.hitbox.gradualVector, player.auxHitbox.gradualVector);
-    }
+        console.log(player.hitbox.colliding, player.auxHitbox.colliding);
+        console.log(player.hitbox.gradualVector, player.auxHitbox.gradualVector);
+
+*/
+/*
+    console.log(player.hitbox.center.x - player.auxHitbox.center.x,
+                player.hitbox.center.y - player.auxHitbox.center.y);
+*/
+        
     if (window.playing){
     	setTimeout(function(){requestAnimationFrame(mainLoop)}, interval);
     }

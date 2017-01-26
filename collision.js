@@ -1,7 +1,7 @@
 var c = document.getElementById("umCanvas");
 var ctx = c.getContext("2d");
 var globalID = 0;
-var gradualRate = 5;
+var gradualRate = 1;
 
 Intersecction = function(overlap, contains){
     this.overlap = overlap;
@@ -549,8 +549,8 @@ function applyGradualVector(hitbox, threshold){
         else{
             var appliedVector = new Vector(0,0);
             unitVector(hitbox.gradualVector, appliedVector);
-            appliedVector.x * threshold;
-            appliedVector.y * threshold;
+            appliedVector.x *= threshold;
+            appliedVector.y *= threshold;
             hitbox.gradualVector.x -= appliedVector.x;
             hitbox.gradualVector.y -= appliedVector.y;
             hitbox.applyVector(appliedVector);
@@ -664,7 +664,7 @@ var Triangle = function(x, y, l1, vx, vy, velocity, spin){
 		}
 	}
 	this.update = function(){
-        this.applyGradualVector(gradualRate);
+//        this.applyGradualVector(gradualRate);
 		xIncrement = this.versor.x * this.velocity;
 		yIncrement = this.versor.y * this.velocity;
 		incrementVertices(this.vertices, xIncrement, yIncrement);
@@ -915,13 +915,13 @@ function elasticCollision(polygonA, polygonB,
     vector.x = mtv.axis.x * mtv.magnitude;
     vector.y = mtv.axis.y * mtv.magnitude;
     polygonB.gradualVector=vector; 
-    applyGradualVector(polygonB, bounce);
+//    applyGradualVector(polygonB, bounce);
 
 
     if (bindedB != undefined){
         for (var i = 0; i < bindedB.length; i++){
             bindedB[i].gradualVector=vector;
-            applyGradualVector(bindedB[i], bounce);
+//            applyGradualVector(bindedB[i], bounce);
             bindedB[i].colliding=true;
         }
     }
@@ -932,13 +932,13 @@ function elasticCollision(polygonA, polygonB,
 
 
     polygonA.gradualVector=vector; 
-    applyGradualVector(polygonA, bounce);
+//    applyGradualVector(polygonA, bounce);
 
 
     if (bindedA != undefined){
         for (var i = 0; i < bindedA.length; i++){
             bindedA[i].gradualVector=vector; 
-            applyGradualVector(bindedA[i], bounce);
+ //           applyGradualVector(bindedA[i], bounce);
             bindedA[i].colliding=true;
         }
     }
