@@ -943,23 +943,27 @@ function elasticCollision(polygonA, polygonB,
     vector.y = mtv.axis.y * mtv.magnitude;
     polygonB.gradualVector=vector; 
     polygonB.applyGradualVector(bounce);
+
     if (bindedB != undefined){
         for (var i = 0; i < bindedB.length; i++){
             bindedB[i].gradualVector=vector;
             bindedB[i].applyGradualVector(bounce);
         }
     }
+
     vector.x *=-1;
     vector.y *=-1;
 
     polygonA.gradualVector=vector; 
     polygonA.applyGradualVector(bounce);
+
     if (bindedA != undefined){
         for (var i = 0; i < bindedA.length; i++){
             bindedA[i].gradualVector=vector; 
             bindedA[i].applyGradualVector(bounce);
         }
     }
+
 
     changeDirection(polygonA, mtv.axis);
     mtv.axis.x = - mtv.axis.x;
