@@ -89,7 +89,14 @@ var coord = new Point(c.width/2, c.height/2);
 		    player.lock = true;
     		player.setupAutoPilot(coord);
 		}
- 
+        if (event.key == 'g'){
+            if (player.targetSystem.autoAiming){
+                player.targetSystem.setAutoAim(false, player.weapons);
+            }
+            else{
+                player.targetSystem.setAutoAim(true, player.weapons);
+            }
+        }
     }
 	keyboardUp = function(event){
        if (event.key == 'Escape'){

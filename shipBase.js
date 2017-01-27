@@ -19,6 +19,7 @@ var TargetSystem = function(){
     this.color="#00FF00";
     this.distance = 0;
     this.predictedPath = [];
+    this.autoAiming=false;
 
     this.setPossibleTargets = function(targets){
         this.possibleTargets = targets;
@@ -83,6 +84,36 @@ var TargetSystem = function(){
             this.cursor.setPoint(this.predictedPath[i]);
             this.cursor.radius=3;
             this.cursor.draw();
+        }
+    }
+    this.setAutoAim = function(set, weapons){
+        this.autoAiming=set;
+        if (!set){
+            for (var i = 0; i < weapons.length; i++){
+                if (weapons[i].turret){
+                    weapons[i].setCenter(coord);
+                }
+            }
+        }
+    }
+    this.autoAim = function(weapons){
+        if (!this.autoAiming){
+            return;
+        }
+        if (this.currentTarget == undefined ||
+            this.possibleTargets.length == 0){
+                for (var i = 0; i < weapons.length; i++){
+                    if (weapons[i].turret){
+                        weapons[i].setCenter(coord);
+                    }
+                }
+        }
+        else{ 
+            for (var i = 0; i < weapons.length; i++){
+                if (weapons[i].turret){
+                    weapons[i].setCenter(this.predictedPath[i]);
+                }
+            }
         }
     }
 }

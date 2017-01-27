@@ -445,7 +445,7 @@ function mainLoop(){
     player.targetSystem.setPossibleTargets(enemies);
     player.targetSystem.analyseTarget(player.hitbox.center);
     player.targetSystem.aimAssist(player.weapons);
-
+    player.targetSystem.autoAim(player.weapons);
     player.autoPilot();
     player.drawStatus();
     player.targetSystem.displayInfo();
