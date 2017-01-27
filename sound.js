@@ -151,3 +151,6 @@ var BufferedSound = function(sound, buffer, upperBound = 3, lowerBound = 0.5){
         }
     }
 }
+var maxSounds = 1;
+var startingVolume=5;
+soundPool = new SoundPool(maxSounds, startingVolume);

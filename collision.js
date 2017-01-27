@@ -943,11 +943,11 @@ function elasticCollision(polygonA, polygonB,
   //  console.log(vect);
     if (bindedA != undefined){
         for (var i = 0; i < bindedA.length; i++){
-/*
+
             vect = new Vector(0, 0);
-            vect.x = vector.x;
-            vect.y = vector.y;
-*/
+            vect.x = vector.x * -1;
+            vect.y = vector.y * -1;
+
             bindedA[i].gradualVector=vect;
             applyGradualVector(bindedA[i], bounce);
             bindedA[i].colliding=true;
