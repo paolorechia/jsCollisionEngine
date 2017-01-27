@@ -349,6 +349,7 @@ function selectShipLoop(){
 	for (var i = 0; i < buttons.length; i++){
 		window.buttons[i].draw();
 	}
+    cursor.draw();
     if (!confirmed){
 		requestAnimationFrame(selectShipLoop);
 	}
@@ -364,9 +365,8 @@ function selectShipLoop(){
 		c.addEventListener("touchstart", pegaCoordenadasMobile, false);
         window.buttons = [];
         //displayValueConsole(player);
-        c.width = window.innerWidth-20;
-        c.height = window.innerHeight-20;
-        updateResEvent(c);
+        c.width = 780;
+        c.height = 580;
         //console.log(fetchShipByName("Stellar"));
         player = fetchShipByName(player.name);
         window.playing = true;
@@ -489,6 +489,7 @@ function mainLoop(){
                 player.hitbox.center.y - player.auxHitbox.center.y);
 */
         
+    cursor.draw();
     if (window.playing){
     	setTimeout(function(){requestAnimationFrame(mainLoop)}, interval);
     }
@@ -561,4 +562,5 @@ window.playing = false;
 window.soundDisplay = false;
 var coord = new Point(c.width/2, c.height/2);
 player = undefined;
+cursor = new Cursor("#FF0000");
 selectShipLoop();

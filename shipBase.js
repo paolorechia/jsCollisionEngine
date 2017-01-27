@@ -9,6 +9,28 @@ var Phases = function(){
 		this.current = 0;
 }
 
+var TargetSystem = function(){
+    this.currentTarget = new Ship();
+    this.possibleTargets = [];
+
+    this.setPossibleTargets = function(targets){
+        this.possibleTargets = targets;
+    }
+    this.fetchTargetRange = function(myPosition){
+        this.targetDistance = distance(myPosition, this.currentTarget);
+    }
+    this.displayInfo = function(){
+        ctx.beginPath();
+        var string = "Target: " + this.currentTarget.name;
+        ctx.fillText(string, c.width/2 - 50, 20);
+        var string = "Range: " + this.currentTarget.name;
+    }
+    this.drawTargetAid = function(){
+
+
+    }
+}
+
 var EnergySource = function(max = 100, rechargeRate = 10, rechargeSpeed=500){ //rechargeSpeed in microseconds; rechargeRate in points per second
 	this.max = max;
 	this.current = this.max;
