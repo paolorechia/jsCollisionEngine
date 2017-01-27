@@ -83,6 +83,9 @@ var coord = new Point(c.width/2, c.height/2);
 			player.turn('l', true);
 		}
         if (event.key == 't'){
+            player.targetSystem.changeTarget();
+        }
+        if (event.key == 'u'){
 		    player.lock = true;
     		player.setupAutoPilot(coord);
 		}

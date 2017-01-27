@@ -442,8 +442,12 @@ function mainLoop(){
 	updateShipProjectiles(player);
 	checkProjectilesBorder(player);
 
+    player.targetSystem.setPossibleTargets(enemies);
+    player.targetSystem.fetchDistance(player.hitbox.center);
+
     player.autoPilot();
     player.drawStatus();
+    player.targetSystem.displayInfo();
 	if (instruct){
 		drawInstructions(instructions, player.secondaryColor);
 	}

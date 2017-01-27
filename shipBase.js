@@ -10,24 +10,52 @@ var Phases = function(){
 }
 
 var TargetSystem = function(){
-    this.currentTarget = new Ship();
+    this.currentTarget = undefined;
+    this.index = 0;
     this.possibleTargets = [];
+    this.cursor = new Cursor("#00FF00");
+    this.cursor.dash=8;
+    this.cursor.spin=1;
+    this.color="#00FF00";
+    this.distance = 0;
 
     this.setPossibleTargets = function(targets){
         this.possibleTargets = targets;
     }
-    this.fetchTargetRange = function(myPosition){
-        this.targetDistance = distance(myPosition, this.currentTarget);
+    this.fetchDistance= function(myPosition){
+        if (this.possibleTargets.length == 0){
+            return;
+        }
+        if (this.currentTarget == undefined || this.currentTarget.dead){
+            this.changeTarget();
+        }
+        this.distance = distance(myPosition, this.currentTarget.hitbox.center);
+        this.distance = Math.round(this.distance);
+    }
+    this.changeTarget = function(){
+        if (this.possibleTargets.length == 0){
+            return;
+        }
+        this.index++;
+        this.index %= this.possibleTargets.length;
+        this.currentTarget = this.possibleTargets[this.index];
     }
     this.displayInfo = function(){
+        if (this.currentTarget == undefined || this.currentTarget.dead){
+            return;
+        }
         ctx.beginPath();
-        var string = "Target: " + this.currentTarget.name;
-        ctx.fillText(string, c.width/2 - 50, 20);
-        var string = "Range: " + this.currentTarget.name;
+        ctx.fillStyle=this.color;
+        var string = "Target:   " + this.currentTarget.name + (this.index+1);
+        ctx.fillText(string, c.width/2 - 50, 40);
+        var string = "Distance: " + this.distance;
+        ctx.fillText(string, c.width/2 - 50, 60);
+        this.drawTargetAid();
     }
     this.drawTargetAid = function(){
-
-
+        this.cursor.setPoint(this.currentTarget.hitbox.center);
+        this.cursor.radius=this.currentTarget.hitbox.side + 5;
+        this.cursor.draw();
     }
 }
 
@@ -224,6 +252,7 @@ var Ship = function(x, y, l1, primaryColor = "#0000FF", secondaryColor = "#00F0F
 	this.dead = false;
 	this.weapons = [];
 
+    this.targetSystem = new TargetSystem();
 
     this.engineSound = null;
     this.deadSound = null;
