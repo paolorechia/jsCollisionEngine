@@ -349,6 +349,7 @@ function selectShipLoop(){
 	for (var i = 0; i < buttons.length; i++){
 		window.buttons[i].draw();
 	}
+    cursor.setPoint(coord);
     cursor.draw();
     if (!confirmed){
 		requestAnimationFrame(selectShipLoop);
@@ -489,6 +490,7 @@ function mainLoop(){
                 player.hitbox.center.y - player.auxHitbox.center.y);
 */
         
+    cursor.setPoint(coord);
     cursor.draw();
     if (window.playing){
     	setTimeout(function(){requestAnimationFrame(mainLoop)}, interval);
@@ -562,5 +564,6 @@ window.playing = false;
 window.soundDisplay = false;
 var coord = new Point(c.width/2, c.height/2);
 player = undefined;
-cursor = new Cursor("#FF0000");
+cursor = new Cursor("#00FF00");
+cursor.setPoint(coord);
 selectShipLoop();
