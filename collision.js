@@ -953,7 +953,6 @@ function elasticCollision(polygonA, polygonB,
             bindedA[i].colliding=true;
         }
     }
-  //  console.log(vect);
 
 
     changeDirection(polygonA, mtv.axis);
