@@ -18,11 +18,12 @@ var TargetSystem = function(){
     this.cursor.spin=1;
     this.color="#00FF00";
     this.distance = 0;
+    this.predictedPath = [];
 
     this.setPossibleTargets = function(targets){
         this.possibleTargets = targets;
     }
-    this.fetchDistance= function(myPosition){
+    this.analyseTarget= function(myPosition){
         if (this.possibleTargets.length == 0){
             return;
         }
@@ -31,6 +32,25 @@ var TargetSystem = function(){
         }
         this.distance = distance(myPosition, this.currentTarget.hitbox.center);
         this.distance = Math.round(this.distance);
+        this.velocity = Math.round(this.currentTarget.hitbox.velocity);
+        this.direction = this.currentTarget.inertiaVector;
+    }
+    this.aimAssist = function(weapons){
+        if (this.possibleTargets.length == 0){
+            return;
+        }
+        // travel time for bullets to reach target
+        for (var i = 0; i < weapons.length; i++){
+            var weaponVelocity = weapons[i].projectileVelocity;
+            this.travelTime = this.distance / weaponVelocity;
+            predictedPath = new Point(0, 0);
+            predictedPath.x = this.currentTarget.hitbox.center.x + this.direction.x * this.travelTime;
+            predictedPath.y = this.currentTarget.hitbox.center.y + this.direction.y * this.travelTime;
+            this.predictedPath.push(predictedPath);
+        }
+    }
+    this.clearAimAssist = function(){
+        this.predictedPath = [];
     }
     this.changeTarget = function(){
         if (this.possibleTargets.length == 0){
@@ -51,11 +71,19 @@ var TargetSystem = function(){
         var string = "Distance: " + this.distance;
         ctx.fillText(string, c.width/2 - 50, 60);
         this.drawTargetAid();
+        this.drawPredictedPath();
     }
     this.drawTargetAid = function(){
         this.cursor.setPoint(this.currentTarget.hitbox.center);
         this.cursor.radius=this.currentTarget.hitbox.side + 5;
         this.cursor.draw();
+    }
+    this.drawPredictedPath = function(){
+        for (var i = 0; i < this.predictedPath.length; i++){
+            this.cursor.setPoint(this.predictedPath[i]);
+            this.cursor.radius=3;
+            this.cursor.draw();
+        }
     }
 }
 

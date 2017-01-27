@@ -443,11 +443,13 @@ function mainLoop(){
 	checkProjectilesBorder(player);
 
     player.targetSystem.setPossibleTargets(enemies);
-    player.targetSystem.fetchDistance(player.hitbox.center);
+    player.targetSystem.analyseTarget(player.hitbox.center);
+    player.targetSystem.aimAssist(player.weapons);
 
     player.autoPilot();
     player.drawStatus();
     player.targetSystem.displayInfo();
+    player.targetSystem.clearAimAssist();
 	if (instruct){
 		drawInstructions(instructions, player.secondaryColor);
 	}
