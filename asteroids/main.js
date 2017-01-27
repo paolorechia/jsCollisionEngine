@@ -161,11 +161,15 @@ function buildInstructions(){
 	instructions.push(string);
 	string = "C: Auto-Fire";
 	instructions.push(string);
+	string = "G: Auto-Aim";
+	instructions.push(string);
 	string = "R: Cycle Weapons";
 	instructions.push(string);
 	string = "F: Enable Shield";
 	instructions.push(string);
-	string = "T: Auto-pilot";
+	string = "T: Change Target";
+	instructions.push(string);
+	string = "U: Auto-pilot";
 	instructions.push(string);	
 	string = "Esc: Cancel auto-pilot";
 	instructions.push(string);	
@@ -185,7 +189,7 @@ function drawInstructions(instructions, color="#000FFF"){
 	ctx.font="14px Arial";
 	var offSet = 0;
 	var xStart = 230;
-	var colSize = 5;    // or lines per column
+	var colSize = 6;    // or lines per column
 	for (var i = 0; i < instructions.length; i++){
 		if (i % colSize == 0){
 			offSet += 240;
@@ -444,12 +448,13 @@ function mainLoop(){
 
     player.targetSystem.setPossibleTargets(enemies);
     player.targetSystem.analyseTarget(player.hitbox.center);
-    player.targetSystem.aimAssist(player.weapons);
+    player.targetSystem.aimAssist(player.weapons, player.hitbox.velocity);
     player.targetSystem.autoAim(player.weapons);
     player.targetSystem.autoFire(player.weapons);
     player.autoPilot();
     player.drawStatus();
     player.targetSystem.displayInfo();
+    player.targetSystem.drawAid(player.weapons);
     player.targetSystem.clearAimAssist();
 	if (instruct){
 		drawInstructions(instructions, player.secondaryColor);

@@ -20,6 +20,8 @@ var TargetSystem = function(){
     this.distance = 0;
     this.predictedPath = [];
     this.autoAiming=false;
+    this.autoFiring=false;
+    this.shipVelocity = 0;
 
     this.setPossibleTargets = function(targets){
         this.possibleTargets = targets;
@@ -32,18 +34,27 @@ var TargetSystem = function(){
             this.changeTarget();
         }
         this.distance = distance(myPosition, this.currentTarget.hitbox.center);
-        this.distance = Math.round(this.distance);
         this.velocity = Math.round(this.currentTarget.hitbox.velocity);
         this.direction = this.currentTarget.inertiaVector;
     }
-    this.aimAssist = function(weapons){
+    this.aimAssist = function(weapons, shipVelocity){
         if (this.possibleTargets.length == 0){
             return;
         }
         // travel time for bullets to reach target
+        this.shipVelocity = velocity;
         for (var i = 0; i < weapons.length; i++){
             var weaponVelocity = weapons[i].projectileVelocity;
-            this.travelTime = this.distance / weaponVelocity;
+            if (turret){
+                this.distance = distance(weapons[i].position, 
+                                         this.currentTarget.hitbox.center);
+            }
+            else{
+                this.distance = distance(weapons[i].center,
+                                         this.currentTarget.hitbox.center);
+            }
+            this.distance = Math.round(this.distance);
+            this.travelTime = this.distance / (weaponVelocity + shipVelocity);
             predictedPath = new Point(0, 0);
             predictedPath.x = this.currentTarget.hitbox.center.x + this.direction.x * this.travelTime;
             predictedPath.y = this.currentTarget.hitbox.center.y + this.direction.y * this.travelTime;
@@ -71,19 +82,29 @@ var TargetSystem = function(){
         ctx.fillText(string, c.width/2 - 50, 40);
         var string = "Distance: " + this.distance;
         ctx.fillText(string, c.width/2 - 50, 60);
-        this.drawTargetAid();
-        this.drawPredictedPath();
     }
-    this.drawTargetAid = function(){
+    this.drawAid = function(weapons){
+        if (this.currentTarget == undefined || this.currentTarget.dead){
+            return;
+        }
         this.cursor.setPoint(this.currentTarget.hitbox.center);
         this.cursor.radius=this.currentTarget.hitbox.side + 5;
         this.cursor.draw();
+        this.drawPredictedPath(weapons);
     }
-    this.drawPredictedPath = function(){
+    this.drawPredictedPath = function(weapons){
         for (var i = 0; i < this.predictedPath.length; i++){
-            this.cursor.setPoint(this.predictedPath[i]);
-            this.cursor.radius=3;
-            this.cursor.draw();
+            if (weapons[i].enabled){
+                if (weapons[i].range + this.shipVelocity < this.distance){
+                    this.cursor.color="#FF0000";
+                }
+                else{
+                    this.cursor.color="#00FF00";
+                }
+                this.cursor.setPoint(this.predictedPath[i]);
+                this.cursor.radius=3;
+                this.cursor.draw();
+            }
         }
     }
     this.setAutoAim = function(set, weapons){
@@ -107,11 +128,33 @@ var TargetSystem = function(){
                         weapons[i].setCenter(coord);
                     }
                 }
+            if (this.autoFiring){
+                this.autoFiring=false;
+                for (var i = 0; i < weapons.length; i++){
+                        weapons[i].firing=false;
+                }
+            }
         }
         else{ 
+            this.autoFiring=true;
             for (var i = 0; i < weapons.length; i++){
                 if (weapons[i].turret){
                     weapons[i].setCenter(this.predictedPath[i]);
+                }
+            }
+        }
+    }
+    this.autoFire = function(weapons){
+        if (!this.autoFiring || !this.autoAiming){ 
+            return;
+        }
+        for (var i = 0; i < weapons.length; i++){
+            if (weapons[i].turret){
+                if (this.distance < weapons[i].range){
+                    weapons[i].firing=true;
+                }
+                else{
+                    weapons[i].firing=false;
                 }
             }
         }

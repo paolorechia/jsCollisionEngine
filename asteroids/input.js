@@ -92,6 +92,7 @@ var coord = new Point(c.width/2, c.height/2);
         if (event.key == 'g'){
             if (player.targetSystem.autoAiming){
                 player.targetSystem.setAutoAim(false, player.weapons);
+                player.targetSystem.autoFiring=false;
             }
             else{
                 player.targetSystem.setAutoAim(true, player.weapons);
