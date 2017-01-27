@@ -7,5 +7,7 @@
 <a href=pongGame/index.php> pong 
 <br>
 <a href=asteroids/index.php> asteroids
+<br>
+<a href=voyager/index.php> voyager (unfinished) 
 
 </html>
