@@ -25,6 +25,8 @@ java -jar ~/bin/closure-compiler-v20161201.jar ../broadCollision.js         >> $
 java -jar ~/bin/closure-compiler-v20161201.jar ../updater.js         >> $file
 java -jar ~/bin/closure-compiler-v20161201.jar ../buttons.js         >> $file
 java -jar ~/bin/closure-compiler-v20161201.jar ../cookies.js         >> $file
+java -jar ~/bin/closure-compiler-v20161201.jar ../cursor.js         >> $file
+
 java -jar ~/bin/closure-compiler-v20161201.jar main.js         >> $file
 java -jar ~/bin/closure-compiler-v20161201.jar input.js        >> $file
 cat <<DOCEND >>$file
