@@ -664,7 +664,7 @@ var Triangle = function(x, y, l1, vx, vy, velocity, spin){
 		}
 	}
 	this.update = function(){
-//        this.applyGradualVector(gradualRate);
+        this.applyGradualVector(gradualRate);
 		xIncrement = this.versor.x * this.velocity;
 		yIncrement = this.versor.y * this.velocity;
 		incrementVertices(this.vertices, xIncrement, yIncrement);
@@ -915,33 +915,45 @@ function elasticCollision(polygonA, polygonB,
     vector.x = mtv.axis.x * mtv.magnitude;
     vector.y = mtv.axis.y * mtv.magnitude;
     polygonB.gradualVector=vector; 
-//    applyGradualVector(polygonB, bounce);
+    applyGradualVector(polygonB, bounce);
+//    console.log(vector);
 
 
     if (bindedB != undefined){
         for (var i = 0; i < bindedB.length; i++){
+//            vect = new Vector(0, 0);
             bindedB[i].gradualVector=vector;
-//            applyGradualVector(bindedB[i], bounce);
+            applyGradualVector(bindedB[i], bounce);
             bindedB[i].colliding=true;
         }
     }
+ //   console.log(vector);
 
 
-    vector.x *=-1;
-    vector.y *=-1;
+    vect = new Vector(0, 0);
+    vect.x = vector.x * -1;
+    vect.y = vector.y * -1;
+
+ //  console.log(vect);
+
+    polygonA.gradualVector=vect; 
+    applyGradualVector(polygonA, bounce);
 
 
-    polygonA.gradualVector=vector; 
-//    applyGradualVector(polygonA, bounce);
-
-
+  //  console.log(vect);
     if (bindedA != undefined){
         for (var i = 0; i < bindedA.length; i++){
-            bindedA[i].gradualVector=vector; 
- //           applyGradualVector(bindedA[i], bounce);
+/*
+            vect = new Vector(0, 0);
+            vect.x = vector.x;
+            vect.y = vector.y;
+*/
+            bindedA[i].gradualVector=vect;
+            applyGradualVector(bindedA[i], bounce);
             bindedA[i].colliding=true;
         }
     }
+  //  console.log(vect);
 
 
     changeDirection(polygonA, mtv.axis);
