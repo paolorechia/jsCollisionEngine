@@ -867,11 +867,15 @@ function smartCollision(polygonA, polygonB, action, bindA, bindB){
 		hit = elasticCollision(polygonA, polygonB, bindA, bindB, 0.1);
 //		console.log("Elastic colision");
 	}
+/*
+/*  For the time being, this function is not usable.
+    It needs a complete rework to be compatible with bound hitboxes 
 	if (massDiff < smaller*4){
 		hit = partiallyElasticCollision(polygonA, polygonB, bindA, bindB);
 //		console.log("Partial");
 
 	}
+*/
 	else{
 		hit = unilateralElasticCollision(polygonA, polygonB);
 //		console.log("unilateral colision");
@@ -1004,6 +1008,8 @@ function inelasticCollision(polygonA, polygonB){
     return true;
 }
 
+/*  For the time being, this function is not usable.
+    It needs a complete rework to be compatible with bound hitboxes 
 function partiallyElasticCollision(polygonA, polygonB, bindA, bindB){
 	var mtv = collisionSTA(polygonA, polygonB);
 	if (mtv == false){
@@ -1042,7 +1048,12 @@ function partiallyElasticCollision(polygonA, polygonB, bindA, bindB){
 
 	result.x = inertiaBig.x + inertiaSmaller.x;
 	result.y = inertiaBig.y + inertiaSmaller.y;
+    bigger.x = result.x;
+    bigger.y = result.x;
+    return true;
+/*
     differenceVector = new Vector(0, 0);
+    console.log(result, bigger.center);
     differenceVector = calculateVector(bigger.center, result, differenceVector);
     console.log(differenceVector);
     bigger.applyVector(differenceVector);
@@ -1050,7 +1061,7 @@ function partiallyElasticCollision(polygonA, polygonB, bindA, bindB){
         biggerBind.applyVector(differenceVector);
     }
     console.log("Pow!");
-    return true;
+*/
 	/*
 	if (smaller.velocity > 2){
 		smaller.velocity -= 1;
@@ -1070,8 +1081,8 @@ function partiallyElasticCollision(polygonA, polygonB, bindA, bindB){
 		    smaller.spin -= 1;
         }
 	}
-*/
 }
+*/
 function checkElasticCollisionsNaive(array, bounce){
 	var i, j;
 	for (i = 0; i < array.length; i++){
