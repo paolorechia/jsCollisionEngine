@@ -4,6 +4,7 @@
 var Weapon = function(velocity = 10, width = 1, range = 1000, limit = 10, damage = 10, 
 					  mass = 1, rateOfFire = 8, spin=0, hasAmmo=false, ammo=100, energyUsage=0){
 	
+    this.mode = 'm'; // manual mode; 'a' for automatic
     this.turret = false;
 	this.enabled = false;
 	this.firing=false;
@@ -106,7 +107,9 @@ var Weapon = function(velocity = 10, width = 1, range = 1000, limit = 10, damage
         list.push(name, damage, rateOfFire, range, usage, turret);
         return list;
     }
-	
+    this.setMode = function(mode){
+        this.mode = mode;       //'m' for manual or 'a' for automatic
+    }
     this.setTurnRate= function(turnRate){
         this.turnRate = turnRate;
     }

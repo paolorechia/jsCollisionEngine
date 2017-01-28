@@ -33,7 +33,9 @@ var coord = new Point(c.width/2, c.height/2);
         }
 		if (event.key == 'v'){
 			for (var i= 0; i < player.weapons.length; i++){
-				player.weapons[i].fire(true);
+                if (player.weapons[i].mode == 'm'){
+                    player.weapons[i].fire(true);
+                }
 			}
         }
         if (event.key == 'Escape'){
@@ -98,6 +100,16 @@ var coord = new Point(c.width/2, c.height/2);
                 player.targetSystem.setAutoAim(true, player.weapons);
             }
         }
+        if (event.key == 'h'){
+            for (var i = 0; i < player.weapons.length; i++){
+                if (player.weapons[i].turret){
+                    oldMode = player.weapons[i].mode;
+                    if (oldMode=='m'){oldMode='a';}
+                    else{oldMode='m';}
+                    player.weapons[i].mode = oldMode;
+                }
+            }
+		}
     }
 	keyboardUp = function(event){
        if (event.key == 'Escape'){
@@ -109,7 +121,9 @@ var coord = new Point(c.width/2, c.height/2);
         }
         if (event.key == 'v'){
 			for (var i= 0; i < player.weapons.length; i++){
-				player.weapons[i].fire(false);
+                if (player.weapons[i].mode == 'm'){
+                    player.weapons[i].fire(false);
+                }
 			}
         }
 		if (player == undefined || player.lock){
@@ -179,7 +193,9 @@ var coord = new Point(c.width/2, c.height/2);
             return;
         }
 		for (var i= 0; i < player.weapons.length; i++){
-				player.weapons[i].fire(true);
+                if (player.weapons[i].mode == 'm'){
+                    player.weapons[i].fire(true);
+                }
         }
     }
 	function mouseUp(){
@@ -187,7 +203,9 @@ var coord = new Point(c.width/2, c.height/2);
             return;
         }
 		for (var i= 0; i < player.weapons.length; i++){
-				player.weapons[i].fire(false);
+                if (player.weapons[i].mode == 'm'){
+                    player.weapons[i].fire(false);
+                }
     	}
     }
     window.addEventListener("keydown", function(event){ keyboardDown(event)}, false);
