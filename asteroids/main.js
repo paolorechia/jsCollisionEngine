@@ -63,7 +63,6 @@ function generateTurrets(n, cannons, moving=false, rateOfFire=1){
         var size = 20;
 
         myRandom = Math.random();
-/*
         if (myRandom > 0.9){
             turret = new Turret("#FFFFFF", "#FF0000", cannons, x, y, size, heavyLaserBlaster);
             turret.hitbox.spin = 20;
@@ -84,8 +83,6 @@ function generateTurrets(n, cannons, moving=false, rateOfFire=1){
         else{
             turret = Turret("#FFFFFF", "#FF0000", cannons, x, y, size, machineGun);
         }
-*/
-            turret = Turret("#FFFFFF", "#FF0000", cannons, x, y, size, heavyCannon);
         for (var j =0; j < cannons; j++){
             turret.weapons[j].rateOfFire *= rateOfFire;
             turret.weapons[j].setCenter(player.hitbox.center);
