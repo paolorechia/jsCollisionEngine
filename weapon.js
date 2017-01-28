@@ -528,6 +528,13 @@ function buildWeaponsStatus(weapons){
 			string += " --- Ammo: " + weapons[i].ammo;
 		}
 		list.push(string);
+        if (weapons[i].mode=='a'){
+            string = "Weapon mode: automatic";
+        }
+        if (weapons[i].mode=='m'){
+            string = "Weapon mode: manual";
+        }
+		list.push(string);
 	}
 	return list;
 }
@@ -538,7 +545,7 @@ function drawWeaponsStatus(list, color="#00F0FF"){
 	ctx.font="14px Arial";
 	var offSet = 0;
 	var xStart = 230;
-	var colSize = 3;
+	var colSize = 6;
 	for (var i = 0; i < list.length; i++){
 		if (i % colSize == 0){
 			offSet += 240;

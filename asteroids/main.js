@@ -159,9 +159,9 @@ function buildInstructions(){
 	instructions.push(string);
 	string = "V/Mouse Click: Shoot";
 	instructions.push(string);
-	string = "C: Auto-Fire";
+	string = "C: Always Fire";
 	instructions.push(string);
-	string = "G: Auto-Aim";
+	string = "H: Weapons mode";
 	instructions.push(string);
 	string = "R: Cycle Weapons";
 	instructions.push(string);

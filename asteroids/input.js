@@ -91,21 +91,19 @@ var coord = new Point(c.width/2, c.height/2);
 		    player.lock = true;
     		player.setupAutoPilot(coord);
 		}
-        if (event.key == 'g'){
-            if (player.targetSystem.autoAiming){
-                player.targetSystem.setAutoAim(false, player.weapons);
-                player.targetSystem.autoFiring=false;
-            }
-            else{
-                player.targetSystem.setAutoAim(true, player.weapons);
-            }
-        }
         if (event.key == 'h'){
             for (var i = 0; i < player.weapons.length; i++){
                 if (player.weapons[i].turret){
                     oldMode = player.weapons[i].mode;
-                    if (oldMode=='m'){oldMode='a';}
-                    else{oldMode='m';}
+                    if (oldMode=='m'){
+                        oldMode='a';
+                        player.targetSystem.setAutoAim(true, player.weapons);
+                    }
+                    else{
+                        oldMode='m';
+                        player.targetSystem.setAutoAim(false, player.weapons);
+                        player.targetSystem.autoFiring=false;
+                    }
                     player.weapons[i].mode = oldMode;
                 }
             }

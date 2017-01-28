@@ -41,7 +41,7 @@ var Stellar = function(primaryColor="#000FFF", secondaryColor = "#0FF0FF",
 	ship.weapon.enabled=true;
 
 //	ship.addWeapon(lightLaserBlaster());
-//	ship.weapon.setPowerSupply(ship.powerSupply);
+	ship.weapon.setPowerSupply(ship.powerSupply);
 	ship.addWeapon(machineGun());
 	ship.changeWeapon();
 	ship.weapon.setOwner(ship);
