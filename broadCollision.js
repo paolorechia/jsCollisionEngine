@@ -1,5 +1,14 @@
 // broad collision algorithms, pretty naive at this point
 // depends on collision, shipBase and weapon
+function collideHitboxes(hitboxes){
+		for (var i = 0; i < hitboxes.length - 1; i++){
+            for (var j = i + 1; j < hitboxes.length; j++){
+            hit = elasticCollision(hitboxes[i],
+                                   hitboxes[j],
+                                   undefined, undefined, 0.1);
+            }
+        }
+}
 function collideShipHitboxes(ship, objects, damage){
         if (objects.length == 0){
             return;

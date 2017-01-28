@@ -483,7 +483,7 @@ function mainLoop(){
 
 	killObjects(objects);
 	killObjects(enemies);
-	checkColisionsNaive(objects);
+    collideHitboxes(objects);
 	score.draw(player.secondaryColor);
 	level.draw(player.secondaryColor);
 
