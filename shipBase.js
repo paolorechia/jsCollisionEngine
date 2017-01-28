@@ -22,7 +22,7 @@ var TargetSystem = function(){
     this.autoAiming=false;
     this.autoFiring=false;
     this.shipVelocity = 0;
-    this.refreshRate = 10;
+    this.refreshRate = 0;
     this.refreshIndex= 0;
     this.updateRefresh = function(){
         this.refreshIndex++;
