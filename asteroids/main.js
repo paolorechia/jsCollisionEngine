@@ -87,8 +87,7 @@ function generateTurrets(n, cannons, moving=false, rateOfFire=1){
             turret.weapons[j].rateOfFire *= rateOfFire;
             turret.weapons[j].setCenter(player.hitbox.center);
             turret.weapons[j].setPosition(turret.hitbox.vertices[j]);
-            turret.weapons[j].firing=true;
-//            turret.weapons[j].sound=null;
+            turret.weapons[j].mode='a';
         }
         turret.weapon.setOwner(turret);
         if (moving){
@@ -97,6 +96,8 @@ function generateTurrets(n, cannons, moving=false, rateOfFire=1){
         }
         turret.value = Math.round(myRandom * 10);
         turret.value *= cannons;
+        turret.targetSystem.setAutoAim(true, turret.weapons);
+        turret.targetSystem.refreshRate=4;
         enemies.push(turret);
     }
 }
@@ -401,6 +402,8 @@ function mainLoop(){
 		}
 	}
 
+    explosions.push(new Explosion(Math.random() * 800, Math.random() * 600));
+
 
 	for (var i = 0; i < objects.length; i++){
 		updateHitbox(objects[i]);
@@ -447,15 +450,11 @@ function mainLoop(){
 	checkProjectilesBorder(player);
 
     updateTargetSystem(player, enemies);
-/*
-    player.targetSystem.setPossibleTargets(enemies);
-    player.targetSystem.clearAimAssist();
-    player.targetSystem.analyseTarget(player.hitbox.center);
-    player.targetSystem.aimAssist(player.weapons, player.hitbox.velocity);
-    player.targetSystem.autoAim(player.weapons);
-    player.targetSystem.autoFire(player.weapons);
-*/
-
+    if (!player.dead){
+        for (var i  = 0; i < enemies.length; i++){
+            updateTargetSystem(enemies[i], players);
+        }
+    }
     player.autoPilot();
     player.drawStatus();
     player.targetSystem.displayInfo();
@@ -484,9 +483,13 @@ function mainLoop(){
 	killObjects(objects);
 	killObjects(enemies);
     collideHitboxes(objects);
+    collideShipsExplosions(enemies, explosions);
+    collideShipsExplosions(players, explosions);
+    collideHitboxesExplosions(objects);
 	score.draw(player.secondaryColor);
 	level.draw(player.secondaryColor);
-
+    updateExplosions(explosions);
+    explosions[0].draw();
 	
 	fps.calculateMean();
 	drawFPS(fps.mean, player.secondaryColor);
@@ -494,18 +497,6 @@ function mainLoop(){
     if (window.soundDisplay){
         soundPool.display(player.secondaryColor, new Point(c.width/2 - 20, 100));
     }
-//    console.log(player.hitbox.colliding, player.auxHitbox.colliding);
-/*
-    if (player.hitbox.colliding || player.auxHitbox.colliding){
-        console.log(player.hitbox.colliding, player.auxHitbox.colliding);
-        console.log(player.hitbox.gradualVector, player.auxHitbox.gradualVector);
-
-*/
-/*
-    console.log(player.hitbox.center.x - player.auxHitbox.center.x,
-                player.hitbox.center.y - player.auxHitbox.center.y);
-*/
-        
     cursor.setPoint(coord);
     cursor.draw();
     if (window.playing){
@@ -523,6 +514,7 @@ function mainLoop(){
         score.player = 0;
         objects = [];
         enemies = [];
+        explosions = [];
         music.pause();
         selectMusic.play();
         requestAnimationFrame(selectShipLoop);
@@ -550,6 +542,7 @@ var instructions = buildInstructions();
 
 var objects = [];
 var enemies = [];
+var explosions = [];
 var maxSounds= 1;
 var startingVolume=5;
 soundPool = new SoundPool(maxSounds, startingVolume);

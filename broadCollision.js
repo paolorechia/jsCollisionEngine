@@ -66,3 +66,10 @@ function collideWeaponsShips(shooter, ships){
             }
         }
 }
+
+function collideShipsExplosions(ships, explosions){
+
+}
+function collideHitboxesExplosions(hitboxes, explosions){
+
+}

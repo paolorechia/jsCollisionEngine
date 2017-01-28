@@ -115,3 +115,9 @@ function displayShip(ship){
         ship.draw();
 }
 
+function updateExplosions(explosions){
+    for (var i = 0; i < explosions.length; i++){
+        explosions[i].expandRadius;
+        explosions[i].decreaseDuration;
+    }
+}
