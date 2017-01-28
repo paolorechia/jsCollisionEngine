@@ -446,16 +446,20 @@ function mainLoop(){
 	updateShipProjectiles(player);
 	checkProjectilesBorder(player);
 
+    updateTargetSystem(player, enemies);
+/*
     player.targetSystem.setPossibleTargets(enemies);
+    player.targetSystem.clearAimAssist();
     player.targetSystem.analyseTarget(player.hitbox.center);
     player.targetSystem.aimAssist(player.weapons, player.hitbox.velocity);
     player.targetSystem.autoAim(player.weapons);
     player.targetSystem.autoFire(player.weapons);
+*/
+
     player.autoPilot();
     player.drawStatus();
     player.targetSystem.displayInfo();
     player.targetSystem.drawAid(player.weapons);
-    player.targetSystem.clearAimAssist();
 	if (instruct){
 		drawInstructions(instructions, player.secondaryColor);
 	}

@@ -1,4 +1,16 @@
 // updater
+function updateTargetSystem(ship, targets){
+    ship.targetSystem.updateRefresh();
+    if (ship.targetSystem.refreshIndex > 0){
+        return;
+    }
+    ship.targetSystem.setPossibleTargets(targets);
+    ship.targetSystem.clearAimAssist();
+    ship.targetSystem.analyseTarget(ship.hitbox.center);
+    ship.targetSystem.aimAssist(ship.weapons, ship.hitbox.velocity);
+    ship.targetSystem.autoAim(ship.weapons);
+    ship.targetSystem.autoFire(ship.weapons);
+}
 
 
 function updateShip(player){

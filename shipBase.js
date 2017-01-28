@@ -22,7 +22,12 @@ var TargetSystem = function(){
     this.autoAiming=false;
     this.autoFiring=false;
     this.shipVelocity = 0;
-
+    this.refreshRate = 10;
+    this.refreshIndex= 0;
+    this.updateRefresh = function(){
+        this.refreshIndex++;
+        this.refreshIndex %= this.refreshRate;
+    }
     this.setPossibleTargets = function(targets){
         this.possibleTargets = targets;
     }
@@ -46,14 +51,8 @@ var TargetSystem = function(){
         this.inRange=false;
         for (var i = 0; i < weapons.length; i++){
             var weaponVelocity = weapons[i].projectileVelocity;
-            if (turret){
-                this.distance = distance(weapons[i].position, 
+            this.distance = distance(weapons[i].position, 
                                          this.currentTarget.hitbox.center);
-            }
-            else{
-                this.distance = distance(weapons[i].center,
-                                         this.currentTarget.hitbox.center);
-            }
             this.distance = Math.round(this.distance);
             this.travelTime = this.distance / (weaponVelocity + shipVelocity);
             if (this.distance < (weapons[i].range + shipVelocity)){

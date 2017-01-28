@@ -40,10 +40,11 @@ var Stellar = function(primaryColor="#000FFF", secondaryColor = "#0FF0FF",
 	ship.weapon.setPosition(ship.auxHitbox.vertices[1]);
 	ship.weapon.enabled=true;
 
-	ship.addWeapon(lightLaserBlaster());
+//	ship.addWeapon(lightLaserBlaster());
+//	ship.weapon.setPowerSupply(ship.powerSupply);
+	ship.addWeapon(machineGun());
 	ship.changeWeapon();
 	ship.weapon.setOwner(ship);
-	ship.weapon.setPowerSupply(ship.powerSupply);
 	ship.weapon.setPosition(ship.hitbox.center);
     ship.weapon.setCenter(coord);
     ship.weapon.setTurretMode(true);
