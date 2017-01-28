@@ -1012,13 +1012,17 @@ function partiallyElasticCollision(polygonA, polygonB, bindA, bindB){
 	var direction = new Vector(0, 0);
 	if (polygonB.mass > polygonA.mass){
 		bigger = polygonB;
+        biggerBind= bindB;
 		smaller = polygonA;
+        smallerBind= bindA;
 		sign = -1;
 		changeDirection(polygonA, mtv.axis);
 	}
 	else{
 		bigger = polygonA;
+        biggerBind= bindA;
 		smaller = polygonB;
+        smallerBind= bindB;
 		sign = 1;
 		mtv.axis.x = - mtv.axis.x;
 		mtv.axis.y = - mtv.axis.y;
@@ -1038,8 +1042,14 @@ function partiallyElasticCollision(polygonA, polygonB, bindA, bindB){
 
 	result.x = inertiaBig.x + inertiaSmaller.x;
 	result.y = inertiaBig.y + inertiaSmaller.y;
-	bigger.x = result.x;
-	bigger.y = result.y;
+    differenceVector = new Vector(0, 0);
+    differenceVector = calculateVector(bigger.center, result, differenceVector);
+    console.log(differenceVector);
+    bigger.applyVector(differenceVector);
+    if (biggerBind != undefined){
+        biggerBind.applyVector(differenceVector);
+    }
+    console.log("Pow!");
     return true;
 	/*
 	if (smaller.velocity > 2){
