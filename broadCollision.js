@@ -42,12 +42,12 @@ function collideWeaponsHitboxes(shooter, hitboxes){
 		for (var u = 0; u < shooter.weapons.length; u++){
 			for (var i = 0; i < shooter.weapons[u].projectiles.length; i++){
 				for (var j = 0; j < hitboxes.length; j++){
-					smartCollision(
-                        shooter.weapons[u].projectiles[i],
-                        hitboxes[j],
-                        function(){shooter.weapons[u].onHit(hitboxes[j])},
-                        undefined, undefined);
-				}
+                    smartCollision(
+                         shooter.weapons[u].projectiles[i],
+                         hitboxes[j],
+                         function(){shooter.weapons[u].onHit(hitboxes[j])});
+    
+                }
             }
         }
 }
@@ -61,9 +61,7 @@ function collideWeaponsShips(shooter, ships){
                     smartCollision(
                          shooter.weapons[u].projectiles[i],
                          ships[k].hitbox,
-                         function(){shooter.weapons[u].onHit(ships[k])},
-                         undefined,
-                         shipBind);
+                         function(){shooter.weapons[u].onHit(ships[k])});
                 }
             }
         }

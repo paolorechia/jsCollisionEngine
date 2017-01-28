@@ -856,33 +856,30 @@ function changeDirection(polygon, mtv){
 	polygon.versor.y = mtv.y;
 }
 
-function smartCollision(polygonA, polygonB, action, bindA, bindB){
+function smartCollision(polygonA, polygonB, action){
     if (polygonA == undefined || polygonB == undefined){
         return;
     }
 	var massDiff = polygonA.mass - polygonB.mass;
 	massDiff = Math.abs(massDiff);
 	smaller = Math.min(polygonA.mass, polygonB.mass);
-	if (massDiff <  smaller){
-		hit = elasticCollision(polygonA, polygonB, bindA, bindB, 0.1);
-//		console.log("Elastic colision");
-	}
-/*
-/*  For the time being, this function is not usable.
-    It needs a complete rework to be compatible with bound hitboxes 
-	if (massDiff < smaller*4){
-		hit = partiallyElasticCollision(polygonA, polygonB, bindA, bindB);
-//		console.log("Partial");
-
-	}
-*/
-	else{
+	if (massDiff <  smaller * 4){
+        hit = nullForceCollision(polygonA, polygonB);
+    }
+    else{
 		hit = unilateralElasticCollision(polygonA, polygonB);
-//		console.log("unilateral colision");
-	}
+    }
 	if (action != undefined && hit){
 		action();
 	}
+}
+
+function nullForceCollision(polygonA, polygonB){
+	var mtv = collisionSTA(polygonA, polygonB);
+	if (mtv == false){
+		return false;
+	}
+    return true;
 }
 
 function unilateralElasticCollision(polygonA, polygonB){
@@ -970,119 +967,6 @@ function elasticCollision(polygonA, polygonB,
     return true;
 }
 
-function getInertiaNorm(polygon){
-	return polygon.mass * polygon.velocity;
-}
-function inelasticCollision(polygonA, polygonB){
-	var mtv = collisionSTA(polygonA, polygonB);
-	if (mtv == false){
-		return false;
-	}
-	inertiaA = new Vector(0, 0);
-	inertiaB = new Vector(0, 0);
-	result = new Vector(0, 0);
-
-	partialA = getInertiaNorm(polygonA);
-	inertiaA.x = partialA * polygonA.versor.x;
-	inertiaA.y = partialA * polygonA.versor.y;
-
-	partialB = getInertiaNorm(polygonB);
-	inertiaB.x = partialB * polygonB.versor.x;
-	inertiaB.y = partialB * polygonB.versor.y ;
-
-	result.x = inertiaA.x + inertiaB.x;
-	result.y = inertiaA.y + inertiaA.y;
-	
-	unitVector(result, result);
-	polygonA.versor = result;
-	polygonB.versor = result;
-	
-	polygonA.spin = 0;
-	polygonB.spin = 0;
-	if (polygonA.velocity > 2){
-		polygonA.velocity -= 1;
-	}
-	if (polygonB.velocity > 2){
-		polygonB.velocity -= 1;
-	}
-    return true;
-}
-
-/*  For the time being, this function is not usable.
-    It needs a complete rework to be compatible with bound hitboxes 
-function partiallyElasticCollision(polygonA, polygonB, bindA, bindB){
-	var mtv = collisionSTA(polygonA, polygonB);
-	if (mtv == false){
-		return;
-	}
-	var direction = new Vector(0, 0);
-	if (polygonB.mass > polygonA.mass){
-		bigger = polygonB;
-        biggerBind= bindB;
-		smaller = polygonA;
-        smallerBind= bindA;
-		sign = -1;
-		changeDirection(polygonA, mtv.axis);
-	}
-	else{
-		bigger = polygonA;
-        biggerBind= bindA;
-		smaller = polygonB;
-        smallerBind= bindB;
-		sign = 1;
-		mtv.axis.x = - mtv.axis.x;
-		mtv.axis.y = - mtv.axis.y;
-		changeDirection(polygonB, mtv.axis);
-	}
-	inertiaBig = new Vector(0, 0);
-	inertiaSmaller = new Vector(0, 0);
-	result = new Vector(0, 0);
-
-	partialBig = getInertiaNorm(bigger); 
-	inertiaBig.x = partialBig * polygonA.versor.x;
-	inertiaBig.y = partialBig * polygonA.versor.y;
-
-	partialSmaller = getInertiaNorm(smaller); 
-	inertiaSmaller.x = partialSmaller * polygonB.versor.x;
-	inertiaSmaller.y = partialSmaller * polygonB.versor.y ;
-
-	result.x = inertiaBig.x + inertiaSmaller.x;
-	result.y = inertiaBig.y + inertiaSmaller.y;
-    bigger.x = result.x;
-    bigger.y = result.x;
-    return true;
-/*
-    differenceVector = new Vector(0, 0);
-    console.log(result, bigger.center);
-    differenceVector = calculateVector(bigger.center, result, differenceVector);
-    console.log(differenceVector);
-    bigger.applyVector(differenceVector);
-    if (biggerBind != undefined){
-        biggerBind.applyVector(differenceVector);
-    }
-    console.log("Pow!");
-*/
-	/*
-	if (smaller.velocity > 2){
-		smaller.velocity -= 1;
-	}
-	*/
-/* temporarily disabled until hitboxes are updated to contain the auxHitbox
-   otherwise strange things happens
-	if (smaller.spin < 0){
-		smaller.spin += 1;
-        if (smaller.auxHitbox != undefined){
-		    smaller.spin += 1;
-        }
-	}
-	else{
-		smaller.spin -=1;
-        if (smaller.auxHitbox != undefined){
-		    smaller.spin -= 1;
-        }
-	}
-}
-*/
 function checkElasticCollisionsNaive(array, bounce){
 	var i, j;
 	for (i = 0; i < array.length; i++){
