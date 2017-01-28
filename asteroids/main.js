@@ -489,6 +489,7 @@ function mainLoop(){
 	score.draw(player.secondaryColor);
 	level.draw(player.secondaryColor);
     updateExplosions(explosions);
+    finishExplosions(explosions);
     explosions[0].draw();
 	
 	fps.calculateMean();
