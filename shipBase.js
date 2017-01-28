@@ -43,6 +43,7 @@ var TargetSystem = function(){
         }
         // travel time for bullets to reach target
         this.shipVelocity = velocity;
+        this.inRange=false;
         for (var i = 0; i < weapons.length; i++){
             var weaponVelocity = weapons[i].projectileVelocity;
             if (turret){
@@ -55,6 +56,9 @@ var TargetSystem = function(){
             }
             this.distance = Math.round(this.distance);
             this.travelTime = this.distance / (weaponVelocity + shipVelocity);
+            if (this.distance < (weapons[i].range + shipVelocity)){
+                this.inRange=true;
+            }
             predictedPath = new Point(0, 0);
             predictedPath.x = this.currentTarget.hitbox.center.x + this.direction.x * this.travelTime;
             predictedPath.y = this.currentTarget.hitbox.center.y + this.direction.y * this.travelTime;
@@ -80,6 +84,9 @@ var TargetSystem = function(){
         ctx.fillStyle=this.color;
         var string = "Target:   " + this.currentTarget.name + (this.index+1);
         ctx.fillText(string, c.width/2 - 50, 40);
+        if (!this.inRange){
+            ctx.fillStyle="#FF0000"; 
+        }
         var string = "Distance: " + this.distance;
         ctx.fillText(string, c.width/2 - 50, 60);
     }
@@ -95,11 +102,11 @@ var TargetSystem = function(){
     this.drawPredictedPath = function(weapons){
         for (var i = 0; i < this.predictedPath.length; i++){
             if (weapons[i].enabled){
-                if (weapons[i].range + this.shipVelocity < this.distance){
-                    this.cursor.color="#FF0000";
+                if (this.inRange){
+                    this.cursor.color="#00FF00";
                 }
                 else{
-                    this.cursor.color="#00FF00";
+                    this.cursor.color="#FF0000";
                 }
                 this.cursor.setPoint(this.predictedPath[i]);
                 this.cursor.radius=3;
