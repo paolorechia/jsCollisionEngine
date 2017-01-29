@@ -391,24 +391,30 @@ function asteroidShooter(){
 	return cannon;
 }
 function dumbMissile(){
-	missile = new Weapon(velocity = 2, width = 2, range = 1000, limit = 1, damage = 1, mass = 100, rateOfFire = 1, spin = 0, hasAmmo=true, ammo=10);
-    missile.expansionRate = 1;
-    missile.maxRadius=10;
+	missile = new Weapon(velocity = 2, width = 1, range = 1000, limit = 1, damage = 1, mass = 100, rateOfFire = 1, spin = 0, hasAmmo=true, ammo=10);
+    missile.expansionRate = 2;
+    missile.maxRadius=20;
 	missile.projectileVelocity = 5;
 	missile.type = 'm'; // type
 	missile.name="Dumb Missile";
     missile.onHit= function(target){
-        if (target.sides == 1){
+        if (target.hitbox.sides == 1){
             center = target.hitbox.position;
         }
         else{
             center = target.hitbox.center;
         }
-        explosions.push(new Explosion(center.x, center.y, this.damage));
-        
+        explosions.push(
+                        new Explosion(center.x, center.y, this.damage,
+                        this.expansionRate, this.maxRadius)
+                       );
     }
-    missile.onDurationEnd = function(){
-
+    missile.onBorder = function(point){
+        explosions.push(
+                        new Explosion(point.x, point.y, this.damage,
+                        this.expansionRate, this.maxRadius)
+                       );
+    
     }
 	return missile;
 }
@@ -605,10 +611,11 @@ function checkProjectilesBorder(player){
                     else if(player.weapons[u].type =='m'){
 						projectile = player.weapons[u].projectiles[k];
 						var hit = checkBorder(projectile);
-						if (hit) {killProjectile(projectile)};
-                    }
-                        
-					rotatePolygon(player.weapons[u].projectiles[k], player.weapons[u].projectiles[k].spin);	
+						if (hit){
+                                  player.weapons[u].onBorder(projectile.center);
+                                  killProjectile(projectile)};
+                        }
+//					rotatePolygon(player.weapons[u].projectiles[k], player.weapons[u].projectiles[k].spin);	
 			}
 		}
 }

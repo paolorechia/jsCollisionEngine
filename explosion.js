@@ -33,7 +33,7 @@ var Explosion = function(x, y, damageMultiplier=10, expansionRate = 5,
                                                    this.hitbox.position);
         damage *= this.damageMultiplier;
         damage = Math.round(Math.abs(damage));
-        console.log(damage);
+//        console.log(damage);
         return damage;
     }
 }
