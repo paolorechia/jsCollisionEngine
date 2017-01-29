@@ -1,5 +1,6 @@
 // Weapon module //
 // Depends on: collision.js
+// Explosive weapons depend on: explosion.js
 // Recommended to use with ship.js
 var Weapon = function(velocity = 10, width = 1, range = 1000, limit = 10, damage = 10, 
 					  mass = 1, rateOfFire = 8, spin=0, hasAmmo=false, ammo=100, energyUsage=0){
@@ -367,6 +368,7 @@ function lightCannon(){
 	cannon.projectileVelocity = 10;
 	cannon.type = 'p'; // projectile type
 	cannon.name="Light Cannon";
+    cannon.sound = new Howl({src : ["heavycannon.mp3"]});
 	return cannon;
 }
 function heavyCannon(){
@@ -374,6 +376,7 @@ function heavyCannon(){
 	cannon.projectileVelocity=10;
 	cannon.type = 'p'; // projectile type
 	cannon.name="Heavy Cannon";
+    cannon.sound = new Howl({src : ["heavycannon.mp3"]});
 	return cannon;
 }
 function asteroidShooter(){
@@ -381,6 +384,7 @@ function asteroidShooter(){
 	cannon.projectileVelocity=10;
 	cannon.type = 'p'; // projectile type
 	cannon.name="Asteroid Shooter";
+    cannon.sound = new Howl({src : ["heavycannon.mp3"]});
 	return cannon;
 }
 
@@ -482,6 +486,8 @@ function lightLaserBeam(){
 		ctx.lineWidth = oldWidth;
 	}
 	beam.name = "Light Laser Beam";
+    beam.sound = new Howl({src : ["laser-reapeated.mp3"]});
+    beam.sound.volume(0.5);
 	return beam;
 }
 function heavyLaserBeam(){

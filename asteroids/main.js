@@ -460,6 +460,7 @@ function mainLoop(){
 
     updateTargetSystem(player, enemies);
     if (!player.dead){
+        collideShipsExplosions(players, explosions);
         for (var i  = 0; i < enemies.length; i++){
             updateTargetSystem(enemies[i], players);
         }
@@ -493,7 +494,6 @@ function mainLoop(){
 	killShips(enemies);
     collideHitboxes(objects);
     collideShipsExplosions(enemies, explosions);
-    collideShipsExplosions(players, explosions);
     collideHitboxesExplosions(objects, explosions);
 	score.draw(player.secondaryColor);
 	level.draw(player.secondaryColor);

@@ -74,7 +74,7 @@ function collideShipsExplosions(ships, explosions){
             explosions[i].hitbox,
             ships[j].hitbox,
             function(){ships[j].sufferDamage(
-                                explosions[i].fetchDamage(ships[j]));}
+                                explosions[i].fetchDamage(ships[j].hitbox));}
                           ); 
         }
     }
