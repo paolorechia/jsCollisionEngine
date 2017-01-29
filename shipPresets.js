@@ -40,6 +40,13 @@ var Stellar = function(primaryColor="#000FFF", secondaryColor = "#0FF0FF",
 	ship.weapon.setPosition(ship.auxHitbox.vertices[1]);
 	ship.weapon.enabled=true;
 
+	ship.addWeapon(dumbMissile());
+	ship.changeWeapon();
+	ship.weapon.setOwner(ship);
+	ship.weapon.setCenter(ship.hitbox.center);
+	ship.weapon.setPosition(ship.auxHitbox.center);
+	ship.weapon.enabled=true;
+
     ship=loadDefaultSounds(ship);
 /*  engineSound is too lame right now
     engineSound=document.createElement("audio");
@@ -273,8 +280,8 @@ var Duster = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF",
     ship.name="Duster";
 	ship.updateDirection();
 	ship.hull = new Hull(200, 2);
-	ship.shield = new Shield(300, 0, 20, 0.5, 300);
-	ship.powerSupply = new EnergySource(300, 20, 100);
+	ship.shield = new Shield(300, 0, 20, 0.5, 200);
+	ship.powerSupply = new EnergySource(400, 20, 100);
 	ship.shield.setPowerSupply(ship.powerSupply);
 	ship.shield.setEnabled(true);
 	ship.acceleration = 0.11;
@@ -627,6 +634,15 @@ var StellarII = function(primaryColor="#000FFF", secondaryColor = "#0FF0FF",
 	ship.weapon.setCenter(ship.hitbox.vertices[0]);
 	ship.weapon.setPosition(ship.auxHitbox.vertices[0]);
 	ship.weapon.setPowerSupply(ship.powerSupply);
+	ship.weapon.enabled=true;
+
+
+
+	ship.addWeapon(dumbMissile());
+	ship.changeWeapon();
+	ship.weapon.setOwner(ship);
+	ship.weapon.setCenter(ship.hitbox.center);
+	ship.weapon.setPosition(ship.auxHitbox.center);
 	ship.weapon.enabled=true;
 
     ship=loadDefaultSounds(ship);

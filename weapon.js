@@ -406,7 +406,7 @@ function asteroidShooter(){
 	return cannon;
 }
 function dumbMissile(){
-	missile = new Weapon(velocity = 10, width = 1, range = 1000, limit = 1, damage = 1, mass = 100, rateOfFire = 1, spin = 0, hasAmmo=true, ammo=100);
+	missile = new Weapon(velocity = 10, width = 1, range = 1000, limit = 1, damage = 1, mass = 100, rateOfFire = 1, spin = 0, hasAmmo=true, ammo=20);
     missile.expansionRate = 2;
     missile.maxRadius=20;
 	missile.projectileVelocity = 5;
