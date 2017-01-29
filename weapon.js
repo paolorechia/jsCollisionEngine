@@ -135,7 +135,7 @@ var Weapon = function(velocity = 10, width = 1, range = 1000, limit = 10, damage
             value = this.damage * 20;
         }
         if (this.type == 'm'){
-            value = this.damage * 100;// * this.maxRadius/this.expandRate;
+            value = this.damage * 50 * (this.maxRadius/this.expansionRate);
         }
         else{
             value = this.range/100 + this.projectileVelocity;
