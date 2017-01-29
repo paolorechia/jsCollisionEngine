@@ -303,16 +303,29 @@ function buildShipsButtons(array){
 
     var coord = new Point(c.width/2, c.height/2);
 
+    var ships = [];
     var values = [];
     for (var i  = 0; i < array.length; i++){
-        values.push(fetchShipByName(array[i].string, position));
+        ships.push(fetchShipByName(array[i].string, position));
+        values[i]=ships[i].getValue();
+    }
+    for (var i = 0; i < values.length-1; i++){
+        for (var j = i; j< values.length; j++){
+            if (values[i] > values[j]){
+                aux = array[j];
+                array[j]=array[i];
+                array[i]=aux;
+                aux = values[j];
+                values[j]=values[i];
+                values[i]=aux;
+            }
+        }
     }
     console.log(values);
     for (var i = 1; i < values.length; i++){
-        array[i].string += ": " + values[i].getValue();
+        array[i].string += ": " + values[i];
     }
     values = [];
-
 }
 
 function buildLobbyButtons(array){
