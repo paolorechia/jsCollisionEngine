@@ -358,7 +358,7 @@ var Weapon = function(velocity = 10, width = 1, range = 1000, limit = 10, damage
 					  mass = 1, rateOfFire = 8, spin=0, hasAmmo=false, ammo=100, energyUsage=0){
 						  */
 function machineGun(){
-	cannon = new Weapon(velocity = 8, width = 1, range = 200, limit = 12, damage = 6, mass = 100, rateOfFire = 16, spin=0, hasAmmo=true, ammo=2000);
+	cannon = new Weapon(velocity = 4, width = 1, range = 200, limit = 12, damage = 6, mass = 100, rateOfFire = 16, spin=0, hasAmmo=true, ammo=2000);
 	cannon.type = 'p'; // projectile type
 	cannon.name="Machine Gun";
     cannon.sound = new Howl({src : ["machine_gun.mp3"]});
@@ -391,7 +391,7 @@ function asteroidShooter(){
 	return cannon;
 }
 function dumbMissile(){
-	missile = new Weapon(velocity = 2, width = 1, range = 1000, limit = 1, damage = 1, mass = 100, rateOfFire = 1, spin = 0, hasAmmo=true, ammo=10);
+	missile = new Weapon(velocity = 10, width = 1, range = 1000, limit = 1, damage = 1, mass = 100, rateOfFire = 1, spin = 0, hasAmmo=true, ammo=10);
     missile.expansionRate = 2;
     missile.maxRadius=20;
 	missile.projectileVelocity = 5;
