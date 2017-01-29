@@ -50,8 +50,8 @@ var ButtonScroller = function(x, y, buttons, size){
         }
         for (var i = this.index; i < bound; i++){
             var height = this.buttons[i].height;
-            this.buttons[i].x=x;
-            this.buttons[i].y=y + (height * i);
+            this.buttons[i].x=this.x;
+            this.buttons[i].y=this.y + (height * (i - this.index));
             this.buttons[i].id=this.buttons[i];
             window.buttons.push(this.buttons[i]);
         }
