@@ -220,6 +220,9 @@ var Weapon = function(velocity = 10, width = 1, range = 1000, limit = 10, damage
 		for (var i = 0; i < this.projectiles.length; i++){
 			this.projectiles[i].duration--;
 			if (this.projectiles[i].duration <= 0){
+                if (this.projectiles[i].type == 'm'){
+                    this.projectiles[i].onHit(this.projectiles[i]);
+                }
 				this.projectiles.splice(i, 1);
 			}
 		}
@@ -386,6 +389,28 @@ function asteroidShooter(){
 	cannon.name="Asteroid Shooter";
     cannon.sound = new Howl({src : ["heavycannon.mp3"]});
 	return cannon;
+}
+function dumbMissile(){
+	missile = new Weapon(velocity = 2, width = 2, range = 1000, limit = 1, damage = 1, mass = 100, rateOfFire = 1, spin = 0, hasAmmo=true, ammo=10);
+    missile.expansionRate = 1;
+    missile.maxRadius=10;
+	missile.projectileVelocity = 5;
+	missile.type = 'm'; // type
+	missile.name="Dumb Missile";
+    missile.onHit= function(target){
+        if (target.sides == 1){
+            center = target.hitbox.position;
+        }
+        else{
+            center = target.hitbox.center;
+        }
+        explosions.push(new Explosion(center.x, center.y, this.damage));
+        
+    }
+    missile.onDurationEnd = function(){
+
+    }
+	return missile;
 }
 
 function lightLaserBlaster(){
@@ -577,6 +602,12 @@ function checkProjectilesBorder(player){
 						var hit = checkBorder(projectile);
 						if (hit) {killProjectile(projectile)};
 					}
+                    else if(player.weapons[u].type =='m'){
+						projectile = player.weapons[u].projectiles[k];
+						var hit = checkBorder(projectile);
+						if (hit) {killProjectile(projectile)};
+                    }
+                        
 					rotatePolygon(player.weapons[u].projectiles[k], player.weapons[u].projectiles[k].spin);	
 			}
 		}
