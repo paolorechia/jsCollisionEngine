@@ -339,27 +339,36 @@ var Turret = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF", cannon
 	return ship;
 }
 
-function fetchShipByName(name){
+function fetchShipByName(name, position){
+    primaryColor = "#000FFF";
+    secondaryColor= "#00F0FF";
     if (name == "Stellar"){
-        var ship = new Stellar();
+        var ship = new Stellar(primaryColor, secondaryColor, 
+                               position.x, position.y);
     }
     else if (name == "Gargantuan"){
-        var ship = new Gargatuan();
+        var ship = new Gargatuan(primaryColor, secondaryColor, 
+                               position.x, position.y);
+
     }
     else if (name == "Colossal"){
-        var ship = new Colossal();
+        var ship = new Colossal(primaryColor, secondaryColor, 
+                               position.x, position.y);
     }
     else if (name == "Turret"){
-	    var ship = new Turret("#000FFF", "#00F0FF", 3,
-                        c.width/2, c.height/2, 20, dumbMissile);
+	    var ship = new Turret(primaryColor, secondaryColor, 3,
+                        position.x, position.y, 20, dumbMissile);
     }
     else if (name == "Bomber"){
-        var ship = new Bomber();
+        var ship = new Bomber(primaryColor, secondaryColor, 
+                               position.x, position.y);
+
     }
     else if (name == "Shark"){
-        var ship = new Shark();
+        var ship = new Shark(primaryColor, secondaryColor, 
+                               position.x, position.y);
+;
     }
-
     return ship;
 }
 

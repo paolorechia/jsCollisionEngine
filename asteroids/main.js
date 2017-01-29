@@ -286,73 +286,28 @@ function drawLobbyBackground(){
 
 
 function buildShipsButtons(array){
-    myButton = (new Button(20, 200, 150, 50, "Stellar"));
-    myButton.onClick = function(){
-        player = new Stellar(primaryColor, secondaryColor, c.width/2, c.height/2 + 150);
-        selected = true;
-        //describeShipConsole(player);
-    }
+
+    position = new Point(c.width/2, c.height/2 + 150);
+    myButton = shipButton("Stellar", position);
     array.push(myButton);
-
-    myButton = (new Button(20, 260, 150, 50, "Gargantuan"));
-    myButton.onClick = function(){
-        player = new Gargatuan(primaryColor, secondaryColor, c.width/2, c.height/2 + 150);
-        selected = true;
-        //describeShipConsole(player);
-    }
+    myButton = shipButton("Gargantuan", position);
     array.push(myButton);
-
-
-
-    //Turret = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF", cannons = 1, x = c.width/2, y = c.height/2, size = 15, weapon=machineGun)
-
-    myButton = (new Button(20, 320, 150, 50, "Turret"));
-    myButton.onClick = function(){
-        player = new Turret("#000FFF", "#00F0FF", 3,
-                            c.width/2, c.height/2 + 150, 20, dumbMissile);
-        selected = true;
-        //describeShipConsole(player);
-    }
+    myButton = shipButton("Turret", position);
     array.push(myButton);
-
-    myButton = (new Button(20, 380, 150, 50, "Colossal"));
-    myButton.onClick = function(){
-        player = new Colossal(primaryColor, secondaryColor, c.width/2, c.height/2 + 150);
-        selected = true;
-//        describeShipConsole(player);
-    }
+    myButton = shipButton("Colossal", position);
     array.push(myButton);
-    /*
-    myButton = new CircularButton(50, 360, 20, "#FF0000" ,"B");
+    myButton = shipButton("Shark", position);
     array.push(myButton);
-    */
-
-    myButton = (new Button(20, 380, 150, 50, "Shark"));
-    myButton.onClick = function(){
-        player = new Shark(primaryColor, secondaryColor, c.width/2, c.height/2 + 150);
-        selected = true;
-//        describeShipConsole(player);
-    }
-    array.push(myButton);
-
-    myButton = (new Button(20, 380, 150, 50, "Bomber"));
-    myButton.onClick = function(){
-        player = new Bomber(primaryColor, secondaryColor, c.width/2, c.height/2 + 150);
-        selected = true;
-//        describeShipConsole(player);
-    }
+    myButton = shipButton("Bomber", position);
     array.push(myButton);
 
     var coord = new Point(c.width/2, c.height/2);
 
     var values = [];
-    values.push(new Stellar()); 
-    values.push(new Gargatuan());
-    values.push(new Turret("#000FFF", "#00F0FF", 3, c.width/2, c.height/2, 20, dumbMissile));
-    values.push(new Colossal());
-    values.push(new Shark());
-    values.push(new Bomber());
-
+    for (var i  = 0; i < array.length; i++){
+        values.push(fetchShipByName(array[i].string, position));
+    }
+    console.log(values);
     for (var i = 1; i < values.length; i++){
         array[i].string += ": " + values[i].getValue();
     }
@@ -414,7 +369,8 @@ function selectShipLoop(){
         c.width = 780;
         c.height = 580;
         //console.log(fetchShipByName("Stellar"));
-        player = fetchShipByName(player.name);
+        position = new Point(c.width/2, c.height/2);
+        player = fetchShipByName(player.name, position);
         window.playing = true;
         window.rewarded = false;
         selectMusic.pause();

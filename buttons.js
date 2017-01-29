@@ -154,4 +154,11 @@ var CircularButton = function(x, y, radius, color, string){
 	}
 }
 
-var shipButton = function()"name"
+var shipButton = function(name, position){
+    button = new Button(0,0,150,50,name);
+    button.onClick = function(){
+        player = fetchShipByName(name, position);
+        selected = true;
+    }
+    return button;
+} 
