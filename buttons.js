@@ -4,14 +4,14 @@ var ButtonScroller = function(x, y, buttons, size){
     this.buttons=buttons;
     this.index = 0;
     this.size = size;
-    this.upButton = new Button(x, y - 30, 
+    this.upButton = new BoxButton(x, y - 30, 
                                buttons[0].width, 
                                buttons[0].height/2,
                                "Previous");
     this.upButton.onClick = function(){
         window.buttonScroller.scrollUp();
     }
-    this.downButton = new Button(x, y + (buttons[0].height * size) + 30,
+    this.downButton = new BoxButton(x, y + (buttons[0].height * size) + 30,
                                  buttons[0].width, buttons[0].height/2,
                                "Next");
     this.downButton.onClick = function(){
@@ -53,7 +53,7 @@ var ButtonScroller = function(x, y, buttons, size){
         for (var i = this.index; i < bound; i++){
             var height = this.buttons[i].height;
             this.buttons[i].x=this.x;
-            this.buttons[i].y=this.y + (height * (i - this.index));
+            this.buttons[i].y=this.y + 10 + (height * (i - this.index));
             this.buttons[i].id=this.buttons[i];
             window.buttons.push(this.buttons[i]);
         }
@@ -71,7 +71,11 @@ var ButtonScroller = function(x, y, buttons, size){
     }
     this.draw = function(){
         this.upButton.draw();
-        for (var i = 0; i < this.size; i++){
+        var bound = this.size;
+        if (this.size > this.buttons.length){
+            bound = this.buttons.length;
+        }
+        for (var i = 0; i < bound; i++){
             this.buttons[i].draw();
         }
         this.downButton.draw();
@@ -84,8 +88,35 @@ var Button = function(x, y, width, height, string=" "){
 	this.width = width;
 	this.height = height;
 	this.string = string;
+    this.bgColor = "#000000";
+    this.fontColor = "#FFFFFF";
+    this.font="14px arial";
+	this.onClick = function(){
+			//console.log(this.string);
+	}
+    this.onHover = function(){
+        this.fontColor = "#00F0FF";
+    }
+	this.draw = function(x = this.x, y = this.y){
+		ctx.fillStyle=this.bgColor;
+		ctx.fillRect(x, y, this.width, this.height);
+		ctx.fillStyle=this.fontColor;
+		ctx.font=this.font;
+		ctx.fillText(this.string, x + this.width/10, y + this.height/1.5);
+	}
+    this.reset = function(){
+        this.fontColor= "#FFFFFF";
+    }
+}
+var BoxButton = function(x, y, width, height, string=" "){
+	this.x = x;
+	this.y = y;
+	this.width = width;
+	this.height = height;
+	this.string = string;
     this.bgColor = "#FFFFFF";
     this.fontColor = "#000000";
+    this.font="14px arial";
 	this.onClick = function(){
 			//console.log(this.string);
 	}
@@ -96,14 +127,13 @@ var Button = function(x, y, width, height, string=" "){
 		ctx.fillStyle=this.bgColor;
 		ctx.fillRect(x, y, this.width, this.height);
 		ctx.fillStyle=this.fontColor;
-		ctx.font="14px arial";
+		ctx.font=this.font;
 		ctx.fillText(this.string, x + this.width/10, y + this.height/1.5);
 	}
     this.reset = function(){
         this.bgColor= "#FFFFFF";
     }
 }
-
 var CircularButton = function(x, y, radius, color, string){
 	this.x = x;
 	this.y = y;

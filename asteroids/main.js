@@ -347,8 +347,8 @@ function buildLobbyButtons(array){
     myButton.onHover= function(){}
     array.push(myButton);
 }
-confirmButton = new Button(c.width/2 - 100, c.height - 100,
-                           200, 50, "Confirm");
+confirmButton = new Button(c.width/2 - 20, c.height - 40,
+                           200, 30, "Confirm");
 confirmButton.onClick = function(){
     if (player.name == "Stellar"){
         confirmed=true;
@@ -360,6 +360,7 @@ confirmButton.onClick = function(){
 
     }
 }
+confirmButton.font="20px Arial";
 
 function selectShipLoop(){
 	drawLobbyBackground();
@@ -530,7 +531,7 @@ function mainLoop(){
         window.buttons = [];
         sButtons = [];
         buildShipsButtons(sButtons);
-        window.buttonScroller = new ButtonScroller(20, 200, sButtons, 3);
+        window.buttonScroller = new ButtonScroller(20, 200, sButtons, scrollerSize);
         window.buttonScroller.init(window.buttons);
         window.buttonScroller.setupDisplayingButtons();
         buildLobbyButtons(window.buttons);
@@ -591,10 +592,11 @@ music.volume = 0.5;
 console.log(selectMusic);
 
 
+var scrollerSize = 6;
 window.buttons = [];
 sButtons = [];
 buildShipsButtons(sButtons);
-window.buttonScroller = new ButtonScroller(20, 200, sButtons, 3);
+window.buttonScroller = new ButtonScroller(20, 200, sButtons, scrollerSize);
 window.buttonScroller.init(window.buttons);
 window.buttonScroller.setupDisplayingButtons();
 buildLobbyButtons(window.buttons);
