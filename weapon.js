@@ -220,8 +220,13 @@ var Weapon = function(velocity = 10, width = 1, range = 1000, limit = 10, damage
 		for (var i = 0; i < this.projectiles.length; i++){
 			this.projectiles[i].duration--;
 			if (this.projectiles[i].duration <= 0){
-                if (this.projectiles[i].type == 'm'){
-                    this.projectiles[i].onHit(this.projectiles[i]);
+                if (this.type == 'm'){
+                    explosions.push(
+                        new Explosion(this.projectiles[i].position.x,
+                                      this.projectiles[i].position.y,
+                                      this.damage,
+                                      this.expansionRate,
+                                      this.maxRadius));
                 }
 				this.projectiles.splice(i, 1);
 			}
@@ -391,13 +396,16 @@ function asteroidShooter(){
 	return cannon;
 }
 function dumbMissile(){
-	missile = new Weapon(velocity = 10, width = 1, range = 1000, limit = 1, damage = 1, mass = 100, rateOfFire = 1, spin = 0, hasAmmo=true, ammo=10);
+	missile = new Weapon(velocity = 10, width = 1, range = 200, limit = 1, damage = 1, mass = 100, rateOfFire = 1, spin = 0, hasAmmo=true, ammo=10);
     missile.expansionRate = 2;
     missile.maxRadius=20;
 	missile.projectileVelocity = 5;
 	missile.type = 'm'; // type
 	missile.name="Dumb Missile";
     missile.onHit= function(target){
+        if (target.hitbox == undefined){
+            target.hitbox=target;
+        } 
         if (target.hitbox.sides == 1){
             center = target.hitbox.position;
         }
@@ -408,6 +416,7 @@ function dumbMissile(){
                         new Explosion(center.x, center.y, this.damage,
                         this.expansionRate, this.maxRadius)
                        );
+
     }
     missile.onBorder = function(point){
         explosions.push(

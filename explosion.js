@@ -1,3 +1,10 @@
+
+var Explosive = function(damage, expansionRate, maxRadius){
+    this.damage=damage;
+    this.expansionRate=expansionRate;
+    this.maxRadius=maxRadius;
+}
+
 var Explosion = function(x, y, damageMultiplier=10, expansionRate = 5, 
                          maxRadius = 50, startRadius = 1,
                          color="#FF0000"){

@@ -258,7 +258,7 @@ function fetchShipByName(name){
     }
     else if (name == "Turret"){
 	    var ship = new Turret("#000FFF", "#00F0FF", 3,
-                        c.width/2, c.height/2, 20, lightLaserBlaster);
+                        c.width/2, c.height/2, 20, dumbMissile);
     }
     return ship;
 }
