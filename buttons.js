@@ -2,7 +2,6 @@ var ButtonScroller = function(x, y, buttons, size){
     this.x = x;
     this.y = y;
     this.buttons=buttons;
-    this.displaying=[];
     this.index = 0;
     this.size = size;
     this.upButton = new Button(x, y - 30, 
@@ -19,9 +18,6 @@ var ButtonScroller = function(x, y, buttons, size){
     this.init = function(buttons){
         this.resetButtons(this.buttons); 
         this.resetButtons(buttons); 
-        for (var i = 0; i < this.size; i++){
-            this.displaying[i]=this.buttons[i];
-        }
         window.buttons.push(this.upButton);
         window.buttons.push(this.downButton);
     }
@@ -48,12 +44,16 @@ var ButtonScroller = function(x, y, buttons, size){
         this.setupDisplayingButtons();
     }
     this.setupDisplayingButtons = function(){
-        for (var i = this.index; i < this.size; i++){
-            var height = this.displaying[i].height;
-            this.displaying[i].x=x;
-            this.displaying[i].y=y + (height * i);
-            this.displaying[i].id=this.buttons[i];
-            window.buttons.push(this.displaying[i]);
+        var bound = this.size + this.index;
+        if (bound > this.buttons.length){
+            bound=this.buttons.length;
+        }
+        for (var i = this.index; i < bound; i++){
+            var height = this.buttons[i].height;
+            this.buttons[i].x=x;
+            this.buttons[i].y=y + (height * i);
+            this.buttons[i].id=this.buttons[i];
+            window.buttons.push(this.buttons[i]);
         }
     }
     this.resetButtons= function(buttons){
@@ -70,7 +70,7 @@ var ButtonScroller = function(x, y, buttons, size){
     this.draw = function(){
         this.upButton.draw();
         for (var i = 0; i < this.size; i++){
-            this.displaying[i].draw();
+            this.buttons[i].draw();
         }
         this.downButton.draw();
     }
