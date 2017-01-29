@@ -132,14 +132,14 @@ var Weapon = function(velocity = 10, width = 1, range = 1000, limit = 10, damage
     this.getValue = function(){
         var value = 0;
         if (this.type == 'l'){
-            value = this.damage * 20;
-        }
-        if (this.type == 'm'){
-            value = this.damage * 50 * (this.maxRadius/this.expansionRate);
+            value = this.damage * 60;
         }
         else{
             value = this.range/100 + this.projectileVelocity;
             value += this.damage * this.rateOfFire;
+        }
+        if (this.type == 'm'){
+            value = this.damage * 50 * (this.maxRadius/this.expansionRate);
         }
         if (this.hasAmmo){
             if (this.type == 'm'){
@@ -473,7 +473,7 @@ function lightLaserBlaster(){
 	}
 	blaster.name = "Light Laser Blaster";
     blaster.sound = new Howl({src : ["Laser_Shoot.mp3"]});
-    blaster.sound.volume(0.5);
+    blaster.sound.volumeFilter=0.5;
 	return blaster;
 }
 function heavyLaserBlaster(){
@@ -511,11 +511,11 @@ function heavyLaserBlaster(){
 	}
 	blaster.name = "Heavy Laser Blaster";
     blaster.sound = new Howl({src : ["Laser_Shoot2.mp3"]});
-    blaster.sound.volume(0.5);
+    blaster.sound.volumeFilter=0.5;
 	return blaster;
 }
 function lightLaserBeam(){
-	beam = new Weapon(velocity = 100, width = 2, range = 800, limit = 1, damage = 1, mass=1, rateOfFire = 1000, spin=0, hasAmmo=false, ammo=1,
+	beam = new Weapon(velocity = 100, width = 2, range = 800, limit = 1, damage = 5, mass=1, rateOfFire = 1000, spin=0, hasAmmo=false, ammo=1,
 					  energyUsage=4);
 	beam.type = 'l'; // laser type
 	beam.draw = function(){
@@ -537,11 +537,11 @@ function lightLaserBeam(){
 	}
 	beam.name = "Light Laser Beam";
     beam.sound = new Howl({src : ["laser-reapeated.mp3"]});
-    beam.sound.volume(0.5);
+    beam.sound.volumeFilter=0.3;
 	return beam;
 }
 function heavyLaserBeam(){
-	beam = new Weapon(velocity = 100, width = 8, range = 800, limit = 1, damage = 5, mass=1, rateOfFire = 60, spin=0, hasAmmo=false, ammo=1,
+	beam = new Weapon(velocity = 100, width = 8, range = 800, limit = 1, damage = 10, mass=1, rateOfFire = 60, spin=0, hasAmmo=false, ammo=1,
 					  energyUsage=9);
 	beam.type = 'l'; // laser type
 
@@ -564,7 +564,7 @@ function heavyLaserBeam(){
 	}
 	beam.name = "Heavy Laser Beam";
     beam.sound = new Howl({src : ["laser-reapeated.mp3"]});
-    beam.sound.volume(0.5);
+    beam.sound.volumeFilter=0.5;
 	return beam;
 }
 function killProjectile(projectile){

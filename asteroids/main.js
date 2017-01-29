@@ -300,6 +300,20 @@ function buildShipsButtons(array){
     array.push(myButton);
     myButton = shipButton("Bomber", position);
     array.push(myButton);
+    myButton = shipButton("StellarII", position);
+    array.push(myButton);
+    myButton = shipButton("CannonFolder", position);
+    array.push(myButton);
+    myButton = shipButton("Beamer", position);
+    array.push(myButton);
+    myButton = shipButton("GargantuanII", position);
+    array.push(myButton);
+    myButton = shipButton("StarGazer", position);
+    array.push(myButton);
+    myButton = shipButton("StarGazerII", position);
+    array.push(myButton);
+    myButton = shipButton("Duster", position);
+    array.push(myButton);
 
     var coord = new Point(c.width/2, c.height/2);
 
