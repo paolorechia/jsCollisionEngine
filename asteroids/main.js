@@ -285,7 +285,7 @@ function drawLobbyBackground(){
 }
 
 
-function buildLobbyButtons(array){
+function buildShipsButtons(array){
 
     myButton = (new Button(20, 200, 150, 50, "Stellar"));
     myButton.onClick = function(){
@@ -328,9 +328,6 @@ function buildLobbyButtons(array){
     array.push(myButton);
     */
 
-    myButton = (new Button(20, 100, 200, 50, "Coins: " + score.coins));
-    myButton.onHover= function(){}
-    array.push(myButton);
 
     var coord = new Point(c.width/2, c.height/2);
 
@@ -343,18 +340,24 @@ function buildLobbyButtons(array){
     }
     values = [];
 
-    confirmButton = new Button(c.width/2 - 100, c.height - 100,
-                               200, 50, "Confirm");
-    confirmButton.onClick = function(){
-        if (player.name == "Stellar"){
-            confirmed=true;
-        }
-        if (score.coins > player.getValue()){
-            confirmed=true;
-        }
-        else{
+}
 
-        }
+function buildLobbyButtons(array){
+    myButton = (new Button(20, 100, 200, 50, "Coins: " + score.coins));
+    myButton.onHover= function(){}
+    array.push(myButton);
+}
+confirmButton = new Button(c.width/2 - 100, c.height - 100,
+                           200, 50, "Confirm");
+confirmButton.onClick = function(){
+    if (player.name == "Stellar"){
+        confirmed=true;
+    }
+    if (score.coins > player.getValue()){
+        confirmed=true;
+    }
+    else{
+
     }
 }
 
@@ -368,6 +371,7 @@ function selectShipLoop(){
         displayShip(player);
         drawStats(player);
     }
+    window.buttonScroller.draw();
 	for (var i = 0; i < buttons.length; i++){
 		window.buttons[i].draw();
 	}
@@ -525,6 +529,7 @@ function mainLoop(){
     else{
         window.buttons = [];
         buildLobbyButtons(window.buttons);
+        buildShipsButtons(window.buttons);
         window.instruct = false;
         window.selected = false;
         window.displaying = false;
@@ -583,7 +588,13 @@ console.log(selectMusic);
 
 
 window.buttons = [];
+sButtons = [];
+buildShipsButtons(sButtons);
+window.buttonScroller = new ButtonScroller(20, 200, sButtons, 3);
+window.buttonScroller.init(window.buttons);
+window.buttonScroller.setupDisplayingButtons();
 buildLobbyButtons(window.buttons);
+console.log(window.buttons);
 
 window.instruct = false;
 window.selected = false;
