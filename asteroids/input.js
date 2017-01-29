@@ -1,3 +1,14 @@
+function fireProjectile(weapon, stat){
+                if (weapon.type== 'l' ||
+                    weapon.type== 'p' ){
+                        weapon.fire(stat);
+                }
+}
+function fireMissile(weapon, stat){
+                if (weapon.type== 'm'){
+                    weapon.fire(stat);
+                }
+}
 var coord = new Point(c.width/2, c.height/2);
 
     function pegaCoordenadas(event){
@@ -33,9 +44,9 @@ var coord = new Point(c.width/2, c.height/2);
         }
 		if (event.key == 'v'){
 			for (var i= 0; i < player.weapons.length; i++){
-                if (player.weapons[i].mode == 'm' ||
-                    player.systemTarget == undefined){
-                    player.weapons[i].fire(true);
+                weapon = player.weapons[i];
+                if (weapon.mode == 'm'){
+                    fireProjectile(weapon, true);
                 }
 			}
         }
@@ -120,9 +131,9 @@ var coord = new Point(c.width/2, c.height/2);
         }
         if (event.key == 'v'){
 			for (var i= 0; i < player.weapons.length; i++){
-                if (player.weapons[i].mode == 'm' ||
-                    player.systemTarget == undefined){
-                    player.weapons[i].fire(false);
+                weapon = player.weapons[i];
+                if (weapon.mode == 'm'){
+                    fireProjectile(weapon, false);
                 }
 			}
         }
@@ -193,9 +204,9 @@ var coord = new Point(c.width/2, c.height/2);
             return;
         }
 		for (var i= 0; i < player.weapons.length; i++){
-                if (player.weapons[i].mode == 'm' ||
-                    player.systemTarget == undefined){
-                    player.weapons[i].fire(true);
+                weapon = player.weapons[i];
+                if (weapon.mode == 'm'){
+                    fireProjectile(weapon, true);
                 }
         }
     }
@@ -204,9 +215,9 @@ var coord = new Point(c.width/2, c.height/2);
             return;
         }
 		for (var i= 0; i < player.weapons.length; i++){
-                if (player.weapons[i].mode == 'm' ||
-                    player.systemTarget == undefined){
-                    player.weapons[i].fire(false);
+                weapon = player.weapons[i];
+                if (weapon.mode == 'm'){
+                    fireProjectile(weapon, false);
                 }
     	}
     }
