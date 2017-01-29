@@ -20,7 +20,7 @@ var Stellar = function(primaryColor="#000FFF", secondaryColor = "#0FF0FF",
 	ship.hull = new Hull(100, 0);
 	ship.shield = new Shield(50, 0, 5, 1, 300);
     ship.acceleration = 0.21;
-    ship.turnRate = 5;
+    ship.turnRate = 4;
 
 	ship.shield.setPowerSupply(ship.powerSupply);
 	ship.shield.setEnabled(true);
@@ -65,13 +65,13 @@ var Stellar = function(primaryColor="#000FFF", secondaryColor = "#0FF0FF",
 }
 var Shark = function(primaryColor="#000FFF", secondaryColor = "#0FF0FF", 
                        x = c.width/2, y = c.height/2){
-	var ship = new Ship(x, y, 20, primaryColor, secondaryColor);
+	var ship = new Ship(x, y, 15, primaryColor, secondaryColor);
     ship.name="Shark";
 	ship.updateDirection();
-	ship.hull = new Hull(100, 0);
-	ship.shield = new Shield(50, 0, 5, 1, 300);
-    ship.acceleration = 0.21;
-    ship.turnRate = 5;
+	ship.hull = new Hull(150, 7);
+	ship.shield = new Shield(0, 0, 5, 1, 300);
+    ship.acceleration = 0.31;
+    ship.turnRate = 7;
 
 	ship.shield.setPowerSupply(ship.powerSupply);
 	ship.shield.setEnabled(true);
@@ -110,7 +110,7 @@ var Bomber = function(primaryColor="#000FFF", secondaryColor = "#0FF0FF",
 	ship.hull = new Hull(100, 0);
 	ship.shield = new Shield(50, 0, 5, 1, 300);
     ship.acceleration = 0.11;
-    ship.turnRate = 5;
+    ship.turnRate = 4;
 
 	ship.shield.setPowerSupply(ship.powerSupply);
 	ship.shield.setEnabled(true);
@@ -134,14 +134,14 @@ var Bomber = function(primaryColor="#000FFF", secondaryColor = "#0FF0FF",
 	ship.changeWeapon();
 	ship.weapon.setOwner(ship);
 	ship.weapon.setCenter(ship.hitbox.vertices[0]);
-	ship.weapon.setPosition(ship.auxHitbox.vertices[0]);
+	ship.weapon.setPosition(ship.auxHitbox.vertices[1]);
 	ship.weapon.enabled=true;
 
 	ship.addWeapon(dumbMissile());
 	ship.changeWeapon();
 	ship.weapon.setOwner(ship);
 	ship.weapon.setCenter(ship.hitbox.vertices[1]);
-	ship.weapon.setPosition(ship.auxHitbox.vertices[1]);
+	ship.weapon.setPosition(ship.auxHitbox.vertices[0]);
 	ship.weapon.enabled=true;
 
 	ship.weapon.setPowerSupply(ship.powerSupply);

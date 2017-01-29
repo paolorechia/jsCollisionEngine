@@ -537,8 +537,8 @@ var Ship = function(x, y, l1, primaryColor = "#0000FF", secondaryColor = "#00F0F
 		}
 		
 		unitVector(this.strafingVector, this.strafingVector);
-		this.strafingVector.x = this.strafingVector.x * this.acceleration/3;
-		this.strafingVector.y = this.strafingVector.y * this.acceleration/3;
+		this.strafingVector.x = this.strafingVector.x * this.acceleration;
+		this.strafingVector.y = this.strafingVector.y * this.acceleration;
 
 		var aux = new Vector(this.strafingVector.x + this.inertiaVector.x,
 							 this.strafingVector.y + this.inertiaVector.y);

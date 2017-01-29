@@ -385,6 +385,7 @@ function lightCannon(){
 	cannon.type = 'p'; // projectile type
 	cannon.name="Light Cannon";
     cannon.sound = new Howl({src : ["heavycannon.mp3"]});
+    cannon.sound.volumeFilter=0.1;
 	return cannon;
 }
 function heavyCannon(){
@@ -393,6 +394,7 @@ function heavyCannon(){
 	cannon.type = 'p'; // projectile type
 	cannon.name="Heavy Cannon";
     cannon.sound = new Howl({src : ["heavycannon.mp3"]});
+    cannon.sound.volumeFilter=0.5;
 	return cannon;
 }
 function asteroidShooter(){
