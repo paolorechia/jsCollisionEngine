@@ -131,15 +131,23 @@ var Weapon = function(velocity = 10, width = 1, range = 1000, limit = 10, damage
 	}
     this.getValue = function(){
         var value = 0;
-        if (this.type = 'l'){
+        if (this.type == 'l'){
             value = this.damage * 20;
+        }
+        if (this.type == 'm'){
+            value = this.damage * 100;// * this.maxRadius/this.expandRate;
         }
         else{
             value = this.range/100 + this.projectileVelocity;
             value += this.damage * this.rateOfFire;
         }
         if (this.hasAmmo){
-            value-= this.ammo/500;
+            if (this.type == 'm'){
+                value -= 100/this.ammo
+            }
+            else{
+                value-= 10.000/this.ammo
+            }
         }
         else{
             value -= this.energyUsage;
@@ -396,7 +404,7 @@ function asteroidShooter(){
 	return cannon;
 }
 function dumbMissile(){
-	missile = new Weapon(velocity = 10, width = 1, range = 200, limit = 1, damage = 1, mass = 100, rateOfFire = 1, spin = 0, hasAmmo=true, ammo=10);
+	missile = new Weapon(velocity = 10, width = 1, range = 1000, limit = 1, damage = 1, mass = 100, rateOfFire = 1, spin = 0, hasAmmo=true, ammo=100);
     missile.expansionRate = 2;
     missile.maxRadius=20;
 	missile.projectileVelocity = 5;

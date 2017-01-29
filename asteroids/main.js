@@ -63,8 +63,10 @@ function generateTurrets(n, cannons, moving=false, rateOfFire=1){
         var size = 20;
 
         myRandom = Math.random();
-/*
-        if (myRandom > 0.9){
+        if (myRandom > 0.95){
+            turret = Turret("#FFFFFF", "#FF0000", cannons, x, y, size, dumbMissile);
+        }
+        else if (myRandom > 0.9){
             turret = new Turret("#FFFFFF", "#FF0000", cannons, x, y, size, heavyLaserBlaster);
             turret.hitbox.spin = 20;
         }
@@ -84,8 +86,6 @@ function generateTurrets(n, cannons, moving=false, rateOfFire=1){
         else{
             turret = Turret("#FFFFFF", "#FF0000", cannons, x, y, size, machineGun);
         }
-    */
-            turret = Turret("#FFFFFF", "#FF0000", cannons, x, y, size, dumbMissile);
         for (var j =0; j < cannons; j++){
             turret.weapons[j].rateOfFire *= rateOfFire;
             turret.weapons[j].setCenter(player.hitbox.center);
@@ -306,7 +306,7 @@ function buildLobbyButtons(array){
     myButton = (new Button(20, 320, 150, 50, "Turret"));
     myButton.onClick = function(){
         player = new Turret("#000FFF", "#00F0FF", 3,
-                            c.width/2, c.height/2 + 150, 20, lightLaserBlaster);
+                            c.width/2, c.height/2 + 150, 20, dumbMissile);
         selected = true;
         //describeShipConsole(player);
     }
@@ -331,7 +331,7 @@ function buildLobbyButtons(array){
     var coord = new Point(c.width/2, c.height/2);
 
     var values = [];
-    values.push(new Stellar()); values.push(new Gargatuan()); values.push(new Turret("#000FFF", "#00F0FF", 3, c.width/2, c.height/2, 20, lightLaserBlaster));
+    values.push(new Stellar()); values.push(new Gargatuan()); values.push(new Turret("#000FFF", "#00F0FF", 3, c.width/2, c.height/2, 20, dumbMissile));
     values.push(new Colossal());
 
     for (var i = 1; i < values.length; i++){
@@ -392,6 +392,7 @@ function selectShipLoop(){
         window.rewarded = false;
         selectMusic.pause();
         music.play();
+        explosions = [];
 
 		requestAnimationFrame(mainLoop);
 	}

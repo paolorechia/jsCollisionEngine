@@ -33,7 +33,8 @@ var coord = new Point(c.width/2, c.height/2);
         }
 		if (event.key == 'v'){
 			for (var i= 0; i < player.weapons.length; i++){
-                if (player.weapons[i].mode == 'm'){
+                if (player.weapons[i].mode == 'm' ||
+                    player.systemTarget == undefined){
                     player.weapons[i].fire(true);
                 }
 			}
@@ -119,7 +120,8 @@ var coord = new Point(c.width/2, c.height/2);
         }
         if (event.key == 'v'){
 			for (var i= 0; i < player.weapons.length; i++){
-                if (player.weapons[i].mode == 'm'){
+                if (player.weapons[i].mode == 'm' ||
+                    player.systemTarget == undefined){
                     player.weapons[i].fire(false);
                 }
 			}
@@ -191,7 +193,8 @@ var coord = new Point(c.width/2, c.height/2);
             return;
         }
 		for (var i= 0; i < player.weapons.length; i++){
-                if (player.weapons[i].mode == 'm'){
+                if (player.weapons[i].mode == 'm' ||
+                    player.systemTarget == undefined){
                     player.weapons[i].fire(true);
                 }
         }
@@ -201,7 +204,8 @@ var coord = new Point(c.width/2, c.height/2);
             return;
         }
 		for (var i= 0; i < player.weapons.length; i++){
-                if (player.weapons[i].mode == 'm'){
+                if (player.weapons[i].mode == 'm' ||
+                    player.systemTarget == undefined){
                     player.weapons[i].fire(false);
                 }
     	}
