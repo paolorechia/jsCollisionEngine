@@ -216,11 +216,21 @@ function drawEndGame(win, color="#000FFF", loseColor="#FF0000"){
 }
 
 
-
 function killObjects(array){
 	for (i = 0; i < array.length; i++){
 		if (array[i].dead == true){
             score.player += array[i].value; 
+			array.splice(i, 1);
+		}
+	}
+}
+function killShips(array){
+	for (i = 0; i < array.length; i++){
+		if (array[i].dead == true){
+            score.player += array[i].value; 
+            explosions.push(new Explosion(
+                            array[i].hitbox.center.x,
+                            array[i].hitbox.center.y));
 			array.splice(i, 1);
 		}
 	}
@@ -402,7 +412,6 @@ function mainLoop(){
 		}
 	}
 
-    explosions.push(new Explosion(Math.random() * 800, Math.random() * 600));
 
 
 	for (var i = 0; i < objects.length; i++){
@@ -481,16 +490,18 @@ function mainLoop(){
     }
 
 	killObjects(objects);
-	killObjects(enemies);
+	killShips(enemies);
     collideHitboxes(objects);
     collideShipsExplosions(enemies, explosions);
     collideShipsExplosions(players, explosions);
-    collideHitboxesExplosions(objects);
+    collideHitboxesExplosions(objects, explosions);
 	score.draw(player.secondaryColor);
 	level.draw(player.secondaryColor);
     updateExplosions(explosions);
     finishExplosions(explosions);
-    explosions[0].draw();
+    for (var i = 0; i < explosions.length; i++){
+        explosions[i].draw();
+    }
 	
 	fps.calculateMean();
 	drawFPS(fps.mean, player.secondaryColor);

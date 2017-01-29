@@ -68,8 +68,27 @@ function collideWeaponsShips(shooter, ships){
 }
 
 function collideShipsExplosions(ships, explosions){
-
+    for (var i=0; i<explosions.length; i++){
+        for (var j = 0;j < ships.length; j++){ 
+            smartCollision(
+            explosions[i].hitbox,
+            ships[j].hitbox,
+            function(){ships[j].sufferDamage(
+                                explosions[i].fetchDamage(ships[j]));}
+                          ); 
+        }
+    }
 }
 function collideHitboxesExplosions(hitboxes, explosions){
+    for (var i=0; i < explosions.length; i++){
+        for (var j = 0;j < hitboxes.length; j++){ 
+            smartCollision(
+            explosions[i].hitbox,
+            hitboxes[j],
+            function(){hitboxes[j].sufferDamage(
+                                   explosions[i].fetchDamage(hitboxes[j]));}
+                          ); 
+        }
+    }
 
 }

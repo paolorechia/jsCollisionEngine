@@ -1,6 +1,5 @@
-var Explosion = function(x, y, damageMultipler=1, expansionRate = 1, 
-                         maxRadius = 100, startRadius = 1,
-                         duration=maxRadius, 
+var Explosion = function(x, y, damageMultipler=1, expansionRate = 5, 
+                         maxRadius = 50, startRadius = 1,
                          color="#FF0000"){
     this.color = color;
     this.hitbox = new Circle(x, y, startRadius,
@@ -9,7 +8,7 @@ var Explosion = function(x, y, damageMultipler=1, expansionRate = 1,
     this.hitbox.mass=100000;
     this.expansionRate = expansionRate;
     this.maxRadius = maxRadius;
-    this.duration= maxRadius; // in game frames
+    this.duration= maxRadius / expansionRate; // in game frames
     this.finished = false;
     this.expandRadius = function(){
         if (this.hitbox.radius < this.maxRadius){
@@ -35,11 +34,17 @@ var Explosion = function(x, y, damageMultipler=1, expansionRate = 1,
         return damage;
     }
 }
-
 function finishExplosions(explosions){
     for (var i = 0; i < explosions.length; i++){
-        if (explosions.finished){
+        if (explosions[i].finished){
             explosions.splice(i, 1);
         }
+    }
+}
+
+function updateExplosions(explosions){
+    for (var i = 0; i < explosions.length; i++){
+        explosions[i].expandRadius();
+        explosions[i].decreaseDuration();
     }
 }
