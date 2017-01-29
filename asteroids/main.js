@@ -528,8 +528,12 @@ function mainLoop(){
     }
     else{
         window.buttons = [];
+        sButtons = [];
+        buildShipsButtons(sButtons);
+        window.buttonScroller = new ButtonScroller(20, 200, sButtons, 3);
+        window.buttonScroller.init(window.buttons);
+        window.buttonScroller.setupDisplayingButtons();
         buildLobbyButtons(window.buttons);
-        buildShipsButtons(window.buttons);
         window.instruct = false;
         window.selected = false;
         window.displaying = false;
@@ -594,7 +598,6 @@ window.buttonScroller = new ButtonScroller(20, 200, sButtons, 3);
 window.buttonScroller.init(window.buttons);
 window.buttonScroller.setupDisplayingButtons();
 buildLobbyButtons(window.buttons);
-console.log(window.buttons);
 
 window.instruct = false;
 window.selected = false;

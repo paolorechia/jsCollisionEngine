@@ -6,12 +6,14 @@ var ButtonScroller = function(x, y, buttons, size){
     this.size = size;
     this.upButton = new Button(x, y - 30, 
                                buttons[0].width, 
-                               buttons[0].height/2);
+                               buttons[0].height/2,
+                               "Previous");
     this.upButton.onClick = function(){
         window.buttonScroller.scrollUp();
     }
     this.downButton = new Button(x, y + (buttons[0].height * size) + 30,
-                                 buttons[0].width, buttons[0].height/2);
+                                 buttons[0].width, buttons[0].height/2,
+                               "Next");
     this.downButton.onClick = function(){
         window.buttonScroller.scrollDown();
     }
@@ -33,7 +35,7 @@ var ButtonScroller = function(x, y, buttons, size){
         this.setupDisplayingButtons();
     }
     this.scrollDown = function(){
-        if (this.index < this.buttons.length){
+        if (this.index < (this.buttons.length - this.size)){
             this.index++;
         }
         var removedButtons = [];
@@ -95,7 +97,7 @@ var Button = function(x, y, width, height, string=" "){
 		ctx.fillRect(x, y, this.width, this.height);
 		ctx.fillStyle=this.fontColor;
 		ctx.font="14px arial";
-		ctx.fillText(this.string, x + this.width/10, y + this.height/2);
+		ctx.fillText(this.string, x + this.width/10, y + this.height/1.5);
 	}
     this.reset = function(){
         this.bgColor= "#FFFFFF";
