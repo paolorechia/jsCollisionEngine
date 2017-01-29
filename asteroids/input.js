@@ -46,7 +46,7 @@ var coord = new Point(c.width/2, c.height/2);
 			for (var i= 0; i < player.weapons.length; i++){
                 weapon = player.weapons[i];
                 if (weapon.mode == 'm'){
-                    fireProjectile(weapon, true);
+                    fireMissile(weapon, true);
                 }
 			}
         }
@@ -133,7 +133,7 @@ var coord = new Point(c.width/2, c.height/2);
 			for (var i= 0; i < player.weapons.length; i++){
                 weapon = player.weapons[i];
                 if (weapon.mode == 'm'){
-                    fireProjectile(weapon, false);
+                    fireMissile(weapon, false);
                 }
 			}
         }
@@ -234,3 +234,29 @@ var coord = new Point(c.width/2, c.height/2);
 	c.addEventListener("click", function(event){ buttonModeClick(event);
                                                 },
                                                 false);											   
+    window.addEventListener('keydown', function(e) {
+      if(e.keyCode == 32 && e.target == document.body) {
+        e.preventDefault();
+			for (var i= 0; i < player.weapons.length; i++){
+                weapon = player.weapons[i];
+                if (weapon.mode == 'm'){
+                    fireProjectile(weapon, true);
+                }
+			}
+        }
+    });
+    window.addEventListener('keyup', function(e) {
+      if(e.keyCode == 32 && e.target == document.body) {
+        e.preventDefault();
+			for (var i= 0; i < player.weapons.length; i++){
+                weapon = player.weapons[i];
+                if (weapon.mode == 'm'){
+                    fireProjectile(weapon, false);
+                }
+			}
+        }
+    });
+
+    window.addEventListener('contextmenu', function(e) {
+        e.preventDefault();
+    });
