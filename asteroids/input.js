@@ -45,9 +45,7 @@ var coord = new Point(c.width/2, c.height/2);
 		if (event.key == 'v'){
 			for (var i= 0; i < player.weapons.length; i++){
                 weapon = player.weapons[i];
-                if (weapon.mode == 'm'){
-                    fireMissile(weapon, true);
-                }
+                fireMissile(weapon, true);
 			}
         }
         if (event.key == 'Escape'){
@@ -132,9 +130,7 @@ var coord = new Point(c.width/2, c.height/2);
         if (event.key == 'v'){
 			for (var i= 0; i < player.weapons.length; i++){
                 weapon = player.weapons[i];
-                if (weapon.mode == 'm'){
-                    fireMissile(weapon, false);
-                }
+                fireMissile(weapon, false);
 			}
         }
 		if (player == undefined || player.lock){
@@ -199,27 +195,47 @@ var coord = new Point(c.width/2, c.height/2);
             buttons[i].reset();
 		}
     }
-    function mouseDown(){
+    function mouseDown(event){
         if (player == undefined){
             return;
         }
-		for (var i= 0; i < player.weapons.length; i++){
-                weapon = player.weapons[i];
-                if (weapon.mode == 'm'){
-                    fireProjectile(weapon, true);
-                }
+        if (event.which == 1){
+            for (var i= 0; i < player.weapons.length; i++){
+                    weapon = player.weapons[i];
+                    if (weapon.turret){
+                        fireProjectile(weapon, true);
+                    }
+            }
+        }
+        else if (event.which == 3){
+            for (var i= 0; i < player.weapons.length; i++){
+                    weapon = player.weapons[i];
+                    if (weapon.turret){
+                        fireMissile(weapon, true);
+                    }
+            }
         }
     }
-	function mouseUp(){
+	function mouseUp(event){
         if (player == undefined){
             return;
         }
-		for (var i= 0; i < player.weapons.length; i++){
-                weapon = player.weapons[i];
-                if (weapon.mode == 'm'){
-                    fireProjectile(weapon, false);
-                }
-    	}
+        if (event.which == 1){
+            for (var i= 0; i < player.weapons.length; i++){
+                    weapon = player.weapons[i];
+                    if (weapon.turret){
+                        fireProjectile(weapon, false);
+                    }
+            }
+        }
+        else if (event.which == 3){
+            for (var i= 0; i < player.weapons.length; i++){
+                    weapon = player.weapons[i];
+                    if (weapon.turret){
+                        fireMissile(weapon, false);
+                    }
+            }
+        }
     }
     window.addEventListener("keydown", function(event){ keyboardDown(event)}, false);
     window.addEventListener("keyup", function(event){ keyboardUp(event)}, false);
@@ -229,8 +245,10 @@ var coord = new Point(c.width/2, c.height/2);
 	c.addEventListener("mousemove", buttonModeHover, false);
 
 	c.addEventListener("touchstart", buttonModeClick, false);
-    c.addEventListener("mousedown", mouseDown, false);
-    c.addEventListener("mouseup", mouseUp, false);
+    c.addEventListener("mousedown", function(event){
+                                    mouseDown(event)}, false);
+    c.addEventListener("mouseup", function(event){
+                                    mouseUp(event)}, false);
 	c.addEventListener("click", function(event){ buttonModeClick(event);
                                                 },
                                                 false);											   
@@ -239,7 +257,7 @@ var coord = new Point(c.width/2, c.height/2);
         e.preventDefault();
 			for (var i= 0; i < player.weapons.length; i++){
                 weapon = player.weapons[i];
-                if (weapon.mode == 'm'){
+                if (weapon.turret == false){
                     fireProjectile(weapon, true);
                 }
 			}
@@ -250,12 +268,19 @@ var coord = new Point(c.width/2, c.height/2);
         e.preventDefault();
 			for (var i= 0; i < player.weapons.length; i++){
                 weapon = player.weapons[i];
-                if (weapon.mode == 'm'){
+                if (weapon.turret == false){
                     fireProjectile(weapon, false);
                 }
 			}
         }
     });
+    function rightclick() {
+        var rightclick;
+        var e = window.event;
+        if (e.which) rightclick = (e.which == 3);
+        else if (e.button) rightclick = (e.button == 2);
+        alert(rightclick); // true or false, you can trap right click here by if comparison
+    }
 
     window.addEventListener('contextmenu', function(e) {
         e.preventDefault();

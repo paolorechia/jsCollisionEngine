@@ -151,21 +151,25 @@ function buildInstructions(){
 	instructions.push(string);
 	string = "X: Reverse Engine Throttle";
 	instructions.push(string);
-	string = "A/LeftArrow: Left turning";
+	string = "A/LeftArrow: Left Turning";
 	instructions.push(string);
-	string = "D/RightArrow: Right turning";
+	string = "D/RightArrow: Right Turning";
 	instructions.push(string);
-	string = "Q: Left strafe";
+	string = "Q: Left Strafe";
 	instructions.push(string);
-	string = "E: Right strafe";
+	string = "E: Right Strafe";
 	instructions.push(string);
 	string = "S/DownArrow: Brake";
 	instructions.push(string);
-	string = "V/Mouse Click: Shoot";
+	string = "Space bar: Fire Main Weapons";
+	instructions.push(string);
+	string = "Left-Click: Fire Turrets";
+	instructions.push(string);
+	string = "V/Right-Click: Fire Missiles";
 	instructions.push(string);
 	string = "C: Always Fire";
 	instructions.push(string);
-	string = "H: Weapons mode";
+	string = "H: Turrets Mode";
 	instructions.push(string);
 	string = "R: Cycle Weapons";
 	instructions.push(string);
@@ -175,11 +179,11 @@ function buildInstructions(){
 	instructions.push(string);
 	string = "U: Auto-pilot";
 	instructions.push(string);	
-	string = "Esc: Cancel auto-pilot";
+	string = "Esc: Cancel Auto-pilot";
 	instructions.push(string);	
-	string = ",: Decrease volume";
+	string = ",: Decrease Volume";
 	instructions.push(string);	
-	string = ".: Increase volume";
+	string = ".: Increase Volume";
 	instructions.push(string);	
 	return instructions;
 }
@@ -193,7 +197,7 @@ function drawInstructions(instructions, color="#000FFF"){
 	ctx.font="14px Arial";
 	var offSet = 0;
 	var xStart = 230;
-	var colSize = 6;    // or lines per column
+	var colSize = 7;    // or lines per column
 	for (var i = 0; i < instructions.length; i++){
 		if (i % colSize == 0){
 			offSet += 240;

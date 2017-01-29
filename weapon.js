@@ -582,13 +582,15 @@ function buildWeaponsStatus(weapons){
 			string += " --- Ammo: " + weapons[i].ammo;
 		}
 		list.push(string);
+    if (weapons[i].turret){
         if (weapons[i].mode=='a'){
-            string = "Weapon mode: automatic";
+            string = "Turret : automatic";
         }
         if (weapons[i].mode=='m'){
-            string = "Weapon mode: manual";
+            string = "Turret : manual";
         }
-		list.push(string);
+        list.push(string);
+    }
 	}
 	return list;
 }
