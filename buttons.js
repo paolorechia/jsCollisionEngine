@@ -154,4 +154,4 @@ var CircularButton = function(x, y, radius, color, string){
 	}
 }
 
-
+var shipButton = function()"name"

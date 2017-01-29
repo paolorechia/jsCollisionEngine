@@ -286,7 +286,6 @@ function drawLobbyBackground(){
 
 
 function buildShipsButtons(array){
-
     myButton = (new Button(20, 200, 150, 50, "Stellar"));
     myButton.onClick = function(){
         player = new Stellar(primaryColor, secondaryColor, c.width/2, c.height/2 + 150);
@@ -328,12 +327,31 @@ function buildShipsButtons(array){
     array.push(myButton);
     */
 
+    myButton = (new Button(20, 380, 150, 50, "Shark"));
+    myButton.onClick = function(){
+        player = new Shark(primaryColor, secondaryColor, c.width/2, c.height/2 + 150);
+        selected = true;
+//        describeShipConsole(player);
+    }
+    array.push(myButton);
+
+    myButton = (new Button(20, 380, 150, 50, "Bomber"));
+    myButton.onClick = function(){
+        player = new Bomber(primaryColor, secondaryColor, c.width/2, c.height/2 + 150);
+        selected = true;
+//        describeShipConsole(player);
+    }
+    array.push(myButton);
 
     var coord = new Point(c.width/2, c.height/2);
 
     var values = [];
-    values.push(new Stellar()); values.push(new Gargatuan()); values.push(new Turret("#000FFF", "#00F0FF", 3, c.width/2, c.height/2, 20, dumbMissile));
+    values.push(new Stellar()); 
+    values.push(new Gargatuan());
+    values.push(new Turret("#000FFF", "#00F0FF", 3, c.width/2, c.height/2, 20, dumbMissile));
     values.push(new Colossal());
+    values.push(new Shark());
+    values.push(new Bomber());
 
     for (var i = 1; i < values.length; i++){
         array[i].string += ": " + values[i].getValue();
