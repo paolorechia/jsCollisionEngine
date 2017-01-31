@@ -166,13 +166,40 @@ function verticalSplitRight(rightLine, columnSize, n){
     var rowSize = c.height/n;
     var nCopy = n;
     hLines = [];
-    var middleLine = new hLine(c.height/2, rightLine.x, rightLine.x - columnSize);
-	for (k = 0; k < rightLine.left.length; k++){
-            middleLine.testPolygon(rightLine.left[k]);
+    n = n / 2;
+    var middleLine = new hLine(c.height/2, rightLine.x, rightLine.x - columnSize); 
+    currentMid = middleLine;
+    lines.push(currentMid);
+    while (n > 0){
+        var upLine= new hLine(currentMid.y - rowSize, currentMid.x1,
+                              currentMid.x2);
+        for (k = 0; k < rightLine.left.length; k++){
+                upLine.testPolygon(rightLine.left[k]);
+        }
+        upSideLines.push(upLine);
+        currentMid = upLine;
+        n--;
     }
-    lines.push(middleLine);
-    checkElasticCollisionsNaive(middleLine.up, bounce);
-    checkElasticCollisionsNaive(middleLine.down, bounce);
+    n = nCopy / 2;
+    currentMid = middleLine;
+    while (n > 0){
+        var downLine= new hLine(currentMid.y + rowSize, currentMid.x1,
+                              currentMid.x2);
+        for (k = 0; k < currentMid.down.length; k++){
+                downLine.testPolygon(currentMid.down[k]);
+        }
+        downSideLines.push(downLine);
+        currentMid = downLine;
+        n--;
+    }
+    for (var i = 0; i < upSideLines.length; i++){
+        lines.push(upSideLines[i]);
+        lines.push(downSideLines[i]);
+    }
+    for (var i = 0; i< upSideLines.length; i++){
+        checkElasticCollisionsNaive(upSideLines[i].up, bounce);
+        checkElasticCollisionsNaive(downSideLines[i].down, bounce);
+    }
 }
 function horizontalSplit(array, n){
     var nCopy = n;
@@ -223,10 +250,10 @@ function horizontalSplit(array, n){
         lines.push(rightSideLines[i]);
     }
     for (var i = 0; i< leftSideLines.length; i++){
-        verticalSplitLeft(leftSideLines[i], columnSize, n);
+        verticalSplitLeft(leftSideLines[i], columnSize, nCopy);
     }
     for (var i = 0; i < rightSideLines.length; i++){
-        verticalSplitRight(rightSideLines[i], columnSize, n);
+        verticalSplitRight(rightSideLines[i], columnSize, nCopy);
     }
 //        verticalSplitRight(rightSideLines[0], columnSize, n);
 /*

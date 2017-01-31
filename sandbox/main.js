@@ -4,8 +4,8 @@ var maxSize = c.width/120;
 var minSize = c.width/150;
 var maxSpeed = 6;
 var maxSpin = 4;
-var numberRectangles = 5;
-var numberTriangles = 5;
+var numberRectangles = 20;
+var numberTriangles = 20;
 var numberCircles= 0;
 var objects = [];
 var counter=0;
@@ -49,6 +49,8 @@ function physicsLoop(){
 	}
 
   if (colliding){
+            horizontalSplit(objects, 8);
+/*
         if (counter < 50){
             horizontalSplit(objects, 8);
         }
