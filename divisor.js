@@ -146,7 +146,7 @@ function fourQuadrants(divisor, divisorH, drawing){
     lines.push(divisor);
     lines.push(divisorH);
 }
-function verticalSplitLeft(leftLine, columnSize, n){
+function verticalSplitSingle(leftLine, columnSize, n){
     upSideLines=[];
     downSideLines=[];
     var rowSize = c.height/n;
@@ -159,6 +159,53 @@ function verticalSplitLeft(leftLine, columnSize, n){
     lines.push(middleLine);
     checkElasticCollisionsNaive(middleLine.up, bounce);
     checkElasticCollisionsNaive(middleLine.down, bounce);
+}
+function verticalSplitLeft(leftLine, columnSize, n){
+    upSideLines=[];
+    downSideLines=[];
+    var rowSize = c.height/n;
+    var nCopy = n;
+    hLines = [];
+    n = n / 2;
+    var middleLine= new hLine(c.height/2, leftLine.x, leftLine.x + columnSize); 
+    for (k = 0; k < leftLine.right.length; k++){
+            middleLine.testPolygon(leftLine.right[k]);
+    }
+    upSideLines.push(middleLine);
+    currentMid = middleLine;
+    n--;
+//    lines.push(currentMid);
+    while (n > 0){
+        var upLine= new hLine(currentMid.y - rowSize, currentMid.x1,
+                              currentMid.x2);
+        for (k = 0; k < currentMid.up.length; k++){
+                upLine.testPolygon(currentMid.up[k]);
+        }
+        upSideLines.push(upLine);
+        currentMid = upLine;
+        n--;
+    }
+    n = nCopy / 2;
+    currentMid = middleLine;
+    downSideLines.push(middleLine);
+    while (n > 0){
+        var downLine= new hLine(currentMid.y + rowSize, currentMid.x1,
+                              currentMid.x2);
+        for (k = 0; k < currentMid.down.length; k++){
+                downLine.testPolygon(currentMid.down[k]);
+        }
+        downSideLines.push(downLine);
+        currentMid = downLine;
+        n--;
+    }
+    for (var i = 0; i < upSideLines.length; i++){
+        lines.push(upSideLines[i]);
+        lines.push(downSideLines[i]);
+    }
+    for (var i = 0; i< upSideLines.length; i++){
+        checkElasticCollisionsNaive(upSideLines[i].up, bounce);
+        checkElasticCollisionsNaive(downSideLines[i].down, bounce);
+    }
 }
 function verticalSplitRight(rightLine, columnSize, n){
     upSideLines=[];
@@ -174,7 +221,7 @@ function verticalSplitRight(rightLine, columnSize, n){
     upSideLines.push(middleLine);
     currentMid = middleLine;
     n--;
-    lines.push(currentMid);
+//    lines.push(currentMid);
     while (n > 0){
         var upLine= new hLine(currentMid.y - rowSize, currentMid.x1,
                               currentMid.x2);
@@ -187,6 +234,7 @@ function verticalSplitRight(rightLine, columnSize, n){
     }
     n = nCopy / 2;
     currentMid = middleLine;
+    downSideLines.push(middleLine);
     while (n > 0){
         var downLine= new hLine(currentMid.y + rowSize, currentMid.x1,
                               currentMid.x2);
