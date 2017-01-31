@@ -437,6 +437,10 @@ function drawPolygon(polygon, strokeColor="#0000FF", hitColor="#FF0000", joints=
 		else{
 			ctx.strokeStyle=strokeColor;
 		}
+    /*
+        point = polygon.vertices[0];
+        point = Math.round(point);
+*/
 		ctx.moveTo(polygon.vertices[0].x,
 				   polygon.vertices[0].y);
 

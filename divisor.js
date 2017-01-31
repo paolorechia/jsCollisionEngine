@@ -112,19 +112,21 @@ function drawArray(array, color){
         }
     }
 }
-function twoQuadrants(divisor){
+function twoQuadrants(divisor, drawing){
     divisor.draw();
 	for (k = 0; k < objects.length; k++){
             divisor.testPolygon(objects[k]);
     }
     checkElasticCollisionsNaive(divisor.left, bounce);
     checkElasticCollisionsNaive(divisor.right, bounce);
-    drawArray(divisor.left, "#0000FF");
-    drawArray(divisor.right, "#FFFF00");
+    if (drawing){
+        drawArray(divisor.left, "#0000FF");
+        drawArray(divisor.right, "#FFFF00");
+    }
     divisor.resetLeft();
     divisor.resetRight();
 }
-function fourQuadrants(divisor, divisorH){
+function fourQuadrants(divisor, divisorH, drawing){
     divisor.draw();
     divisorH.draw();
 	for (k = 0; k < objects.length; k++){
@@ -135,8 +137,10 @@ function fourQuadrants(divisor, divisorH){
     }
     checkElasticCollisionsNaive(divisorH.up, bounce);
     checkElasticCollisionsNaive(divisorH.down, bounce);
-    drawArray(divisorH.up, "#0000FF");
-    drawArray(divisorH.down, "#FFFF00");
+    if (drawing){
+        drawArray(divisorH.up, "#0000FF");
+        drawArray(divisorH.down, "#FFFF00");
+    }
     divisorH.resetUp();
     divisorH.resetDown();
 	for (k = 0; k < divisor.right.length; k++){
@@ -144,16 +148,20 @@ function fourQuadrants(divisor, divisorH){
     }
     checkElasticCollisionsNaive(divisorH.up, bounce);
     checkElasticCollisionsNaive(divisorH.down, bounce);
-    drawArray(divisorH.up, "#F0000F");
-    drawArray(divisorH.down, "#00FFF0");
+    if (drawing){
+        drawArray(divisorH.up, "#F0000F");
+        drawArray(divisorH.down, "#00FFF0");
+    }
     divisor.resetLeft();
     divisor.resetRight();
     divisorH.resetUp();
     divisorH.resetDown();
 }
 
-function noQuadrants(){
+function noQuadrants(drawing){
     checkElasticCollisionsNaive(objects, bounce);
-    drawArray(objects, "#0000FF");
+    if (drawing){
+        drawArray(objects, "#0000FF");
+    }
 }
 
