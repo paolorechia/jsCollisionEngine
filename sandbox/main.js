@@ -4,13 +4,13 @@ var maxSize = c.width/30;
 var minSize = c.width/60;
 var maxSpeed = 6;
 var maxSpin = 4;
-var numberRectangles = 10;
-var numberTriangles = 10;
+var numberRectangles = 100;
+var numberTriangles = 100;
 var numberCircles= 0;
 var objects = [];
 var counter=0;
 var counter2=0;
-var maxObjects = 400;
+var maxObjects = 2000;
 colliding=true;
 drawing=true;
 cycleDrawing=false;
@@ -49,8 +49,6 @@ function physicsLoop(){
 	}
 
   if (colliding){
-            horizontalSplit(objects, 8);
-/*
         if (counter < 50){
             horizontalSplit(objects, 8);
         }
@@ -63,6 +61,21 @@ function physicsLoop(){
         else{
             horizontalSplit(objects, 64);
         }
+
+/*
+        if (counter < 50){
+            gridify(objects, 2);
+        }
+        else if(counter < 100){
+            gridify(objects, 4);
+        }
+        else if (counter < 150){
+            gridify(objects, 8);
+        }
+        else{
+            gridify(objects, 16);
+        }
+
 /*
         if (counter < 50){
             noQuadrants(drawing);
@@ -76,6 +89,8 @@ function physicsLoop(){
         else{
             horizontalSplit(objects, 8);
         }
+*/
+
         if (counter== 199){
             if (cycleDrawing){
                 drawing=!drawing;
@@ -84,7 +99,6 @@ function physicsLoop(){
                 generateShapes();
             }
         }
-*/
     }
   counter++;
     counter %= 200;
@@ -108,7 +122,7 @@ function mainLoop(){
     }
 
 	fps.calculateMean();
-	drawFPS(fps.mean);
+	drawFPS(fps.mean, "#000000");
     drawSTACount(200, 20);
     ctx.fillText("Objects: " + objects.length, 400, 20);
 	setTimeout(function(){
