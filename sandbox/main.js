@@ -1,18 +1,18 @@
 var j = 0;
 var bounce = 0.1;
-var maxSize = c.width/40;
-var minSize = c.width/70;
+var maxSize = c.width/120;
+var minSize = c.width/150;
 var maxSpeed = 6;
 var maxSpin = 4;
-var numberRectangles = 20;
-var numberTriangles = 20;
+var numberRectangles = 5;
+var numberTriangles = 5;
 var numberCircles= 0;
 var objects = [];
 var counter=0;
 var counter2=0;
-var maxObjects = 20;
+var maxObjects = 400;
 colliding=true;
-drawing=false;
+drawing=true;
 cycleDrawing=false;
 
 function generateShapes(){
@@ -47,7 +47,21 @@ function physicsLoop(){
 		rotatePolygon(objects[j], objects[j].spin);
 		calculateAxes(objects[j]);
 	}
+
   if (colliding){
+        if (counter < 50){
+            horizontalSplit(objects, 8);
+        }
+        else if(counter < 100){
+            horizontalSplit(objects, 16);
+        }
+        else if (counter < 150){
+            horizontalSplit(objects, 32);
+        }
+        else{
+            horizontalSplit(objects, 64);
+        }
+/*
         if (counter < 50){
             noQuadrants(drawing);
         }
@@ -68,6 +82,7 @@ function physicsLoop(){
                 generateShapes();
             }
         }
+*/
     }
   counter++;
     counter %= 200;
@@ -86,7 +101,9 @@ function mainLoop(){
     for (var i = 0; i < lines.length; i++){
         lines[i].draw();
     }
-    drawArray(objects, "#0000FF");
+    if (drawing){
+        drawArray(objects, "#0000FF");
+    }
 
 	fps.calculateMean();
 	drawFPS(fps.mean);

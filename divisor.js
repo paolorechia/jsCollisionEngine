@@ -146,6 +146,34 @@ function fourQuadrants(divisor, divisorH, drawing){
     lines.push(divisor);
     lines.push(divisorH);
 }
+function verticalSplitLeft(leftLine, columnSize, n){
+    upSideLines=[];
+    downSideLines=[];
+    var rowSize = c.height/n;
+    var nCopy = n;
+    hLines = [];
+    var middleLine = new hLine(c.height/2, leftLine.x, leftLine.x + columnSize);
+	for (k = 0; k < leftLine.right.length; k++){
+            middleLine.testPolygon(leftLine.right[k]);
+    }
+    lines.push(middleLine);
+    checkElasticCollisionsNaive(middleLine.up, bounce);
+    checkElasticCollisionsNaive(middleLine.down, bounce);
+}
+function verticalSplitRight(rightLine, columnSize, n){
+    upSideLines=[];
+    downSideLines=[];
+    var rowSize = c.height/n;
+    var nCopy = n;
+    hLines = [];
+    var middleLine = new hLine(c.height/2, rightLine.x, rightLine.x - columnSize);
+	for (k = 0; k < rightLine.left.length; k++){
+            middleLine.testPolygon(rightLine.left[k]);
+    }
+    lines.push(middleLine);
+    checkElasticCollisionsNaive(middleLine.up, bounce);
+    checkElasticCollisionsNaive(middleLine.down, bounce);
+}
 function horizontalSplit(array, n){
     var nCopy = n;
     lines=[];
@@ -181,10 +209,12 @@ function horizontalSplit(array, n){
         rightSideLines.push(rightLine);
         currentMid = rightLine;
     }
+/*
     for (var i = 0; i< leftSideLines.length; i++){
         checkElasticCollisionsNaive(leftSideLines[i].right, bounce);
         checkElasticCollisionsNaive(rightSideLines[i].left, bounce);
     }
+*/
     lines.push(middleLine);
     for (var i = 0; i< leftSideLines.length; i++){
         lines.push(leftSideLines[i]);
@@ -192,6 +222,17 @@ function horizontalSplit(array, n){
     for (var i = 0; i< rightSideLines.length; i++){
         lines.push(rightSideLines[i]);
     }
+    for (var i = 0; i< leftSideLines.length; i++){
+        verticalSplitLeft(leftSideLines[i], columnSize, n);
+    }
+    for (var i = 0; i < rightSideLines.length; i++){
+        verticalSplitRight(rightSideLines[i], columnSize, n);
+    }
+//        verticalSplitRight(rightSideLines[0], columnSize, n);
+/*
+    verticalSplit(leftSideLines[1], leftSideLines[2], n);
+    verticalSplit(leftSideLines[2], leftSideLines[3], n);
+*/
 }
 
 function noQuadrants(drawing){
