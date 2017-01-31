@@ -2,6 +2,7 @@ var c = document.getElementById("umCanvas");
 var ctx = c.getContext("2d");
 var globalID = 0;
 var gradualRate = 1;
+var STAchecks = 0;
 
 Intersecction = function(overlap, contains){
     this.overlap = overlap;
@@ -201,6 +202,7 @@ function circleSTA(circle, polygon){
     return mtv;
 }
 function collisionSTA(polygonA, polygonB){
+    STAchecks++;
     if (polygonA.sides == 1 && polygonB.sides == 1){
         return collisionCircles(polygonA, polygonB);
     }
@@ -1052,4 +1054,10 @@ function randomCircle(maxSize, minSize, maxSpeed, maxSpin){
 							Math.random(), Math.random(),
 							maxSpeed, spin);
 	return circle;
+}
+
+function drawSTACount(x, y){
+    ctx.beginPath();
+    var string = "STA Count: " + STAchecks;
+    ctx.fillText(string, x, y);
 }

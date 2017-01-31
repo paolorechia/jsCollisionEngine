@@ -115,13 +115,19 @@ function mainLoop(){
             drawPolygon(divisor.right[k], "#FFFF00");
         }
     }
+
     checkElasticCollisionsNaive(divisor.left, bounce);
     checkElasticCollisionsNaive(divisor.right, bounce);
+
+//    checkElasticCollisionsNaive(objects, bounce);
     divisor.draw();
     divisor.resetLeft();
     divisor.resetRight();
 	fps.calculateMean();
+//    STAchecks/=fps.mean;
 	drawFPS(fps.mean);
+    drawSTACount(200, 20);
+    STAchecks=0;
 	setTimeout(function(){
 		requestAnimationFrame(mainLoop)
 	}, interval);
