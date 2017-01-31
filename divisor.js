@@ -149,7 +149,7 @@ function fourQuadrants(divisor, divisorH, drawing){
     checkElasticCollisionsNaive(divisorH.up, bounce);
     checkElasticCollisionsNaive(divisorH.down, bounce);
     if (drawing){
-        drawArray(divisorH.up, "#F0000F");
+        drawArray(divisorH.up, "#00FF00");
         drawArray(divisorH.down, "#00FFF0");
     }
     divisor.resetLeft();

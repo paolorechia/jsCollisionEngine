@@ -9,6 +9,7 @@ var numberTriangles = 20;
 var numberCircles= 0;
 var objects = [];
 var counter=0;
+var maxObjects = 240;
 colliding=true;
 drawing=true;
 cycleDrawing=false;
@@ -70,13 +71,17 @@ function mainLoop(){
             if (cycleDrawing){
                 drawing=!drawing;
             }
-            generateShapes();
+            if (objects.length < maxObjects){
+                generateShapes();
+            }
         }
     }
     if (!colliding){
         drawArray(objects, "#0000FF");
         if (counter== 149){
-            generateShapes();
+            if (objects.length < maxObjects){
+                generateShapes();
+            }
         }
     }
         counter++;
