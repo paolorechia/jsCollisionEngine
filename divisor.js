@@ -133,22 +133,8 @@ function fourQuadrants(divisor, divisorH){
     }
     checkElasticCollisionsNaive(divisorH.up, bounce);
     checkElasticCollisionsNaive(divisorH.down, bounce);
-	for (k = 0; k < divisorH.up.length; k++){
-        if (divisorH.up[k].sides == 1){
-            drawCircle(divisorH.up[k], "#0000FF", "#FF0000", true, "#00F0FF");
-        }
-        else{
-            drawPolygon(divisorH.up[k]);
-        }
-    }
-	for (k = 0; k < divisorH.down.length; k++){
-        if (divisorH.down[k].sides == 1){
-            drawCircle(divisorH.down[k], "#0000FF", "#FF0000", true, "#00F0FF");
-        }
-        else{
-            drawPolygon(divisorH.down[k], "#FFFF00");
-        }
-    }
+    drawArray(divisorH.up, "#0000FF");
+    drawArray(divisorH.down, "#FFFF00");
     divisorH.resetUp();
     divisorH.resetDown();
 	for (k = 0; k < divisor.right.length; k++){
@@ -156,35 +142,16 @@ function fourQuadrants(divisor, divisorH){
     }
     checkElasticCollisionsNaive(divisorH.up, bounce);
     checkElasticCollisionsNaive(divisorH.down, bounce);
-	for (k = 0; k < divisorH.up.length; k++){
-        if (divisorH.up[k].sides == 1){
-            drawCircle(divisorH.up[k], "#0000FF", "#FF0000", true, "#00F0FF");
-        }
-        else{
-            drawPolygon(divisorH.up[k]);
-        }
-    }
-	for (k = 0; k < divisorH.down.length; k++){
-        if (divisorH.down[k].sides == 1){
-            drawCircle(divisorH.down[k], "#0000FF", "#FF0000", true, "#00F0FF");
-        }
-        else{
-            drawPolygon(divisorH.down[k], "#FFFF00");
-        }
-    }
+    drawArray(divisorH.up, "#F0000F");
+    drawArray(divisorH.down, "#00FFF0");
     divisor.resetLeft();
     divisor.resetRight();
+    divisorH.resetUp();
+    divisorH.resetDown();
 }
 
 function noQuadrants(){
-	for (k = 0; k < objects.length; k++){
-        if (objects[k].sides == 1){
-            drawCircle(objects[k], "#0000FF", "#FF0000", true, "#00F0FF");
-        }
-        else{
-            drawPolygon(objects[k], "#FFFF00");
-        }
-    }
     checkElasticCollisionsNaive(objects, bounce);
+    drawArray(objects, "#0000FF");
 }
 
