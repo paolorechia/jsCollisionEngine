@@ -47,16 +47,156 @@ var vLine = function(x, y1, y2){
         this.left.push(polygon);
     }
 }
+var hLine = function(y, x1, x2){
+    this.y = y;
+    this.x1 = x1;
+    this.x2 = x2;
+    this.draw = function(){
+        ctx.beginPath();
+        ctx.moveTo(this.x1, this.y);
+        ctx.lineTo(this.x2, this.y);
+        ctx.stroke();
+    }
+    this.up = [];
+    this.down = [];
+    this.resetUp= function(){
+        this.up = []; 
+    }
+    this.resetDown= function(){
+        this.down= []; 
+    }
+    this.testPolygon = function(polygon){
+        if (polygon.sides == 1){
+            vertices = [];
+            vertices[0] = polygon.position - polygon.radius;
+            vertices[1] = polygon.position + polygon.radius;
+        }
+        else{
+            vertices = polygon.vertices;
+        }
+        up=0; down=0;
+        for (var i = 0; i < vertices.length; i++){
+            if (vertices[i].y < this.y){
+                up++;
+            }
+            else{
+                down++;
+            }
+        }
+        if (up == 0){
+            this.down.push(polygon);
+            return;
+        }
+        else if (down ==0){
+            this.up.push(polygon);
+            return;
+        }
+        this.down.push(polygon);
+        this.up.push(polygon);
+    }
+}
 
 divisor = new vLine(c.width/2, 0, c.height);
+divisorH = new hLine(c.height/2, 0, c.width);
+function twoQuadrants(divisor){
+    divisor.draw();
+	for (k = 0; k < objects.length; k++){
+            divisor.testPolygon(objects[k]);
+    }
+    checkElasticCollisionsNaive(divisor.left, bounce);
+    checkElasticCollisionsNaive(divisor.right, bounce);
+	for (k = 0; k < divisor.left.length; k++){
+        if (divisor.left[k].sides == 1){
+            drawCircle(divisor.left[k], "#0000FF", "#FF0000", true, "#00F0FF");
+        }
+        else{
+            drawPolygon(divisor.left[k]);
+        }
+    }
+	for (k = 0; k < divisor.right.length; k++){
+        if (divisor.right[k].sides == 1){
+            drawCircle(divisor.right[k], "#0000FF", "#FF0000", true, "#00F0FF");
+        }
+        else{
+            drawPolygon(divisor.right[k], "#FFFF00");
+        }
+    }
+    divisor.resetLeft();
+    divisor.resetRight();
+}
+function fourQuadrants(divisor, divisorH){
+    divisor.draw();
+    divisorH.draw();
+	for (k = 0; k < objects.length; k++){
+            divisor.testPolygon(objects[k]);
+    }
+	for (k = 0; k < divisor.left.length; k++){
+            divisorH.testPolygon(divisor.left[k]); 
+    }
+    checkElasticCollisionsNaive(divisorH.up, bounce);
+    checkElasticCollisionsNaive(divisorH.down, bounce);
+	for (k = 0; k < divisorH.up.length; k++){
+        if (divisorH.up[k].sides == 1){
+            drawCircle(divisorH.up[k], "#0000FF", "#FF0000", true, "#00F0FF");
+        }
+        else{
+            drawPolygon(divisorH.up[k]);
+        }
+    }
+	for (k = 0; k < divisorH.down.length; k++){
+        if (divisorH.down[k].sides == 1){
+            drawCircle(divisorH.down[k], "#0000FF", "#FF0000", true, "#00F0FF");
+        }
+        else{
+            drawPolygon(divisorH.down[k], "#FFFF00");
+        }
+    }
+    divisorH.resetUp();
+    divisorH.resetDown();
+	for (k = 0; k < divisor.right.length; k++){
+            divisorH.testPolygon(divisor.right[k]); 
+    }
+    checkElasticCollisionsNaive(divisorH.up, bounce);
+    checkElasticCollisionsNaive(divisorH.down, bounce);
+	for (k = 0; k < divisorH.up.length; k++){
+        if (divisorH.up[k].sides == 1){
+            drawCircle(divisorH.up[k], "#0000FF", "#FF0000", true, "#00F0FF");
+        }
+        else{
+            drawPolygon(divisorH.up[k]);
+        }
+    }
+	for (k = 0; k < divisorH.down.length; k++){
+        if (divisorH.down[k].sides == 1){
+            drawCircle(divisorH.down[k], "#0000FF", "#FF0000", true, "#00F0FF");
+        }
+        else{
+            drawPolygon(divisorH.down[k], "#FFFF00");
+        }
+    }
+    divisor.resetLeft();
+    divisor.resetRight();
+}
+
+function noQuadrants(){
+	for (k = 0; k < objects.length; k++){
+        if (objects[k].sides == 1){
+            drawCircle(objects[k], "#0000FF", "#FF0000", true, "#00F0FF");
+        }
+        else{
+            drawPolygon(objects[k], "#FFFF00");
+        }
+    }
+    checkElasticCollisionsNaive(objects, bounce);
+}
 
 var j = 0;
 var bounce = 0.1;
-var maxSize = c.width/20;
-var minSize = c.width/30;
+var maxSize = c.width/40;
+var minSize = c.width/70;
 var maxSpeed = 6;
 var maxSpin = 4;
-var numberRectangles = 4;
+var numberRectangles = 40;
 var numberTriangles = 4;
 var numberCircles= 0;
 var objects = [];
@@ -77,6 +217,7 @@ var fps = new Fps();
 var maxFPS = 1000;
 var interval = 1000/maxFPS;
 
+
 function mainLoop(){
 	newDate = new Date();
 	elapsedTime = newDate - lastDate;
@@ -96,35 +237,13 @@ function mainLoop(){
 		drawAxes(objects[j], axis_length);
 
 	}
-	for (k = 0; k < objects.length; k++){
-            divisor.testPolygon(objects[k]);
-    }
-	for (k = 0; k < divisor.left.length; k++){
-        if (divisor.left[k].sides == 1){
-            drawCircle(divisor.left[k], "#0000FF", "#FF0000", true, "#00F0FF");
-        }
-        else{
-            drawPolygon(divisor.left[k]);
-        }
-    }
-	for (k = 0; k < divisor.right.length; k++){
-        if (divisor.right[k].sides == 1){
-            drawCircle(divisor.right[k], "#0000FF", "#FF0000", true, "#00F0FF");
-        }
-        else{
-            drawPolygon(divisor.right[k], "#FFFF00");
-        }
-    }
 
-    checkElasticCollisionsNaive(divisor.left, bounce);
-    checkElasticCollisionsNaive(divisor.right, bounce);
+//    noQuadrants();
+      twoQuadrants(divisor);
+//    fourQuadrants(divisor, divisorH);
+    
 
-//    checkElasticCollisionsNaive(objects, bounce);
-    divisor.draw();
-    divisor.resetLeft();
-    divisor.resetRight();
 	fps.calculateMean();
-//    STAchecks/=fps.mean;
 	drawFPS(fps.mean);
     drawSTACount(200, 20);
     STAchecks=0;
