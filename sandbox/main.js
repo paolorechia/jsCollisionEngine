@@ -10,7 +10,7 @@ var numberCircles= 0;
 var objects = [];
 var counter=0;
 var counter2=0;
-var maxObjects = 240;
+var maxObjects = 20;
 colliding=true;
 drawing=false;
 cycleDrawing=false;
@@ -33,9 +33,12 @@ var lastDate = new Date();
 var fps = new Fps();
 var maxFPS = 1000;
 var interval = 1000/maxFPS;
+tickTime=30;
 generateShapes();
+lines=[];
 
 function physicsLoop(){
+    STAchecks=0;
 	for (i = 0; i < objects.length; i++){
 		objects[i].update();
 		checkBorder(objects[i]);
@@ -43,10 +46,6 @@ function physicsLoop(){
 	for (j = 0; j < objects.length; j++){
 		rotatePolygon(objects[j], objects[j].spin);
 		calculateAxes(objects[j]);
-        if (drawing){
-            //drawAxes(objects[j], axis_length);
-        }
-
 	}
   if (colliding){
         if (counter < 50){
@@ -55,10 +54,13 @@ function physicsLoop(){
         else if(counter < 100){
             twoQuadrants(divisor,drawing);
         }
-        else{
+        else if (counter < 150){
             fourQuadrants(divisor, divisorH, drawing);
         }
-        if (counter== 149){
+        else{
+            horizontalSplit(objects, 8);
+        }
+        if (counter== 199){
             if (cycleDrawing){
                 drawing=!drawing;
             }
@@ -68,8 +70,8 @@ function physicsLoop(){
         }
     }
   counter++;
-    counter %= 150;
-	setTimeout(function(){physicsLoop();}, 15);
+    counter %= 200;
+	setTimeout(function(){physicsLoop();}, tickTime);
 }
 
 
@@ -81,12 +83,14 @@ function mainLoop(){
 	ctx.fillStyle="#FFFFFF";
     ctx.lineWidth=3;
 	ctx.fillRect(0,0,c.width,c.height);
+    for (var i = 0; i < lines.length; i++){
+        lines[i].draw();
+    }
     drawArray(objects, "#0000FF");
 
 	fps.calculateMean();
 	drawFPS(fps.mean);
     drawSTACount(200, 20);
-    STAchecks=0;
     ctx.fillText("Objects: " + objects.length, 400, 20);
 	setTimeout(function(){
 		requestAnimationFrame(mainLoop)

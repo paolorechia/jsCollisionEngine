@@ -113,22 +113,17 @@ function drawArray(array, color){
     }
 }
 function twoQuadrants(divisor, drawing){
-    divisor.draw();
+    lines=[];
 	for (k = 0; k < objects.length; k++){
             divisor.testPolygon(objects[k]);
     }
     checkElasticCollisionsNaive(divisor.left, bounce);
     checkElasticCollisionsNaive(divisor.right, bounce);
-    if (drawing){
-        drawArray(divisor.left, "#0000FF");
-        drawArray(divisor.right, "#FFFF00");
-    }
     divisor.resetLeft();
     divisor.resetRight();
+    lines.push(divisor);
 }
 function fourQuadrants(divisor, divisorH, drawing){
-    divisor.draw();
-    divisorH.draw();
 	for (k = 0; k < objects.length; k++){
             divisor.testPolygon(objects[k]);
     }
@@ -137,10 +132,6 @@ function fourQuadrants(divisor, divisorH, drawing){
     }
     checkElasticCollisionsNaive(divisorH.up, bounce);
     checkElasticCollisionsNaive(divisorH.down, bounce);
-    if (drawing){
-        drawArray(divisorH.up, "#0000FF");
-        drawArray(divisorH.down, "#FFFF00");
-    }
     divisorH.resetUp();
     divisorH.resetDown();
 	for (k = 0; k < divisor.right.length; k++){
@@ -148,17 +139,63 @@ function fourQuadrants(divisor, divisorH, drawing){
     }
     checkElasticCollisionsNaive(divisorH.up, bounce);
     checkElasticCollisionsNaive(divisorH.down, bounce);
-    if (drawing){
-        drawArray(divisorH.up, "#00FF00");
-        drawArray(divisorH.down, "#00FFF0");
-    }
     divisor.resetLeft();
     divisor.resetRight();
     divisorH.resetUp();
     divisorH.resetDown();
+    lines.push(divisor);
+    lines.push(divisorH);
+}
+function horizontalSplit(array, n){
+    var nCopy = n;
+    lines=[];
+    leftSideLines=[];
+    rightSideLines=[];
+    var columnSize = c.width/n;
+    var rowSize = c.height/n;
+    vLines = [];
+    var middleLine = new vLine(c.width/2, 0, c.height); 
+	for (k = 0; k < objects.length; k++){
+            middleLine.testPolygon(objects[k]);
+    }
+    currentMid = middleLine;
+    n = n / 2;
+    while (n > 0){
+        var leftLine = new vLine(currentMid.x - columnSize, 0, c.height);
+        for (k = 0; k < currentMid.left.length; k++){
+                leftLine.testPolygon(currentMid.left[k]);
+        }
+        n--;
+        leftSideLines.push(leftLine);
+        currentMid = leftLine;
+    }
+    currentMid = middleLine;
+    n = nCopy;
+    n = n / 2;
+    while (n > 0){
+        var rightLine=new vLine(currentMid.x + columnSize, 0, c.height);
+        for (k = 0; k < currentMid.right.length; k++){
+                rightLine.testPolygon(currentMid.right[k]);
+        }
+        n--;
+        rightSideLines.push(rightLine);
+        currentMid = rightLine;
+    }
+    for (var i = 0; i< leftSideLines.length; i++){
+        checkElasticCollisionsNaive(leftSideLines[i].right, bounce);
+        checkElasticCollisionsNaive(rightSideLines[i].left, bounce);
+    }
+    lines.push(middleLine);
+    for (var i = 0; i< leftSideLines.length; i++){
+        lines.push(leftSideLines[i]);
+    }
+    for (var i = 0; i< rightSideLines.length; i++){
+        lines.push(rightSideLines[i]);
+    }
 }
 
 function noQuadrants(drawing){
+    lines=[];
     checkElasticCollisionsNaive(objects, bounce);
     if (drawing){
         drawArray(objects, "#0000FF");
