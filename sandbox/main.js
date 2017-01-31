@@ -4,12 +4,14 @@ var maxSize = c.width/40;
 var minSize = c.width/70;
 var maxSpeed = 6;
 var maxSpin = 4;
-var numberRectangles = 5;
-var numberTriangles = 5;
-var numberCircles= 5;
+var numberRectangles = 20;
+var numberTriangles = 20;
+var numberCircles= 0;
 var objects = [];
 var counter=0;
+colliding=true;
 drawing=true;
+cycleDrawing=false;
 
 function generateShapes(){
     for (i = 0; i < numberRectangles; i++){
@@ -49,29 +51,37 @@ function mainLoop(){
 		rotatePolygon(objects[j], objects[j].spin);
 		calculateAxes(objects[j]);
         if (drawing){
-            drawAxes(objects[j], axis_length);
+            //drawAxes(objects[j], axis_length);
         }
 
 	}
 
-    if (counter < 50){
-        noQuadrants(drawing);
-    }
-    else if(counter < 100){
-        twoQuadrants(divisor,drawing);
-    }
-    else{
-        fourQuadrants(divisor, divisorH, drawing);
-    }
-    counter++;
-    counter%=150;
-
-    if (counter== 149){
-        drawing=!drawing;
-        if(drawing){
+  if (colliding){
+        if (counter < 50){
+            noQuadrants(drawing);
+        }
+        else if(counter < 100){
+            twoQuadrants(divisor,drawing);
+        }
+        else{
+            fourQuadrants(divisor, divisorH, drawing);
+        }
+        if (counter== 149){
+            if (cycleDrawing){
+                drawing=!drawing;
+            }
             generateShapes();
         }
     }
+    if (!colliding){
+        drawArray(objects, "#0000FF");
+        if (counter== 149){
+            generateShapes();
+        }
+    }
+        counter++;
+        counter%=150;
+
 
 	fps.calculateMean();
 	drawFPS(fps.mean);

@@ -414,17 +414,21 @@ function drawCircle(circle, strokeColor="#0000FF", hitColor="#FF0000", center=fa
 		else{
 			ctx.strokeStyle=strokeColor;
 		}
-        ctx.arc(circle.position.x, circle.position.y,
+        var point = new Point(0, 0);
+        point.x = Math.round(circle.position.x);
+        point.y = Math.round(circle.position.y);
+        ctx.arc(point.x, point.y,
                 circle.radius, 0, 2*Math.PI);
         ctx.stroke()
+/*
 		if(center){
 				ctx.fillStyle=centerColor;
 				ctx.beginPath();
-				ctx.arc(circle.position.x,
-						circle.position.y,
+				ctx.arc(point.x, point.y,
 						3, 0, 2*Math.PI);
 				ctx.fill();
 	    }
+*/
         ctx.restore();
 }
 
@@ -437,41 +441,46 @@ function drawPolygon(polygon, strokeColor="#0000FF", hitColor="#FF0000", joints=
 		else{
 			ctx.strokeStyle=strokeColor;
 		}
-    /*
-        point = polygon.vertices[0];
-        point = Math.round(point);
-*/
-		ctx.moveTo(polygon.vertices[0].x,
-				   polygon.vertices[0].y);
+        var point = new Point(0, 0);
+        point.x = Math.round(polygon.vertices[0].x);
+        point.y = Math.round(polygon.vertices[0].y);
 
-		for (var i =0; i < polygon.vertices.length; i++){
-			ctx.lineTo(polygon.vertices[i].x,
-					   polygon.vertices[i].y);		
+		ctx.moveTo(point.x, point.y);
+
+		for (var i =1; i < polygon.vertices.length; i++){
+            point.x = Math.round(polygon.vertices[i].x);
+            point.y = Math.round(polygon.vertices[i].y);
+		    ctx.lineTo(point.x, point.y);
 		}
-		ctx.lineTo(polygon.vertices[0].x,
-				   polygon.vertices[0].y);
+        point.x = Math.round(polygon.vertices[0].x);
+        point.y = Math.round(polygon.vertices[0].y);
+		ctx.lineTo(point.x, point.y);
 				   
 		ctx.stroke();
+/*
 		ctx.fillStyle=jointColor;
 		if (joints){
 			for (var i = 0; i < polygon.vertices.length; i++){
+                point.x = Math.round(polygon.vertices[i].x);
+                point.y = Math.round(polygon.vertices[i].y);
 				ctx.beginPath();
-				ctx.arc(polygon.vertices[i].x,
-				polygon.vertices[i].y,
+				ctx.arc(point.x, point.y,
 				3, 0, 2*Math.PI);
 				ctx.fill();
 			}
 		}
 		if(center){
 			if (polygon.center != undefined){
+                point.x = Math.round(polygon.center.x);
+                point.y = Math.round(polygon.center.y);
 				ctx.fillStyle=centerColor;
 				ctx.beginPath();
-				ctx.arc(polygon.center.x,
-						polygon.center.y,
+				ctx.arc(point.x, point.y,
 						3, 0, 2*Math.PI);
 				ctx.fill();
 			}
 		}
+*/
 		ctx.restore();
 }
 midPoint = function(pointA, pointB){
@@ -486,8 +495,10 @@ midPoint = function(pointA, pointB){
 function drawVector(origin, vector){
 	ctx.beginPath();
 	ctx.strokeStyle="#00FF00"
-	ctx.moveTo(origin.x, origin.y);
-	ctx.lineTo(origin.x + vector.x, origin.y + vector.y);
+    var point = new Point(Math.round(origin.x), Math.round(origin.y))
+    var point2 = new Point(Math.round(vector.x), Math.round(vector.y))
+	ctx.moveTo(point.x, point.y);
+	ctx.lineTo(point.x + point2.x, point.y + point2.y);
 	ctx.stroke();
 }
 
