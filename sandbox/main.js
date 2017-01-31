@@ -1,11 +1,11 @@
 var j = 0;
 var bounce = 0.1;
-var maxSize = c.width/120;
-var minSize = c.width/150;
+var maxSize = c.width/20;
+var minSize = c.width/30;
 var maxSpeed = 6;
 var maxSpin = 4;
-var numberRectangles = 20;
-var numberTriangles = 20;
+var numberRectangles = 5;
+var numberTriangles = 5;
 var numberCircles= 0;
 var objects = [];
 var counter=0;

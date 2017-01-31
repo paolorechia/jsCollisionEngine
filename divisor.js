@@ -167,14 +167,19 @@ function verticalSplitRight(rightLine, columnSize, n){
     var nCopy = n;
     hLines = [];
     n = n / 2;
-    var middleLine = new hLine(c.height/2, rightLine.x, rightLine.x - columnSize); 
+    var middleLine= new hLine(c.height/2, rightLine.x, rightLine.x - columnSize); 
+    for (k = 0; k < rightLine.left.length; k++){
+            middleLine.testPolygon(rightLine.left[k]);
+    }
+    upSideLines.push(middleLine);
     currentMid = middleLine;
+    n--;
     lines.push(currentMid);
     while (n > 0){
         var upLine= new hLine(currentMid.y - rowSize, currentMid.x1,
                               currentMid.x2);
-        for (k = 0; k < rightLine.left.length; k++){
-                upLine.testPolygon(rightLine.left[k]);
+        for (k = 0; k < currentMid.up.length; k++){
+                upLine.testPolygon(currentMid.up[k]);
         }
         upSideLines.push(upLine);
         currentMid = upLine;
