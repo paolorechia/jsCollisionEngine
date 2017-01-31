@@ -661,8 +661,6 @@ var Triangle = function(x, y, l1, vx, vy, velocity, spin){
 		for (var i = 0; i < this.vertices.length; i++){
 			this.vertices[i].x += vector.x;
 			this.vertices[i].y += vector.y;
-			x += vertices[i].x;
-			y += vertices[i].y;
 		}
 	}
 	this.update = function(){

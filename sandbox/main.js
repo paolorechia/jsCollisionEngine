@@ -4,9 +4,9 @@ var maxSize = c.width/40;
 var minSize = c.width/70;
 var maxSpeed = 6;
 var maxSpin = 4;
-var numberRectangles = 40;
-var numberTriangles = 4;
-var numberCircles= 0;
+var numberRectangles = 2;
+var numberTriangles = 1;
+var numberCircles= 5;
 var objects = [];
 
 for (i = 0; i < numberRectangles; i++){
@@ -49,7 +49,6 @@ function mainLoop(){
 //    noQuadrants();
       twoQuadrants(divisor);
 //    fourQuadrants(divisor, divisorH);
-    
 
 	fps.calculateMean();
 	drawFPS(fps.mean);

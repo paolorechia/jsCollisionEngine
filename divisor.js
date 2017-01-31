@@ -20,8 +20,10 @@ var vLine = function(x, y1, y2){
     this.testPolygon = function(polygon){
         if (polygon.sides == 1){
             vertices = [];
-            vertices[0] = polygon.position - polygon.radius;
-            vertices[1] = polygon.position + polygon.radius;
+            vertices[0] = new Point(polygon.position.x - polygon.radius, 
+                                    polygon.position.y);
+            vertices[1] = new Point(polygon.position.x + polygon.radius, 
+                                    polygon.position.y);
         }
         else{
             vertices = polygon.vertices;
