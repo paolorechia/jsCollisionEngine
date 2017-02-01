@@ -63,7 +63,7 @@ function physicsLoop(){
 
   if (colliding){
         if (horizontal){
-            horizontalSplit(objects, sections);
+            horizontalSplit(objects, sections, checkElasticCollisionsNaive);
         }
         if (grid){
             gridify(objects, sections);

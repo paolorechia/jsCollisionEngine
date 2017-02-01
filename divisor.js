@@ -251,7 +251,7 @@ function verticalSplitRight(rightLine, columnSize, n){
         checkElasticCollisionsNaive(downSideLines[i].down, bounce);
     }
 }
-function horizontalSplit(array, n){
+function horizontalSplit(array, n, collisionCheck){
     var nCopy = n;
     lines=[];
     leftSideLines=[];
@@ -293,9 +293,8 @@ function horizontalSplit(array, n){
         verticalSplitLeft(rightSideLines[i], columnSize, n); 
 */
 
-
-        checkElasticCollisionsNaive(leftSideLines[i].right, bounce);
-        checkElasticCollisionsNaive(rightSideLines[i].left, bounce);
+        collisionCheck(leftSideLines[i].right, bounce);
+        collisionCheck(rightSideLines[i].left, bounce);
 
     }
     lines.push(middleLine);
