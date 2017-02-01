@@ -99,9 +99,6 @@ var hLine = function(y, x1, x2){
         this.up.push(polygon);
     }
 }
-
-divisor = new vLine(c.width/2, 0, c.height);
-divisorH = new hLine(c.height/2, 0, c.width);
 function drawArray(array, color){
 	for (k = 0; k < array.length; k++){
         if (array[k].sides == 1){
@@ -290,12 +287,12 @@ function horizontalSplit(array, n){
         currentMid = rightLine;
     }
     for (var i = 0; i< leftSideLines.length; i++){
+/*
         verticalSplitLeft(leftSideLines[i], columnSize, n); 
         verticalSplitLeft(rightSideLines[i], columnSize, n); 
-/*
+*/
         checkElasticCollisionsNaive(leftSideLines[i].right, bounce);
         checkElasticCollisionsNaive(rightSideLines[i].left, bounce);
-*/
     }
     lines.push(middleLine);
     for (var i = 0; i< leftSideLines.length; i++){
