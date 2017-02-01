@@ -287,12 +287,16 @@ function horizontalSplit(array, n){
         currentMid = rightLine;
     }
     for (var i = 0; i< leftSideLines.length; i++){
+
 /*
         verticalSplitLeft(leftSideLines[i], columnSize, n); 
         verticalSplitLeft(rightSideLines[i], columnSize, n); 
 */
+
+
         checkElasticCollisionsNaive(leftSideLines[i].right, bounce);
         checkElasticCollisionsNaive(rightSideLines[i].left, bounce);
+
     }
     lines.push(middleLine);
     for (var i = 0; i< leftSideLines.length; i++){

@@ -1,5 +1,5 @@
-c.width=800;
-c.height=600;
+c.width=2000;
+c.height=2000;
 var j = 0;
 var bounce = 0.1;
 var maxSize = c.width/80;
@@ -11,13 +11,17 @@ var numberTriangles = 100;
 var numberCircles= 0;
 var objects = [];
 var counter=0;
-var counter2=0;
+var sections=1;
+var maxSections=256;
+maxSections *= 2;
 var maxObjects = 1000;
 colliding=true;
 drawing=true;
 cycleDrawing=false;
+horizontal=true;
+grid=false;
 
-idealSections = c.width/maxSize;
+idealSections = Math.round(maxSize * 1.4);
 console.log(idealSections);
 
 divisor = new vLine(c.width/2, 0, c.height);
@@ -58,48 +62,24 @@ function physicsLoop(){
 	}
 
   if (colliding){
-        if (counter < 50){
-            horizontalSplit(objects, 8);
+        if (horizontal){
+            horizontalSplit(objects, sections);
         }
-        else if (counter < 100){
-            horizontalSplit(objects, 8);
+        if (grid){
+            gridify(objects, sections);
         }
-        else if(counter < 150){
-            horizontalSplit(objects, 16);
+        if ((counter % 50) == 0){
+            sections*=2;
+            sections%=maxSections;
+            if (sections == 0){
+                sections++;
+                generateShapes();
+/*
+                horizontal=!horizontal;
+                grid=!grid;
+*/
+            }
         }
-        else if (counter < 200){
-            horizontalSplit(objects, 32);
-        }
-        else if (counter < 350){
-            horizontalSplit(objects, 64);
-        }
-        else if (counter < 400){
-            horizontalSplit(objects, 128);
-        }
-        else if (counter < 450){
-            gridify(objects, 2);
-        }
-        else if(counter < 500){
-            gridify(objects, 4);
-        }
-        else if (counter < 550){
-            gridify(objects, 8);
-        }
-        else if (counter < 600){
-            gridify(objects, 16);
-        }
-        else if(counter < 650){
-            gridify(objects, 32);
-        }
-        else if (counter < 700){
-            gridify(objects, 64);
-        }
-        else{
-            gridify(objects, 128);
-        }
-
-
-
         if (counter== 699){
             if (cycleDrawing){
                 drawing=!drawing;
@@ -109,8 +89,9 @@ function physicsLoop(){
             }
         }
     }
-  counter++;
-    counter %= 700;
+    console.log(sections);
+    counter++;
+    counter %= 1000;
 	setTimeout(function(){physicsLoop();}, tickTime);
 }
 
