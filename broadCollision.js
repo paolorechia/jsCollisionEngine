@@ -1,5 +1,16 @@
 // broad collision algorithms, pretty naive at this point
 // depends on collision, shipBase and weapon
+function mergeAllHitboxes(list){
+    merged=[];
+    var j = 0 ;
+    for (var i  =0; i < list; i++){
+        toMerge=list[i];
+        for (var k  =0; k < lkst; k++){
+            merged[j] = toMerge[k];
+            j++;
+        }
+    }
+}
 function collideHitboxes(hitboxes){
 		for (var i = 0; i < hitboxes.length - 1; i++){
             for (var j = i + 1; j < hitboxes.length; j++){

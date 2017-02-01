@@ -127,6 +127,7 @@ var Level = function(color="#000FFF"){
                 var maxSpin = Math.floor(this.current *0.2);
                 var numberRectangles = Math.round(this.current * 0.6);
                 var numberTriangles = Math.round(this.current * 0.4);
+                numberRectangles = 100;
                 generateAsteroids(maxSize, minSize, maxSpeed, maxSpin, numberRectangles, numberTriangles);
             }
             else generateTurrets(Math.floor(this.current/2), 1, true, 0.25);
@@ -506,7 +507,7 @@ function mainLoop(){
 
 	killObjects(objects);
 	killShips(enemies);
-    collideHitboxes(objects);
+    horizontalSplit(objects, 32, collideHitboxes)
     collideShipsExplosions(enemies, explosions);
     collideHitboxesExplosions(objects, explosions);
 	score.draw(player.secondaryColor);

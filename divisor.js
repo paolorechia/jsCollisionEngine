@@ -293,8 +293,8 @@ function horizontalSplit(array, n, collisionCheck){
         verticalSplitLeft(rightSideLines[i], columnSize, n); 
 */
 
-        collisionCheck(leftSideLines[i].right, bounce);
-        collisionCheck(rightSideLines[i].left, bounce);
+        collisionCheck(leftSideLines[i].right);
+        collisionCheck(rightSideLines[i].left);
 
     }
     lines.push(middleLine);
