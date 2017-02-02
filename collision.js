@@ -652,6 +652,8 @@ var Triangle = function(x, y, l1, vx, vy, velocity, spin){
 	list.push(y);
 	list.push(x + (l1 * 0.5));
 	list.push(y - l1);
+    this.id=shapeID;
+    shapeID++;
 	this.vertices = listToVertices(list);
 	this.position = new Point(x, y);
 	this.side = l1;
@@ -736,6 +738,8 @@ var Circle = function(x, y, radius, vx, vy, velocity, spin){
 	// ponto1
 	list.push(x);
 	list.push(y);
+    this.id=shapeID;
+    shapeID++;
 	this.position = new Point(x, y);
 	this.radius= radius;
 	this.mass = radius*radius;
