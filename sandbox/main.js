@@ -1,13 +1,13 @@
-c.width=2000;
-c.height=2000;
+c.width=800;
+c.height=600;
 var j = 0;
 var bounce = 0.1;
 var maxSize = c.width/80;
 var minSize = c.width/100;
 var maxSpeed = 6;
-var maxSpin = 4;
-var numberRectangles = 100;
-var numberTriangles = 100;
+var maxSpin = 0;
+var numberRectangles = 1;
+var numberTriangles = 0;
 var numberCircles= 0;
 var objects = [];
 var counter=0;
@@ -20,6 +20,8 @@ drawing=true;
 cycleDrawing=false;
 horizontal=true;
 grid=false;
+testGrid = new Grid(10, 10, c.width, c.height);
+testGrid.build();
 
 idealSections = Math.round(maxSize * 1.4);
 console.log(idealSections);
@@ -51,6 +53,7 @@ generateShapes();
 lines=[];
 
 function physicsLoop(){
+    testGrid.build();
     STAchecks=0;
 	for (i = 0; i < objects.length; i++){
 		objects[i].update();
@@ -61,6 +64,7 @@ function physicsLoop(){
 		calculateAxes(objects[j]);
 	}
 
+/*
   if (colliding){
         if (horizontal){
             horizontalSplit(objects, sections, checkElasticCollisionsNaive);
@@ -78,6 +82,7 @@ function physicsLoop(){
                 horizontal=!horizontal;
                 grid=!grid;
 */
+/*
             }
         }
         if (counter== 699){
@@ -89,7 +94,11 @@ function physicsLoop(){
             }
         }
     }
+
     console.log(sections);
+*/
+    testGrid.fill(objects);
+    testGrid.collideCells();
     counter++;
     counter %= 1000;
 	setTimeout(function(){physicsLoop();}, tickTime);
@@ -104,6 +113,7 @@ function mainLoop(){
 	ctx.fillStyle="#FFFFFF";
     ctx.lineWidth=3;
 	ctx.fillRect(0,0,c.width,c.height);
+    testGrid.draw();
     for (var i = 0; i < lines.length; i++){
         lines[i].draw();
     }
@@ -119,5 +129,7 @@ function mainLoop(){
 		requestAnimationFrame(mainLoop)
 	}, interval);
 }
+
 physicsLoop();
 mainLoop();
+
