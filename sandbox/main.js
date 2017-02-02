@@ -1,20 +1,20 @@
-c.width=800;
-c.height=600;
+c.width=2000;
+c.height=2000;
 var j = 0;
 var bounce = 0.1;
-var maxSize = c.width/100;
+var maxSize = c.width/80;
 var minSize = c.width/200;
 var maxSpeed = 6;
 var maxSpin = 6;
-var numberRectangles = 1000;
-var numberTriangles = 1000;
+var numberRectangles = 100;
+var numberTriangles = 100;
 var numberCircles= 0;
 var objects = [];
 var counter=0;
-var sections=1;
+var sections=32;
 var maxSections=256;
 maxSections *= 2;
-var maxObjects = 1000;
+var maxObjects = 2000;
 colliding=true;
 drawing=true;
 cycleDrawing=false;
@@ -56,7 +56,6 @@ generateShapes();
 lines=[];
 
 function physicsLoop(){
-    testGrid.build();
     STAchecks=0;
 	for (i = 0; i < objects.length; i++){
 		objects[i].update();
@@ -67,43 +66,39 @@ function physicsLoop(){
 		calculateAxes(objects[j]);
 	}
 
-/*
   if (colliding){
         if (horizontal){
             horizontalSplit(objects, sections, checkElasticCollisionsNaive);
         }
         if (grid){
-            gridify(objects, sections);
+            testGrid.build();
+            testGrid.fill(objects);
+            testGrid.collideCells();
         }
+        if ((counter % 50) == 0){
+            horizontal=!horizontal;
+            grid=!grid;
+            }
+        if (counter==99){
+            if (objects.length < maxObjects){
+                generateShapes();
+            }
+        }
+/*
         if ((counter % 50) == 0){
             sections*=2;
             sections%=maxSections;
             if (sections == 0){
                 sections++;
                 generateShapes();
-/*
                 horizontal=!horizontal;
                 grid=!grid;
+            }
+        }
 */
-/*
-            }
-        }
-        if (counter== 699){
-            if (cycleDrawing){
-                drawing=!drawing;
-            }
-            if (objects.length < maxObjects){
-                generateShapes();
-            }
-        }
     }
-
-    console.log(sections);
-*/
-    testGrid.fill(objects);
-    testGrid.collideCells();
     counter++;
-    counter %= 1000;
+    counter %= 100;
 	setTimeout(function(){physicsLoop();}, tickTime);
 }
 
@@ -116,9 +111,13 @@ function mainLoop(){
 	ctx.fillStyle="#FFFFFF";
     ctx.lineWidth=3;
 	ctx.fillRect(0,0,c.width,c.height);
-    testGrid.draw();
-    for (var i = 0; i < lines.length; i++){
-        lines[i].draw();
+    if (grid){
+        testGrid.draw();
+    }
+    if (horizontal){
+        for (var i = 0; i < lines.length; i++){
+            lines[i].draw();
+        }
     }
     if (drawing){
         drawArray(objects, "#0000FF");
