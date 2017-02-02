@@ -329,11 +329,11 @@ var Grid = function(rows, columns, canvasW, canvasH){
     this.height = canvasH/this.rows;
     this.cells = [];
     this.build = function(){
-        for (var i = 0; i <= this.rows; i++){
+        for (var i = -1; i <= this.rows; i++){
             this.cells[i]= new Array(this.columns + 1); 
         }
-        for (var i = 0; i <= this.rows; i++){
-            for (var j = 0; j <= this.columns; j++){
+        for (var i = -1; i <= this.rows; i++){
+            for (var j = -1; j <= this.columns; j++){
                 this.cells[i][j]= [];
             }
         }
