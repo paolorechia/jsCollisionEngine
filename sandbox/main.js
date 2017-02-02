@@ -111,7 +111,10 @@ function mainLoop(){
 	ctx.fillStyle="#FFFFFF";
     ctx.lineWidth=3;
 	ctx.fillRect(0,0,c.width,c.height);
+
+// grid is even faster when neither of the algorithms are using illustrative drawings
     if (grid){
+ //       testGrid.drawBG(); //line drawing slows down the performance too much
         testGrid.draw();
     }
     if (horizontal){
@@ -119,6 +122,7 @@ function mainLoop(){
             lines[i].draw();
         }
     }
+
     if (drawing){
         drawArray(objects, "#0000FF");
     }
