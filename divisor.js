@@ -305,13 +305,22 @@ function horizontalSplit(array, n, collisionCheck){
         lines.push(rightSideLines[i]);
     }
 }
-function dumbSearch(array, element){
-    for (var i = 0; i < array.length; i++){
-        if (array[i] == element){
-            return true;
+function dumbSearch(cell, element){
+    for (var i = 0; i < cell.length; i++){
+        if (cell[i].id == element.id){
+            return false;
         }
     }
-    return false;
+    return true;
+}
+function joinXY(xList, yList){
+    cellList = [];
+    for (var i = 0; i < xList.length; i++){
+        // point here actually represents a cell (i/j indexes)
+        cell = new Point(xList[i], yList[i]);
+        cellList.push(cell);
+    }
+    return cellList; 
 }
 var Grid = function(rows, columns, canvasW, canvasH){
     this.rows = rows;
@@ -331,23 +340,21 @@ var Grid = function(rows, columns, canvasW, canvasH){
     }
     this.fill= function(objects){
         for (var i = 0; i < objects.length; i++){
+            xList = [];
+            yList = [];
             for (var j = 0; j < objects[i].vertices.length; j++){
-                xList = [];
-                yList = [];
                 xList.push(Math.floor(objects[i].vertices[j].x
                         / this.width));
                 yList.push(Math.floor(objects[i].vertices[j].y
                         / this.height));
-                addedX = [];
-                addedY = [];
-                for (var k = 0; k < xList.length; k++){
-
-                    if (!dumbSearch(addedX, xList[k]) || 
-                        !dumbSearch(addedY, yList[k])){
-                        this.cells[xList[k]][yList[k]].push(objects[i]);
-                        addedX.push(xList[k]);
-                        addedY.push(yList[k]);
-                    }
+            }
+            cellList = joinXY(xList, yList);
+            for (var j  = 0; j < cellList.length; j++){
+                u=cellList[j].x;
+                v=cellList[j].y;
+                currentCell = this.cells[u][v];
+                if (dumbSearch(currentCell, objects[i])){
+                    currentCell.push(objects[i]);
                 }
             }
         }

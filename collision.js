@@ -1,6 +1,7 @@
 var c = document.getElementById("umCanvas");
 var ctx = c.getContext("2d");
 var globalID = 0;
+var shapeID = 0;
 var gradualRate = 1;
 var STAchecks = 0;
 
@@ -591,6 +592,8 @@ var Rect = function(x, y, width, height, vx, vy, velocity, spin){
 	list.push(x);
 	list.push(y + height);
 
+    this.id=shapeID;
+    shapeID++;
 	this.vertices = listToVertices(list);
 	this.position = new Point(x, y);
 	this.width = width;

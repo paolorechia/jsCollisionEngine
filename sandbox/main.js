@@ -6,7 +6,7 @@ var maxSize = c.width/80;
 var minSize = c.width/100;
 var maxSpeed = 6;
 var maxSpin = 0;
-var numberRectangles = 1;
+var numberRectangles = 10;
 var numberTriangles = 0;
 var numberCircles= 0;
 var objects = [];
@@ -20,7 +20,7 @@ drawing=true;
 cycleDrawing=false;
 horizontal=true;
 grid=false;
-testGrid = new Grid(10, 10, c.width, c.height);
+testGrid = new Grid(20, 20, c.width, c.height);
 testGrid.build();
 
 idealSections = Math.round(maxSize * 1.4);
