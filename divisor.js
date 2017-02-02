@@ -320,11 +320,11 @@ var Grid = function(rows, columns, canvasW, canvasH){
     this.height = canvasH/this.rows;
     this.cells = [];
     this.build = function(){
-        for (var i = 0; i < this.rows; i++){
-            this.cells[i]= new Array(this.columns); 
+        for (var i = 0; i <= this.rows; i++){
+            this.cells[i]= new Array(this.columns + 1); 
         }
-        for (var i = 0; i < this.rows; i++){
-            for (var j = 0; j < this.columns; j++){
+        for (var i = 0; i <= this.rows; i++){
+            for (var j = 0; j <= this.columns; j++){
                 this.cells[i][j]= [];
             }
         }
@@ -334,22 +334,20 @@ var Grid = function(rows, columns, canvasW, canvasH){
             for (var j = 0; j < objects[i].vertices.length; j++){
                 xList = [];
                 yList = [];
-                console.log(this.width);
-                xList.push(Math.round(objects[i].vertices[j].x
+                xList.push(Math.floor(objects[i].vertices[j].x
                         / this.width));
-                yList.push(Math.round(objects[i].vertices[j].y
+                yList.push(Math.floor(objects[i].vertices[j].y
                         / this.height));
                 addedX = [];
                 addedY = [];
                 for (var k = 0; k < xList.length; k++){
+
                     if (!dumbSearch(addedX, xList[k]) || 
                         !dumbSearch(addedY, yList[k])){
                         this.cells[xList[k]][yList[k]].push(objects[i]);
                         addedX.push(xList[k]);
                         addedY.push(yList[k]);
                     }
-
-
                 }
             }
         }
@@ -367,13 +365,12 @@ var Grid = function(rows, columns, canvasW, canvasH){
         canvasW = this.width * this.columns;
         canvasH = this.height * this.rows;
         ctx.beginPath();
-        ctx.fillStyle="#FFFFFF";
         for (var i = 0; i < this.rows; i++){
             x = (i * this.width) % canvasW;
             for (var j = 0; j < this.columns; j++){
                 y = (j * this.height) % canvasH;
                 if (this.cells[i][j].length > 0){
-                    ctx.fillStyle="#FF00FF";
+                    ctx.fillStyle="#00FF00";
                 }
                 else{
                     ctx.fillStyle="#FFFFFF";
