@@ -82,8 +82,8 @@ function collideShip(ship, object){
                     smartCollision(
                          object,
                          ship.hitbox,
-                         object.onHit(ship));
-                    object.duration-=100;
+                         function(){object.onHit(ship),
+                                    object.duration-=100;});
             return;
     }
 }
