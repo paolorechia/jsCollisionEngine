@@ -354,7 +354,7 @@ var Grid = function(rows, columns, canvasW, canvasH){
                 u=cellList[j].x;
                 v=cellList[j].y;
                 currentCell = this.cells[u][v];
-                if (dumbSearch(currentCell, objects[i])){
+                if (dumbSearch(currentCell, hitbox)){
                     currentCell.push(objects[i]);
                     this.numObjects++;
                 }
@@ -379,12 +379,14 @@ var Grid = function(rows, columns, canvasW, canvasH){
             for (var j = 0; j < this.columns; j++){
                 y = (j * this.height) % canvasH;
                 if (this.cells[i][j].length > 0){
-                    ctx.fillStyle="#00FF00";
+                    color=this.cells[i][j].length*50;
+                    ctx.fillStyle="rgb(0, " + color + ", 0)";
+                    ctx.fillRect(x, y, this.width, this.height);
                 }
                 else{
-                    ctx.fillStyle="#FFFFFF";
+         //           ctx.fillStyle="#FFFFFF";
                 }
-                ctx.fillRect(x, y, this.width, this.height);
+//                ctx.fillRect(x, y, this.width, this.height);
             }
         }
     }

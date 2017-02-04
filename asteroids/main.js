@@ -94,7 +94,7 @@ function generateTurrets(n, cannons, moving=false, rateOfFire=1){
         }
         turret.weapon.setOwner(turret);
         if (moving){
-            turret.engineOn=true;
+            turret.engineOn=false;
             rotatePolygon(turret.hitbox, 360 * Math.random());
         }
         turret.value = Math.round(myRandom * 10);
@@ -481,6 +481,29 @@ function mainLoop(){
         }
     }
     player.autoPilot();
+
+	killObjects(objects);
+	killShips(enemies);
+
+    var everything = [];
+    everything = everything.concat(objects).concat(enemies);
+    if (!player.dead){
+        everything = everything.concat(players);
+    }
+    for (var i = 0; i < player.weapons.length; i++){
+        everything = everything.concat(player.weapons[i].projectiles);
+    }
+    for (var i = 0; i < enemies.length; i++){
+        enemy = enemies[i];
+        for (var j = 0; j < enemy.weapons.length; j++){
+            everything = everything.concat(enemy.weapons[j].projectiles);
+        }
+    }
+
+    grid.build();
+    grid.fill(everything);
+    grid.collideCells();
+    grid.draw();
     player.drawStatus();
     player.targetSystem.displayInfo();
     player.targetSystem.drawAid(player.weapons);
@@ -504,28 +527,6 @@ function mainLoop(){
         player.drawAutoPath();
         player.draw();
     }
-
-	killObjects(objects);
-	killShips(enemies);
-
-    var everything = [];
-    everything = everything.concat(objects).concat(enemies);
-    if (!player.dead){
-        everything = everything.concat(players);
-    }
-    for (var i = 0; i < player.weapons.length; i++){
-        everything = everything.concat(player.weapons[i].projectiles);
-    }
-    for (var i = 0; i < enemies.length; i++){
-        enemy = enemies[i];
-        for (var j = 0; j < enemy.weapons.length; j++){
-            everything = everything.concat(enemy.weapons[j].projectiles);
-        }
-    }
-
-    grid.build();
-    grid.fill(everything);
-    grid.collideCells();
 //    horizontalSplit(objects, 32, collideHitboxes)
     collideShipsExplosions(enemies, explosions);
     collideHitboxesExplosions(objects, explosions);
@@ -591,7 +592,7 @@ score.getMax();
 score.getCoins();
 var level = new Level();
 var instructions = buildInstructions();
-var grid = new Grid(20, 20, c.width, c.height);
+var grid = new Grid(10, 10, c.width, c.height);
 var objects = [];
 var enemies = [];
 var explosions = [];

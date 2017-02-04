@@ -3,18 +3,13 @@
 
 function dumbCollide(array){  
     if (array.length > 1){
-        console.log("ahh");
     }
     for (var i = 0; i < array.length - 1; i++){
-        console.log(array[i]);
         for (var j = i + 1; j < array.length; j++){
             if (array[i].type =='h'){
                 collideHitbox(array[i], array[j]);
             }
             if (array[i].type =='s'){
-                if (array[j].type =='s'){
-                    console.log("ShipxShip");
-                }
                 collideShip(array[i], array[j]);
             }
             if (array[i].type =='w'){
@@ -70,8 +65,8 @@ function collideShip(ship, object){
         bindA.push(ship.auxHitbox);
         bindB = [];
         bindB.push(object.auxHitbox);
-        hit = elasticCollision(ship.hitbox, object.hitbox,
-                               bindA, bindB, 0.1);
+        hit = elasticCollision(object.hitbox, ship.hitbox,
+                               bindB, bindA, 0.1);
         if (hit){
             ship.sufferDamage(damage);	// fixed amount of damage on Collision
             object.sufferDamage(damage);			

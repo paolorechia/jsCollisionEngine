@@ -935,6 +935,7 @@ function elasticCollision(polygonA, polygonB,
 	if (mtv== false){
 		return false;
 	}
+    console.log("colliding!");
     var bounce = 10;
     globalID++;
     polygonA.colliding=true;
