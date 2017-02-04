@@ -13,9 +13,6 @@ function dumbCollide(array){   // or maybe dumbCollide
             if (array[i].type =='w'){
                 collideProjectile(array[i], array[j]);
             }
-            if (array[i].type =='e'){
-                collideExplosion(array[i], array[j]);
-            }
         }
     }
 }
@@ -47,13 +44,45 @@ function collideHitbox(hitbox, object){
     }
 }
 
-function collideShip(){
+function collideShip(ship, object){
 
+/*
+    if (object.type =='h'){
+        var bindA = [];
+        bindA.push(ship.auxHitbox);
+        hit = elasticCollision(ship.hitbox, object, bindA, undefined, 0.1);
+        if (hit){
+            ship.sufferDamage(damage);	// fixed amount of damage on Collision
+            objects.sufferDamage(damage);
+        }
+        return;
+    }
+*/
+
+    if(object.type=='s'){
+        var bindA = [];
+        bindA.push(ship.auxHitbox);
+        bindB = [];
+        bindB.push(object.auxHitbox);
+        hit = elasticCollision(ship.hitbox, object.hitbox,
+                               bindA, bindB, 0.1);
+        if (hit){
+            ship.sufferDamage(damage);	// fixed amount of damage on Collision
+            object.sufferDamage(damage);			
+        }
+        return;
+    }
+    if(object.type=='w'){
+                    shipBind = [];
+                    shipBind.push(ship.auxHitbox);
+                    smartCollision(
+                         object,
+                         ship.hitbox,
+                         object.onHit(ship));
+            return;
+    }
 }
 function collideProjectile(){
-
-}
-function collideExplosion(){
 
 }
 function collideShipHitboxes(ship, objects, damage){
