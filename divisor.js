@@ -335,11 +335,11 @@ var Grid = function(rows, columns, canvasW, canvasH){
         for (var i = 0; i < objects.length; i++){
             xList = [];
             yList = [];
-            if (objects[i].type != 'h'){
-                hitbox=objects[i].hitbox;
+            if (objects[i].type == 'h' || objects[i].type=='w'){
+                hitbox=objects[i];
             }
             else{
-                hitbox=objects[i];
+                hitbox=objects[i].hitbox;
             }
             for (var j = 0; j < hitbox.vertices.length; j++){
                 xList.push(Math.floor(hitbox.vertices[j].x

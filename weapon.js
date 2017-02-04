@@ -190,6 +190,9 @@ var Weapon = function(velocity = 10, width = 1, range = 1000, limit = 10, damage
 									   this.projectileVelocity + shipSpeed, 0);
 		projectile.hit = false;
         projectile.type = 'w'; // weapon-type (for collision checking)
+        projectile.onHit = this.onHit;
+        projectile.damage= this.damage;
+        projectile.hp=10;
 		projectile.mass = this.mass;
 		projectile.duration = this.range/this.velocity;
         /* use this rotation to fire projectiles sideways

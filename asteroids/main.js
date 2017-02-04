@@ -509,7 +509,13 @@ function mainLoop(){
 	killShips(enemies);
 
     var everything = [];
-    everything = everything.concat(objects).concat(enemies).concat(players).concat(explosions);
+    everything = everything.concat(objects).concat(enemies).concat(explosions);
+    if (!player.dead){
+        everything = everything.concat(players);
+    }
+    for (var i = 0; i < player.weapons.length; i++){
+        everything = everything.concat(player.weapons[i].projectiles);
+    }
 
     grid.build();
     grid.fill(everything);
