@@ -40,26 +40,13 @@ function collideHitbox(hitbox, object){
             smartCollision(
                  object,
                  hitbox,
-                 object.onHit(hitbox));
-//            killProjectile(object);
+                 function(){object.onHit(hitbox);
+                           killProjectile(object);});
             return;
     }
 }
 
 function collideShip(ship, object){
-
-/*
-    if (object.type =='h'){
-        var bindA = [];
-        bindA.push(ship.auxHitbox);
-        hit = elasticCollision(ship.hitbox, object, bindA, undefined, 0.1);
-        if (hit){
-            ship.sufferDamage(damage);	// fixed amount of damage on Collision
-            objects.sufferDamage(damage);
-        }
-        return;
-    }
-*/
     if(object.type=='s'){
         var bindA = [];
         bindA.push(ship.auxHitbox);
@@ -88,8 +75,17 @@ function collideShip(ship, object){
             return;
     }
 }
-function collideProjectile(){
-
+function collideProjectile(projectileA, object){
+    if(object.type=='w'){
+                    smartCollision(
+                         object,
+                         projectileA,
+                         function(){
+                             killProjectile(object);
+                             killProjectile(projectileA);});
+//                             object.duration-=500;});
+            return;
+    }
 }
 function collideShipHitboxes(ship, objects, damage){
         if (objects.length == 0){

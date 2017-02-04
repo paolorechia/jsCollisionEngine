@@ -124,11 +124,10 @@ var Level = function(color="#000FFF"){
             if (this.current % 2 != 0){
                 var maxSize = c.width/20 + (this.current * 2);
                 var minSize = c.width/100 + (this.current * 2);
-                var maxSpeed = Math.round(this.current * 0.7);
+                var maxSpeed = Math.ceil(this.current * 0.2);
                 var maxSpin = Math.floor(this.current *0.2);
                 var numberRectangles = Math.round(this.current * 0.6);
                 var numberTriangles = Math.round(this.current * 0.4);
-                numberRectangles = 0;
                 generateAsteroids(maxSize, minSize, maxSpeed, maxSpin, numberRectangles, numberTriangles);
             }
             else generateTurrets(Math.floor(this.current/2), 1, true, 0.25);
