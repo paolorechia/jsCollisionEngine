@@ -453,7 +453,7 @@ var Turret = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF", cannon
     ship.name = "Turret";
 	ship.updateDirection();
 	ship.hull = new Hull(50, 3);
-	ship.shield = new Shield(20, 0, 5, 0.5, 300);
+	ship.shield = new Shield(100, 0, 5, 0.5, 300);
 	ship.powerSupply = new EnergySource(500, 10, 100);
 	ship.shield.setPowerSupply(ship.powerSupply);
 	ship.shield.setEnabled(true);
@@ -529,19 +529,16 @@ var Turret = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF", cannon
 			ctx.stroke();
 		}
 		if (this.shield.enabled && this.shield.current > 0){
-			ctx.save();
             if (polygon.hit == true){
+			    ctx.save();
                 ctx.strokeStyle=this.primaryColor;
+                ctx.beginPath();
+                ctx.arc(polygon.center.x,
+                        polygon.center.y,
+                        polygon.side + 2, 0, 2*Math.PI);
+                ctx.stroke();	
+			    ctx.restore();
             }
-            else{
-			    ctx.strokeStyle=this.secondaryColor;
-            }
-			ctx.beginPath();
-			ctx.arc(polygon.center.x,
-					polygon.center.y,
-					polygon.side + 2, 0, 2*Math.PI);
-			ctx.stroke();	
-			ctx.restore();
 		}
 		ctx.restore();
 	}

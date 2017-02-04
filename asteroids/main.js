@@ -94,13 +94,14 @@ function generateTurrets(n, cannons, moving=false, rateOfFire=1){
         }
         turret.weapon.setOwner(turret);
         if (moving){
-            turret.engineOn=false;
+            turret.engineOn=true;
             rotatePolygon(turret.hitbox, 360 * Math.random());
         }
         turret.value = Math.round(myRandom * 10);
         turret.value *= cannons;
-        turret.targetSystem.setAutoAim(false, turret.weapons);
+        turret.targetSystem.setAutoAim(true, turret.weapons);
         turret.targetSystem.refreshRate=4;
+        turret.shield.current=100;
         enemies.push(turret);
     }
 }
@@ -503,7 +504,7 @@ function mainLoop(){
     grid.build();
     grid.fill(everything);
     grid.collideCells();
-    grid.draw();
+//    grid.draw();
     player.drawStatus();
     player.targetSystem.displayInfo();
     player.targetSystem.drawAid(player.weapons);
@@ -527,7 +528,6 @@ function mainLoop(){
         player.drawAutoPath();
         player.draw();
     }
-//    horizontalSplit(objects, 32, collideHitboxes)
     collideShipsExplosions(enemies, explosions);
     collideHitboxesExplosions(objects, explosions);
 	score.draw(player.secondaryColor);
@@ -537,7 +537,6 @@ function mainLoop(){
     for (var i = 0; i < explosions.length; i++){
         explosions[i].draw();
     }
-//    console.log(everything);
 	
 	fps.calculateMean();
 	drawFPS(fps.mean, player.secondaryColor);

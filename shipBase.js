@@ -810,16 +810,13 @@ var Ship = function(x, y, l1, primaryColor = "#0000FF", secondaryColor = "#00F0F
 			ctx.save();
             if (polygon.hit == true){
 			    ctx.strokeStyle=this.primaryColor;
+                ctx.beginPath();
+                ctx.arc(polygon.center.x,
+                        polygon.center.y,
+                        polygon.side + 2, 0, 2*Math.PI);
+                ctx.stroke();	
+                ctx.restore();
             } 
-            else{
-			    ctx.strokeStyle=this.secondaryColor;
-            }
-			ctx.beginPath();
-			ctx.arc(polygon.center.x,
-					polygon.center.y,
-					polygon.side + 2, 0, 2*Math.PI);
-			ctx.stroke();	
-			ctx.restore();
 		}
 		ctx.restore();
 	}

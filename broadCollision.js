@@ -83,7 +83,8 @@ function collideShip(ship, object){
                          object,
                          ship.hitbox,
                          function(){object.onHit(ship),
-                                    object.duration-=100;});
+                                    killProjectile(object);});
+//                                    object.duration-=500;});
             return;
     }
 }
