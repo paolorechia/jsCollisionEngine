@@ -1,24 +1,50 @@
 // broad collision algorithms, pretty naive at this point
 // depends on collision, shipBase and weapon
-function mergeAllHitboxes(list){
-    merged=[];
-    var j = 0 ;
-    for (var i  =0; i < list; i++){
-        toMerge=list[i];
-        for (var k  =0; k < lkst; k++){
-            merged[j] = toMerge[k];
-            j++;
+
+function dumbCollide(array){   // or maybe dumbCollide
+    for (var i = 0; i < array.length - 1; i++){
+        for (var j = i + 1; j < array.length; j++){
+            if (array[i].type =='h' && array[j].type =='h'){
+                collideHitboxes(array[i], array[j]);
+            }
+            else if(array[i].type =='s' && array[j].type=='h'){
+
+
+
+            }
+            else if(array[i].type =='s' && array[j].type=='w'){
+            
+
+            }
+            else if(array[i].type =='w' && array[j].type=='s'){
+            
+
+            }
+            else if(array[i].type =='w' && array[j].type=='h'){
+            
+
+            }
+            else if(array[i].type =='h' && array[j].type=='w'){
+            
+
+            }
+            else if(array[i].type =='e' && array[j].type=='h'){
+            
+
+            }
+            else if(array[i].type =='e' && array[j].type=='h'){
+            
+
+            }
+
         }
     }
 }
-function collideHitboxes(hitboxes){
-		for (var i = 0; i < hitboxes.length - 1; i++){
-            for (var j = i + 1; j < hitboxes.length; j++){
-            hit = elasticCollision(hitboxes[i],
-                                   hitboxes[j],
+
+function collideHitboxes(hitboxA, hitboxB){
+            hit = elasticCollision(hitboxA,
+                                   hitboxB,
                                    undefined, undefined, 0.1);
-            }
-        }
 }
 function collideShipHitboxes(ship, objects, damage){
         if (objects.length == 0){

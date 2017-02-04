@@ -1,4 +1,3 @@
-
 var Explosive = function(damage, expansionRate, maxRadius){
     this.damage=damage;
     this.expansionRate=expansionRate;
@@ -9,6 +8,7 @@ var Explosion = function(x, y, damageMultiplier=2, expansionRate = 5,
                          maxRadius = 50, startRadius = 1,
                          color="#FF0000"){
     this.color = color;
+    this.type = 'e'; //explosion
     this.hitbox = new Circle(x, y, startRadius,
                              0, 0, 0, 0); //radius starts at 1 typically
     this.hitbox.mass=100000;

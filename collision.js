@@ -592,6 +592,7 @@ var Rect = function(x, y, width, height, vx, vy, velocity, spin){
 	list.push(x);
 	list.push(y + height);
 
+    this.type='h'; // hitbox-type
     this.id=shapeID;
     shapeID++;
 	this.vertices = listToVertices(list);
@@ -652,6 +653,7 @@ var Triangle = function(x, y, l1, vx, vy, velocity, spin){
 	list.push(y);
 	list.push(x + (l1 * 0.5));
 	list.push(y - l1);
+    this.type='h'; // hitbox-type
     this.id=shapeID;
     shapeID++;
 	this.vertices = listToVertices(list);
@@ -740,6 +742,7 @@ var Circle = function(x, y, radius, vx, vy, velocity, spin){
 	list.push(y);
     this.id=shapeID;
     shapeID++;
+    this.type='h'; // hitbox-type
 	this.position = new Point(x, y);
 	this.radius= radius;
 	this.mass = radius*radius;

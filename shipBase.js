@@ -350,6 +350,7 @@ var Ship = function(x, y, l1, primaryColor = "#0000FF", secondaryColor = "#00F0F
 						0, 0,			// vx, vy
 						0, 0);			// velocity, spin
 	
+    this.type='s'; //ship-type
 	this.primaryColor = primaryColor;
 	this.secondaryColor = secondaryColor;	
 	this.auxHitbox = new Triangle(x, y - l1, l1, 0, 0, 0, 0);

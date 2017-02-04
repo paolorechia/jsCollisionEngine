@@ -356,7 +356,7 @@ var Grid = function(rows, columns, canvasW, canvasH){
         for (var i = 0; i < this.rows; i++){
             for (var j = 0; j < this.columns; j++){
                 if (this.cells[i][j] != undefined){
-                    collideHitboxes(this.cells[i][j]);
+                    dumbCollide(this.cells[i][j]);
                 }
             }
         }

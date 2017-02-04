@@ -450,10 +450,10 @@ function mainLoop(){
 		players.push(player);
 		for (var i =0; i < enemies.length; i++){
 		    updateEnemy(enemies[i]);
-		    collideWeaponsShips(enemies[i], players);
+		    //collideWeaponsShips(enemies[i], players);
 		}
-		collideWeaponsHitboxes(player, objects);
-		collideWeaponsShips(player, enemies);
+		//collideWeaponsHitboxes(player, objects);
+		//collideWeaponsShips(player, enemies);
 		checkBorder(player.hitbox, function(){player.auxHitbox.applyVector(diff)});
 	
 	}
@@ -468,14 +468,14 @@ function mainLoop(){
             window.rewarded=true;
         }
 	}
-	collideShipHitboxes(player, objects, COLLISION_DAMAGE);
-	collideShipShips(player, enemies, COLLISION_DAMAGE);
+	//collideShipHitboxes(player, objects, COLLISION_DAMAGE);
+	//collideShipShips(player, enemies, COLLISION_DAMAGE);
 	updateShipProjectiles(player);
 	checkProjectilesBorder(player);
 
     updateTargetSystem(player, enemies);
     if (!player.dead){
-        collideShipsExplosions(players, explosions);
+        //collideShipsExplosions(players, explosions);
         for (var i  = 0; i < enemies.length; i++){
             updateTargetSystem(enemies[i], players);
         }
@@ -512,8 +512,8 @@ function mainLoop(){
     grid.fill(objects);
     grid.collideCells();
 //    horizontalSplit(objects, 32, collideHitboxes)
-    collideShipsExplosions(enemies, explosions);
-    collideHitboxesExplosions(objects, explosions);
+//    collideShipsExplosions(enemies, explosions);
+//    collideHitboxesExplosions(objects, explosions);
 	score.draw(player.secondaryColor);
 	level.draw(player.secondaryColor);
     updateExplosions(explosions);
