@@ -127,7 +127,7 @@ var Level = function(color="#000FFF"){
                 var maxSpin = Math.floor(this.current *0.2);
                 var numberRectangles = Math.round(this.current * 0.6);
                 var numberTriangles = Math.round(this.current * 0.4);
-                numberRectangles = 100;
+                numberRectangles = 200;
                 generateAsteroids(maxSize, minSize, maxSpeed, maxSpin, numberRectangles, numberTriangles);
             }
             else generateTurrets(Math.floor(this.current/2), 1, true, 0.25);
@@ -507,7 +507,11 @@ function mainLoop(){
 
 	killObjects(objects);
 	killShips(enemies);
-    horizontalSplit(objects, 32, collideHitboxes)
+
+    grid.build();
+    grid.fill(objects);
+    grid.collideCells();
+//    horizontalSplit(objects, 32, collideHitboxes)
     collideShipsExplosions(enemies, explosions);
     collideHitboxesExplosions(objects, explosions);
 	score.draw(player.secondaryColor);
@@ -517,6 +521,9 @@ function mainLoop(){
     for (var i = 0; i < explosions.length; i++){
         explosions[i].draw();
     }
+    var everything = [];
+    everything = everything.concat(objects).concat(enemies).concat(players).concat(explosions);
+//    console.log(everything);
 	
 	fps.calculateMean();
 	drawFPS(fps.mean, player.secondaryColor);
@@ -571,7 +578,7 @@ score.getMax();
 score.getCoins();
 var level = new Level();
 var instructions = buildInstructions();
-
+var grid = new Grid(20, 20, c.width, c.height);
 var objects = [];
 var enemies = [];
 var explosions = [];

@@ -1,13 +1,13 @@
-c.width=2000;
-c.height=2000;
+c.width=800;
+c.height=600;
 var j = 0;
 var bounce = 0.1;
-var maxSize = c.width/80;
-var minSize = c.width/200;
+var maxSize = c.width/30;
+var minSize = c.width/100;
 var maxSpeed = 6;
 var maxSpin = 6;
-var numberRectangles = 100;
-var numberTriangles = 100;
+var numberRectangles = 1;
+var numberTriangles = 1;
 var numberCircles= 0;
 var objects = [];
 var counter=0;
@@ -52,7 +52,7 @@ var fps = new Fps();
 var maxFPS = 1000;
 var interval = 1000/maxFPS;
 tickTime=30;
-generateShapes();
+//generateShapes();
 lines=[];
 
 function physicsLoop(){
@@ -66,14 +66,14 @@ function physicsLoop(){
 		calculateAxes(objects[j]);
 	}
 
+            testGrid.build();
+            testGrid.fill(objects);
+            testGrid.collideCells();
   if (colliding){
         if (horizontal){
             horizontalSplit(objects, sections, checkElasticCollisionsNaive);
         }
         if (grid){
-            testGrid.build();
-            testGrid.fill(objects);
-            testGrid.collideCells();
         }
         if ((counter % 50) == 0){
             horizontal=!horizontal;
@@ -113,15 +113,20 @@ function mainLoop(){
 	ctx.fillRect(0,0,c.width,c.height);
 
 // grid is even faster when neither of the algorithms are using illustrative drawings
+/*
     if (grid){
- //       testGrid.drawBG(); //line drawing slows down the performance too much
+       testGrid.drawBG(); //line drawing slows down the performance too much
         testGrid.draw();
     }
+/*
     if (horizontal){
         for (var i = 0; i < lines.length; i++){
             lines[i].draw();
         }
     }
+*/
+       testGrid.drawBG(); //line drawing slows down the performance too much
+        testGrid.draw();
 
     if (drawing){
         drawArray(objects, "#0000FF");
