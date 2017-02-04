@@ -37,13 +37,12 @@ function collideHitbox(hitbox, object){
             }
             return;
     }
-    console.log(object.type);
     if(object.type=='w'){
-            console.log(object.onHit);
             smartCollision(
                  object,
                  hitbox,
                  object.onHit(hitbox));
+//            killProjectile(object);
             return;
     }
 }
