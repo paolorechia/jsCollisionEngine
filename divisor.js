@@ -335,10 +335,16 @@ var Grid = function(rows, columns, canvasW, canvasH){
         for (var i = 0; i < objects.length; i++){
             xList = [];
             yList = [];
-            for (var j = 0; j < objects[i].vertices.length; j++){
-                xList.push(Math.floor(objects[i].vertices[j].x
+            if (objects[i].type != 'h'){
+                hitbox=objects[i].hitbox;
+            }
+            else{
+                hitbox=objects[i];
+            }
+            for (var j = 0; j < hitbox.vertices.length; j++){
+                xList.push(Math.floor(hitbox.vertices[j].x
                         / this.width));
-                yList.push(Math.floor(objects[i].vertices[j].y
+                yList.push(Math.floor(hitbox.vertices[j].y
                         / this.height));
             }
             cellList = joinXY(xList, yList);

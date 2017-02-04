@@ -4,47 +4,37 @@
 function dumbCollide(array){   // or maybe dumbCollide
     for (var i = 0; i < array.length - 1; i++){
         for (var j = i + 1; j < array.length; j++){
-            if (array[i].type =='h' && array[j].type =='h'){
-                collideHitboxes(array[i], array[j]);
+            if (array[i].type =='h'){
+                collideHitbox(array[i], array[j]);
             }
-            else if(array[i].type =='s' && array[j].type=='h'){
-
-
-
+            if (array[i].type =='s'){
+                collideShip(array[i], array[j]);
             }
-            else if(array[i].type =='s' && array[j].type=='w'){
-            
-
+            if (array[i].type =='w'){
+                collideProjectile(array[i], array[j]);
             }
-            else if(array[i].type =='w' && array[j].type=='s'){
-            
-
+            if (array[i].type =='e'){
+                collideExplosion(array[i], array[j]);
             }
-            else if(array[i].type =='w' && array[j].type=='h'){
-            
-
-            }
-            else if(array[i].type =='h' && array[j].type=='w'){
-            
-
-            }
-            else if(array[i].type =='e' && array[j].type=='h'){
-            
-
-            }
-            else if(array[i].type =='e' && array[j].type=='h'){
-            
-
-            }
-
         }
     }
 }
-
-function collideHitboxes(hitboxA, hitboxB){
-            hit = elasticCollision(hitboxA,
-                                   hitboxB,
+var damage = 10;
+function collideHitbox(hitbox, object){
+    if (object.type =='h'){
+            hit = elasticCollision(hitbox,
+                                   object,
                                    undefined, undefined, 0.1);
+    }
+    else if(object.type=='s'){
+            var bindA = [];
+            bindA.push(object.auxHitbox);
+            hit = elasticCollision(object.hitbox, hitbox, bindA, undefined, 0.1);
+            if (hit){
+                object.sufferDamage(damage);	// fixed amount of damage on Collision
+                hitbox.sufferDamage(damage);
+            }
+    }
 }
 function collideShipHitboxes(ship, objects, damage){
         if (objects.length == 0){

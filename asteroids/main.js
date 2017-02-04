@@ -508,8 +508,11 @@ function mainLoop(){
 	killObjects(objects);
 	killShips(enemies);
 
+    var everything = [];
+    everything = everything.concat(objects).concat(enemies).concat(players).concat(explosions);
+
     grid.build();
-    grid.fill(objects);
+    grid.fill(everything);
     grid.collideCells();
 //    horizontalSplit(objects, 32, collideHitboxes)
 //    collideShipsExplosions(enemies, explosions);
@@ -521,8 +524,6 @@ function mainLoop(){
     for (var i = 0; i < explosions.length; i++){
         explosions[i].draw();
     }
-    var everything = [];
-    everything = everything.concat(objects).concat(enemies).concat(players).concat(explosions);
 //    console.log(everything);
 	
 	fps.calculateMean();
