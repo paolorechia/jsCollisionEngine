@@ -1,13 +1,20 @@
 // broad collision algorithms, pretty naive at this point
 // depends on collision, shipBase and weapon
 
-function dumbCollide(array){   // or maybe dumbCollide
+function dumbCollide(array){  
+    if (array.length > 1){
+        console.log("ahh");
+    }
     for (var i = 0; i < array.length - 1; i++){
+        console.log(array[i]);
         for (var j = i + 1; j < array.length; j++){
             if (array[i].type =='h'){
                 collideHitbox(array[i], array[j]);
             }
             if (array[i].type =='s'){
+                if (array[j].type =='s'){
+                    console.log("ShipxShip");
+                }
                 collideShip(array[i], array[j]);
             }
             if (array[i].type =='w'){
@@ -58,7 +65,6 @@ function collideShip(ship, object){
         return;
     }
 */
-
     if(object.type=='s'){
         var bindA = [];
         bindA.push(ship.auxHitbox);
@@ -73,12 +79,16 @@ function collideShip(ship, object){
         return;
     }
     if(object.type=='w'){
+                    if (object.owner == ship){
+                        return;
+                    }
                     shipBind = [];
                     shipBind.push(ship.auxHitbox);
                     smartCollision(
                          object,
                          ship.hitbox,
                          object.onHit(ship));
+                    object.duration-=100;
             return;
     }
 }

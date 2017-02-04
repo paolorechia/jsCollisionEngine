@@ -192,7 +192,6 @@ var Weapon = function(velocity = 10, width = 1, range = 1000, limit = 10, damage
         projectile.type = 'w'; // weapon-type (for collision checking)
         projectile.onHit = this.onHit;
         projectile.damage= this.damage;
-        projectile.hp=10;
 		projectile.mass = this.mass;
 		projectile.duration = this.range/this.velocity;
         /* use this rotation to fire projectiles sideways
@@ -219,6 +218,17 @@ var Weapon = function(velocity = 10, width = 1, range = 1000, limit = 10, damage
         rotatePolygon(projectile,radiansToDegrees(angle));
         projectile.spin = spin;
         projectile.duration = this.range/this.projectileVelocity;
+        projectile.owner=this.owner;
+/* self friendly-fire -- idea did not turn out well, because each weapon
+   behaves differently and each ship has a different size -- it is hard to
+   to create a generic model
+        var tick = this.projectileVelocity * this.projectileWidth;
+        projectile.leaving=100/tick;
+        if (projectile.leaving < 1){
+            projectile.leaving=2;
+        }
+        // 100 pixels / tick -- expected number of game frames for projectile to leave ship's hitbox
+*/
 		this.projectiles.push(projectile);
 		if (this.hasAmmo){
 			this.ammo--;
@@ -623,15 +633,25 @@ function drawShipWeapons(player){
 
 function checkProjectilesBorder(player){
 		for (u = 0; u < player.weapons.length; u++){
-				for (var k = 0; k < player.weapons[u].projectiles.length; k++){
+                var limit = player.weapons[u].projectiles.length;
+				for (var k = 0; k < limit ; k++){
 					player.weapons[u].projectiles[k].update();
 					if (player.weapons[u].type == 'p'){
-						checkBorder(player.weapons[u].projectiles[k], function(){player.weapons[u].rotateAtBorder(axis, player.weapons[u].projectiles[k])});
+						hit = checkBorder(player.weapons[u].projectiles[k], function(){player.weapons[u].rotateAtBorder(axis, player.weapons[u].projectiles[k])});
+                        if (hit){
+                            player.weapons[u].projectiles[k].owner=null;
+                        }
 					}
 					else if (player.weapons[u].type =='l'){
 						projectile = player.weapons[u].projectiles[k];
 						var hit = checkBorder(projectile);
-						if (hit) {killProjectile(projectile)};
+						if (hit) {
+                            killProjectile(projectile);
+/*
+                            player.weapons[u].projectiles.splice(k, 1);
+                            limit--;
+*/
+                        };
 					}
                     else if(player.weapons[u].type =='m'){
 						projectile = player.weapons[u].projectiles[k];

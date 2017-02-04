@@ -99,7 +99,7 @@ function generateTurrets(n, cannons, moving=false, rateOfFire=1){
         }
         turret.value = Math.round(myRandom * 10);
         turret.value *= cannons;
-        turret.targetSystem.setAutoAim(true, turret.weapons);
+        turret.targetSystem.setAutoAim(false, turret.weapons);
         turret.targetSystem.refreshRate=4;
         enemies.push(turret);
     }
@@ -127,7 +127,7 @@ var Level = function(color="#000FFF"){
                 var maxSpin = Math.floor(this.current *0.2);
                 var numberRectangles = Math.round(this.current * 0.6);
                 var numberTriangles = Math.round(this.current * 0.4);
-                numberRectangles = 1;
+                numberRectangles = 0;
                 generateAsteroids(maxSize, minSize, maxSpeed, maxSpin, numberRectangles, numberTriangles);
             }
             else generateTurrets(Math.floor(this.current/2), 1, true, 0.25);
@@ -515,6 +515,12 @@ function mainLoop(){
     }
     for (var i = 0; i < player.weapons.length; i++){
         everything = everything.concat(player.weapons[i].projectiles);
+    }
+    for (var i = 0; i < enemies.length; i++){
+        enemy = enemies[i];
+        for (var j = 0; j < enemy.weapons.length; j++){
+            everything = everything.concat(enemy.weapons[j].projectiles);
+        }
     }
 
     grid.build();

@@ -321,7 +321,9 @@ var Grid = function(rows, columns, canvasW, canvasH){
     this.width = canvasW/this.columns;
     this.height = canvasH/this.rows;
     this.cells = [];
+    this.numObjects = 0;
     this.build = function(){
+        this.numObjects=0;
         for (var i = -1; i <= this.rows; i++){
             this.cells[i]= new Array(this.columns + 1); 
         }
@@ -354,6 +356,7 @@ var Grid = function(rows, columns, canvasW, canvasH){
                 currentCell = this.cells[u][v];
                 if (dumbSearch(currentCell, objects[i])){
                     currentCell.push(objects[i]);
+                    this.numObjects++;
                 }
             }
         }

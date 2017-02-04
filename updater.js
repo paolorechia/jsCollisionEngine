@@ -32,6 +32,7 @@ function updateHitbox(hitbox){
 
 function updateEnemy(ship){
 
+		checkProjectilesBorder(ship);
 		updateShip(ship);
 		updateWeapons(ship);
 		checkBorder(ship.hitbox, function(){ship.auxHitbox.applyVector(diff);
@@ -45,7 +46,6 @@ function updateEnemy(ship){
                                             }});
 		collideShipHitboxes(ship, objects);
 		updateShipProjectiles(ship);
-		checkProjectilesBorder(ship);
 }
 function updateWeaponsAxes(ship){
 		for (var u = 0; u < ship.weapons.length; u++){
