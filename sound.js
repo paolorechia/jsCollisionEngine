@@ -75,6 +75,23 @@ function decreaseMusicVolume(music){
             music.volume = vol
         }
     }
+function increaseHowlerVolume(music){
+        if (music.volume() < 1){
+            vol = music.volume() * 10;
+            vol += 1;
+            vol = Math.round(vol)/10;
+            music.volume(vol);
+        }
+    }
+function decreaseHowlerVolume(music){
+        if (music.volume() > 0){
+            vol = music.volume() * 10;
+            vol -= 1;
+            vol = Math.round(vol)/10;
+            music.volume(vol);
+        }
+    }
+
 
 var SoundArray = function(){
     this.timeOutArray = [];

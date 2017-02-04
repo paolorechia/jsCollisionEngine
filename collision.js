@@ -458,7 +458,6 @@ function drawPolygon(polygon, strokeColor="#0000FF", hitColor="#FF0000", joints=
 		ctx.lineTo(point.x, point.y);
 				   
 		ctx.stroke();
-/*
 		ctx.fillStyle=jointColor;
 		if (joints){
 			for (var i = 0; i < polygon.vertices.length; i++){
@@ -481,7 +480,6 @@ function drawPolygon(polygon, strokeColor="#0000FF", hitColor="#FF0000", joints=
 				ctx.fill();
 			}
 		}
-*/
 		ctx.restore();
 }
 midPoint = function(pointA, pointB){

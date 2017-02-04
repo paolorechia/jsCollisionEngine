@@ -30,16 +30,20 @@ var coord = new Point(c.width/2, c.height/2);
             window.soundDisplay=true;
             clearTimeout(soundPool.timeoutId);
             soundPool.timeoutId=setTimeout(function(){window.soundDisplay=false}, 2000);
-            increaseMusicVolume(selectMusic);
-            increaseMusicVolume(music);
+            for (var i = 0 ; i < musics.length; i++){ 
+                music = musics[i];
+                increaseHowlerVolume(music);
+            }
             soundPool.increaseVolume();
         }
 		if (event.key == ','){
             window.soundDisplay=true;
             clearTimeout(soundPool.timeoutId);
             soundPool.timeoutId=setTimeout(function(){window.soundDisplay=false}, 2000);
-            decreaseMusicVolume(selectMusic);
-            decreaseMusicVolume(music);
+            for (var i = 0 ; i < musics.length; i++){ 
+                music = musics[i];
+                decreaseHowlerVolume(music);
+            }
             soundPool.decreaseVolume();
         }
 		if (event.key == 'v'){

@@ -119,6 +119,15 @@ var Level = function(color="#000FFF"){
 
 		player.setImmunity(3);
 
+        if (this.current % 2 == 0){
+            combatMusic.play();
+            calmMusic.pause();
+        }
+        else{
+            combatMusic.pause();
+            calmMusic.play();
+        }
+
 		if (this.current <= 12){
 			player.hull.recover(10);
             if (this.current % 2 != 0){
@@ -404,7 +413,7 @@ function selectShipLoop(){
         window.playing = true;
         window.rewarded = false;
         selectMusic.pause();
-        music.play();
+        calmMusic.play();
         explosions = [];
 
 		requestAnimationFrame(mainLoop);
@@ -568,7 +577,8 @@ function mainLoop(){
         objects = [];
         enemies = [];
         explosions = [];
-        music.pause();
+        calmMusic.pause();
+        combatMusic.pause();
         selectMusic.play();
         requestAnimationFrame(selectShipLoop);
     }
@@ -599,20 +609,30 @@ var explosions = [];
 var maxSounds= 1;
 var startingVolume=5;
 soundPool = new SoundPool(maxSounds, startingVolume);
-selectMusic = document.getElementById("selectLoop");
+selectMusic = new Howl({
+   src: ['selectLoop.mp3'],
+});
+selectMusic.on('end', function(){
+    selectMusic.play();
+});
+calmMusic = new Howl({
+   src: ['loopA.mp3'],
+});
+calmMusic.on('end', function(){
+    calmMusic.play();
+});
+combatMusic = new Howl({
+    src: ['combatSong1.mp3'],
+});
+combatMusic.on('end', function(){
+    combatMusic.play();
+});
+calmMusic.volume(0.5);
+selectMusic.volume(0.5);
+combatMusic.volume(0.5);
 selectMusic.play();
-selectMusic.addEventListener('ended', function(){
-        this.currentTime = 0;
-        this.play();
-    }, false);
-selectMusic.volume = 0.5;
-music = document.getElementById("loopA");
-music.addEventListener('ended', function(){
-        this.currentTime = 0;
-        this.play();
-}, false);
-music.volume = 0.5;
-console.log(selectMusic);
+musics = [];
+musics.push(calmMusic, selectMusic, combatMusic);
 
 
 var scrollerSize = 6;

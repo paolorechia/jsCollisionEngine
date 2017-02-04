@@ -17,6 +17,7 @@ cat << DOCSTART >$file
 DOCSTART
 cat ../webaudio/howler* >> $file
 java -jar ~/bin/closure-compiler-v20161201.jar ../sound.js >> $file
+java -jar ~/bin/closure-compiler-v20161201.jar ../divisor.js >> $file
 java -jar ~/bin/closure-compiler-v20161201.jar ../collision.js >> $file
 java -jar ~/bin/closure-compiler-v20161201.jar ../explosion.js         >> $file
 java -jar ~/bin/closure-compiler-v20161201.jar ../shipBase.js         >> $file
