@@ -194,6 +194,62 @@ var Bomber = function(primaryColor="#000FFF", secondaryColor = "#0FF0FF",
     ship=loadDefaultSounds(ship);
 	return ship;
 }
+var Armageddon= function(primaryColor="#000FFF", secondaryColor = "#0FF0FF", 
+                       x = c.width/2, y = c.height/2){
+	var ship = new Ship(x, y, 40, primaryColor, secondaryColor);
+    ship.name="Armageddon";
+	ship.updateDirection();
+	ship.hull = new Hull(300, 5);
+	ship.shield = new Shield(1000, 0, 5, 1, 300);
+    ship.acceleration = 0.09;
+    ship.turnRate = 4;
+    ship.maxSpeed=11;
+
+	ship.shield.setPowerSupply(ship.powerSupply);
+	ship.shield.setEnabled(true);
+
+	ship.addWeapon(machineGun());
+	ship.changeWeapon();
+	ship.weapon.setOwner(ship);
+	ship.weapon.setPosition(ship.hitbox.center);
+    ship.weapon.setCenter(coord);
+    ship.weapon.setTurretMode(true);
+    ship.weapon.enabled=true;
+
+	
+	ship.addWeapon(nukeBomb());
+	ship.changeWeapon();
+	ship.weapon.setOwner(ship);
+	ship.weapon.setCenter(ship.hitbox.vertices[0]);
+	ship.weapon.setPosition(ship.auxHitbox.vertices[0]);
+	ship.weapon.enabled=true;
+
+	ship.addWeapon(nukeBomb());
+	ship.changeWeapon();
+	ship.weapon.setOwner(ship);
+	ship.weapon.setCenter(ship.hitbox.vertices[1]);
+	ship.weapon.setPosition(ship.auxHitbox.vertices[1]);
+	ship.weapon.enabled=false;
+
+	ship.addWeapon(nukeBomb());
+	ship.changeWeapon();
+	ship.weapon.setOwner(ship);
+	ship.weapon.setCenter(ship.hitbox.vertices[1]);
+	ship.weapon.setPosition(ship.auxHitbox.vertices[1]);
+	ship.weapon.enabled=false;
+
+	ship.addWeapon(nukeBomb());
+
+	ship.changeWeapon();
+	ship.weapon.setOwner(ship);
+	ship.weapon.setCenter(ship.hitbox.vertices[0]);
+	ship.weapon.setPosition(ship.auxHitbox.vertices[0]);
+	ship.weapon.enabled=false;
+
+
+    ship=loadDefaultSounds(ship);
+	return ship;
+}
 var StarGazer = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF",
                        x = c.width/2, y = c.height/2){
 	var ship = new Ship(x, y, 25, primaryColor, secondaryColor);
@@ -720,6 +776,11 @@ function fetchShipByName(name, position){
     }
     else if (name == "Duster"){
         var ship = new Duster(primaryColor, secondaryColor, 
+                               position.x, position.y);
+;
+    }
+    else if (name == "Armageddon"){
+        var ship = new Armageddon(primaryColor, secondaryColor, 
                                position.x, position.y);
 ;
     }

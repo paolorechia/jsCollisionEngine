@@ -315,6 +315,8 @@ function buildShipsButtons(array){
     array.push(myButton);
     myButton = shipButton("Duster", position);
     array.push(myButton);
+    myButton = shipButton("Armageddon", position);
+    array.push(myButton);
 
     var coord = new Point(c.width/2, c.height/2);
 
