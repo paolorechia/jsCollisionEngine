@@ -77,6 +77,9 @@ function collideShip(ship, object){
 }
 function collideProjectile(projectileA, object){
     if(object.type=='w'){
+                    if (object.owner == projectileA.owner){
+                        return;
+                    }
                     smartCollision(
                          object,
                          projectileA,

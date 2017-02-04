@@ -165,20 +165,22 @@ var Bomber = function(primaryColor="#000FFF", secondaryColor = "#0FF0FF",
 	ship.weapon.setCenter(ship.hitbox.vertices[1]);
 	ship.weapon.setPosition(ship.auxHitbox.vertices[1]);
 	ship.weapon.enabled=true;
-	ship.addWeapon(dumbMissile());
+
+	ship.addWeapon(megaBomb());
+	ship.changeWeapon();
+	ship.weapon.setOwner(ship);
+	ship.weapon.setCenter(ship.hitbox.vertices[1]);
+	ship.weapon.setPosition(ship.auxHitbox.vertices[1]);
+	ship.weapon.enabled=true;
+
+	ship.addWeapon(megaBomb());
 
 	ship.changeWeapon();
 	ship.weapon.setOwner(ship);
 	ship.weapon.setCenter(ship.hitbox.vertices[0]);
-	ship.weapon.setPosition(ship.auxHitbox.vertices[1]);
-	ship.weapon.enabled=true;
-
-	ship.addWeapon(dumbMissile());
-	ship.changeWeapon();
-	ship.weapon.setOwner(ship);
-	ship.weapon.setCenter(ship.hitbox.vertices[1]);
 	ship.weapon.setPosition(ship.auxHitbox.vertices[0]);
 	ship.weapon.enabled=true;
+
 
 	ship.weapon.setPowerSupply(ship.powerSupply);
 	ship.addWeapon(machineGun());

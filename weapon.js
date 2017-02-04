@@ -420,9 +420,9 @@ function asteroidShooter(){
 	return cannon;
 }
 function dumbMissile(){
-	missile = new Weapon(velocity = 10, width = 1, range = 1000, limit = 1, damage = 1, mass = 100, rateOfFire = 1, spin = 0, hasAmmo=true, ammo=20);
-    missile.expansionRate = 2;
-    missile.maxRadius=20;
+	missile = new Weapon(velocity = 10, width = 1, range = 1000, limit = 1, damage = 1, mass = 100, rateOfFire = 1, spin = 0, hasAmmo=true, ammo=100);
+    missile.expansionRate = 4;
+    missile.maxRadius=40;
 	missile.projectileVelocity = 5;
 	missile.type = 'm'; // type
 	missile.name="Dumb Missile";
@@ -450,6 +450,22 @@ function dumbMissile(){
     
     }
 	return missile;
+}
+var megaBomb = function(){
+    bomb = new dumbMissile();
+    bomb.name = "Mega Bomb";
+    bomb.ammo=20;
+    bomb.maxRadius=98;
+    bomb.expansionRate=7;
+    return bomb;
+}
+var nukeBomb = function(){
+    bomb = new megaBomb();
+    bomb.name= "Nuclear Bomb";
+    bomb.ammo=10;
+    bomb.maxRadius=300;
+    bomb.expansionRate=10;
+    return bomb;
 }
 
 function lightLaserBlaster(){
