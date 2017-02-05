@@ -108,22 +108,23 @@ function generateTurrets(n, cannons, moving=false, rateOfFire=1){
     }
     return generated;
 }
-function spawnTurrets(turrets){
+function spawnTurrets(turrets, interval){
     for (var i = 0; i < turrets.length; i++){
-        spawnTurret(turrets[i], 500 * (i + 1));
+        spawnTurret(turrets[i], interval* (i + 1));
     }
 }
 function spawnTurret(turret, time){
     toSpawn++
-    var maxRadius = turret.side;
+    var maxRadius = turret.hitbox.side * 2;
     var x = turret.hitbox.center.x;
     var y = turret.hitbox.center.y;
     // x, y, damage, expansionRate, maxRadius,startRadius, color
+    time2 = time - 500;
+    setTimeout(function(){enemies.push(turret); toSpawn--}, time);  
     setTimeout(function(){
-        portal = new Explosion(x, y, 1, 1, maxRadius, 1, "#FFFFFF");
+        portal = new Explosion(x, y, 0, 1, maxRadius, 1, "#FFFFFF");
         explosions.push(portal);
-    }, time - maxRadius);
-    setTimeout(function(){enemies.push(turret); toSpawn--}, time*2);  
+    }, time2);
 }
 var Level = function(color="#000FFF"){
     this.starting=false;
@@ -160,13 +161,13 @@ var Level = function(color="#000FFF"){
                 var numberTriangles = Math.round(this.current * 0.4);
                 generateAsteroids(maxSize, minSize, maxSpeed, maxSpin, numberRectangles, numberTriangles);
             }
-            else spawnTurrets(generateTurrets(Math.floor(this.current/2), 1, true, 0.25));
+            else spawnTurrets(generateTurrets(Math.floor(this.current/2), 1, true, 0.25), 2000);
 		}
 		else if (this.current >= 13 && this.current <= 15){
-            spawnTurrets(generateTurrets(Math.floor(this.current/3), 2, true, 0.5));
+            spawnTurrets(generateTurrets(Math.floor(this.current/3), 2, true, 0.5), 1000);
 		}
 		else{
-            spawnTurrets(generateTurrets(Math.floor(this.current/4), 3, true, 0.75));
+            spawnTurrets(generateTurrets(Math.floor(this.current/4), 3, true, 0.75), 500);
 		}
         
 	}
