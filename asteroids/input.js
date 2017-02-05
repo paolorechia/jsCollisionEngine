@@ -53,10 +53,12 @@ var coord = new Point(c.width/2, c.height/2);
 			}
         }
         if (event.key == 'Escape'){
-			instruct = true;
             if (player.dead){
                 playing=false;
+                return;
             }
+			instruct = !instruct;
+            paused=!paused;
         }
 		if (event.key == 'c'){
             for (var i = 0; i < player.weapons.length; i++){
@@ -82,6 +84,9 @@ var coord = new Point(c.width/2, c.height/2);
         }
         if (event.key == 'x'){
 			player.reverseThrottle(true);
+            if (paused){
+                playing=false;
+            }
 		}
 		if (event.key == 'q'){
 			player.strafe('l', true);
@@ -125,7 +130,6 @@ var coord = new Point(c.width/2, c.height/2);
     }
 	keyboardUp = function(event){
        if (event.key == 'Escape'){
-		instruct = false;
 		   if (player.lock){
 	//			console.log("System unlocked!");
 				player.lock = false;

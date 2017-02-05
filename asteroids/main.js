@@ -189,7 +189,7 @@ function buildInstructions(){
 	instructions.push(string);
 	string = "U: Auto-pilot";
 	instructions.push(string);	
-	string = "Esc: Cancel Auto-pilot";
+	string = "Esc: Pause/Help";
 	instructions.push(string);	
 	string = ",: Decrease Volume";
 	instructions.push(string);	
@@ -214,6 +214,8 @@ function drawInstructions(instructions, color="#000FFF"){
 		}
 		ctx.fillText(instructions[i], offSet - xStart, 40 + (i % colSize) * 20);
 	}
+    ctx.font="18px Arial";
+    ctx.fillText("Press 'x' to quit game", c.width/3, 300);
     ctx.restore();
 }
 
@@ -412,6 +414,7 @@ function selectShipLoop(){
         player = fetchShipByName(player.name, position);
         window.playing = true;
         window.rewarded = false;
+        window.paused=false;
         selectMusic.pause();
         calmMusic.play();
         explosions = [];
@@ -419,7 +422,6 @@ function selectShipLoop(){
 		requestAnimationFrame(mainLoop);
 	}
 }
-
 
 function mainLoop(){
 	newDate = new Date();
@@ -438,34 +440,33 @@ function mainLoop(){
 		}
 	}
 
-
-
-	for (var i = 0; i < objects.length; i++){
-		updateHitbox(objects[i]);
-	}
-	if (player.dead){
-		drawEndGame(false);
-        if (score.max < score.player){
-            setCookie("maxScore", score.player, 365);
+    if (!paused){
+        for (var i = 0; i < objects.length; i++){
+            updateHitbox(objects[i]);
         }
-        if (!window.rewarded){
-            score.coins += score.player * 30;
-            setCookie("coins", score.coins, 365);
-            window.rewarded=true;
+        if (player.dead){
+            drawEndGame(false);
+            if (score.max < score.player){
+                setCookie("maxScore", score.player, 365);
+            }
+            if (!window.rewarded){
+                score.coins += score.player * 30;
+                setCookie("coins", score.coins, 365);
+                window.rewarded=true;
+            }
         }
-   	}
-	else{
-		updateShip(player);	
-		updateWeapons(player);
-		var players = [];
-		players.push(player);
-		for (var i =0; i < enemies.length; i++){
-		    updateEnemy(enemies[i]);
-		    //collideWeaponsShips(enemies[i], players);
-		}
-		//collideWeaponsHitboxes(player, objects);
-		//collideWeaponsShips(player, enemies);
-		checkBorder(player.hitbox, function(){player.auxHitbox.applyVector(diff)});
+        else{
+            updateShip(player);	
+            updateWeapons(player);
+            var players = [];
+            players.push(player);
+            for (var i =0; i < enemies.length; i++){
+                updateEnemy(enemies[i]);
+                //collideWeaponsShips(enemies[i], players);
+            }
+            //collideWeaponsHitboxes(player, objects);
+            //collideWeaponsShips(player, enemies);
+            checkBorder(player.hitbox, function(){player.auxHitbox.applyVector(diff)});
 	
 	}
 	if (level.current > level.max){
@@ -514,6 +515,10 @@ function mainLoop(){
     grid.build();
     grid.fill(everything);
     grid.collideCells();
+
+
+
+    }
 //    grid.draw();
     player.drawStatus();
     player.targetSystem.displayInfo();
@@ -572,6 +577,7 @@ function mainLoop(){
         window.displaying = false;
         window.confirmed = false;
         window.playing = false;
+        window.paused = false;
         level.current = 0;
         score.player = 0;
         objects = [];
