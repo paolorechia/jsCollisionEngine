@@ -57,6 +57,7 @@ function generateAsteroids(maxSize, minSize, maxSpeed, maxSpin, numberRectangles
 			}	
 }
 function generateTurrets(n, cannons, moving=false, rateOfFire=1){
+    generated = [];
     for (var i = 0; i < n; i++){
         var x = Math.random() * c.width;
         var y = Math.random() * c.height;
@@ -102,10 +103,30 @@ function generateTurrets(n, cannons, moving=false, rateOfFire=1){
         turret.targetSystem.setAutoAim(true, turret.weapons);
         turret.targetSystem.refreshRate=4;
         turret.shield.current=100;
-        enemies.push(turret);
+//        spawnTurret(turret, 1000);
+        generated.push(turret);
+    }
+    return generated;
+}
+function spawnTurrets(turrets){
+    for (var i = 0; i < turrets.length; i++){
+        spawnTurret(turrets[i], 500 * (i + 1));
     }
 }
+function spawnTurret(turret, time){
+    toSpawn++
+    var maxRadius = turret.side;
+    var x = turret.hitbox.center.x;
+    var y = turret.hitbox.center.y;
+    // x, y, damage, expansionRate, maxRadius,startRadius, color
+    setTimeout(function(){
+        portal = new Explosion(x, y, 1, 1, maxRadius, 1, "#FFFFFF");
+        explosions.push(portal);
+    }, time - maxRadius);
+    setTimeout(function(){enemies.push(turret); toSpawn--}, time*2);  
+}
 var Level = function(color="#000FFF"){
+    this.starting=false;
 	this.current = 0;
 	this.max = 20;
 	this.draw = function(color){
@@ -116,7 +137,7 @@ var Level = function(color="#000FFF"){
 		ctx.fillText(string, c.width/2 + 40, c.height - 20);
 	}
 	this.start = function(){
-
+        this.starting=true;
 		player.setImmunity(3);
 
         if (this.current % 2 == 0){
@@ -139,14 +160,15 @@ var Level = function(color="#000FFF"){
                 var numberTriangles = Math.round(this.current * 0.4);
                 generateAsteroids(maxSize, minSize, maxSpeed, maxSpin, numberRectangles, numberTriangles);
             }
-            else generateTurrets(Math.floor(this.current/2), 1, true, 0.25);
+            else spawnTurrets(generateTurrets(Math.floor(this.current/2), 1, true, 0.25));
 		}
 		else if (this.current >= 13 && this.current <= 15){
-            generateTurrets(Math.floor(this.current/3), 2, true, 0.5);
+            spawnTurrets(generateTurrets(Math.floor(this.current/3), 2, true, 0.5));
 		}
 		else{
-            generateTurrets(Math.floor(this.current/4), 3, true, 0.75);
+            spawnTurrets(generateTurrets(Math.floor(this.current/4), 3, true, 0.75));
 		}
+        
 	}
 	this.next = function(){
 		this.current++;
@@ -433,7 +455,8 @@ function mainLoop(){
 	ctx.fillRect(0,0,c.width,c.height);
 //    ctx.scale(0.5, 0.5);
 
-	if (objects.length == 0 && enemies.length == 0 && level.current <= level.max){
+	if (objects.length == 0 && enemies.length == 0 &&
+        level.current <= level.max && toSpawn == 0){
 		level.next();
 		if (level.current <= level.max){
 			level.start();
@@ -539,7 +562,7 @@ function mainLoop(){
     }
 	
     if (player.dead == false){
-	drawShipWeapons(player);
+    	drawShipWeapons(player);
         player.drawAutoPath();
         player.draw();
     }
@@ -614,6 +637,7 @@ var enemies = [];
 var explosions = [];
 var maxSounds= 1;
 var startingVolume=5;
+var toSpawn=0;
 soundPool = new SoundPool(maxSounds, startingVolume);
 selectMusic = new Howl({
    src: ['selectLoop.mp3'],
