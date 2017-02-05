@@ -122,8 +122,8 @@ function spawnTurret(turret, time){
     time2 = time - 500;
     setTimeout(function(){enemies.push(turret); toSpawn--}, time);  
     setTimeout(function(){
-        portal = new Explosion(x, y, 0, 1, maxRadius, 1, "#FFFFFF");
-        explosions.push(portal);
+        portal = new Explosion(x, y, 0, 1, maxRadius, 1, "#777777");
+        portals.push(portal);
     }, time2);
 }
 var Level = function(color="#000FFF"){
@@ -557,6 +557,9 @@ function mainLoop(){
     for (var i = 0; i < objects.length; i++){
         drawAsteroid(objects[i]);
     }
+    for (var i = 0; i < portals.length; i++){
+        portals[i].draw();
+    }
     for (var i =0; i < enemies.length; i++){
         enemies[i].draw();
 	drawShipWeapons(enemies[i]);
@@ -573,6 +576,8 @@ function mainLoop(){
 	level.draw(player.secondaryColor);
     updateExplosions(explosions);
     finishExplosions(explosions);
+    updateExplosions(portals);
+    finishExplosions(portals);
     for (var i = 0; i < explosions.length; i++){
         explosions[i].draw();
     }
@@ -636,6 +641,7 @@ var grid = new Grid(10, 10, c.width, c.height);
 var objects = [];
 var enemies = [];
 var explosions = [];
+var portals = [];
 var maxSounds= 1;
 var startingVolume=5;
 var toSpawn=0;
