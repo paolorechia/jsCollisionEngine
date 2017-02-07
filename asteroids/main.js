@@ -33,9 +33,9 @@ var Score = function(color){
 		ctx.fillStyle=color;
 		ctx.font="14px Arial";
 		string = "Score: " + this.player;
-		ctx.fillText(string, c.width/2 - 40, c.height - 20);
+		ctx.fillText(string, c.width/2 - 60, c.height - 20);
 		string = "Max Score: " + this.max;
-		ctx.fillText(string, c.width/2 - 160, c.height - 20);
+		ctx.fillText(string, c.width/2 - 300, c.height - 20);
 	}
 }
 function generateAsteroids(maxSize, minSize, maxSpeed, maxSpin, numberRectangles, numberTriangles){
@@ -109,9 +109,12 @@ function generateTurrets(n, cannons, moving=false, rateOfFire=1){
     return generated;
 }
 function spawnTurrets(turrets, interval){
+    warning.enabled=true;
+//    soundPool.ignoreQueue(siren);
     for (var i = 0; i < turrets.length; i++){
         spawnTurret(turrets[i], interval* (i + 1));
     }
+    setTimeout(function(){warning.enabled=false;}, interval);
 }
 function spawnTurret(turret, time){
     toSpawn++
@@ -124,18 +127,19 @@ function spawnTurret(turret, time){
     setTimeout(function(){
         portal = new Explosion(x, y, 0, 1, maxRadius, 1, "#777777");
         portals.push(portal);
+        soundPool.ignoreQueue(portalSound);
     }, time2);
 }
 var Level = function(color="#000FFF"){
     this.starting=false;
 	this.current = 0;
-	this.max = 20;
+	this.max = 30;
 	this.draw = function(color){
             ctx.beginPath();
 		ctx.fillStyle=color;
 		ctx.font="14px Arial";
 		string = "Level: " + this.current;
-		ctx.fillText(string, c.width/2 + 40, c.height - 20);
+		ctx.fillText(string, c.width/2 + 100, c.height - 20);
 	}
 	this.start = function(){
         this.starting=true;
@@ -220,6 +224,33 @@ function buildInstructions(){
 	instructions.push(string);	
 	return instructions;
 }
+var Warning = function(x, y){
+    this.x = x;
+    this.y = y;
+    this.enabled=false;
+    this.blink=0;
+    this.blinkRate = 30;
+    this.updateBlink = function(){
+        this.blink++;
+        this.blink %= this.blinkRate;
+    }
+    this.draw = function(number){
+        if (this.blink < this.blinkRate/2){
+            return;
+        } 
+        ctx.save();
+        ctx.beginPath();
+        ctx.fillStyle="#FF0000";
+        ctx.font="18px Arial";
+        if (number == 1){
+            ctx.fillText("Incoming enemy!!", x, y);
+        }
+        else{
+            ctx.fillText("Incoming " + number +" enemies!!", x, y);
+        }
+        ctx.restore();
+    }
+}
 
 function drawInstructions(instructions, color="#000FFF"){
     ctx.save();
@@ -261,7 +292,7 @@ function drawEndGame(win, color="#000FFF", loseColor="#FF0000"){
 function killObjects(array){
 	for (i = 0; i < array.length; i++){
 		if (array[i].dead == true){
-            score.player += array[i].value; 
+            score.player += array[i].value * (level.current*level.current); 
 			array.splice(i, 1);
 		}
 	}
@@ -269,7 +300,7 @@ function killObjects(array){
 function killShips(array){
 	for (i = 0; i < array.length; i++){
 		if (array[i].dead == true){
-            score.player += array[i].value; 
+            score.player += array[i].value * (level.current*level.current); 
             explosions.push(new Explosion(
                             array[i].hitbox.center.x,
                             array[i].hitbox.center.y));
@@ -372,11 +403,12 @@ function buildShipsButtons(array){
             }
         }
     }
-    console.log(values);
+    leastValuable=array[0].string;
     for (var i = 1; i < values.length; i++){
         array[i].string += ": " + values[i];
     }
     values = [];
+    console.log(leastValuable);
 }
 
 function buildLobbyButtons(array){
@@ -387,7 +419,7 @@ function buildLobbyButtons(array){
 confirmButton = new Button(c.width/2 - 20, c.height - 40,
                            200, 30, "Confirm");
 confirmButton.onClick = function(){
-    if (player.name == "Stellar"){
+    if (player.name == leastValuable){
         confirmed=true;
     }
     if (score.coins > player.getValue()){
@@ -407,7 +439,7 @@ function selectShipLoop(){
             window.displaying = true;
         }
         displayShip(player);
-        drawStats(player);
+        drawStats(player, "#000000", "#FFFFFF");
     }
     window.buttonScroller.draw();
 	for (var i = 0; i < buttons.length; i++){
@@ -474,7 +506,7 @@ function mainLoop(){
                 setCookie("maxScore", score.player, 365);
             }
             if (!window.rewarded){
-                score.coins += score.player * 30;
+                score.coins += score.player;
                 setCookie("coins", score.coins, 365);
                 window.rewarded=true;
             }
@@ -499,7 +531,7 @@ function mainLoop(){
             setCookie("maxScore", score.player, 365);
         }
         if (!window.rewarded){
-            score.coins += score.player * 30;
+            score.coins += score.player;
             setCookie("coins", score.coins, 365);
             window.rewarded=true;
         }
@@ -544,6 +576,10 @@ function mainLoop(){
 
     }
 //    grid.draw();
+    warning.updateBlink();
+    if (warning.enabled && !player.dead){
+        warning.draw(toSpawn);
+    }
     player.drawStatus();
     player.targetSystem.displayInfo();
     player.targetSystem.drawAid(player.weapons);
@@ -631,6 +667,7 @@ var maxFPS = 1000;
 var interval = 1000/maxFPS;
 var COLLISION_DAMAGE = 10;
 var camera = undefined;
+var warning = new Warning(c.width/2 - 40, 100);
 
 var score = new Score();
 score.getMax();
@@ -664,6 +701,15 @@ combatMusic = new Howl({
 combatMusic.on('end', function(){
     combatMusic.play();
 });
+portalSound = new Howl({
+    src: ['weird.mp3'],
+});
+siren = new Howl({
+    src: ['siren.mp3'],
+});
+
+portalSound.volumeFilter=0.3;
+siren.volumeFilter=0.3;
 calmMusic.volume(0.5);
 selectMusic.volume(0.5);
 combatMusic.volume(0.5);

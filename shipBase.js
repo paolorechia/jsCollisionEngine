@@ -893,55 +893,68 @@ function describeShipConsole(ship){
         console.log(string);
 }
 
-function drawStats(ship){
+function drawStats(ship, bgColor, textColor){
         ctx.save();
         ctx.beginPath();
-        ctx.fillStyle="#FFFFFF";
+        ctx.fillStyle=bgColor;
         var spacing = 20;
         var height = spacing * (6 + ship.weapons.length)
         ctx.fillRect(c.width/3 -20, 20, c.width/1.5, height);
     
-        ctx.fillStyle="#000000";
+        ctx.fillStyle=textColor;
+
+        string = "HULL: "; 
         ctx.font="11px arial";
-        string = "Hull--"; 
         string += JSON.stringify(ship.hull.describe());
         for (var i = 0; i < 10; i++){
             string = string.replace('"', '');
+            string = string.replace('[', '');
+            string = string.replace(']', '');
         }
         ctx.fillText(string, c.width/3, 40);
-        string = "Engine--"; 
+        ctx.fillStyle="#FFFF00";
+        string = "ENGINE: "; 
         string += JSON.stringify(ship.describeEngine());
         for (var i = 0; i < 10; i++){
             string = string.replace('"', '');
+            string = string.replace('[', '');
+            string = string.replace(']', '');
         }
 
         ctx.fillText(string, c.width/3, 60);
-        string = "Energy Source--"; 
+        ctx.fillStyle="#00FF00";
+        string = "ENERGY: "; 
         string += JSON.stringify(ship.powerSupply.describe());
         for (var i = 0; i < 10; i++){
             string = string.replace('"', '');
+            string = string.replace('[', '');
+            string = string.replace(']', '');
         }
         ctx.fillText(string, c.width/3, 80);
         ctx.font="10px arial";
-        var string = "Shield --"; 
+        ctx.fillStyle="#00F0FF";
+        var string = "SHIELD: "; 
         string += JSON.stringify(ship.shield.describe());
         for (var i = 0; i < 10; i++){
             string = string.replace('"', '');
+            string = string.replace('[', '');
+            string = string.replace(']', '');
         }
         ctx.fillText(string, c.width/3, 100);
-        var string = "Weapons --"; 
+        ctx.font="12px arial";
+        ctx.fillStyle="#FF0000";
+        var string = "WEAPONS"; 
+        ctx.font="10px arial";
         ctx.fillText(string, c.width/3, 120);
         var start = 140;
         for (var j = 0; j < ship.weapons.length; j++){
             string = JSON.stringify(ship.weapons[j].describe());
             for (var i = 0; i < 10; i++){
                 string = string.replace('"', '');
+                string = string.replace('[', '');
+                string = string.replace(']', '');
             }
             ctx.fillText(string, c.width/3, start + j * spacing);
         }
         ctx.restore();
-
 }
-
-
-

@@ -35,6 +35,7 @@ var coord = new Point(c.width/2, c.height/2);
                 increaseHowlerVolume(music);
             }
             soundPool.increaseVolume();
+            increaseMusicVolume(bleep);
         }
 		if (event.key == ','){
             window.soundDisplay=true;
@@ -45,6 +46,7 @@ var coord = new Point(c.width/2, c.height/2);
                 decreaseHowlerVolume(music);
             }
             soundPool.decreaseVolume();
+            decreaseMusicVolume(bleep);
         }
 		if (event.key == 'v'){
 			for (var i= 0; i < player.weapons.length; i++){

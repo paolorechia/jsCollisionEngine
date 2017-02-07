@@ -320,6 +320,12 @@ var Grid = function(rows, columns, canvasW, canvasH){
     this.columns = columns;
     this.width = canvasW/this.columns;
     this.height = canvasH/this.rows;
+    if (this.width<this.height){
+        this.smallerDimension=this.width;
+    }
+    else{
+        this.smallerDimension=this.height;
+    }
     this.cells = [];
     this.numObjects = 0;
     this.build = function(){
@@ -343,11 +349,57 @@ var Grid = function(rows, columns, canvasW, canvasH){
             else{
                 hitbox=objects[i].hitbox;
             }
-            for (var j = 0; j < hitbox.vertices.length; j++){
-                xList.push(Math.floor(hitbox.vertices[j].x
-                        / this.width));
-                yList.push(Math.floor(hitbox.vertices[j].y
-                        / this.height));
+            if (hitbox.sides == 1){ // circle, special case
+                xList.push(Math.floor(hitbox.position.x
+                            / this.width));
+                yList.push(Math.floor(hitbox.position.y
+                            / this.height));
+                firstX=xList[0];
+                firstY=yList[0];
+                xCellsInRadius=Math.ceil(hitbox.radius/this.smallerDimension);
+                lastX = xList[0] + xCellsInRadius +1;
+                lastY = yList[0] + xCellsInRadius +1;
+                firstX -= xCellsInRadius;
+                firstY -= xCellsInRadius;
+                if (firstX < 0){
+                    firstX= 0;
+                }
+                if (firstY < 0){
+                    firstY=0;
+                }
+                if (lastX > this.columns){
+                    lastX=this.columns;
+                }
+                if (lastY > this.rows){
+                    lastY=this.rows;
+                }
+                if (xList[0] < 0){
+                    xList[0]= 0;
+                }
+                if (yList[0] < 0){
+                    yList[0]=0;
+                }
+                if (xList[0] > this.columns){
+                    xList[0]=this.columns;
+                }
+                if (yList[0] > this.rows){
+                    yList[0]=this.rows;
+                }
+//                console.log(hitbox.position.x, hitbox.position.y);
+                for (var j = firstX; j < lastX; j++){
+                    for (var k = firstY; k < lastY; k++){
+                        xList.push(j);
+                        yList.push(k); 
+                    }
+                }
+            }
+            else{
+                for (var j = 0; j < hitbox.vertices.length; j++){
+                    xList.push(Math.floor(hitbox.vertices[j].x
+                            / this.width));
+                    yList.push(Math.floor(hitbox.vertices[j].y
+                            / this.height));
+                }
             }
             cellList = joinXY(xList, yList);
             for (var j  = 0; j < cellList.length; j++){

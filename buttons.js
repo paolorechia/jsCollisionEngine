@@ -159,6 +159,9 @@ var shipButton = function(name, position){
     button.onClick = function(){
         player = fetchShipByName(name, position);
         selected = true;
+        bleep.play();
     }
     return button;
 } 
+bleep = document.getElementById("bleep");
+bleep.volume=0.2;

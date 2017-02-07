@@ -47,7 +47,12 @@ var SoundPool = function(limit = 10, volume = 5, clearRate=0){
         }
     }
     this.ignoreQueue = function (sound){
-            vol = this.volume /10;
+            if (sound.volumeFilter != undefined){
+                vol = (this.volume * sound.volumeFilter)/10;
+            }
+            else{
+                vol = this.volume /10;
+            }
             sound.volume(vol);
             sound.play();
     }

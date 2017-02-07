@@ -6,9 +6,9 @@ var maxSize = c.width/30;
 var minSize = c.width/100;
 var maxSpeed = 6;
 var maxSpin = 6;
-var numberRectangles = 1;
-var numberTriangles = 1;
-var numberCircles= 0;
+var numberRectangles = 2;
+var numberTriangles = 2;
+var numberCircles= 2;
 var objects = [];
 var counter=0;
 var sections=32;
@@ -33,6 +33,9 @@ divisor = new vLine(c.width/2, 0, c.height);
 divisorH = new hLine(c.height/2, 0, c.width);
 
 
+    for (i = 0; i < numberCircles; i++){
+        objects.push(new randomCircle(300, minSize/2, maxSpeed, maxSpin));
+    }
 function generateShapes(){
     for (i = 0; i < numberRectangles; i++){
         objects.push(new randomRect(maxSize, minSize, maxSpeed, maxSpin));
@@ -41,9 +44,11 @@ function generateShapes(){
     for (i = 0; i < numberTriangles; i++){
         objects.push(new randomTriangle(maxSize, minSize, maxSpeed, maxSpin));
     }
+/*
     for (i = 0; i < numberCircles; i++){
-        objects.push(new randomCircle(maxSize/2, minSize/2, maxSpeed, maxSpin));
+        objects.push(new randomCircle(300, minSize/2, maxSpeed, maxSpin));
     }
+*/
 }
 
 var axis_length = 20;
@@ -52,7 +57,7 @@ var fps = new Fps();
 var maxFPS = 1000;
 var interval = 1000/maxFPS;
 tickTime=30;
-//generateShapes();
+generateShapes();
 lines=[];
 
 function physicsLoop(){

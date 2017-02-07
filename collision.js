@@ -142,7 +142,7 @@ function collisionCircles(circleA, circleB){
         }
         circleA.findAxis(circleB.position);
         unitVector(circleA.axis, circleA.axis);
-	    var mtv = new MTV(new Vector(circleA.axis.x, circleA.axis.y), -diff, contains);
+	    var mtv = new MTV(new Vector(circleA.axis.x, circleA.axis.y), diff, contains);
         return mtv;
     }
     return false;
@@ -933,7 +933,7 @@ function elasticCollision(polygonA, polygonB,
 	if (mtv== false){
 		return false;
 	}
-    console.log("colliding!");
+//    console.log("colliding!");
     var bounce = 10;
     globalID++;
     polygonA.colliding=true;
