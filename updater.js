@@ -33,8 +33,15 @@ function updateHitbox(hitbox){
 
 function updateEnemy(ship){
 
+		ship.updateDirection();
+		ship.updateStrafe();
+		ship.updatePosition();
+		ship.updateTurn();
+		ship.powerSupply.recharge(ship.powerSupply);
+		ship.shield.drainEnergy(ship.shield);
+		calculateAxes(ship.hitbox);
+
 		checkProjectilesBorder(ship);
-		updateShip(ship);
 		updateWeapons(ship);
 		checkBorder(ship.hitbox, function(){ship.auxHitbox.applyVector(diff);
                                             if (ship.engineOn){

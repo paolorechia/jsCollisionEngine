@@ -455,9 +455,10 @@ function selectShipLoop(){
 		c.removeEventListener("click", function(event){ buttonModeClick(event);
                                                 },
                                                 false);					
-		c.addEventListener("click", function(event){ mouseClick(event);
+/*		c.addEventListener("click", function(event){ mouseClick(event);
                                                 },
                                                 false);
+*/
  
 		c.addEventListener("touchstart", pegaCoordenadasMobile, false);
         window.buttons = [];
