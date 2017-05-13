@@ -587,6 +587,9 @@ var Ship = function(x, y, l1, primaryColor = "#0000FF", secondaryColor = "#00F0F
 		pathVector = new Vector(0, 0);
 		frontVector = new Vector(0, 0);
 		calculateVector(autoPath, this.hitbox.center, pathVector);
+        calculateVector(this.front, this.hitbox.center, frontVector);
+        unitVector(frontVector, frontVector);
+        /*
 		if (this.hitbox.velocity == 0){
 			calculateVector(this.front, this.hitbox.center, frontVector);
 			unitVector(frontVector, frontVector);
@@ -596,20 +599,20 @@ var Ship = function(x, y, l1, primaryColor = "#0000FF", secondaryColor = "#00F0F
 			frontVector.x = this.engineVersor.x;
 			frontVector.y = this.engineVersor.y;
 		}
+        */
 		translatedPoint = new Point(this.hitbox.center.x - autoPath.x, this.hitbox.center.y - autoPath.y);
 		list = [];
 		list.push(translatedPoint);
+		this.pathAngle = angleVectors(frontVector, pathVector);
+		this.pathAngle = radiansToDegrees(this.pathAngle);
 		rotatedVector = new Vector(0, 0);
 		var theta = degreesToRadians(90);
 		rotatedVector.x = frontVector.x * Math.cos(theta) - frontVector.y * Math.sin(theta);
 		rotatedVector.y = frontVector.x * Math.sin(theta) + frontVector.y * Math.cos(theta);
 		myProjection = projection(list, rotatedVector);
-		this.pathAngle = angleVectors(frontVector, pathVector);
-		this.pathAngle = radiansToDegrees(this.pathAngle);
 			if (myProjection.min > 0){
 				this.pathAngle *= -1;
 			}
-
 	}
 	this.drawAutoPath = function(){
 		if (!this.lock){
@@ -622,6 +625,44 @@ var Ship = function(x, y, l1, primaryColor = "#0000FF", secondaryColor = "#00F0F
 		ctx.lineTo(this.autoPath.x, this.autoPath.y);
 		ctx.stroke();
 		ctx.setLineDash([0]);
+	}
+    this.updateMouseRotate = function(){
+        if (coord != undefined){
+            this.calculateAngle(coord);
+        }
+        if (this.pathAngle != 0){
+            this.mouseRotate();
+        }
+    }
+	this.mouseRotate = function(){
+		if (this.pathAngle > -5 && this.pathAngle < 5){
+		    this.turn('l', false);
+			return;
+		}
+		if (this.pathAngle > 0){
+			if (this.pathAngle >= this.turnRate){
+				this.pathAngle -= this.turnRate;
+				this.turn('r', true);
+			}
+			else{
+				this.turn('r', true);
+				this.updateTurn();
+				this.turn('l', false);
+				this.pathAngle = 0;
+			}
+		}
+		else{
+			if (this.pathAngle < this.turnRate){
+				this.pathAngle += this.turnRate;
+				this.turn('l', true);
+			}
+			else{
+				this.turn('l', true);
+				this.updateTurn();
+				this.turn('l', false);
+				this.pathAngle = 0;
+			}
+		}
 	}
 	this.autoRotate = function(){
 		if (this.pathAngle == 0){

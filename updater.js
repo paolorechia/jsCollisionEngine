@@ -17,6 +17,7 @@ function updateShip(player){
 		player.updateDirection();
 		player.updateStrafe();
 		player.updatePosition();
+        player.updateMouseRotate();
 		player.updateTurn();
 		player.powerSupply.recharge(player.powerSupply);
 		player.shield.drainEnergy(player.shield);
@@ -79,7 +80,7 @@ function displayShip(ship){
 			ship.updateDirection();
 			ship.updateStrafe();
 			ship.updatePosition();
-
+            ship.updateMouseRotate();
 			ship.updateTurn();
 
 			ship.powerSupply.recharge(ship.powerSupply);

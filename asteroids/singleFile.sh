@@ -13,21 +13,21 @@ cat << DOCSTART >$file
 <script> 
 DOCSTART
 cat ../webaudio/howler* >> $file
-java -jar ~/bin/closure-compiler-v20161201.jar ../sound.js >> $file
-java -jar ~/bin/closure-compiler-v20161201.jar ../divisor.js >> $file
-java -jar ~/bin/closure-compiler-v20161201.jar ../collision.js >> $file
-java -jar ~/bin/closure-compiler-v20161201.jar ../explosion.js         >> $file
-java -jar ~/bin/closure-compiler-v20161201.jar ../shipBase.js         >> $file
-java -jar ~/bin/closure-compiler-v20161201.jar ../weapon.js         >> $file
-java -jar ~/bin/closure-compiler-v20161201.jar ../shipPresets.js         >> $file
-java -jar ~/bin/closure-compiler-v20161201.jar ../broadCollision.js         >> $file
-java -jar ~/bin/closure-compiler-v20161201.jar ../updater.js         >> $file
-java -jar ~/bin/closure-compiler-v20161201.jar ../buttons.js         >> $file
-java -jar ~/bin/closure-compiler-v20161201.jar ../cookies.js         >> $file
-java -jar ~/bin/closure-compiler-v20161201.jar ../cursor.js         >> $file
+java -jar ~/bin/closure-compiler-v20170423.jar ../sound.js >> $file
+java -jar ~/bin/closure-compiler-v20170423.jar ../divisor.js >> $file
+java -jar ~/bin/closure-compiler-v20170423.jar ../collision.js >> $file
+java -jar ~/bin/closure-compiler-v20170423.jar ../explosion.js         >> $file
+java -jar ~/bin/closure-compiler-v20170423.jar ../shipBase.js         >> $file
+java -jar ~/bin/closure-compiler-v20170423.jar ../weapon.js         >> $file
+java -jar ~/bin/closure-compiler-v20170423.jar ../shipPresets.js         >> $file
+java -jar ~/bin/closure-compiler-v20170423.jar ../broadCollision.js         >> $file
+java -jar ~/bin/closure-compiler-v20170423.jar ../updater.js         >> $file
+java -jar ~/bin/closure-compiler-v20170423.jar ../buttons.js         >> $file
+java -jar ~/bin/closure-compiler-v20170423.jar ../cookies.js         >> $file
+java -jar ~/bin/closure-compiler-v20170423.jar ../cursor.js         >> $file
 
-java -jar ~/bin/closure-compiler-v20161201.jar main.js         >> $file
-java -jar ~/bin/closure-compiler-v20161201.jar input.js        >> $file
+java -jar ~/bin/closure-compiler-v20170423.jar main.js         >> $file
+java -jar ~/bin/closure-compiler-v20170423.jar input.js        >> $file
 cat <<DOCEND >>$file
 </script>
 </body>

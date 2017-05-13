@@ -4,6 +4,11 @@ function fireProjectile(weapon, stat){
                         weapon.fire(stat);
                 }
 }
+function mouseRotation(){
+        if (player != undefined){
+                player.calculateAngle(coord)
+        }
+}
 function fireMissile(weapon, stat){
                 if (weapon.type== 'm'){
                     weapon.fire(stat);
@@ -209,21 +214,28 @@ var coord = new Point(c.width/2, c.height/2);
         if (player == undefined){
             return;
         }
+        
         if (event.which == 1){
+			player.throttle(true);
+            /*
             for (var i= 0; i < player.weapons.length; i++){
                     weapon = player.weapons[i];
                     if (weapon.turret){
                         fireProjectile(weapon, true);
                     }
             }
+            */
         }
         else if (event.which == 3){
+			player.brake(true);
+            /*
             for (var i= 0; i < player.weapons.length; i++){
                     weapon = player.weapons[i];
                     if (weapon.turret){
                         fireMissile(weapon, true);
                     }
             }
+            */
         }
     }
 	function mouseUp(event){
@@ -231,28 +243,35 @@ var coord = new Point(c.width/2, c.height/2);
             return;
         }
         if (event.which == 1){
+			player.throttle(false);
+            /*
             for (var i= 0; i < player.weapons.length; i++){
                     weapon = player.weapons[i];
                     if (weapon.turret){
                         fireProjectile(weapon, false);
                     }
             }
+            */
         }
         else if (event.which == 3){
+			player.brake(true);
+            /*
             for (var i= 0; i < player.weapons.length; i++){
                     weapon = player.weapons[i];
                     if (weapon.turret){
                         fireMissile(weapon, false);
                     }
             }
+            */
         }
     }
     window.addEventListener("keydown", function(event){ keyboardDown(event)}, false);
     window.addEventListener("keyup", function(event){ keyboardUp(event)}, false);
 
 	c.addEventListener("mousemove", pegaCoordenadas, false);
-
 	c.addEventListener("mousemove", buttonModeHover, false);
+//	c.addEventListener("mousemove", mouseRotation, false);
+
 
 	c.addEventListener("touchstart", buttonModeClick, false);
     c.addEventListener("mousedown", function(event){
