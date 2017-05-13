@@ -4,11 +4,6 @@ function fireProjectile(weapon, stat){
                         weapon.fire(stat);
                 }
 }
-function mouseRotation(){
-        if (player != undefined){
-                player.calculateAngle(coord)
-        }
-}
 function fireMissile(weapon, stat){
                 if (weapon.type== 'm'){
                     weapon.fire(stat);
@@ -134,6 +129,9 @@ var coord = new Point(c.width/2, c.height/2);
                 }
             }
 		}
+        if (event.key == 'i'){
+            player.mouseMode = !player.mouseMode;
+        }
     }
 	keyboardUp = function(event){
        if (event.key == 'Escape'){
@@ -214,28 +212,21 @@ var coord = new Point(c.width/2, c.height/2);
         if (player == undefined){
             return;
         }
-        
         if (event.which == 1){
-			player.throttle(true);
-            /*
             for (var i= 0; i < player.weapons.length; i++){
                     weapon = player.weapons[i];
-                    if (weapon.turret){
                         fireProjectile(weapon, true);
-                    }
             }
-            */
+        }
+        if (event.which == 2){
+            for (var i= 0; i < player.weapons.length; i++){
+                    weapon = player.weapons[i];
+                        fireMissile(weapon, true);
+            }
         }
         else if (event.which == 3){
-			player.brake(true);
-            /*
-            for (var i= 0; i < player.weapons.length; i++){
-                    weapon = player.weapons[i];
-                    if (weapon.turret){
-                        fireMissile(weapon, true);
-                    }
-            }
-            */
+            player.brake(false);
+            player.throttle(true);
         }
     }
 	function mouseUp(event){
@@ -243,26 +234,20 @@ var coord = new Point(c.width/2, c.height/2);
             return;
         }
         if (event.which == 1){
-			player.throttle(false);
-            /*
             for (var i= 0; i < player.weapons.length; i++){
                     weapon = player.weapons[i];
-                    if (weapon.turret){
                         fireProjectile(weapon, false);
-                    }
             }
-            */
+        }
+        if (event.which == 2){
+            for (var i= 0; i < player.weapons.length; i++){
+                    weapon = player.weapons[i];
+                        fireMissile(weapon, false);
+            }
         }
         else if (event.which == 3){
-			player.brake(true);
-            /*
-            for (var i= 0; i < player.weapons.length; i++){
-                    weapon = player.weapons[i];
-                    if (weapon.turret){
-                        fireMissile(weapon, false);
-                    }
-            }
-            */
+            player.throttle(false);
+            player.brake(true);
         }
     }
     window.addEventListener("keydown", function(event){ keyboardDown(event)}, false);
@@ -270,7 +255,6 @@ var coord = new Point(c.width/2, c.height/2);
 
 	c.addEventListener("mousemove", pegaCoordenadas, false);
 	c.addEventListener("mousemove", buttonModeHover, false);
-//	c.addEventListener("mousemove", mouseRotation, false);
 
 
 	c.addEventListener("touchstart", buttonModeClick, false);
