@@ -130,6 +130,7 @@ var coord = new Point(c.width/2, c.height/2);
             }
 		}
         if (event.key == 'i'){
+            player.throttle(true);
             player.mouseMode = !player.mouseMode;
         }
     }
@@ -209,7 +210,7 @@ var coord = new Point(c.width/2, c.height/2);
 		}
     }
     function mouseDown(event){
-        if (player == undefined){
+        if (player == undefined || player.mouseMode == false){
             return;
         }
         if (event.which == 1){
@@ -225,12 +226,12 @@ var coord = new Point(c.width/2, c.height/2);
             }
         }
         else if (event.which == 3){
-            player.brake(false);
-            player.throttle(true);
+            player.throttle(false);
+            player.brake(true);
         }
     }
 	function mouseUp(event){
-        if (player == undefined){
+        if (player == undefined || player.mouseMode == false){
             return;
         }
         if (event.which == 1){
@@ -246,8 +247,8 @@ var coord = new Point(c.width/2, c.height/2);
             }
         }
         else if (event.which == 3){
-            player.throttle(false);
-            player.brake(true);
+            player.brake(false);
+            player.throttle(true);
         }
     }
     window.addEventListener("keydown", function(event){ keyboardDown(event)}, false);

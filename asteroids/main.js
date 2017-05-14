@@ -184,7 +184,7 @@ function buildInstructions(){
 	var instructions = [];
 	
 	var string;
-	string = "W/UpArrow: Main Engine Throttle";
+	string = "W/UpArrow: Main Throttle";
 	instructions.push(string);
 	string = "X: Reverse Engine Throttle";
 	instructions.push(string);
@@ -196,13 +196,13 @@ function buildInstructions(){
 	instructions.push(string);
 	string = "E: Right Strafe";
 	instructions.push(string);
-	string = "S/DownArrow: Brake";
+	string = "S/DownArrow/Right-Click: Brake";
 	instructions.push(string);
 	string = "Space bar: Fire Main Weapons";
 	instructions.push(string);
 	string = "Left-Click: Fire Turrets";
 	instructions.push(string);
-	string = "V/Right-Click: Fire Missiles";
+	string = "V/Middle-Click: Fire Missiles";
 	instructions.push(string);
 	string = "C: Always Fire";
 	instructions.push(string);
@@ -215,6 +215,8 @@ function buildInstructions(){
 	string = "T: Change Target";
 	instructions.push(string);
 	string = "U: Auto-pilot";
+	instructions.push(string);	
+	string = "I: Controls: Keyboard/Mouse";
 	instructions.push(string);	
 	string = "Esc: Pause/Help";
 	instructions.push(string);	
@@ -474,6 +476,7 @@ function selectShipLoop(){
         selectMusic.pause();
         calmMusic.play();
         explosions = [];
+        player.throttle(true);
 
 		requestAnimationFrame(mainLoop);
 	}

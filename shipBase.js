@@ -367,7 +367,7 @@ var Ship = function(x, y, l1, primaryColor = "#0000FF", secondaryColor = "#00F0F
     this.deadSound = null;
 	this.currentWeapon = 0;
 	this.lock = false;
-	this.engineOn = false;
+	this.engineOn = true;
 	this.reverseEngine = false;
 	this.braking = false;
 	this.isTurning = false;
@@ -378,7 +378,7 @@ var Ship = function(x, y, l1, primaryColor = "#0000FF", secondaryColor = "#00F0F
 	this.turnRate = 3.5;
 	this.turning = false;
 	this.rotate = 0;
-    this.mouseMode = false;
+    this.mouseMode = true;
 	this.front = new Point(this.hitbox.vertices[2].x,
 						   this.hitbox.vertices[2].y);
 	this.inertiaVector = new Vector(0, 0);
