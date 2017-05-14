@@ -396,7 +396,7 @@ var Weapon = function(velocity = 10, width = 1, range = 1000, limit = 10, damage
 					  mass = 1, rateOfFire = 8, spin=0, hasAmmo=false, ammo=100, energyUsage=0){
 						  */
 function machineGun(){
-	cannon = new Weapon(BASE_VEL * PROJ_VEL * 2, width = 1, range = 200, BASE_LIMIT, damage = 6, mass = 100, rateOfFire = 16, spin=0, hasAmmo=true, ammo=2000);
+	cannon = new Weapon(BASE_VEL * PROJ_VEL * 1.5, width = 1, range = 200, BASE_LIMIT, damage = 6, mass = 100, rateOfFire = 16, spin=0, hasAmmo=true, ammo=2000);
 	cannon.type = 'p'; // projectile type
 	cannon.name="Machine Gun";
     cannon.sound = new Howl({src : ["machine_gun.mp3"]});
