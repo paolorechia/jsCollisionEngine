@@ -6,7 +6,8 @@
 // global variables
 // projectiles velocity scaling
 
-var BASE_VEL = 0.5;
+var BASE_LIMIT = 100;
+var BASE_VEL = 1;
 var PROJ_VEL = 1;
 var MISSILE_VEL = 1;
 var LASER_VEL = 1.5;
@@ -395,7 +396,7 @@ var Weapon = function(velocity = 10, width = 1, range = 1000, limit = 10, damage
 					  mass = 1, rateOfFire = 8, spin=0, hasAmmo=false, ammo=100, energyUsage=0){
 						  */
 function machineGun(){
-	cannon = new Weapon(BASE_VEL * PROJ_VEL * 2, width = 1, range = 200, limit = 12, damage = 6, mass = 100, rateOfFire = 16, spin=0, hasAmmo=true, ammo=2000);
+	cannon = new Weapon(BASE_VEL * PROJ_VEL * 2, width = 1, range = 200, BASE_LIMIT, damage = 6, mass = 100, rateOfFire = 16, spin=0, hasAmmo=true, ammo=2000);
 	cannon.type = 'p'; // projectile type
 	cannon.name="Machine Gun";
     cannon.sound = new Howl({src : ["machine_gun.mp3"]});
@@ -404,8 +405,7 @@ function machineGun(){
 }
 	
 function lightCannon(){
-	cannon = new Weapon(BASE_VEL * PROJ_VEL, width = 4, range = 250, limit = 10, damage = 10, mass = 100, rateOfFire = 8, spin = 120, hasAmmo=true, ammo=1000);
-	cannon.projectileVelocity = 10;
+	cannon = new Weapon(BASE_VEL * PROJ_VEL, width = 4, range = 250, BASE_LIMIT, damage = 10, mass = 100, rateOfFire = 8, spin = 120, hasAmmo=true, ammo=1000);
 	cannon.type = 'p'; // projectile type
 	cannon.name="Light Cannon";
     cannon.sound = new Howl({src : ["heavycannon.mp3"]});
@@ -413,8 +413,7 @@ function lightCannon(){
 	return cannon;
 }
 function heavyCannon(){
-	cannon = new Weapon(BASE_VEL * PROJ_VEL, width = 8, range = 280, limit = 10, damage = 20, mass = 1000, rateOfFire = 4, spin = 120, hasAmmo=true, ammo=500);
-	cannon.projectileVelocity=10;
+	cannon = new Weapon(BASE_VEL * PROJ_VEL, width = 8, range = 280, BASE_LIMIT, damage = 20, mass = 1000, rateOfFire = 4, spin = 120, hasAmmo=true, ammo=500);
 	cannon.type = 'p'; // projectile type
 	cannon.name="Heavy Cannon";
     cannon.sound = new Howl({src : ["heavycannon.mp3"]});
@@ -422,18 +421,16 @@ function heavyCannon(){
 	return cannon;
 }
 function asteroidShooter(){
-	cannon = new Weapon(BASE_VEL * PROJ_VEL, width = 20, range = 280, limit = 1, damage = 50, mass = 10000, rateOfFire = 1, spin = 120, hasAmmo=true, ammo=50);
-	cannon.projectileVelocity=10;
+	cannon = new Weapon(BASE_VEL * PROJ_VEL, width = 20, range = 280, BASE_LIMIT, damage = 50, mass = 10000, rateOfFire = 1, spin = 120, hasAmmo=true, ammo=50);
 	cannon.type = 'p'; // projectile type
 	cannon.name="Asteroid Shooter";
     cannon.sound = new Howl({src : ["heavycannon.mp3"]});
 	return cannon;
 }
 function dumbMissile(){
-	missile = new Weapon(BASE_VEL * MISSILE_VEL, width = 1, range = 1000, limit = 1, damage = 1, mass = 100, rateOfFire = 1, spin = 0, hasAmmo=true, ammo=100);
+	missile = new Weapon(BASE_VEL * MISSILE_VEL, width = 1, range = 1000, BASE_LIMIT, damage = 1, mass = 100, rateOfFire = 1, spin = 0, hasAmmo=true, ammo=100);
     missile.expansionRate = 4;
     missile.maxRadius=40;
-	missile.projectileVelocity = 5;
 	missile.type = 'm'; // type
 	missile.name="Dumb Missile";
     missile.onHit= function(target){
@@ -479,7 +476,7 @@ var nukeBomb = function(){
 }
 
 function lightLaserBlaster(){
-	blaster = new Weapon(BASE_VEL * LASER_VEL, width = 1, range = 400, limit = 12, damage = 5, mass=1, rateOfFire = 12,  spin=0, hasAmmo=false, ammo=1,
+	blaster = new Weapon(BASE_VEL * LASER_VEL, width = 1, range = 400, BASE_LIMIT, damage = 5, mass=1, rateOfFire = 12,  spin=0, hasAmmo=false, ammo=1,
 						 energyUsage = 5);
     blaster.type = 'p';
 	blaster.draw = function(){
@@ -517,7 +514,7 @@ function lightLaserBlaster(){
 	return blaster;
 }
 function heavyLaserBlaster(){
-	blaster = new Weapon(BASE_VEL * LASER_VEL, width = 8, range = 400, limit = 8, damage = 20, mass=1, rateOfFire = 6, spin=0, hasAmmo=false, ammo=1,
+	blaster = new Weapon(BASE_VEL * LASER_VEL, width = 8, range = 400, BASE_LIMIT, damage = 20, mass=1, rateOfFire = 6, spin=0, hasAmmo=false, ammo=1,
 						 energyUsage = 20);
     blaster.type = 'p';
 	blaster.draw = function(){
@@ -555,9 +552,10 @@ function heavyLaserBlaster(){
 	return blaster;
 }
 function lightLaserBeam(){
-	beam = new Weapon(BASE_VEL * BEAM_VEL, width = 2, range = 800, limit = 1, damage = 5, mass=1, rateOfFire = 1000, spin=0, hasAmmo=false, ammo=1,
+	beam = new Weapon(BASE_VEL * BEAM_VEL, width = 2, range = 800, BASE_LIMIT, damage = 5, mass=1, rateOfFire = 12, spin=0, hasAmmo=false, ammo=1,
 					  energyUsage=4);
 	beam.type = 'l'; // laser type
+    /*
 	beam.draw = function(){
 		ctx.beginPath();
 		if (this.owner == undefined){
@@ -575,16 +573,18 @@ function lightLaserBeam(){
 		ctx.stroke();	
 		ctx.lineWidth = oldWidth;
 	}
+    */
 	beam.name = "Light Laser Beam";
     beam.sound = new Howl({src : ["laser-reapeated.mp3"]});
     beam.sound.volumeFilter=0.3;
 	return beam;
 }
 function heavyLaserBeam(){
-	beam = new Weapon(BASE_VEL * BEAM_VEL, width = 8, range = 800, limit = 1, damage = 10, mass=1, rateOfFire = 60, spin=0, hasAmmo=false, ammo=1,
+	beam = new Weapon(BASE_VEL * BEAM_VEL, width = 8, range = 800, BASE_LIMIT, damage = 10, mass=1, rateOfFire = 12, spin=0, hasAmmo=false, ammo=1,
 					  energyUsage=9);
 	beam.type = 'l'; // laser type
 
+    /*
 	beam.draw = function(){
 		if (blaster.owner == undefined){
 			ctx.strokeStyle="#009099";
@@ -602,6 +602,7 @@ function heavyLaserBeam(){
 		ctx.stroke();	
 		ctx.lineWidth = oldWidth;
 	}
+    */
 	beam.name = "Heavy Laser Beam";
     beam.sound = new Howl({src : ["laser-reapeated.mp3"]});
     beam.sound.volumeFilter=0.5;

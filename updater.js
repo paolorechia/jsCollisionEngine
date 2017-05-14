@@ -95,7 +95,7 @@ function displayShip(ship){
 
 		for (var i = 0; i < ship.weapons.length; i++){
 		   // ship.weapons[i].updateVolume(0.1);
-		    ship.weapons[i].firing=true;
+		    ship.weapons[i].firing=false;
     	    ship.weapons[i].updateDirection();
 			if (ship.weapons[i].enabled){
 				ship.weapons[i].updateFiring(ship.hitbox.velocity);

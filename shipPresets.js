@@ -3,10 +3,10 @@
 // var Shield = function(max = 100, resistance=0, drainRate=10, rechargeEfficiency = 0.5, drainSpeed = 250)
 
 // Global Variables for Scaling
-BASE_SIZE = 10
-BASE_ACCEL = 0.05
-BASE_TURNRATE = 1
-BASE_MAXSPEED = 2
+var BASE_SIZE = 10;
+var BASE_ACCEL = 0.05;
+var BASE_TURNRATE = 2;
+var BASE_MAXSPEED = 1;
 
 function loadDefaultSounds(ship){
     ship.hull.sound= new Howl({
@@ -75,8 +75,8 @@ var Shark = function(primaryColor="#000FFF", secondaryColor = "#0FF0FF",
 	ship.hull = new Hull(150, 7);
 	ship.shield = new Shield(0, 0, 5, 1, 1000);
 	ship.powerSupply = new EnergySource(0, 0, 1);
-    ship.acceleration = BASE_ACCEL * 3;
-    ship.turnRate = BASE_TURNRATE * 3.5;
+    ship.acceleration = BASE_ACCEL * 2;
+    ship.turnRate = BASE_TURNRATE * 2.5;
 
 	ship.shield.setPowerSupply(ship.powerSupply);
 	ship.shield.setEnabled(true);
