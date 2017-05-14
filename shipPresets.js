@@ -3,7 +3,7 @@
 // var Shield = function(max = 100, resistance=0, drainRate=10, rechargeEfficiency = 0.5, drainSpeed = 250)
 
 // Global Variables for Scaling
-BASE_SIZE = 10
+BASE_SIZE = 15
 BASE_ACCEL = 0.1
 BASE_TURNRATE = 2
 BASE_MAXSPEED = 5
@@ -25,8 +25,9 @@ var Stellar = function(primaryColor="#000FFF", secondaryColor = "#0FF0FF",
 	ship.updateDirection();
 	ship.hull = new Hull(100, 0);
 	ship.shield = new Shield(50, 0, 5, 1, 300);
-    ship.acceleration = 0.21;
-    ship.turnRate = 4;
+    ship.acceleration = BASE_ACCEL * 2;
+    ship.turnRate = BASE_TURNRATE * 2;
+    ship.maxSpeed = BASE_MAXSPEED;
 
 	ship.shield.setPowerSupply(ship.powerSupply);
 	ship.shield.setEnabled(true);
@@ -74,8 +75,8 @@ var Shark = function(primaryColor="#000FFF", secondaryColor = "#0FF0FF",
 	ship.hull = new Hull(150, 7);
 	ship.shield = new Shield(0, 0, 5, 1, 1000);
 	ship.powerSupply = new EnergySource(0, 0, 1);
-    ship.acceleration = 0.31;
-    ship.turnRate = 7;
+    ship.acceleration = BASE_ACCEL * 3;
+    ship.turnRate = BASE_TURNRATE * 3.5;
 
 	ship.shield.setPowerSupply(ship.powerSupply);
 	ship.shield.setEnabled(true);
@@ -113,8 +114,8 @@ var CannonFolder = function(primaryColor="#000FFF", secondaryColor = "#0FF0FF",
 	ship.hull = new Hull(150, 7);
 	ship.shield = new Shield(0, 0, 5, 1, 1000);
 	ship.powerSupply = new EnergySource(0, 0, 1);
-    ship.acceleration = 0.11;
-    ship.turnRate = 3;
+    ship.acceleration = BASE_ACCEL;
+    ship.turnRate = BASE_TURNRATE * 1.5;
 
 	ship.shield.setPowerSupply(ship.powerSupply);
 	ship.shield.setEnabled(true);
@@ -151,8 +152,8 @@ var Bomber = function(primaryColor="#000FFF", secondaryColor = "#0FF0FF",
 	ship.updateDirection();
 	ship.hull = new Hull(300, 5);
 	ship.shield = new Shield(50, 0, 5, 1, 300);
-    ship.acceleration = 0.11;
-    ship.turnRate = 4;
+    ship.acceleration = BASE_ACCEL;
+    ship.turnRate = BASE_TURNRATE * 2;
 
 	ship.shield.setPowerSupply(ship.powerSupply);
 	ship.shield.setEnabled(true);
@@ -207,8 +208,8 @@ var Armageddon= function(primaryColor="#000FFF", secondaryColor = "#0FF0FF",
 	ship.updateDirection();
 	ship.hull = new Hull(300, 5);
 	ship.shield = new Shield(1000, 0, 5, 1, 300);
-    ship.acceleration = 0.09;
-    ship.turnRate = 4;
+    ship.acceleration = BASE_ACCEL * 0.9;
+    ship.turnRate = BASE_TURNRATE * 2;
     ship.maxSpeed=11;
 
 	ship.shield.setPowerSupply(ship.powerSupply);
@@ -266,9 +267,9 @@ var StarGazer = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF",
 	ship.powerSupply = new EnergySource(300, 20, 100);
 	ship.shield.setPowerSupply(ship.powerSupply);
 	ship.shield.setEnabled(true);
-	ship.acceleration = 0.11;
+	ship.acceleration = BASE_ACCEL;
 	ship.maxSpeed = 7;
-	ship.turnRate = 4;
+	ship.turnRate = BASE_TURNRATE * 2;
 	
 	ship.addWeapon(lightCannon());
 	ship.changeWeapon();
@@ -307,9 +308,9 @@ var StarGazerII = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF",
 	ship.powerSupply = new EnergySource(300, 20, 100);
 	ship.shield.setPowerSupply(ship.powerSupply);
 	ship.shield.setEnabled(true);
-	ship.acceleration = 0.11;
+	ship.acceleration = BASE_ACCEL;
 	ship.maxSpeed = 7;
-	ship.turnRate = 4;
+	ship.turnRate = BASE_TURNRATE * 2;
 	
 	ship.addWeapon(heavyCannon());
 	ship.changeWeapon();
@@ -348,9 +349,9 @@ var Duster = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF",
 	ship.powerSupply = new EnergySource(400, 20, 100);
 	ship.shield.setPowerSupply(ship.powerSupply);
 	ship.shield.setEnabled(true);
-	ship.acceleration = 0.11;
+	ship.acceleration = BASE_ACCEL;
 	ship.maxSpeed = 7;
-	ship.turnRate = 3;
+	ship.turnRate = BASE_TURNRATE * 1.5;
 	
 	ship.addWeapon(dumbMissile());
 	ship.changeWeapon();
@@ -396,9 +397,9 @@ var Gargatuan = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF",
 	ship.powerSupply = new EnergySource(1000, 20, 100);
 	ship.shield.setPowerSupply(ship.powerSupply);
 	ship.shield.setEnabled(true);
-	ship.acceleration = 0.08;
+	ship.acceleration = BASE_ACCEL * 0.8;
 	ship.maxSpeed = 7;
-	ship.turnRate = 4;
+	ship.turnRate = BASE_TURNRATE * 2;
 	
 	ship.addWeapon(heavyLaserBlaster());
 	ship.changeWeapon();
@@ -439,9 +440,9 @@ var GargantuanII = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF",
 	ship.powerSupply = new EnergySource(1000, 20, 100);
 	ship.shield.setPowerSupply(ship.powerSupply);
 	ship.shield.setEnabled(true);
-	ship.acceleration = 0.08;
+	ship.acceleration = BASE_ACCEL * 0.8;
 	ship.maxSpeed = 7;
-	ship.turnRate = 4;
+	ship.turnRate = BASE_TURNRATE * 2;
 	
 	ship.addWeapon(heavyLaserBeam());
 	ship.changeWeapon();
@@ -483,9 +484,9 @@ var Colossal = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF",
 	ship.powerSupply = new EnergySource(2000, 20, 100);
 	ship.shield.setPowerSupply(ship.powerSupply);
 	ship.shield.setEnabled(true);
-	ship.acceleration = 0.04;
+	ship.acceleration = BASE_ACCEL * 0.4;
 	ship.maxSpeed = 9;
-	ship.turnRate = 2;
+	ship.turnRate = BASE_TURNRATE * 2;
 	
     
     for (var i = 2; i < ship.hitbox.vertices.length; i++){
@@ -521,9 +522,9 @@ var Turret = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF", cannon
 	ship.powerSupply = new EnergySource(500, 10, 100);
 	ship.shield.setPowerSupply(ship.powerSupply);
 	ship.shield.setEnabled(true);
-	ship.acceleration = 0.08;
+	ship.acceleration = BASE_ACCEL * 0.8;
 	ship.maxSpeed = 3;
-	ship.turnRate = 3;
+	ship.turnRate = BASE_TURNRATE * 1.5;
 
     if (cannons == 1){
         ship.addWeapon(weapon());
@@ -617,8 +618,8 @@ var Beamer = function(primaryColor="#000FFF", secondaryColor = "#0FF0FF",
 	ship.hull = new Hull(100, 0);
 	ship.shield = new Shield(50, 0, 5, 1, 150);
 	ship.powerSupply = new EnergySource(150, 20, 100);
-    ship.acceleration = 0.21;
-    ship.turnRate = 3;
+    ship.acceleration = BASE_ACCEL * 2;
+    ship.turnRate = BASE_TURNRATE * 1.5;
 
 	ship.shield.setPowerSupply(ship.powerSupply);
 	ship.shield.setEnabled(true);
@@ -660,8 +661,8 @@ var StellarII = function(primaryColor="#000FFF", secondaryColor = "#0FF0FF",
 	ship.hull = new Hull(100, 0);
 	ship.shield = new Shield(50, 0, 5, 1, 150);
 	ship.powerSupply = new EnergySource(150, 20, 100);
-    ship.acceleration = 0.41;
-    ship.turnRate = 5;
+    ship.acceleration = BASE_ACCEL * 4;
+    ship.turnRate = BASE_TURNRATE * 2.5;
 
 	ship.shield.setPowerSupply(ship.powerSupply);
 	ship.shield.setEnabled(true);
