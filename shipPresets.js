@@ -25,9 +25,9 @@ var Stellar = function(primaryColor="#000FFF", secondaryColor = "#0FF0FF",
 	ship.updateDirection();
 	ship.hull = new Hull(100, 0);
 	ship.shield = new Shield(50, 0, 5, 1, 300);
-    ship.acceleration = BASE_ACCEL * 2;
-    ship.turnRate = BASE_TURNRATE * 2;
+    ship.acceleration = BASE_ACCEL * 1.2;
     ship.maxSpeed = BASE_MAXSPEED;
+    ship.turnRate = BASE_TURNRATE * 2;
 
 	ship.shield.setPowerSupply(ship.powerSupply);
 	ship.shield.setEnabled(true);
@@ -75,7 +75,8 @@ var Shark = function(primaryColor="#000FFF", secondaryColor = "#0FF0FF",
 	ship.hull = new Hull(150, 7);
 	ship.shield = new Shield(0, 0, 5, 1, 1000);
 	ship.powerSupply = new EnergySource(0, 0, 1);
-    ship.acceleration = BASE_ACCEL * 2;
+    ship.acceleration = BASE_ACCEL * 1.2;
+    ship.maxSpeed = BASE_MAXSPEED;
     ship.turnRate = BASE_TURNRATE * 2.5;
 
 	ship.shield.setPowerSupply(ship.powerSupply);
@@ -115,6 +116,7 @@ var CannonFolder = function(primaryColor="#000FFF", secondaryColor = "#0FF0FF",
 	ship.shield = new Shield(0, 0, 5, 1, 1000);
 	ship.powerSupply = new EnergySource(0, 0, 1);
     ship.acceleration = BASE_ACCEL;
+    ship.maxSpeed = BASE_MAXSPEED;
     ship.turnRate = BASE_TURNRATE * 1.5;
 
 	ship.shield.setPowerSupply(ship.powerSupply);
@@ -153,6 +155,7 @@ var Bomber = function(primaryColor="#000FFF", secondaryColor = "#0FF0FF",
 	ship.hull = new Hull(300, 5);
 	ship.shield = new Shield(50, 0, 5, 1, 300);
     ship.acceleration = BASE_ACCEL;
+    ship.maxSpeed = BASE_MAXSPEED;
     ship.turnRate = BASE_TURNRATE * 2;
 
 	ship.shield.setPowerSupply(ship.powerSupply);
@@ -209,8 +212,8 @@ var Armageddon= function(primaryColor="#000FFF", secondaryColor = "#0FF0FF",
 	ship.hull = new Hull(300, 5);
 	ship.shield = new Shield(1000, 0, 5, 1, 300);
     ship.acceleration = BASE_ACCEL * 0.9;
-    ship.turnRate = BASE_TURNRATE * 2;
     ship.maxSpeed=BASE_MAXSPEED * 2;
+    ship.turnRate = BASE_TURNRATE * 2;
 
 	ship.shield.setPowerSupply(ship.powerSupply);
 	ship.shield.setEnabled(true);
@@ -618,7 +621,8 @@ var Beamer = function(primaryColor="#000FFF", secondaryColor = "#0FF0FF",
 	ship.hull = new Hull(100, 0);
 	ship.shield = new Shield(50, 0, 5, 1, 150);
 	ship.powerSupply = new EnergySource(150, 20, 100);
-    ship.acceleration = BASE_ACCEL * 2;
+    ship.acceleration = BASE_ACCEL * 1.2;
+    ship.maxSpeed = BASE_MAXSPEED;
     ship.turnRate = BASE_TURNRATE * 1.5;
 
 	ship.shield.setPowerSupply(ship.powerSupply);
@@ -661,7 +665,8 @@ var StellarII = function(primaryColor="#000FFF", secondaryColor = "#0FF0FF",
 	ship.hull = new Hull(100, 0);
 	ship.shield = new Shield(50, 0, 5, 1, 150);
 	ship.powerSupply = new EnergySource(150, 20, 100);
-    ship.acceleration = BASE_ACCEL * 4;
+    ship.acceleration = BASE_ACCEL * 1.5;
+    ship.maxSpeed = BASE_MAXSPEED;
     ship.turnRate = BASE_TURNRATE * 2.5;
 
 	ship.shield.setPowerSupply(ship.powerSupply);
