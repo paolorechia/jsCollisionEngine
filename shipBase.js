@@ -47,7 +47,7 @@ var TargetSystem = function(){
             return;
         }
         // travel time for bullets to reach target
-        this.shipVelocity = velocity;
+        this.shipVelocity = shipVelocity;
         this.inRange=false;
         for (var i = 0; i < weapons.length; i++){
             var weaponVelocity = weapons[i].projectileVelocity;

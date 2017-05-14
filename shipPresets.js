@@ -3,10 +3,10 @@
 // var Shield = function(max = 100, resistance=0, drainRate=10, rechargeEfficiency = 0.5, drainSpeed = 250)
 
 // Global Variables for Scaling
-BASE_SIZE = 15
-BASE_ACCEL = 0.1
-BASE_TURNRATE = 2
-BASE_MAXSPEED = 5
+BASE_SIZE = 10
+BASE_ACCEL = 0.05
+BASE_TURNRATE = 1
+BASE_MAXSPEED = 2
 
 function loadDefaultSounds(ship){
     ship.hull.sound= new Howl({
@@ -210,7 +210,7 @@ var Armageddon= function(primaryColor="#000FFF", secondaryColor = "#0FF0FF",
 	ship.shield = new Shield(1000, 0, 5, 1, 300);
     ship.acceleration = BASE_ACCEL * 0.9;
     ship.turnRate = BASE_TURNRATE * 2;
-    ship.maxSpeed=11;
+    ship.maxSpeed=BASE_MAXSPEED * 2;
 
 	ship.shield.setPowerSupply(ship.powerSupply);
 	ship.shield.setEnabled(true);
@@ -268,7 +268,7 @@ var StarGazer = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF",
 	ship.shield.setPowerSupply(ship.powerSupply);
 	ship.shield.setEnabled(true);
 	ship.acceleration = BASE_ACCEL;
-	ship.maxSpeed = 7;
+	ship.maxSpeed = BASE_MAXSPEED * 1.5;
 	ship.turnRate = BASE_TURNRATE * 2;
 	
 	ship.addWeapon(lightCannon());
@@ -309,7 +309,7 @@ var StarGazerII = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF",
 	ship.shield.setPowerSupply(ship.powerSupply);
 	ship.shield.setEnabled(true);
 	ship.acceleration = BASE_ACCEL;
-	ship.maxSpeed = 7;
+	ship.maxSpeed = BASE_MAXSPEED * 1.5;
 	ship.turnRate = BASE_TURNRATE * 2;
 	
 	ship.addWeapon(heavyCannon());
@@ -350,7 +350,7 @@ var Duster = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF",
 	ship.shield.setPowerSupply(ship.powerSupply);
 	ship.shield.setEnabled(true);
 	ship.acceleration = BASE_ACCEL;
-	ship.maxSpeed = 7;
+	ship.maxSpeed = BASE_MAXSPEED * 1.5;
 	ship.turnRate = BASE_TURNRATE * 1.5;
 	
 	ship.addWeapon(dumbMissile());
@@ -398,7 +398,7 @@ var Gargatuan = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF",
 	ship.shield.setPowerSupply(ship.powerSupply);
 	ship.shield.setEnabled(true);
 	ship.acceleration = BASE_ACCEL * 0.8;
-	ship.maxSpeed = 7;
+	ship.maxSpeed = BASE_MAXSPEED * 1.5;
 	ship.turnRate = BASE_TURNRATE * 2;
 	
 	ship.addWeapon(heavyLaserBlaster());
@@ -441,7 +441,7 @@ var GargantuanII = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF",
 	ship.shield.setPowerSupply(ship.powerSupply);
 	ship.shield.setEnabled(true);
 	ship.acceleration = BASE_ACCEL * 0.8;
-	ship.maxSpeed = 7;
+	ship.maxSpeed = BASE_MAXSPEED * 1.5;
 	ship.turnRate = BASE_TURNRATE * 2;
 	
 	ship.addWeapon(heavyLaserBeam());
@@ -485,7 +485,7 @@ var Colossal = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF",
 	ship.shield.setPowerSupply(ship.powerSupply);
 	ship.shield.setEnabled(true);
 	ship.acceleration = BASE_ACCEL * 0.4;
-	ship.maxSpeed = 9;
+	ship.maxSpeed = BASE_MAXSPEED * 1.75;
 	ship.turnRate = BASE_TURNRATE * 2;
 	
     
@@ -523,7 +523,7 @@ var Turret = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF", cannon
 	ship.shield.setPowerSupply(ship.powerSupply);
 	ship.shield.setEnabled(true);
 	ship.acceleration = BASE_ACCEL * 0.8;
-	ship.maxSpeed = 3;
+	ship.maxSpeed = BASE_MAXSPEED * 0.5;
 	ship.turnRate = BASE_TURNRATE * 1.5;
 
     if (cannons == 1){

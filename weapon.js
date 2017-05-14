@@ -6,7 +6,7 @@
 // global variables
 // projectiles velocity scaling
 
-var BASE_VEL = 2;
+var BASE_VEL = 0.5;
 var PROJ_VEL = 1;
 var MISSILE_VEL = 1;
 var LASER_VEL = 1.5;
@@ -479,7 +479,7 @@ var nukeBomb = function(){
 }
 
 function lightLaserBlaster(){
-	blaster = new Weapon(velocity = 8, width = 1, range = 400, limit = 12, damage = 5, mass=1, rateOfFire = 12,  spin=0, hasAmmo=false, ammo=1,
+	blaster = new Weapon(BASE_VEL * LASER_VEL, width = 1, range = 400, limit = 12, damage = 5, mass=1, rateOfFire = 12,  spin=0, hasAmmo=false, ammo=1,
 						 energyUsage = 5);
     blaster.type = 'p';
 	blaster.draw = function(){
@@ -517,7 +517,7 @@ function lightLaserBlaster(){
 	return blaster;
 }
 function heavyLaserBlaster(){
-	blaster = new Weapon(velocity = 8, width = 8, range = 400, limit = 8, damage = 20, mass=1, rateOfFire = 6, spin=0, hasAmmo=false, ammo=1,
+	blaster = new Weapon(BASE_VEL * LASER_VEL, width = 8, range = 400, limit = 8, damage = 20, mass=1, rateOfFire = 6, spin=0, hasAmmo=false, ammo=1,
 						 energyUsage = 20);
     blaster.type = 'p';
 	blaster.draw = function(){
@@ -555,7 +555,7 @@ function heavyLaserBlaster(){
 	return blaster;
 }
 function lightLaserBeam(){
-	beam = new Weapon(velocity = 10, width = 2, range = 800, limit = 1, damage = 5, mass=1, rateOfFire = 1000, spin=0, hasAmmo=false, ammo=1,
+	beam = new Weapon(BASE_VEL * BEAM_VEL, width = 2, range = 800, limit = 1, damage = 5, mass=1, rateOfFire = 1000, spin=0, hasAmmo=false, ammo=1,
 					  energyUsage=4);
 	beam.type = 'l'; // laser type
 	beam.draw = function(){
@@ -581,7 +581,7 @@ function lightLaserBeam(){
 	return beam;
 }
 function heavyLaserBeam(){
-	beam = new Weapon(velocity = 10, width = 8, range = 800, limit = 1, damage = 10, mass=1, rateOfFire = 60, spin=0, hasAmmo=false, ammo=1,
+	beam = new Weapon(BASE_VEL * BEAM_VEL, width = 8, range = 800, limit = 1, damage = 10, mass=1, rateOfFire = 60, spin=0, hasAmmo=false, ammo=1,
 					  energyUsage=9);
 	beam.type = 'l'; // laser type
 
