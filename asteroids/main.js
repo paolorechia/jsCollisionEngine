@@ -490,7 +490,6 @@ function mainLoop(){
 
 	ctx.fillStyle="#000000";
 	ctx.fillRect(0,0,c.width,c.height);
-//    ctx.scale(0.5, 0.5);
 
 	if (objects.length == 0 && enemies.length == 0 &&
         level.current <= level.max && toSpawn == 0){

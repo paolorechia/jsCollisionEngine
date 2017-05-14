@@ -2,6 +2,12 @@
 // Depends on: collision.js; ship.js; weapons;js
 // var Shield = function(max = 100, resistance=0, drainRate=10, rechargeEfficiency = 0.5, drainSpeed = 250)
 
+// Global Variables for Scaling
+BASE_SIZE = 10
+BASE_ACCEL = 0.1
+BASE_TURNRATE = 2
+BASE_MAXSPEED = 5
+
 function loadDefaultSounds(ship){
     ship.hull.sound= new Howl({
             src: ['Hit_Hurt5.mp3']});
@@ -14,7 +20,7 @@ function loadDefaultSounds(ship){
 
 var Stellar = function(primaryColor="#000FFF", secondaryColor = "#0FF0FF", 
                        x = c.width/2, y = c.height/2){
-	var ship = new Ship(x, y, 20, primaryColor, secondaryColor);
+	var ship = new Ship(x, y, BASE_SIZE, primaryColor, secondaryColor);
     ship.name="Stellar";
 	ship.updateDirection();
 	ship.hull = new Hull(100, 0);
@@ -62,7 +68,7 @@ var Stellar = function(primaryColor="#000FFF", secondaryColor = "#0FF0FF",
 }
 var Shark = function(primaryColor="#000FFF", secondaryColor = "#0FF0FF", 
                        x = c.width/2, y = c.height/2){
-	var ship = new Ship(x, y, 15, primaryColor, secondaryColor);
+	var ship = new Ship(x, y, BASE_SIZE * 0.75, primaryColor, secondaryColor);
     ship.name="Shark";
 	ship.updateDirection();
 	ship.hull = new Hull(150, 7);
@@ -101,7 +107,7 @@ var Shark = function(primaryColor="#000FFF", secondaryColor = "#0FF0FF",
 }
 var CannonFolder = function(primaryColor="#000FFF", secondaryColor = "#0FF0FF", 
                        x = c.width/2, y = c.height/2){
-	var ship = new Ship(x, y, 15, primaryColor, secondaryColor);
+	var ship = new Ship(x, y, BASE_SIZE * 0.75, primaryColor, secondaryColor);
     ship.name="CannonFolder";
 	ship.updateDirection();
 	ship.hull = new Hull(150, 7);
@@ -140,7 +146,7 @@ var CannonFolder = function(primaryColor="#000FFF", secondaryColor = "#0FF0FF",
 }
 var Bomber = function(primaryColor="#000FFF", secondaryColor = "#0FF0FF", 
                        x = c.width/2, y = c.height/2){
-	var ship = new Ship(x, y, 30, primaryColor, secondaryColor);
+	var ship = new Ship(x, y, BASE_SIZE * 1.5, primaryColor, secondaryColor);
     ship.name="Bomber";
 	ship.updateDirection();
 	ship.hull = new Hull(300, 5);
@@ -196,7 +202,7 @@ var Bomber = function(primaryColor="#000FFF", secondaryColor = "#0FF0FF",
 }
 var Armageddon= function(primaryColor="#000FFF", secondaryColor = "#0FF0FF", 
                        x = c.width/2, y = c.height/2){
-	var ship = new Ship(x, y, 40, primaryColor, secondaryColor);
+	var ship = new Ship(x, y, BASE_SIZE * 2, primaryColor, secondaryColor);
     ship.name="Armageddon";
 	ship.updateDirection();
 	ship.hull = new Hull(300, 5);
@@ -252,7 +258,7 @@ var Armageddon= function(primaryColor="#000FFF", secondaryColor = "#0FF0FF",
 }
 var StarGazer = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF",
                        x = c.width/2, y = c.height/2){
-	var ship = new Ship(x, y, 25, primaryColor, secondaryColor);
+	var ship = new Ship(x, y, BASE_SIZE * 1.25, primaryColor, secondaryColor);
     ship.name="StarGazer";
 	ship.updateDirection();
 	ship.hull = new Hull(200, 2);
@@ -293,7 +299,7 @@ var StarGazer = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF",
 }
 var StarGazerII = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF",
                        x = c.width/2, y = c.height/2){
-	var ship = new Ship(x, y, 25, primaryColor, secondaryColor);
+	var ship = new Ship(x, y, BASE_SIZE * 1.25, primaryColor, secondaryColor);
     ship.name="StarGazerII";
 	ship.updateDirection();
 	ship.hull = new Hull(200, 2);
@@ -334,7 +340,7 @@ var StarGazerII = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF",
 }
 var Duster = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF",
                        x = c.width/2, y = c.height/2){
-	var ship = new Ship(x, y, 35, primaryColor, secondaryColor);
+	var ship = new Ship(x, y, BASE_SIZE * 1.75, primaryColor, secondaryColor);
     ship.name="Duster";
 	ship.updateDirection();
 	ship.hull = new Hull(200, 2);
@@ -382,7 +388,7 @@ var Duster = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF",
 }
 var Gargatuan = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF",
                        x = c.width/2, y = c.height/2){
-	var ship = new Ship(x, y, 30, primaryColor, secondaryColor);
+	var ship = new Ship(x, y, BASE_SIZE * 1.5, primaryColor, secondaryColor);
     ship.name="Gargantuan";
 	ship.updateDirection();
 	ship.hull = new Hull(200, 1);
@@ -425,7 +431,7 @@ var Gargatuan = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF",
 }
 var GargantuanII = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF",
                        x = c.width/2, y = c.height/2){
-	var ship = new Ship(x, y, 30, primaryColor, secondaryColor);
+	var ship = new Ship(x, y, BASE_SIZE * 1.5, primaryColor, secondaryColor);
     ship.name="GargantuanII";
 	ship.updateDirection();
 	ship.hull = new Hull(200, 1);
@@ -469,7 +475,7 @@ var GargantuanII = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF",
 }
 var Colossal = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF",
                        x = c.width/2, y = c.height/2){
-	var ship = new Ship(x, y, 50, primaryColor, secondaryColor);
+	var ship = new Ship(x, y, BASE_SIZE * 2.5, primaryColor, secondaryColor);
     ship.name = "Colossal";
 	ship.updateDirection();
 	ship.hull = new Hull(1000, 1);
@@ -506,7 +512,7 @@ var Colossal = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF",
 
 	return ship;
 }
-var Turret = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF", cannons = 1, x = c.width/2, y = c.height/2, size = 15, weapon=machineGun){
+var Turret = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF", cannons = 1, x = c.width/2, y = c.height/2, size = BASE_SIZE * 0.75, weapon=machineGun){
 	var ship = new Ship(x, y, size, primaryColor, secondaryColor);
     ship.name = "Turret";
 	ship.updateDirection();
@@ -605,7 +611,7 @@ var Turret = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF", cannon
 }
 var Beamer = function(primaryColor="#000FFF", secondaryColor = "#0FF0FF", 
                        x = c.width/2, y = c.height/2){
-	var ship = new Ship(x, y, 20, primaryColor, secondaryColor);
+	var ship = new Ship(x, y, BASE_SIZE, primaryColor, secondaryColor);
     ship.name="Beamer";
 	ship.updateDirection();
 	ship.hull = new Hull(100, 0);
@@ -648,7 +654,7 @@ var Beamer = function(primaryColor="#000FFF", secondaryColor = "#0FF0FF",
 
 var StellarII = function(primaryColor="#000FFF", secondaryColor = "#0FF0FF", 
                        x = c.width/2, y = c.height/2){
-	var ship = new Ship(x, y, 20, primaryColor, secondaryColor);
+	var ship = new Ship(x, y, BASE_SIZE, primaryColor, secondaryColor);
     ship.name="StellarII";
 	ship.updateDirection();
 	ship.hull = new Hull(100, 0);
