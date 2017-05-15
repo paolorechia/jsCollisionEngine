@@ -74,6 +74,7 @@ var Stellar = function(primaryColor="#000FFF", secondaryColor = "#0FF0FF",
 
 	
 	ship.addWeapon(machineGun());
+    
 	ship.changeWeapon();
 	ship.weapon.setOwner(ship);
 	ship.weapon.setCenter(ship.hitbox.vertices[0]);
@@ -112,22 +113,22 @@ var Shark = function(primaryColor="#000FFF", secondaryColor = "#0FF0FF",
 	var ship = new Ship(x, y, BASE_SIZE * 0.75, primaryColor, secondaryColor);
     ship.name="Shark";
 	ship.updateDirection();
-	ship.hull        =         new Hull(BASE_HULL_MAX,
-                                        BASE_HULL_RESISTANCE);
+	ship.hull        =         new Hull(BASE_HULL_MAX * TIER3,
+                                        BASE_HULL_RESISTANCE * TIER5);
 
-	ship.shield      =       new Shield(BASE_SHLD_MAX,
-                                        BASE_SHLD_RESISTANCE, 
-                                        BASE_SHLD_DRAINRATE, 
-                                        BASE_SHLD_EFFICIENCY,
-                                        BASE_SHLD_DRAINSPEED);
+	ship.shield      =       new Shield(0,
+                                        0, 
+                                        0, 
+                                        0,
+                                        0);
 
-	ship.powerSupply = new EnergySource(BASE_SOURCE_MAX,
-                                        BASE_SOURCE_RECHARGERATE,
-                                        BASE_SOURCE_RECHARGESPEED);
+	ship.powerSupply = new EnergySource(0,
+                                        0,
+                                        0);
 
-	ship.acceleration =                 BASE_ACCEL;
-	ship.maxSpeed =                     BASE_MAXSPEED;
-	ship.turnRate =                     BASE_TURNRATE;
+	ship.acceleration =                 BASE_ACCEL * TIER2;
+	ship.maxSpeed =                     BASE_MAXSPEED * TIER1;
+	ship.turnRate =                     BASE_TURNRATE * TIER3;
 
 	ship.shield.setPowerSupply(ship.powerSupply);
 	ship.shield.setEnabled(true);
@@ -162,22 +163,22 @@ var CannonFolder = function(primaryColor="#000FFF", secondaryColor = "#0FF0FF",
 	var ship = new Ship(x, y, BASE_SIZE * 0.75, primaryColor, secondaryColor);
     ship.name="CannonFolder";
 	ship.updateDirection();
-	ship.hull        =         new Hull(BASE_HULL_MAX,
-                                        BASE_HULL_RESISTANCE);
+	ship.hull        =         new Hull(BASE_HULL_MAX * TIER2,
+                                        BASE_HULL_RESISTANCE * TIER1);
 
-	ship.shield      =       new Shield(BASE_SHLD_MAX,
-                                        BASE_SHLD_RESISTANCE, 
-                                        BASE_SHLD_DRAINRATE, 
-                                        BASE_SHLD_EFFICIENCY,
-                                        BASE_SHLD_DRAINSPEED);
+	ship.shield      =       new Shield(0,
+                                        0, 
+                                        0, 
+                                        0,
+                                        0);
 
-	ship.powerSupply = new EnergySource(BASE_SOURCE_MAX,
-                                        BASE_SOURCE_RECHARGERATE,
-                                        BASE_SOURCE_RECHARGESPEED);
+	ship.powerSupply = new EnergySource(0,
+                                        0,
+                                        0);
 
-	ship.acceleration =                 BASE_ACCEL;
-	ship.maxSpeed =                     BASE_MAXSPEED;
-	ship.turnRate =                     BASE_TURNRATE;
+	ship.acceleration =                 BASE_ACCEL * TIER2;
+	ship.maxSpeed =                     BASE_MAXSPEED * TIER1;
+	ship.turnRate =                     BASE_TURNRATE * TIER2;
 
 	ship.shield.setPowerSupply(ship.powerSupply);
 	ship.shield.setEnabled(true);
@@ -212,22 +213,22 @@ var Bomber = function(primaryColor="#000FFF", secondaryColor = "#0FF0FF",
 	var ship = new Ship(x, y, BASE_SIZE * 1.5, primaryColor, secondaryColor);
     ship.name="Bomber";
 	ship.updateDirection();
-	ship.hull        =         new Hull(BASE_HULL_MAX,
+	ship.hull        =         new Hull(BASE_HULL_MAX * TIER8,
                                         BASE_HULL_RESISTANCE);
 
-	ship.shield      =       new Shield(BASE_SHLD_MAX,
-                                        BASE_SHLD_RESISTANCE, 
-                                        BASE_SHLD_DRAINRATE, 
-                                        BASE_SHLD_EFFICIENCY,
-                                        BASE_SHLD_DRAINSPEED);
+	ship.shield      =       new Shield(0,
+                                        0, 
+                                        0, 
+                                        0,
+                                        0);
 
-	ship.powerSupply = new EnergySource(BASE_SOURCE_MAX,
-                                        BASE_SOURCE_RECHARGERATE,
-                                        BASE_SOURCE_RECHARGESPEED);
+	ship.powerSupply = new EnergySource(0,
+                                        0,
+                                        0);
 
-	ship.acceleration =                 BASE_ACCEL;
-	ship.maxSpeed =                     BASE_MAXSPEED;
-	ship.turnRate =                     BASE_TURNRATE;
+	ship.acceleration =                 BASE_ACCEL * TIER1;
+	ship.maxSpeed =                     BASE_MAXSPEED * TIER2;
+	ship.turnRate =                     BASE_TURNRATE * TIER1;
 
 	ship.shield.setPowerSupply(ship.powerSupply);
 	ship.shield.setEnabled(true);
@@ -281,21 +282,22 @@ var Armageddon= function(primaryColor="#000FFF", secondaryColor = "#0FF0FF",
     ship.name="Armageddon";
 	ship.updateDirection();
 
-	ship.hull        =         new Hull(BASE_HULL_MAX,
-                                        BASE_HULL_RESISTANCE);
+	ship.hull        =         new Hull(BASE_HULL_MAX * TIER10,
+                                        BASE_HULL_RESISTANCE * TIER2);
 
-	ship.shield      =       new Shield(BASE_SHLD_MAX,
-                                        BASE_SHLD_RESISTANCE, 
-                                        BASE_SHLD_DRAINRATE, 
-                                        BASE_SHLD_EFFICIENCY,
-                                        BASE_SHLD_DRAINSPEED);
+	ship.shield      =       new Shield(0,
+                                        0, 
+                                        0, 
+                                        0,
+                                        0);
 
-	ship.powerSupply = new EnergySource(BASE_SOURCE_MAX,
-                                        BASE_SOURCE_RECHARGERATE,
-                                        BASE_SOURCE_RECHARGESPEED);
-    ship.acceleration =                 BASE_ACCEL;
-    ship.maxSpeed=                      BASE_MAXSPEED;
-    ship.turnRate =                     BASE_TURNRATE;
+	ship.powerSupply = new EnergySource(0,
+                                        0,
+                                        0);
+
+    ship.acceleration =                 BASE_ACCEL * TIER2;
+    ship.maxSpeed=                      BASE_MAXSPEED * TIER1;
+    ship.turnRate =                     BASE_TURNRATE * TIER3;
 
 	ship.shield.setPowerSupply(ship.powerSupply);
 	ship.shield.setEnabled(true);
