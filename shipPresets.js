@@ -18,7 +18,7 @@ var BASE_SHLD_MAX  = 50;
 var BASE_SHLD_RESISTANCE = 0;
 var BASE_SHLD_DRAINRATE = 10;
 var BASE_SHLD_EFFICIENCY= 0.5;
-var BASE_SHLD_DRAINSPEED = 300;
+var BASE_SHLD_DRAINSPEED = 250;
 // Energy Source
 // = function(max = 100, rechargeRate = 10, rechargeSpeed=500){ //rechargeSpeed in microseconds; rechargeRate in points per second (? or per ticks?)
 var BASE_SOURCE_MAX = 100;
@@ -361,11 +361,11 @@ var StellarII = function(primaryColor="#000FFF", secondaryColor = "#0FF0FF",
 	ship.shield      =       new Shield(BASE_SHLD_MAX * TIER2,
                                         BASE_SHLD_RESISTANCE, 
                                         BASE_SHLD_DRAINRATE *TIER2, 
-                                        BASE_SHLD_EFFICIENCY *TIER2,
+                                        BASE_SHLD_EFFICIENCY,
                                         BASE_SHLD_DRAINSPEED);
 
 	ship.powerSupply = new EnergySource(BASE_SOURCE_MAX * TIER2,
-                                        BASE_SOURCE_RECHARGERATE *TIER2,
+                                        BASE_SOURCE_RECHARGERATE,
                                         BASE_SOURCE_RECHARGESPEED / TIER2);
 
 	ship.acceleration =                 BASE_ACCEL *TIER2;
@@ -440,11 +440,11 @@ var Beamer = function(primaryColor="#000FFF", secondaryColor = "#0FF0FF",
 	ship.shield      =       new Shield(BASE_SHLD_MAX *TIER3,
                                         BASE_SHLD_RESISTANCE, 
                                         BASE_SHLD_DRAINRATE *TIER3, 
-                                        BASE_SHLD_EFFICIENCY *TIER3,
+                                        BASE_SHLD_EFFICIENCY,
                                         BASE_SHLD_DRAINSPEED);
 
 	ship.powerSupply = new EnergySource(BASE_SOURCE_MAX *TIER3,
-                                        BASE_SOURCE_RECHARGERATE *TIER3,
+                                        BASE_SOURCE_RECHARGERATE,
                                         BASE_SOURCE_RECHARGESPEED /TIER3);
 
 	ship.acceleration =                 BASE_ACCEL *TIER2;
@@ -493,11 +493,11 @@ var Turret = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF", cannon
 	ship.shield      =       new Shield(BASE_SHLD_MAX *TIER4,
                                         BASE_SHLD_RESISTANCE, 
                                         BASE_SHLD_DRAINRATE *TIER4, 
-                                        BASE_SHLD_EFFICIENCY *TIER4,
+                                        BASE_SHLD_EFFICIENCY,
                                         BASE_SHLD_DRAINSPEED);
 
 	ship.powerSupply = new EnergySource(BASE_SOURCE_MAX *TIER4,
-                                        BASE_SOURCE_RECHARGERATE *TIER4,
+                                        BASE_SOURCE_RECHARGERATE,
                                         BASE_SOURCE_RECHARGESPEED /TIER4);
 
 	ship.acceleration =                 BASE_ACCEL *TIER2;
@@ -602,11 +602,11 @@ var StarGazer = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF",
 	ship.shield      =       new Shield(BASE_SHLD_MAX * TIER5,
                                         BASE_SHLD_RESISTANCE, 
                                         BASE_SHLD_DRAINRATE * TIER5, 
-                                        BASE_SHLD_EFFICIENCY *TIER5,
+                                        BASE_SHLD_EFFICIENCY,
                                         BASE_SHLD_DRAINSPEED);
 
 	ship.powerSupply = new EnergySource(BASE_SOURCE_MAX *TIER5,
-                                        BASE_SOURCE_RECHARGERATE *TIER5,
+                                        BASE_SOURCE_RECHARGERATE,
                                         BASE_SOURCE_RECHARGESPEED /TIER5);
 
 	ship.acceleration =                 BASE_ACCEL *TIER4;
@@ -655,11 +655,11 @@ var StarGazerII = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF",
 	ship.shield      =       new Shield(BASE_SHLD_MAX *TIER6,
                                         BASE_SHLD_RESISTANCE, 
                                         BASE_SHLD_DRAINRATE *TIER6, 
-                                        BASE_SHLD_EFFICIENCY *TIER6,
+                                        BASE_SHLD_EFFICIENCY,
                                         BASE_SHLD_DRAINSPEED);
 
 	ship.powerSupply = new EnergySource(BASE_SOURCE_MAX *TIER6,
-                                        BASE_SOURCE_RECHARGERATE *TIER6,
+                                        BASE_SOURCE_RECHARGERATE,
                                         BASE_SOURCE_RECHARGESPEED /TIER6);
 
 	ship.acceleration =                 BASE_ACCEL *TIER4;
@@ -707,11 +707,11 @@ var Duster = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF",
 	ship.shield      =       new Shield(BASE_SHLD_MAX *TIER7,
                                         BASE_SHLD_RESISTANCE, 
                                         BASE_SHLD_DRAINRATE *TIER7, 
-                                        BASE_SHLD_EFFICIENCY *TIER7,
+                                        BASE_SHLD_EFFICIENCY,
                                         BASE_SHLD_DRAINSPEED);
 
 	ship.powerSupply = new EnergySource(BASE_SOURCE_MAX *TIER7,
-                                        BASE_SOURCE_RECHARGERATE *TIER7,
+                                        BASE_SOURCE_RECHARGERATE,
                                         BASE_SOURCE_RECHARGESPEED /TIER7);
 
 	ship.acceleration =                 BASE_ACCEL *TIER5;
@@ -766,11 +766,11 @@ var Gargatuan = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF",
 	ship.shield      =       new Shield(BASE_SHLD_MAX *TIER7,
                                         BASE_SHLD_RESISTANCE, 
                                         BASE_SHLD_DRAINRATE *TIER7, 
-                                        BASE_SHLD_EFFICIENCY *TIER7,
+                                        BASE_SHLD_EFFICIENCY,
                                         BASE_SHLD_DRAINSPEED);
 
 	ship.powerSupply = new EnergySource(BASE_SOURCE_MAX *TIER7,
-                                        BASE_SOURCE_RECHARGERATE *TIER7,
+                                        BASE_SOURCE_RECHARGERATE,
                                         BASE_SOURCE_RECHARGESPEED /TIER7);
 
 	ship.acceleration =                 BASE_ACCEL *TIER4;
@@ -821,11 +821,11 @@ var GargantuanII = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF",
 	ship.shield      =       new Shield(BASE_SHLD_MAX *TIER8,
                                         BASE_SHLD_RESISTANCE, 
                                         BASE_SHLD_DRAINRATE *TIER8, 
-                                        BASE_SHLD_EFFICIENCY *TIER8,
+                                        BASE_SHLD_EFFICIENCY,
                                         BASE_SHLD_DRAINSPEED);
 
 	ship.powerSupply = new EnergySource(BASE_SOURCE_MAX *TIER8,
-                                        BASE_SOURCE_RECHARGERATE *TIER8,
+                                        BASE_SOURCE_RECHARGERATE,
                                         BASE_SOURCE_RECHARGESPEED /TIER8);
 
 	ship.acceleration =                 BASE_ACCEL *TIER3;
@@ -876,11 +876,11 @@ var Colossal = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF",
 	ship.shield      =       new Shield(BASE_SHLD_MAX *TIER9,
                                         BASE_SHLD_RESISTANCE *TIER9, 
                                         BASE_SHLD_DRAINRATE *TIER9, 
-                                        BASE_SHLD_EFFICIENCY *TIER9,
+                                        BASE_SHLD_EFFICIENCY,
                                         BASE_SHLD_DRAINSPEED);
 
 	ship.powerSupply = new EnergySource(BASE_SOURCE_MAX *TIER9,
-                                        BASE_SOURCE_RECHARGERATE *TIER9,
+                                        BASE_SOURCE_RECHARGERATE,
                                         BASE_SOURCE_RECHARGESPEED /TIER9);
 
 	ship.acceleration =                 BASE_ACCEL *TIER2;
