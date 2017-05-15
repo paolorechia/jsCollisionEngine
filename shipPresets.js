@@ -9,11 +9,13 @@ var BASE_TURNRATE = 2;
 var BASE_MAXSPEED = 1;
 // HULL
 var BASE_HULL_MAX = 100;
-var BASE_HULL_RESISTANCE = 0.4;
+// RESISTANCE DISABLED - TOO OP
+var BASE_HULL_RESISTANCE = 0;
 // SHIELD
 // = function(max = 100, resistance=0, drainRate=10, rechargeEfficiency = 0.5, drainSpeed = 250)
 var BASE_SHLD_MAX  = 50;
-var BASE_SHLD_RESISTANCE = 0.1;
+// RESISTANCE DISABLED
+var BASE_SHLD_RESISTANCE = 0;
 var BASE_SHLD_DRAINRATE = 10;
 var BASE_SHLD_EFFICIENCY= 0.5;
 var BASE_SHLD_DRAINSPEED = 300;
@@ -47,117 +49,7 @@ function loadDefaultSounds(ship){
     return ship;
 }
 
-var Stellar = function(primaryColor="#000FFF", secondaryColor = "#0FF0FF", 
-                       x = c.width/2, y = c.height/2){
-	var ship = new Ship(x, y, BASE_SIZE, primaryColor, secondaryColor);
-    ship.name="Stellar";
-	ship.updateDirection();
-	ship.hull        =         new Hull(BASE_HULL_MAX,
-                                        BASE_HULL_RESISTANCE);
-
-	ship.shield      =       new Shield(BASE_SHLD_MAX,
-                                        BASE_SHLD_RESISTANCE, 
-                                        BASE_SHLD_DRAINRATE, 
-                                        BASE_SHLD_EFFICIENCY,
-                                        BASE_SHLD_DRAINSPEED);
-
-	ship.powerSupply = new EnergySource(BASE_SOURCE_MAX,
-                                        BASE_SOURCE_RECHARGERATE,
-                                        BASE_SOURCE_RECHARGESPEED);
-
-	ship.acceleration =                 BASE_ACCEL;
-	ship.maxSpeed =                     BASE_MAXSPEED;
-	ship.turnRate =                     BASE_TURNRATE;
-
-	ship.shield.setPowerSupply(ship.powerSupply);
-	ship.shield.setEnabled(true);
-
-	
-	ship.addWeapon(machineGun());
-    
-	ship.changeWeapon();
-	ship.weapon.setOwner(ship);
-	ship.weapon.setCenter(ship.hitbox.vertices[0]);
-	ship.weapon.setPosition(ship.auxHitbox.vertices[0]);
-	ship.weapon.enabled=true;
-
-	ship.addWeapon(machineGun());
-	ship.changeWeapon();
-	ship.weapon.setOwner(ship);
-	ship.weapon.setCenter(ship.hitbox.vertices[1]);
-	ship.weapon.setPosition(ship.auxHitbox.vertices[1]);
-	ship.weapon.enabled=true;
-
-	ship.addWeapon(dumbMissile());
-	ship.changeWeapon();
-	ship.weapon.setOwner(ship);
-	ship.weapon.setCenter(ship.hitbox.center);
-	ship.weapon.setPosition(ship.auxHitbox.center);
-	ship.weapon.enabled=true;
-
-    ship=loadDefaultSounds(ship);
-/*  engineSound is too lame right now
-    engineSound=document.createElement("audio");
-    engineSound.src="g/engine.mp3";
-    buffer=document.createElement("audio");
-    buffer.src="g/engine.mp3";
-    ship.engineSound = new BufferedSound(engineSound, buffer);
-    ship.engineSound.sound.volume=0.5;
-    ship.engineSound.buffer.volume=0.5;
-*/
-	
-	return ship;
-}
-var Shark = function(primaryColor="#000FFF", secondaryColor = "#0FF0FF", 
-                       x = c.width/2, y = c.height/2){
-	var ship = new Ship(x, y, BASE_SIZE * 0.75, primaryColor, secondaryColor);
-    ship.name="Shark";
-	ship.updateDirection();
-	ship.hull        =         new Hull(BASE_HULL_MAX * TIER3,
-                                        BASE_HULL_RESISTANCE * TIER5);
-
-	ship.shield      =       new Shield(0,
-                                        0, 
-                                        0, 
-                                        0,
-                                        0);
-
-	ship.powerSupply = new EnergySource(0,
-                                        0,
-                                        0);
-
-	ship.acceleration =                 BASE_ACCEL * TIER2;
-	ship.maxSpeed =                     BASE_MAXSPEED * TIER1;
-	ship.turnRate =                     BASE_TURNRATE * TIER3;
-
-	ship.shield.setPowerSupply(ship.powerSupply);
-	ship.shield.setEnabled(true);
-
-	
-	ship.addWeapon(dumbMissile());
-	ship.changeWeapon();
-	ship.weapon.setOwner(ship);
-	ship.weapon.setCenter(ship.hitbox.vertices[0]);
-	ship.weapon.setPosition(ship.auxHitbox.vertices[0]);
-	ship.weapon.enabled=true;
-
-	ship.addWeapon(dumbMissile());
-	ship.changeWeapon();
-	ship.weapon.setOwner(ship);
-	ship.weapon.setCenter(ship.hitbox.vertices[1]);
-	ship.weapon.setPosition(ship.auxHitbox.vertices[1]);
-	ship.weapon.enabled=true;
-
-	ship.addWeapon(lightCannon());
-	ship.changeWeapon();
-	ship.weapon.setOwner(ship);
-    ship.weapon.setCenter(ship.hitbox.vertices[2]);
-	ship.weapon.setPosition(ship.auxHitbox.vertices[2]);
-    ship.weapon.enabled=true;
-
-    ship=loadDefaultSounds(ship);
-	return ship;
-}
+/* ZERO-ENERGY SHIPS */
 var CannonFolder = function(primaryColor="#000FFF", secondaryColor = "#0FF0FF", 
                        x = c.width/2, y = c.height/2){
 	var ship = new Ship(x, y, BASE_SIZE * 0.75, primaryColor, secondaryColor);
@@ -192,6 +84,57 @@ var CannonFolder = function(primaryColor="#000FFF", secondaryColor = "#0FF0FF",
 	ship.weapon.enabled=true;
 
 	ship.addWeapon(heavyCannon());
+	ship.changeWeapon();
+	ship.weapon.setOwner(ship);
+	ship.weapon.setCenter(ship.hitbox.vertices[1]);
+	ship.weapon.setPosition(ship.auxHitbox.vertices[1]);
+	ship.weapon.enabled=true;
+
+	ship.addWeapon(lightCannon());
+	ship.changeWeapon();
+	ship.weapon.setOwner(ship);
+    ship.weapon.setCenter(ship.hitbox.vertices[2]);
+	ship.weapon.setPosition(ship.auxHitbox.vertices[2]);
+    ship.weapon.enabled=true;
+
+    ship=loadDefaultSounds(ship);
+	return ship;
+}
+
+var Shark = function(primaryColor="#000FFF", secondaryColor = "#0FF0FF", 
+                       x = c.width/2, y = c.height/2){
+	var ship = new Ship(x, y, BASE_SIZE * 0.75, primaryColor, secondaryColor);
+    ship.name="Shark";
+	ship.updateDirection();
+	ship.hull        =         new Hull(BASE_HULL_MAX * TIER3,
+                                        BASE_HULL_RESISTANCE * TIER5);
+
+	ship.shield      =       new Shield(0,
+                                        0, 
+                                        0, 
+                                        0,
+                                        0);
+
+	ship.powerSupply = new EnergySource(0,
+                                        0,
+                                        0);
+
+	ship.acceleration =                 BASE_ACCEL * TIER2;
+	ship.maxSpeed =                     BASE_MAXSPEED * TIER1;
+	ship.turnRate =                     BASE_TURNRATE * TIER3;
+
+	ship.shield.setPowerSupply(ship.powerSupply);
+	ship.shield.setEnabled(true);
+
+	
+	ship.addWeapon(dumbMissile());
+	ship.changeWeapon();
+	ship.weapon.setOwner(ship);
+	ship.weapon.setCenter(ship.hitbox.vertices[0]);
+	ship.weapon.setPosition(ship.auxHitbox.vertices[0]);
+	ship.weapon.enabled=true;
+
+	ship.addWeapon(dumbMissile());
 	ship.changeWeapon();
 	ship.weapon.setOwner(ship);
 	ship.weapon.setCenter(ship.hitbox.vertices[1]);
@@ -344,63 +287,11 @@ var Armageddon= function(primaryColor="#000FFF", secondaryColor = "#0FF0FF",
     ship=loadDefaultSounds(ship);
 	return ship;
 }
-var StarGazer = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF",
+/* ENERGY-BASED SHIPS */
+var Stellar = function(primaryColor="#000FFF", secondaryColor = "#0FF0FF", 
                        x = c.width/2, y = c.height/2){
-	var ship = new Ship(x, y, BASE_SIZE * 1.25, primaryColor, secondaryColor);
-    ship.name="StarGazer";
-	ship.updateDirection();
-	ship.hull        =         new Hull(BASE_HULL_MAX,
-                                        BASE_HULL_RESISTANCE);
-
-	ship.shield      =       new Shield(BASE_SHLD_MAX,
-                                        BASE_SHLD_RESISTANCE, 
-                                        BASE_SHLD_DRAINRATE, 
-                                        BASE_SHLD_EFFICIENCY,
-                                        BASE_SHLD_DRAINSPEED);
-
-	ship.powerSupply = new EnergySource(BASE_SOURCE_MAX,
-                                        BASE_SOURCE_RECHARGERATE,
-                                        BASE_SOURCE_RECHARGESPEED);
-
-	ship.acceleration =                 BASE_ACCEL;
-	ship.maxSpeed =                     BASE_MAXSPEED;
-	ship.turnRate =                     BASE_TURNRATE;
-
-
-	ship.shield.setPowerSupply(ship.powerSupply);
-	ship.shield.setEnabled(true);
-
-	ship.addWeapon(lightCannon());
-	ship.changeWeapon();
-	ship.weapon.setOwner(ship);
-	ship.weapon.setPowerSupply(ship.powerSupply);
-	ship.weapon.setCenter(ship.hitbox.vertices[0]);
-	ship.weapon.setPosition(ship.auxHitbox.vertices[0]);
-	ship.weapon.enabled=true;
-
-	ship.addWeapon(lightCannon());
-	ship.changeWeapon();
-	ship.weapon.setOwner(ship);
-	ship.weapon.setCenter(ship.hitbox.vertices[1]);
-	ship.weapon.setPosition(ship.auxHitbox.vertices[1]);
-	ship.weapon.setPowerSupply(ship.powerSupply);
-	ship.weapon.enabled=true;
-	
-	ship.addWeapon(heavyLaserBlaster());
-	ship.changeWeapon();
-	ship.weapon.setOwner(ship);
-	ship.weapon.setPowerSupply(ship.powerSupply);
-	ship.weapon.setPosition(ship.auxHitbox.center);
-	ship.weapon.setCenter(ship.hitbox.center);
-	ship.weapon.enabled=true;
-
-    ship=loadDefaultSounds(ship);
-	return ship;
-}
-var StarGazerII = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF",
-                       x = c.width/2, y = c.height/2){
-	var ship = new Ship(x, y, BASE_SIZE * 1.25, primaryColor, secondaryColor);
-    ship.name="StarGazerII";
+	var ship = new Ship(x, y, BASE_SIZE, primaryColor, secondaryColor);
+    ship.name="Stellar";
 	ship.updateDirection();
 	ship.hull        =         new Hull(BASE_HULL_MAX,
                                         BASE_HULL_RESISTANCE);
@@ -421,250 +312,174 @@ var StarGazerII = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF",
 
 	ship.shield.setPowerSupply(ship.powerSupply);
 	ship.shield.setEnabled(true);
-	
-	ship.addWeapon(heavyCannon());
-	ship.changeWeapon();
-	ship.weapon.setOwner(ship);
-	ship.weapon.setPowerSupply(ship.powerSupply);
-	ship.weapon.setCenter(ship.hitbox.vertices[0]);
-	ship.weapon.setPosition(ship.auxHitbox.vertices[0]);
-	ship.weapon.enabled=true;
-
-	ship.addWeapon(heavyCannon());
-	ship.changeWeapon();
-	ship.weapon.setOwner(ship);
-	ship.weapon.setCenter(ship.hitbox.vertices[1]);
-	ship.weapon.setPosition(ship.auxHitbox.vertices[1]);
-	ship.weapon.setPowerSupply(ship.powerSupply);
-	ship.weapon.enabled=true;
-	
-	ship.addWeapon(heavyLaserBlaster());
-	ship.changeWeapon();
-	ship.weapon.setOwner(ship);
-	ship.weapon.setPowerSupply(ship.powerSupply);
-	ship.weapon.setPosition(ship.auxHitbox.center);
-	ship.weapon.setCenter(ship.hitbox.center);
-	ship.weapon.enabled=true;
-
-    ship=loadDefaultSounds(ship);
-	return ship;
-}
-var Duster = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF",
-                       x = c.width/2, y = c.height/2){
-	var ship = new Ship(x, y, BASE_SIZE * 1.75, primaryColor, secondaryColor);
-    ship.name="Duster";
-	ship.updateDirection();
-	ship.hull        =         new Hull(BASE_HULL_MAX,
-                                        BASE_HULL_RESISTANCE);
-
-	ship.shield      =       new Shield(BASE_SHLD_MAX,
-                                        BASE_SHLD_RESISTANCE, 
-                                        BASE_SHLD_DRAINRATE, 
-                                        BASE_SHLD_EFFICIENCY,
-                                        BASE_SHLD_DRAINSPEED);
-
-	ship.powerSupply = new EnergySource(BASE_SOURCE_MAX,
-                                        BASE_SOURCE_RECHARGERATE,
-                                        BASE_SOURCE_RECHARGESPEED);
-
-	ship.acceleration =                 BASE_ACCEL;
-	ship.maxSpeed =                     BASE_MAXSPEED;
-	ship.turnRate =                     BASE_TURNRATE;
-
-	ship.shield.setPowerSupply(ship.powerSupply);
-	ship.shield.setEnabled(true);
-	
-	ship.addWeapon(dumbMissile());
-	ship.changeWeapon();
-	ship.weapon.setOwner(ship);
-	ship.weapon.setCenter(ship.hitbox.vertices[0]);
-	ship.weapon.setPosition(ship.auxHitbox.vertices[0]);
-	ship.weapon.enabled=true;
-
-	ship.addWeapon(dumbMissile());
-	ship.changeWeapon();
-	ship.weapon.setOwner(ship);
-	ship.weapon.setCenter(ship.hitbox.vertices[1]);
-	ship.weapon.setPosition(ship.auxHitbox.vertices[1]);
-	ship.weapon.enabled=true;
-
-	ship.addWeapon(heavyLaserBlaster());
-	ship.changeWeapon();
-	ship.weapon.setOwner(ship);
-	ship.weapon.setPowerSupply(ship.powerSupply);
-	ship.weapon.setCenter(ship.hitbox.vertices[0]);
-	ship.weapon.setPosition(ship.auxHitbox.vertices[0]);
-	ship.weapon.enabled=true;
-
-
-	ship.addWeapon(heavyLaserBlaster());
-	ship.changeWeapon();
-	ship.weapon.setOwner(ship);
-	ship.weapon.setCenter(ship.hitbox.vertices[1]);
-	ship.weapon.setPosition(ship.auxHitbox.vertices[1]);
-	ship.weapon.setPowerSupply(ship.powerSupply);
-	ship.weapon.enabled=true;
-
-    ship=loadDefaultSounds(ship);
-	return ship;
-}
-var Gargatuan = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF",
-                       x = c.width/2, y = c.height/2){
-	var ship = new Ship(x, y, BASE_SIZE * 1.5, primaryColor, secondaryColor);
-    ship.name="Gargantuan";
-	ship.updateDirection();
-	ship.hull        =         new Hull(BASE_HULL_MAX,
-                                        BASE_HULL_RESISTANCE);
-
-	ship.shield      =       new Shield(BASE_SHLD_MAX,
-                                        BASE_SHLD_RESISTANCE, 
-                                        BASE_SHLD_DRAINRATE, 
-                                        BASE_SHLD_EFFICIENCY,
-                                        BASE_SHLD_DRAINSPEED);
-
-	ship.powerSupply = new EnergySource(BASE_SOURCE_MAX,
-                                        BASE_SOURCE_RECHARGERATE,
-                                        BASE_SOURCE_RECHARGESPEED);
-
-	ship.acceleration =                 BASE_ACCEL;
-	ship.maxSpeed =                     BASE_MAXSPEED;
-	ship.turnRate =                     BASE_TURNRATE;
-
-	ship.shield.setPowerSupply(ship.powerSupply);
-	ship.shield.setEnabled(true);
-	
-	ship.addWeapon(heavyLaserBlaster());
-	ship.changeWeapon();
-	ship.weapon.setOwner(ship);
-	ship.weapon.setPowerSupply(ship.powerSupply);
-	ship.weapon.setCenter(ship.hitbox.vertices[0]);
-	ship.weapon.setPosition(ship.auxHitbox.vertices[0]);
-
-	ship.weapon.enabled=true;
-
-	ship.addWeapon(heavyLaserBlaster());
-	ship.changeWeapon();
-	ship.weapon.setOwner(ship);
-	ship.weapon.setCenter(ship.hitbox.vertices[1]);
-	ship.weapon.setPosition(ship.auxHitbox.vertices[1]);
-	ship.weapon.setPowerSupply(ship.powerSupply);
-	ship.weapon.enabled=true;
 
 	
-	ship.addWeapon(heavyLaserBeam());
-	ship.changeWeapon();
-	ship.weapon.setOwner(ship);
-	ship.weapon.setPowerSupply(ship.powerSupply);
-	ship.weapon.setPosition(ship.front);
-	ship.weapon.setCenter(ship.hitbox.center);
-	ship.weapon.enabled=true;
-
-    ship=loadDefaultSounds(ship);
-	return ship;
-}
-var GargantuanII = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF",
-                       x = c.width/2, y = c.height/2){
-	var ship = new Ship(x, y, BASE_SIZE * 1.5, primaryColor, secondaryColor);
-    ship.name="GargantuanII";
-	ship.updateDirection();
-
-	ship.hull        =         new Hull(BASE_HULL_MAX,
-                                        BASE_HULL_RESISTANCE);
-
-	ship.shield      =       new Shield(BASE_SHLD_MAX,
-                                        BASE_SHLD_RESISTANCE, 
-                                        BASE_SHLD_DRAINRATE, 
-                                        BASE_SHLD_EFFICIENCY,
-                                        BASE_SHLD_DRAINSPEED);
-
-	ship.powerSupply = new EnergySource(BASE_SOURCE_MAX,
-                                        BASE_SOURCE_RECHARGERATE,
-                                        BASE_SOURCE_RECHARGESPEED);
-
-	ship.acceleration =                 BASE_ACCEL;
-	ship.maxSpeed =                     BASE_MAXSPEED;
-	ship.turnRate =                     BASE_TURNRATE;
-
-	ship.shield.setPowerSupply(ship.powerSupply);
-	ship.shield.setEnabled(true);
-	
-	ship.addWeapon(heavyLaserBeam());
-	ship.changeWeapon();
-	ship.weapon.setOwner(ship);
-	ship.weapon.setPowerSupply(ship.powerSupply);
-	ship.weapon.setCenter(ship.hitbox.vertices[0]);
-	ship.weapon.setPosition(ship.auxHitbox.vertices[0]);
-
-	ship.weapon.enabled=true;
-
-	ship.addWeapon(heavyLaserBeam());
-	ship.changeWeapon();
-	ship.weapon.setOwner(ship);
-	ship.weapon.setCenter(ship.hitbox.vertices[1]);
-	ship.weapon.setPosition(ship.auxHitbox.vertices[1]);
-	ship.weapon.setPowerSupply(ship.powerSupply);
-	ship.weapon.enabled=true;
-
-	
-	ship.addWeapon(heavyLaserBlaster());
-	ship.changeWeapon();
-	ship.weapon.setOwner(ship);
-	ship.weapon.setPowerSupply(ship.powerSupply);
-	ship.weapon.setCenter(ship.hitbox.center);
-	ship.weapon.setPosition(ship.auxHitbox.center);
-	ship.weapon.setPowerSupply(ship.powerSupply);
-	ship.weapon.enabled=true;
-
-    ship=loadDefaultSounds(ship);
-	return ship;
-}
-var Colossal = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF",
-                       x = c.width/2, y = c.height/2){
-	var ship = new Ship(x, y, BASE_SIZE * 2.5, primaryColor, secondaryColor);
-    ship.name = "Colossal";
-	ship.updateDirection();
-	ship.hull        =         new Hull(BASE_HULL_MAX,
-                                        BASE_HULL_RESISTANCE);
-
-	ship.shield      =       new Shield(BASE_SHLD_MAX,
-                                        BASE_SHLD_RESISTANCE, 
-                                        BASE_SHLD_DRAINRATE, 
-                                        BASE_SHLD_EFFICIENCY,
-                                        BASE_SHLD_DRAINSPEED);
-
-	ship.powerSupply = new EnergySource(BASE_SOURCE_MAX,
-                                        BASE_SOURCE_RECHARGERATE,
-                                        BASE_SOURCE_RECHARGESPEED);
-
-	ship.acceleration =                 BASE_ACCEL;
-	ship.maxSpeed =                     BASE_MAXSPEED;
-	ship.turnRate =                     BASE_TURNRATE;
-
-	ship.shield.setPowerSupply(ship.powerSupply);
-	ship.shield.setEnabled(true);
+	ship.addWeapon(machineGun());
     
-    for (var i = 2; i < ship.hitbox.vertices.length; i++){
-        ship.addWeapon(heavyLaserBlaster());
-        ship.changeWeapon();
-        ship.weapon.setOwner(ship);
-        ship.weapon.setPowerSupply(ship.powerSupply);
-        ship.weapon.setCenter(ship.hitbox.vertices[i]);
-        ship.weapon.setPosition(ship.auxHitbox.vertices[i]);
-        ship.weapon.enabled=true;
-    }
+	ship.changeWeapon();
+	ship.weapon.setOwner(ship);
+	ship.weapon.setCenter(ship.hitbox.vertices[0]);
+	ship.weapon.setPosition(ship.auxHitbox.vertices[0]);
+	ship.weapon.enabled=true;
 
-    for (var i = 0; i < ship.hitbox.vertices.length - 1; i++){
-        ship.addWeapon(lightLaserBlaster());
-        ship.changeWeapon();
-        ship.weapon.setOwner(ship);
-        ship.weapon.setPowerSupply(ship.powerSupply);
-        ship.weapon.setCenter(coord);
-        ship.weapon.setPosition(ship.hitbox.vertices[i % 3]);
-        ship.weapon.setTurretMode(true);
-        ship.weapon.enabled=true;
-    }
+	ship.addWeapon(machineGun());
+	ship.changeWeapon();
+	ship.weapon.setOwner(ship);
+	ship.weapon.setCenter(ship.hitbox.vertices[1]);
+	ship.weapon.setPosition(ship.auxHitbox.vertices[1]);
+	ship.weapon.enabled=true;
+
+	ship.addWeapon(dumbMissile());
+	ship.changeWeapon();
+	ship.weapon.setOwner(ship);
+	ship.weapon.setCenter(ship.hitbox.center);
+	ship.weapon.setPosition(ship.auxHitbox.center);
+	ship.weapon.enabled=true;
+
     ship=loadDefaultSounds(ship);
+/*  engineSound is too lame right now
+    engineSound=document.createElement("audio");
+    engineSound.src="g/engine.mp3";
+    buffer=document.createElement("audio");
+    buffer.src="g/engine.mp3";
+    ship.engineSound = new BufferedSound(engineSound, buffer);
+    ship.engineSound.sound.volume=0.5;
+    ship.engineSound.buffer.volume=0.5;
+*/
+	
+	return ship;
+}
+var StellarII = function(primaryColor="#000FFF", secondaryColor = "#0FF0FF", 
+                       x = c.width/2, y = c.height/2){
+	var ship = new Ship(x, y, BASE_SIZE, primaryColor, secondaryColor);
+    ship.name="StellarII";
+	ship.updateDirection();
 
+	ship.hull        =         new Hull(BASE_HULL_MAX,
+                                        BASE_HULL_RESISTANCE);
+
+	ship.shield      =       new Shield(BASE_SHLD_MAX * TIER2,
+                                        BASE_SHLD_RESISTANCE, 
+                                        BASE_SHLD_DRAINRATE *TIER2, 
+                                        BASE_SHLD_EFFICIENCY *TIER2,
+                                        BASE_SHLD_DRAINSPEED);
+
+	ship.powerSupply = new EnergySource(BASE_SOURCE_MAX * TIER2,
+                                        BASE_SOURCE_RECHARGERATE *TIER2,
+                                        BASE_SOURCE_RECHARGESPEED / TIER2);
+
+	ship.acceleration =                 BASE_ACCEL *TIER2;
+	ship.maxSpeed =                     BASE_MAXSPEED *TIER2;
+	ship.turnRate =                     BASE_TURNRATE *TIER2;
+
+	ship.shield.setPowerSupply(ship.powerSupply);
+	ship.shield.setEnabled(true);
+
+	
+	ship.addWeapon(lightLaserBlaster());
+	ship.changeWeapon();
+	ship.weapon.setOwner(ship);
+	ship.weapon.setCenter(ship.hitbox.vertices[0]);
+	ship.weapon.setPosition(ship.auxHitbox.vertices[0]);
+	ship.weapon.setPowerSupply(ship.powerSupply);
+	ship.weapon.enabled=true;
+	ship.addWeapon(lightLaserBlaster());
+	ship.changeWeapon();
+	ship.weapon.setOwner(ship);
+	ship.weapon.setCenter(ship.hitbox.vertices[0]);
+	ship.weapon.setPosition(ship.auxHitbox.vertices[0]);
+	ship.weapon.setPowerSupply(ship.powerSupply);
+	ship.weapon.enabled=true;
+
+	ship.addWeapon(lightLaserBlaster());
+	ship.changeWeapon();
+	ship.weapon.setOwner(ship);
+	ship.weapon.setCenter(ship.hitbox.vertices[1]);
+	ship.weapon.setPosition(ship.auxHitbox.vertices[1]);
+	ship.weapon.setPowerSupply(ship.powerSupply);
+	ship.weapon.enabled=true;
+	ship.addWeapon(lightLaserBlaster());
+	ship.changeWeapon();
+	ship.weapon.setOwner(ship);
+	ship.weapon.setCenter(ship.hitbox.vertices[0]);
+	ship.weapon.setPosition(ship.auxHitbox.vertices[0]);
+	ship.weapon.setPowerSupply(ship.powerSupply);
+	ship.weapon.enabled=true;
+
+
+
+	ship.addWeapon(dumbMissile());
+	ship.changeWeapon();
+	ship.weapon.setOwner(ship);
+	ship.weapon.setCenter(ship.hitbox.center);
+	ship.weapon.setPosition(ship.auxHitbox.center);
+	ship.weapon.enabled=true;
+
+    ship=loadDefaultSounds(ship);
+/*  engineSound is too lame right now
+    engineSound=document.createElement("audio");
+    engineSound.src="g/engine.mp3";
+    buffer=document.createElement("audio");
+    buffer.src="g/engine.mp3";
+    ship.engineSound = new BufferedSound(engineSound, buffer);
+    ship.engineSound.sound.volume=0.5;
+    ship.engineSound.buffer.volume=0.5;
+*/
+	
+	return ship;
+}
+var Beamer = function(primaryColor="#000FFF", secondaryColor = "#0FF0FF", 
+                       x = c.width/2, y = c.height/2){
+	var ship = new Ship(x, y, BASE_SIZE, primaryColor, secondaryColor);
+    ship.name="Beamer";
+	ship.updateDirection();
+
+	ship.hull        =         new Hull(BASE_HULL_MAX,
+                                        BASE_HULL_RESISTANCE);
+
+	ship.shield      =       new Shield(BASE_SHLD_MAX *TIER3,
+                                        BASE_SHLD_RESISTANCE, 
+                                        BASE_SHLD_DRAINRATE *TIER3, 
+                                        BASE_SHLD_EFFICIENCY *TIER3,
+                                        BASE_SHLD_DRAINSPEED);
+
+	ship.powerSupply = new EnergySource(BASE_SOURCE_MAX *TIER3,
+                                        BASE_SOURCE_RECHARGERATE *TIER3,
+                                        BASE_SOURCE_RECHARGESPEED /TIER3);
+
+	ship.acceleration =                 BASE_ACCEL *TIER2;
+	ship.maxSpeed =                     BASE_MAXSPEED *TIER2;
+	ship.turnRate =                     BASE_TURNRATE *TIER2;
+
+	ship.shield.setPowerSupply(ship.powerSupply);
+	ship.shield.setEnabled(true);
+
+	
+	ship.addWeapon(lightLaserBeam());
+	ship.changeWeapon();
+	ship.weapon.setOwner(ship);
+	ship.weapon.setCenter(ship.hitbox.vertices[0]);
+	ship.weapon.setPosition(ship.auxHitbox.vertices[0]);
+	ship.weapon.setPowerSupply(ship.powerSupply);
+	ship.weapon.enabled=true;
+	ship.addWeapon(lightLaserBeam());
+	ship.changeWeapon();
+	ship.weapon.setOwner(ship);
+	ship.weapon.setCenter(ship.hitbox.vertices[1]);
+	ship.weapon.setPosition(ship.auxHitbox.vertices[1]);
+	ship.weapon.setPowerSupply(ship.powerSupply);
+	ship.weapon.enabled=true;
+    ship=loadDefaultSounds(ship);
+/*  engineSound is too lame right now
+    engineSound=document.createElement("audio");
+    engineSound.src="g/engine.mp3";
+    buffer=document.createElement("audio");
+    buffer.src="g/engine.mp3";
+    ship.engineSound = new BufferedSound(engineSound, buffer);
+    ship.engineSound.sound.volume=0.5;
+    ship.engineSound.buffer.volume=0.5;
+*/
+	
 	return ship;
 }
 var Turret = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF", cannons = 1, x = c.width/2, y = c.height/2, size = BASE_SIZE * 0.75, weapon=machineGun){
@@ -675,19 +490,19 @@ var Turret = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF", cannon
 	ship.hull        =         new Hull(BASE_HULL_MAX,
                                         BASE_HULL_RESISTANCE);
 
-	ship.shield      =       new Shield(BASE_SHLD_MAX,
+	ship.shield      =       new Shield(BASE_SHLD_MAX *TIER4,
                                         BASE_SHLD_RESISTANCE, 
-                                        BASE_SHLD_DRAINRATE, 
-                                        BASE_SHLD_EFFICIENCY,
+                                        BASE_SHLD_DRAINRATE *TIER4, 
+                                        BASE_SHLD_EFFICIENCY *TIER4,
                                         BASE_SHLD_DRAINSPEED);
 
-	ship.powerSupply = new EnergySource(BASE_SOURCE_MAX,
-                                        BASE_SOURCE_RECHARGERATE,
-                                        BASE_SOURCE_RECHARGESPEED);
+	ship.powerSupply = new EnergySource(BASE_SOURCE_MAX *TIER4,
+                                        BASE_SOURCE_RECHARGERATE *TIER4,
+                                        BASE_SOURCE_RECHARGESPEED /TIER4);
 
-	ship.acceleration =                 BASE_ACCEL;
-	ship.maxSpeed =                     BASE_MAXSPEED;
-	ship.turnRate =                     BASE_TURNRATE;
+	ship.acceleration =                 BASE_ACCEL *TIER2;
+	ship.maxSpeed =                     BASE_MAXSPEED *TIER2;
+	ship.turnRate =                     BASE_TURNRATE *TIER2;
 
 	ship.shield.setPowerSupply(ship.powerSupply);
 	ship.shield.setEnabled(true);
@@ -776,138 +591,327 @@ var Turret = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF", cannon
     ship=loadDefaultSounds(ship);
 	return ship;
 }
-var Beamer = function(primaryColor="#000FFF", secondaryColor = "#0FF0FF", 
+var StarGazer = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF",
                        x = c.width/2, y = c.height/2){
-	var ship = new Ship(x, y, BASE_SIZE, primaryColor, secondaryColor);
-    ship.name="Beamer";
+	var ship = new Ship(x, y, BASE_SIZE * 1.25, primaryColor, secondaryColor);
+    ship.name="StarGazer";
 	ship.updateDirection();
-
 	ship.hull        =         new Hull(BASE_HULL_MAX,
                                         BASE_HULL_RESISTANCE);
 
-	ship.shield      =       new Shield(BASE_SHLD_MAX,
+	ship.shield      =       new Shield(BASE_SHLD_MAX * TIER5,
                                         BASE_SHLD_RESISTANCE, 
-                                        BASE_SHLD_DRAINRATE, 
-                                        BASE_SHLD_EFFICIENCY,
+                                        BASE_SHLD_DRAINRATE * TIER5, 
+                                        BASE_SHLD_EFFICIENCY *TIER5,
                                         BASE_SHLD_DRAINSPEED);
 
-	ship.powerSupply = new EnergySource(BASE_SOURCE_MAX,
-                                        BASE_SOURCE_RECHARGERATE,
-                                        BASE_SOURCE_RECHARGESPEED);
+	ship.powerSupply = new EnergySource(BASE_SOURCE_MAX *TIER5,
+                                        BASE_SOURCE_RECHARGERATE *TIER5,
+                                        BASE_SOURCE_RECHARGESPEED /TIER5);
 
-	ship.acceleration =                 BASE_ACCEL;
-	ship.maxSpeed =                     BASE_MAXSPEED;
-	ship.turnRate =                     BASE_TURNRATE;
+	ship.acceleration =                 BASE_ACCEL *TIER4;
+	ship.maxSpeed =                     BASE_MAXSPEED *TIER3;
+	ship.turnRate =                     BASE_TURNRATE *TIER3;
+
 
 	ship.shield.setPowerSupply(ship.powerSupply);
 	ship.shield.setEnabled(true);
 
-	
-	ship.addWeapon(lightLaserBeam());
+	ship.addWeapon(lightCannon());
 	ship.changeWeapon();
 	ship.weapon.setOwner(ship);
+	ship.weapon.setPowerSupply(ship.powerSupply);
 	ship.weapon.setCenter(ship.hitbox.vertices[0]);
 	ship.weapon.setPosition(ship.auxHitbox.vertices[0]);
-	ship.weapon.setPowerSupply(ship.powerSupply);
 	ship.weapon.enabled=true;
-	ship.addWeapon(lightLaserBeam());
+
+	ship.addWeapon(lightCannon());
 	ship.changeWeapon();
 	ship.weapon.setOwner(ship);
 	ship.weapon.setCenter(ship.hitbox.vertices[1]);
 	ship.weapon.setPosition(ship.auxHitbox.vertices[1]);
 	ship.weapon.setPowerSupply(ship.powerSupply);
 	ship.weapon.enabled=true;
-    ship=loadDefaultSounds(ship);
-/*  engineSound is too lame right now
-    engineSound=document.createElement("audio");
-    engineSound.src="g/engine.mp3";
-    buffer=document.createElement("audio");
-    buffer.src="g/engine.mp3";
-    ship.engineSound = new BufferedSound(engineSound, buffer);
-    ship.engineSound.sound.volume=0.5;
-    ship.engineSound.buffer.volume=0.5;
-*/
 	
+	ship.addWeapon(heavyLaserBlaster());
+	ship.changeWeapon();
+	ship.weapon.setOwner(ship);
+	ship.weapon.setPowerSupply(ship.powerSupply);
+	ship.weapon.setPosition(ship.auxHitbox.center);
+	ship.weapon.setCenter(ship.hitbox.center);
+	ship.weapon.enabled=true;
+
+    ship=loadDefaultSounds(ship);
 	return ship;
 }
-
-var StellarII = function(primaryColor="#000FFF", secondaryColor = "#0FF0FF", 
+var StarGazerII = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF",
                        x = c.width/2, y = c.height/2){
-	var ship = new Ship(x, y, BASE_SIZE, primaryColor, secondaryColor);
-    ship.name="StellarII";
+	var ship = new Ship(x, y, BASE_SIZE * 1.25, primaryColor, secondaryColor);
+    ship.name="StarGazerII";
 	ship.updateDirection();
-
 	ship.hull        =         new Hull(BASE_HULL_MAX,
                                         BASE_HULL_RESISTANCE);
 
-	ship.shield      =       new Shield(BASE_SHLD_MAX,
+	ship.shield      =       new Shield(BASE_SHLD_MAX *TIER6,
                                         BASE_SHLD_RESISTANCE, 
-                                        BASE_SHLD_DRAINRATE, 
-                                        BASE_SHLD_EFFICIENCY,
+                                        BASE_SHLD_DRAINRATE *TIER6, 
+                                        BASE_SHLD_EFFICIENCY *TIER6,
                                         BASE_SHLD_DRAINSPEED);
 
-	ship.powerSupply = new EnergySource(BASE_SOURCE_MAX,
-                                        BASE_SOURCE_RECHARGERATE,
-                                        BASE_SOURCE_RECHARGESPEED);
+	ship.powerSupply = new EnergySource(BASE_SOURCE_MAX *TIER6,
+                                        BASE_SOURCE_RECHARGERATE *TIER6,
+                                        BASE_SOURCE_RECHARGESPEED /TIER6);
 
-	ship.acceleration =                 BASE_ACCEL;
-	ship.maxSpeed =                     BASE_MAXSPEED;
-	ship.turnRate =                     BASE_TURNRATE;
+	ship.acceleration =                 BASE_ACCEL *TIER4;
+	ship.maxSpeed =                     BASE_MAXSPEED *TIER3;
+	ship.turnRate =                     BASE_TURNRATE *TIER4;
 
 	ship.shield.setPowerSupply(ship.powerSupply);
 	ship.shield.setEnabled(true);
-
 	
-	ship.addWeapon(lightLaserBlaster());
+	ship.addWeapon(heavyCannon());
 	ship.changeWeapon();
 	ship.weapon.setOwner(ship);
+	ship.weapon.setPowerSupply(ship.powerSupply);
 	ship.weapon.setCenter(ship.hitbox.vertices[0]);
 	ship.weapon.setPosition(ship.auxHitbox.vertices[0]);
-	ship.weapon.setPowerSupply(ship.powerSupply);
-	ship.weapon.enabled=true;
-	ship.addWeapon(lightLaserBlaster());
-	ship.changeWeapon();
-	ship.weapon.setOwner(ship);
-	ship.weapon.setCenter(ship.hitbox.vertices[0]);
-	ship.weapon.setPosition(ship.auxHitbox.vertices[0]);
-	ship.weapon.setPowerSupply(ship.powerSupply);
 	ship.weapon.enabled=true;
 
-	ship.addWeapon(lightLaserBlaster());
+	ship.addWeapon(heavyCannon());
 	ship.changeWeapon();
 	ship.weapon.setOwner(ship);
 	ship.weapon.setCenter(ship.hitbox.vertices[1]);
 	ship.weapon.setPosition(ship.auxHitbox.vertices[1]);
 	ship.weapon.setPowerSupply(ship.powerSupply);
 	ship.weapon.enabled=true;
-	ship.addWeapon(lightLaserBlaster());
+	
+	ship.addWeapon(heavyLaserBlaster());
+	ship.changeWeapon();
+	ship.weapon.setOwner(ship);
+	ship.weapon.setPowerSupply(ship.powerSupply);
+	ship.weapon.setPosition(ship.auxHitbox.center);
+	ship.weapon.setCenter(ship.hitbox.center);
+	ship.weapon.enabled=true;
+
+    ship=loadDefaultSounds(ship);
+	return ship;
+}
+var Duster = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF",
+                       x = c.width/2, y = c.height/2){
+	var ship = new Ship(x, y, BASE_SIZE * 1.75, primaryColor, secondaryColor);
+    ship.name="Duster";
+	ship.updateDirection();
+	ship.hull        =         new Hull(BASE_HULL_MAX,
+                                        BASE_HULL_RESISTANCE);
+
+	ship.shield      =       new Shield(BASE_SHLD_MAX *TIER7,
+                                        BASE_SHLD_RESISTANCE, 
+                                        BASE_SHLD_DRAINRATE *TIER7, 
+                                        BASE_SHLD_EFFICIENCY *TIER7,
+                                        BASE_SHLD_DRAINSPEED);
+
+	ship.powerSupply = new EnergySource(BASE_SOURCE_MAX *TIER7,
+                                        BASE_SOURCE_RECHARGERATE *TIER7,
+                                        BASE_SOURCE_RECHARGESPEED /TIER7);
+
+	ship.acceleration =                 BASE_ACCEL *TIER5;
+	ship.maxSpeed =                     BASE_MAXSPEED *TIER2;
+	ship.turnRate =                     BASE_TURNRATE *TIER5;
+
+	ship.shield.setPowerSupply(ship.powerSupply);
+	ship.shield.setEnabled(true);
+	
+	ship.addWeapon(dumbMissile());
 	ship.changeWeapon();
 	ship.weapon.setOwner(ship);
 	ship.weapon.setCenter(ship.hitbox.vertices[0]);
 	ship.weapon.setPosition(ship.auxHitbox.vertices[0]);
-	ship.weapon.setPowerSupply(ship.powerSupply);
 	ship.weapon.enabled=true;
-
-
 
 	ship.addWeapon(dumbMissile());
 	ship.changeWeapon();
 	ship.weapon.setOwner(ship);
-	ship.weapon.setCenter(ship.hitbox.center);
-	ship.weapon.setPosition(ship.auxHitbox.center);
+	ship.weapon.setCenter(ship.hitbox.vertices[1]);
+	ship.weapon.setPosition(ship.auxHitbox.vertices[1]);
+	ship.weapon.enabled=true;
+
+	ship.addWeapon(heavyLaserBlaster());
+	ship.changeWeapon();
+	ship.weapon.setOwner(ship);
+	ship.weapon.setPowerSupply(ship.powerSupply);
+	ship.weapon.setCenter(ship.hitbox.vertices[0]);
+	ship.weapon.setPosition(ship.auxHitbox.vertices[0]);
+	ship.weapon.enabled=true;
+
+
+	ship.addWeapon(heavyLaserBlaster());
+	ship.changeWeapon();
+	ship.weapon.setOwner(ship);
+	ship.weapon.setCenter(ship.hitbox.vertices[1]);
+	ship.weapon.setPosition(ship.auxHitbox.vertices[1]);
+	ship.weapon.setPowerSupply(ship.powerSupply);
 	ship.weapon.enabled=true;
 
     ship=loadDefaultSounds(ship);
-/*  engineSound is too lame right now
-    engineSound=document.createElement("audio");
-    engineSound.src="g/engine.mp3";
-    buffer=document.createElement("audio");
-    buffer.src="g/engine.mp3";
-    ship.engineSound = new BufferedSound(engineSound, buffer);
-    ship.engineSound.sound.volume=0.5;
-    ship.engineSound.buffer.volume=0.5;
-*/
+	return ship;
+}
+var Gargatuan = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF",
+                       x = c.width/2, y = c.height/2){
+	var ship = new Ship(x, y, BASE_SIZE * 1.5, primaryColor, secondaryColor);
+    ship.name="Gargantuan";
+	ship.updateDirection();
+	ship.hull        =         new Hull(BASE_HULL_MAX,
+                                        BASE_HULL_RESISTANCE);
+
+	ship.shield      =       new Shield(BASE_SHLD_MAX *TIER7,
+                                        BASE_SHLD_RESISTANCE, 
+                                        BASE_SHLD_DRAINRATE *TIER7, 
+                                        BASE_SHLD_EFFICIENCY *TIER7,
+                                        BASE_SHLD_DRAINSPEED);
+
+	ship.powerSupply = new EnergySource(BASE_SOURCE_MAX *TIER7,
+                                        BASE_SOURCE_RECHARGERATE *TIER7,
+                                        BASE_SOURCE_RECHARGESPEED /TIER7);
+
+	ship.acceleration =                 BASE_ACCEL *TIER4;
+	ship.maxSpeed =                     BASE_MAXSPEED *TIER2;
+	ship.turnRate =                     BASE_TURNRATE *TIER4;
+
+	ship.shield.setPowerSupply(ship.powerSupply);
+	ship.shield.setEnabled(true);
 	
+	ship.addWeapon(heavyLaserBlaster());
+	ship.changeWeapon();
+	ship.weapon.setOwner(ship);
+	ship.weapon.setPowerSupply(ship.powerSupply);
+	ship.weapon.setCenter(ship.hitbox.vertices[0]);
+	ship.weapon.setPosition(ship.auxHitbox.vertices[0]);
+
+	ship.weapon.enabled=true;
+
+	ship.addWeapon(heavyLaserBlaster());
+	ship.changeWeapon();
+	ship.weapon.setOwner(ship);
+	ship.weapon.setCenter(ship.hitbox.vertices[1]);
+	ship.weapon.setPosition(ship.auxHitbox.vertices[1]);
+	ship.weapon.setPowerSupply(ship.powerSupply);
+	ship.weapon.enabled=true;
+
+	
+	ship.addWeapon(heavyLaserBeam());
+	ship.changeWeapon();
+	ship.weapon.setOwner(ship);
+	ship.weapon.setPowerSupply(ship.powerSupply);
+	ship.weapon.setPosition(ship.front);
+	ship.weapon.setCenter(ship.hitbox.center);
+	ship.weapon.enabled=true;
+
+    ship=loadDefaultSounds(ship);
+	return ship;
+}
+var GargantuanII = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF",
+                       x = c.width/2, y = c.height/2){
+	var ship = new Ship(x, y, BASE_SIZE * 1.5, primaryColor, secondaryColor);
+    ship.name="GargantuanII";
+	ship.updateDirection();
+
+	ship.hull        =         new Hull(BASE_HULL_MAX,
+                                        BASE_HULL_RESISTANCE);
+
+	ship.shield      =       new Shield(BASE_SHLD_MAX *TIER8,
+                                        BASE_SHLD_RESISTANCE, 
+                                        BASE_SHLD_DRAINRATE *TIER8, 
+                                        BASE_SHLD_EFFICIENCY *TIER8,
+                                        BASE_SHLD_DRAINSPEED);
+
+	ship.powerSupply = new EnergySource(BASE_SOURCE_MAX *TIER8,
+                                        BASE_SOURCE_RECHARGERATE *TIER8,
+                                        BASE_SOURCE_RECHARGESPEED /TIER8);
+
+	ship.acceleration =                 BASE_ACCEL *TIER3;
+	ship.maxSpeed =                     BASE_MAXSPEED *TIER2;
+	ship.turnRate =                     BASE_TURNRATE *TIER2;
+
+	ship.shield.setPowerSupply(ship.powerSupply);
+	ship.shield.setEnabled(true);
+	
+	ship.addWeapon(heavyLaserBeam());
+	ship.changeWeapon();
+	ship.weapon.setOwner(ship);
+	ship.weapon.setPowerSupply(ship.powerSupply);
+	ship.weapon.setCenter(ship.hitbox.vertices[0]);
+	ship.weapon.setPosition(ship.auxHitbox.vertices[0]);
+
+	ship.weapon.enabled=true;
+
+	ship.addWeapon(heavyLaserBeam());
+	ship.changeWeapon();
+	ship.weapon.setOwner(ship);
+	ship.weapon.setCenter(ship.hitbox.vertices[1]);
+	ship.weapon.setPosition(ship.auxHitbox.vertices[1]);
+	ship.weapon.setPowerSupply(ship.powerSupply);
+	ship.weapon.enabled=true;
+
+	
+	ship.addWeapon(heavyLaserBlaster());
+	ship.changeWeapon();
+	ship.weapon.setOwner(ship);
+	ship.weapon.setPowerSupply(ship.powerSupply);
+	ship.weapon.setCenter(ship.hitbox.center);
+	ship.weapon.setPosition(ship.auxHitbox.center);
+	ship.weapon.setPowerSupply(ship.powerSupply);
+	ship.weapon.enabled=true;
+
+    ship=loadDefaultSounds(ship);
+	return ship;
+}
+var Colossal = function(primaryColor="#0000FF", secondaryColor = "#0FF0FF",
+                       x = c.width/2, y = c.height/2){
+	var ship = new Ship(x, y, BASE_SIZE * 2.5, primaryColor, secondaryColor);
+    ship.name = "Colossal";
+	ship.updateDirection();
+	ship.hull        =         new Hull(BASE_HULL_MAX,
+                                        BASE_HULL_RESISTANCE);
+
+	ship.shield      =       new Shield(BASE_SHLD_MAX *TIER9,
+                                        BASE_SHLD_RESISTANCE *TIER9, 
+                                        BASE_SHLD_DRAINRATE *TIER9, 
+                                        BASE_SHLD_EFFICIENCY *TIER9,
+                                        BASE_SHLD_DRAINSPEED);
+
+	ship.powerSupply = new EnergySource(BASE_SOURCE_MAX *TIER9,
+                                        BASE_SOURCE_RECHARGERATE *TIER9,
+                                        BASE_SOURCE_RECHARGESPEED /TIER9);
+
+	ship.acceleration =                 BASE_ACCEL *TIER2;
+	ship.maxSpeed =                     BASE_MAXSPEED *TIER2;
+	ship.turnRate =                     BASE_TURNRATE *TIER2;
+
+	ship.shield.setPowerSupply(ship.powerSupply);
+	ship.shield.setEnabled(true);
+    
+    for (var i = 2; i < ship.hitbox.vertices.length; i++){
+        ship.addWeapon(heavyLaserBlaster());
+        ship.changeWeapon();
+        ship.weapon.setOwner(ship);
+        ship.weapon.setPowerSupply(ship.powerSupply);
+        ship.weapon.setCenter(ship.hitbox.vertices[i]);
+        ship.weapon.setPosition(ship.auxHitbox.vertices[i]);
+        ship.weapon.enabled=true;
+    }
+
+    for (var i = 0; i < ship.hitbox.vertices.length - 1; i++){
+        ship.addWeapon(lightLaserBlaster());
+        ship.changeWeapon();
+        ship.weapon.setOwner(ship);
+        ship.weapon.setPowerSupply(ship.powerSupply);
+        ship.weapon.setCenter(coord);
+        ship.weapon.setPosition(ship.hitbox.vertices[i % 3]);
+        ship.weapon.setTurretMode(true);
+        ship.weapon.enabled=true;
+    }
+    ship=loadDefaultSounds(ship);
+
 	return ship;
 }
 
