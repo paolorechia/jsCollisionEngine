@@ -16,6 +16,7 @@ cat ../webaudio/howler* >> $file
 java -jar ~/bin/closure-compiler-v20170423.jar ../sound.js >> $file
 java -jar ~/bin/closure-compiler-v20170423.jar ../divisor.js >> $file
 java -jar ~/bin/closure-compiler-v20170423.jar ../collision.js >> $file
+java -jar ~/bin/closure-compiler-v20170423.jar ../particles.js >> $file
 java -jar ~/bin/closure-compiler-v20170423.jar ../explosion.js         >> $file
 java -jar ~/bin/closure-compiler-v20170423.jar ../shipBase.js         >> $file
 java -jar ~/bin/closure-compiler-v20170423.jar ../weapon.js         >> $file
