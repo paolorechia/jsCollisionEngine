@@ -205,10 +205,10 @@ var Weapon = function(velocity = 10, width = 1, range = 1000, limit = 10, damage
                                                             spread = this.particleModel.spread,
                                                             duration= this.particleModel.duration,
                                                             speed= projectile.velocity,
-                                                            color = this.secondaryColor,
+                                                            color = this.owner.secondaryColor,
                                                             versor = projectile.versor,
                                                             position = projectile.position,
-                                                            mode = "CONTINUOUS"
+                                                            mode = "TRAIL"
                                                            );
         }
 		projectile.hit = false;

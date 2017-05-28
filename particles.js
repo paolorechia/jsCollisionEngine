@@ -38,21 +38,23 @@ var ParticleSystem = function(limit = 30,
         particle.vector.y += Math.random() * spread * sign;
         unitVector(particle.vector, particle.vector);
         // reverse
-        particle.vector.x *= -1;
-        particle.vector.y *= -1;
+        if (this.mode != "TRAIL"){
+            particle.vector.x *= -1;
+            particle.vector.y *= -1;
+        }
         var randomSpeed = this.speed * Math.random();
         particle.vector.x *= randomSpeed;
         particle.vector.y *= randomSpeed;
         this.particles.push(particle);
     }
     this.formParticles = function(){
-        if (this.mode == "CONTINUOUS"){
-            if (this.particles.length < this.limit){
+        if (this.mode == "BURST"){
+            while (this.particles.length < this.limit){
                this.makeParticle();
             }
         }
         else{
-            while (this.particles.length < this.limit){
+            if (this.particles.length < this.limit){
                this.makeParticle();
             }
         }
