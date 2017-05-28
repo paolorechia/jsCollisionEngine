@@ -25,6 +25,7 @@ var ParticleSystem = function(limit = 30,
     this.color=color;
     this.versor = versor;
     this.position = position;
+    this.mode=mode;
 
     this.particles = [];
 
@@ -36,13 +37,16 @@ var ParticleSystem = function(limit = 30,
         particle.vector.x += Math.random() * spread * sign;
         particle.vector.y += Math.random() * spread * sign;
         unitVector(particle.vector, particle.vector);
+        // reverse
+        particle.vector.x *= -1;
+        particle.vector.y *= -1;
         var randomSpeed = this.speed * Math.random();
         particle.vector.x *= randomSpeed;
         particle.vector.y *= randomSpeed;
         this.particles.push(particle);
     }
     this.formParticles = function(){
-        if (mode == "CONTINUOUS"){
+        if (this.mode == "CONTINUOUS"){
             if (this.particles.length < this.limit){
                this.makeParticle();
             }

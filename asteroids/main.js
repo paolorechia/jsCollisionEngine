@@ -609,6 +609,7 @@ function mainLoop(){
         player.drawAutoPath();
         player.draw();
     }
+    player.engineParticles.draw(ctx);
     collideShipsExplosions(enemies, explosions);
     collideHitboxesExplosions(objects, explosions);
 	score.draw(player.secondaryColor);

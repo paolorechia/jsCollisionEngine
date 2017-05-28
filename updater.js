@@ -21,6 +21,10 @@ function updateShip(player){
 		player.updateTurn();
 		player.powerSupply.recharge(player.powerSupply);
 		player.shield.drainEnergy(player.shield);
+        player.engineParticles.update();
+        if (player.engineOn){
+            player.engineParticles.formParticles();
+        }
 		calculateAxes(player.hitbox);
 }
 
