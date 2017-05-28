@@ -385,7 +385,29 @@ var Ship = function(x, y, l1, primaryColor = "#0000FF", secondaryColor = "#00F0F
 	this.engineVersor = new Vector(0, 0);
 	this.engineVector = new Vector(0, 0);
 	this.strafingVector = new Vector(0, 0);
-	
+
+    /*
+var ParticleSystem = function(limit = 30,
+                        spread = 5,
+                        duration=10,
+                        speed=1,
+                        color = "#0000FF",
+                        versor = vector, // new Versor(x, y)
+                        position = point // new Point(x, y)){
+                        mode = "CONTINUOUS")
+*/
+
+    this.engineParticles = new ParticleSystem(
+                                                    limit = 30,
+                                                    spread = 0.5,
+                                                    duration=10,
+                                                    speed=1,
+                                                    color = this.primaryColor,
+                                                    versor = this.engineVersor,
+                                                    position = this.hitbox.center,
+                                                    mode = "CONTINUOUS"
+                                                  );
+
 	this.autoPath = new Point(0, 0);
 
     this.getEngineValue = function(){
