@@ -15,7 +15,8 @@ var ParticleSystem = function(limit = 30,
                         speed = 1,
                         color = "#FFFFFF",
                         versor = vector, // new Versor(x, y)
-                        position = point // new Point(x, y)
+                        position = point, // new Point(x, y)
+                        mode = "CONTINUOUS"
                         ){
     this.limit=limit;
     this.spread=spread;
@@ -27,19 +28,29 @@ var ParticleSystem = function(limit = 30,
 
     this.particles = [];
 
+    this.makeParticle = function(){
+        particle = new Particle(this.position, 
+                                this.duration,
+                                new Vector(this.versor.x, this.versor.y));
+        var sign = Math.random() > 0.5 ? 1 : - 1
+        particle.vector.x += Math.random() * spread * sign;
+        particle.vector.y += Math.random() * spread * sign;
+        unitVector(particle.vector, particle.vector);
+        var randomSpeed = this.speed * Math.random();
+        particle.vector.x *= randomSpeed;
+        particle.vector.y *= randomSpeed;
+        this.particles.push(particle);
+    }
     this.formParticles = function(){
-        if (this.particles.length < this.limit){
-//        while (this.particles.length < this.limit){
-            particle = new Particle(this.position, 
-                                    this.duration,
-                                    new Vector(this.versor.x, this.versor.y));
-            var sign = Math.random() > 0.5 ? 1 : - 1
-            particle.vector.x += Math.random() * spread * sign;
-            particle.vector.y += Math.random() * spread * sign;
-            unitVector(particle.vector, particle.vector);
-            particle.vector.x *= this.speed;
-            particle.vector.y *= this.speed;
-            this.particles.push(particle);
+        if (mode == "CONTINUOUS"){
+            if (this.particles.length < this.limit){
+               this.makeParticle();
+            }
+        }
+        else{
+            while (this.particles.length < this.limit){
+               this.makeParticle();
+            }
         }
     }
     this.update = function(){
@@ -84,10 +95,11 @@ var ParticleSystem = function(limit = 30,
                         versor = vector, // new Versor(x, y)
                         position = point // new Point(x, y)){
 */
-explosion= new ParticleSystem(30, 5, 100, 5, "#FFFFFF", new Vector(-1, 0), new Point(300, 100));
+trail= new ParticleSystem(100, 0, 100, 5, "#FFFFFF", new Vector(-1, 0), new Point(300, 100), "CONTINUOUS");
+explosion= new ParticleSystem(100, 2, 100, 100, "#AA9900", new Vector(0, 0), new Point(300, 100), "BURST");
 fires = [];
 for (var i = 0; i < 2; i++){
-    fire = new ParticleSystem(100, Math.random(), Math.random()*300, Math.random(), "#FFFFFF", new Vector(Math.random(), Math.random()), new Point(Math.random()*600, Math.random()*800));
+    fire = new ParticleSystem(100, Math.random(), Math.random()*300, Math.random(), "#0000FF", new Vector(Math.random(), Math.random()), new Point(Math.random()*600, Math.random()*800));
     fires.push(fire);
 }
 var c = document.getElementById("umCanvas");
@@ -101,8 +113,13 @@ function myLoop(){
         fires[i].update();
         fires[i].draw(ctx);
     }
+    trail.position.x+= 1;
+    trail.position.x%= 600;
+    trail.update();
+    trail.draw(ctx);
+    trail.formParticles();
     explosion.update();
-//    explosion.draw(ctx);
+    explosion.draw(ctx);
     explosion.formParticles();
     requestAnimationFrame(myLoop);
 }
