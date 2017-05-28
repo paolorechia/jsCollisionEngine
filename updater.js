@@ -70,6 +70,11 @@ function updateShipProjectiles(player){
 		for (var i = 0; i < player.weapons.length; i++){		
 			player.weapons[i].updateDuration();		
 			player.weapons[i].removeProjectiles();
+            if (player.weapons[i].type=="m"){
+                for (var j = 0; j < player.weapons[i].projectiles.length; j++){
+                    player.weapons[i].projectiles[j].particleSystem.draw(ctx);
+                }
+            }
 		}
 }
 

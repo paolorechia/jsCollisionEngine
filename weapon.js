@@ -199,6 +199,18 @@ var Weapon = function(velocity = 10, width = 1, range = 1000, limit = 10, damage
 		var projectile = new Rect(this.position.x, this.position.y - this.projectileHeight/2, this.projectileWidth, this.projectileHeight,
 									   this.direction.x, this.direction.y,
 									   this.projectileVelocity + shipSpeed, 0);
+        if (this.type == "m"){
+            projectile.particleSystem = new ParticleSystem(
+                                                            limit = this.particleModel.limit,
+                                                            spread = this.particleModel.spread,
+                                                            duration= this.particleModel.duration,
+                                                            speed= projectile.velocity,
+                                                            color = this.secondaryColor,
+                                                            versor = projectile.versor,
+                                                            position = projectile.position,
+                                                            mode = "CONTINUOUS"
+                                                           );
+        }
 		projectile.hit = false;
         projectile.type = 'w'; // weapon-type (for collision checking)
         projectile.onHit = this.onHit;
@@ -252,6 +264,11 @@ var Weapon = function(velocity = 10, width = 1, range = 1000, limit = 10, damage
 	this.updateDuration = function(){
 		for (var i = 0; i < this.projectiles.length; i++){
 			this.projectiles[i].duration--;
+            if (this.type == 'm'){
+                this.projectiles[i].particleSystem.duration--;
+                this.projectiles[i].particleSystem.makeParticle();
+                this.projectiles[i].particleSystem.update();
+            }
 			if (this.projectiles[i].duration <= 0){
                 if (this.type == 'm'){
                     explosions.push(
@@ -456,6 +473,13 @@ function dumbMissile(){
                        );
     
     }
+    missile.particleModel={
+                               limit : 20,
+                               spread : 0,
+                               duration:1000,
+                               mode : "CONTINUOUS"
+                           };
+
 	return missile;
 }
 var megaBomb = function(){
