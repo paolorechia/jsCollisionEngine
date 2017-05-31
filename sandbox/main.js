@@ -61,8 +61,15 @@ var interval = 1000/maxFPS;
 tickTime=30;
 generateShapes();
 lines=[];
-objects[0].startingMagnitude = 0;
-objects[0].rate = 0.9;
+// functionalVector = function(versor, f, magnitude, rate, limit){
+// this.apply = function(hitbox, bound)
+
+fVector = new functionalVector(objects[0].versor,
+                              exponentialIncrement,
+                              magnitude = 0,
+                              rate = 0.9);
+
+objects[0].turbo = fVector;
 objects[0].primaryColor="#FFFF00";
 objects[0].secondaryColor="#00FF00";
 
@@ -72,12 +79,7 @@ objects[0].secondaryColor="#00FF00";
 
 function physicsLoop(){
     STAchecks=0;
-    objects[0].startingMagnitude= applyFunctionalVector(objects[0],
-                          [],
-                          objects[0].versor,
-                          exponentialIncrement,
-                          objects[0].startingMagnitude,
-                          objects[0].rate);
+    objects[0].turbo.apply(objects[0]);
 	for (i = 0; i < objects.length; i++){
 		objects[i].update();
 		checkBorder(objects[i]);

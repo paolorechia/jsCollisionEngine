@@ -554,24 +554,30 @@ function exponentialIncrement(x, rate){
     return x * rate;
 }
 
-// Applies a unit vector + a given magnitude (start), updating the
-// magnitude according to a function.
-// Should be called in the main loop, start value should be stored
-// somewhere and remain updated to avoid infinite reapplying.
-// Returns current magnitude
-function applyFunctionalVector(hitbox, bound, versor,
-                         f, startingMagnitude, rate){
-    if (startingMagnitude > 0){
-        currentMagnitude = f(startingMagnitude, rate);
-        vectorToApply = new Vector(versor.x * currentMagnitude,
-                                   versor.y * currentMagnitude);
-        hitbox.applyVector(vectorToApply);
-        for (var i = 0; i < bound.length; i++){
-            bound[i].applyVector(vectorToApply);
-        }
-        return currentMagnitude;
+var functionalVector = function(versor, f, magnitude, rate, limit){
+    this.versor = versor;
+    this.f = f;
+    this.magnitude = magnitude;
+    this.rate = rate;
+    this.limit = limit;
+    this.setStart = function(start){
+        this.magnitude= start;
     }
-    else return 0;
+    this.apply = function(hitbox, bound = []){
+        if (this.magnitude > 0){
+            currentMagnitude = this.f(this.magnitude, rate);
+            vectorToApply = new Vector(versor.x * currentMagnitude,
+                                       versor.y * currentMagnitude);
+            hitbox.applyVector(vectorToApply);
+            for (var i = 0; i < bound.length; i++){
+                bound[i].applyVector(vectorToApply);
+            }
+            this.magnitude=currentMagnitude;
+        }
+        else{
+            this.magnitude=0;
+        }
+    }
 }
 
 // gradual Vector for collision push back

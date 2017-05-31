@@ -9,7 +9,7 @@ var coord = new Point(0, 0);
     keyboard = function (event){
         if (event.key == 'w'){
 //			console.log('w');
-            objects[0].startingMagnitude=30;
+            fVector.setStart(30);
         }
         if (event.key == 's'){
         }
