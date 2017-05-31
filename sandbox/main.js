@@ -6,8 +6,8 @@ var maxSize = c.width/30;
 var minSize = c.width/100;
 var maxSpeed = 6;
 var maxSpin = 6;
-var numberRectangles = 1;
-var numberTriangles = 0;
+var numberRectangles = 10;
+var numberTriangles = 10;
 var numberCircles= 0;
 var objects = [];
 var counter=0;
@@ -63,6 +63,8 @@ generateShapes();
 lines=[];
 objects[0].startingMagnitude = 0;
 objects[0].rate = 0.9;
+objects[0].primaryColor="#FFFF00";
+objects[0].secondaryColor="#00FF00";
 
 /*applyFunctionalVector(hitbox, bound, versor,
                          f, startingMagnitude, rate){
@@ -70,14 +72,14 @@ objects[0].rate = 0.9;
 
 function physicsLoop(){
     STAchecks=0;
+    objects[0].startingMagnitude= applyFunctionalVector(objects[0],
+                          [],
+                          objects[0].versor,
+                          exponentialIncrement,
+                          objects[0].startingMagnitude,
+                          objects[0].rate);
 	for (i = 0; i < objects.length; i++){
 		objects[i].update();
-        objects[0].startingMagnitude= applyFunctionalVector(objects[i],
-                              [],
-                              objects[i].versor,
-                              exponentialIncrement,
-                              objects[0].startingMagnitude,
-                              objects[0].rate);
 		checkBorder(objects[i]);
 	}
 	for (j = 0; j < objects.length; j++){
@@ -148,7 +150,10 @@ function mainLoop(){
         testGrid.draw();
 
     if (drawing){
-        drawArray(objects, "#0000FF");
+        me = objects[0];
+        others = objects.slice(1, objects.length-1);
+        drawArray(others, "#0000FF");
+        drawPolygon(me, me.primaryColor);
     }
 
 	fps.calculateMean();
