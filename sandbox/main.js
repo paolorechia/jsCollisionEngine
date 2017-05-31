@@ -6,15 +6,15 @@ var maxSize = c.width/30;
 var minSize = c.width/100;
 var maxSpeed = 6;
 var maxSpin = 6;
-var numberRectangles = 2;
-var numberTriangles = 2;
-var numberCircles= 2;
+var numberRectangles = 1;
+var numberTriangles = 0;
+var numberCircles= 0;
 var objects = [];
 var counter=0;
 var sections=32;
 var maxSections=256;
 maxSections *= 2;
-var maxObjects = 2000;
+var maxObjects = 1;
 colliding=true;
 drawing=true;
 cycleDrawing=false;
@@ -33,9 +33,11 @@ divisor = new vLine(c.width/2, 0, c.height);
 divisorH = new hLine(c.height/2, 0, c.width);
 
 
+/*
     for (i = 0; i < numberCircles; i++){
         objects.push(new randomCircle(300, minSize/2, maxSpeed, maxSpin));
     }
+    */
 function generateShapes(){
     for (i = 0; i < numberRectangles; i++){
         objects.push(new randomRect(maxSize, minSize, maxSpeed, maxSpin));
@@ -59,11 +61,23 @@ var interval = 1000/maxFPS;
 tickTime=30;
 generateShapes();
 lines=[];
+objects[0].startingMagnitude = 0;
+objects[0].rate = 0.9;
+
+/*applyFunctionalVector(hitbox, bound, versor,
+                         f, startingMagnitude, rate){
+                         */
 
 function physicsLoop(){
     STAchecks=0;
 	for (i = 0; i < objects.length; i++){
 		objects[i].update();
+        objects[0].startingMagnitude= applyFunctionalVector(objects[i],
+                              [],
+                              objects[i].versor,
+                              exponentialIncrement,
+                              objects[0].startingMagnitude,
+                              objects[0].rate);
 		checkBorder(objects[i]);
 	}
 	for (j = 0; j < objects.length; j++){

@@ -550,6 +550,31 @@ function drawFPS(number, color="#000FFF"){
 	ctx.stroke();
 }
 
+function exponentialIncrement(x, rate){
+    return x * rate;
+}
+
+// Applies a unit vector + a given magnitude (start), updating the
+// magnitude according to a function.
+// Should be called in the main loop, start value should be stored
+// somewhere and remain updated to avoid infinite reapplying.
+// Returns current magnitude
+function applyFunctionalVector(hitbox, bound, versor,
+                         f, startingMagnitude, rate){
+    if (startingMagnitude > 0){
+        currentMagnitude = f(startingMagnitude, rate);
+        vectorToApply = new Vector(versor.x * currentMagnitude,
+                                   versor.y * currentMagnitude);
+        hitbox.applyVector(vectorToApply);
+        for (var i = 0; i < bound.length; i++){
+            bound[i].applyVector(vectorToApply);
+        }
+        return currentMagnitude;
+    }
+    else return 0;
+}
+
+// gradual Vector for collision push back
 function applyGradualVector(hitbox, threshold){
         if (hitbox.gradualVector.x == 0 && hitbox.gradualVector.y == 0){
             hitbox.colliding=false;
