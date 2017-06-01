@@ -553,15 +553,19 @@ function drawFPS(number, color="#000FFF"){
 function exponentialIncrement(x, rate){
     return x * rate;
 }
+function linearIncrement(x, rate){
+    return x + rate;
+}
 
 var functionalVector = function(versor, f, magnitude, rate, limit){
     this.versor = versor;
     this.f = f;
-    this.magnitude = magnitude;
+    this.maxMagnitude = magnitude;
+    this.magnitude = 0;
     this.rate = rate;
     this.limit = limit;
-    this.setStart = function(start){
-        this.magnitude= start;
+    this.setStart = function(){
+        this.magnitude = this.maxMagnitude;
     }
     this.apply = function(hitbox, bound = []){
         if (this.magnitude > 0){

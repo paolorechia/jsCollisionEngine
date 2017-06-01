@@ -198,7 +198,7 @@ var Weapon = function(velocity = 10, width = 1, range = 1000, limit = 10, damage
 		this.lockDown = true;
 		var projectile = new Rect(this.position.x, this.position.y - this.projectileHeight/2, this.projectileWidth, this.projectileHeight,
 									   this.direction.x, this.direction.y,
-									   this.projectileVelocity + shipSpeed, 0);
+									   this.projectileVelocity + shipSpeed + this.owner.turbo.magnitude, 0);
         if (this.type == "m"){
             projectile.particleSystem = new ParticleSystem(
                                                             limit = this.particleModel.limit,

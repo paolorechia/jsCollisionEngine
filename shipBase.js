@@ -9,6 +9,20 @@ var Phases = function(){
 		this.current = 0;
 }
 
+function Turbo(versor, tier){
+//   functionalVector = function(versor, f, magnitude, rate, limit){
+    magnitude = 10 * tier;
+    rate = 0.4;
+    if (rate > 0.9){
+        rate = 0.9
+    }
+    turbo = new functionalVector(versor, linearIncrement, magnitude, -rate);
+    turbo.setTier = function(tier){
+        turbo.tier=tier;
+    }
+    return turbo;
+}
+
 var TargetSystem = function(){
     this.currentTarget = undefined;
     this.index = 0;
@@ -386,6 +400,7 @@ var Ship = function(x, y, l1, primaryColor = "#0000FF", secondaryColor = "#00F0F
 	this.engineVector = new Vector(0, 0);
 	this.strafingVector = new Vector(0, 0);
 
+    this.turbo = new Turbo(this.engineVersor, 1);
     /*
 var ParticleSystem = function(limit = 30,
                         spread = 5,
@@ -513,10 +528,11 @@ var ParticleSystem = function(limit = 30,
         }
 	}
 	this.updatePosition = function(){
+        this.turbo.apply(this.hitbox, [this.auxHitbox]);
 		this.hitbox.update(); 
 		this.auxHitbox.update();
-		this.front.x = this.hitbox.vertices[2].x
-		this.front.y = this.hitbox.vertices[2].y
+		this.front.x = this.hitbox.vertices[2].x;
+		this.front.y = this.hitbox.vertices[2].y;
 	}
 	
 	this.updateTurn = function(){

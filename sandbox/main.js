@@ -66,7 +66,7 @@ lines=[];
 
 fVector = new functionalVector(objects[0].versor,
                               exponentialIncrement,
-                              magnitude = 0,
+                              magnitude = 30,
                               rate = 0.9);
 
 objects[0].turbo = fVector;

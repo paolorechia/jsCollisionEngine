@@ -226,8 +226,11 @@ var coord = new Point(c.width/2, c.height/2);
             }
         }
         else if (event.which == 3){
+            player.turbo.setStart();
+            /*
             player.throttle(false);
             player.brake(true);
+            */
         }
     }
 	function mouseUp(event){
@@ -247,8 +250,10 @@ var coord = new Point(c.width/2, c.height/2);
             }
         }
         else if (event.which == 3){
+            /*
             player.brake(false);
             player.throttle(true);
+            */
         }
     }
     window.addEventListener("keydown", function(event){ keyboardDown(event)}, false);
