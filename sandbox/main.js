@@ -73,10 +73,6 @@ objects[0].turbo = fVector;
 objects[0].primaryColor="#FFFF00";
 objects[0].secondaryColor="#00FF00";
 
-/*applyFunctionalVector(hitbox, bound, versor,
-                         f, startingMagnitude, rate){
-                         */
-
 function physicsLoop(){
     STAchecks=0;
     objects[0].turbo.apply(objects[0]);
