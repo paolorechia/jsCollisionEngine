@@ -306,6 +306,21 @@ function killShips(array){
             explosions.push(new Explosion(
                             array[i].hitbox.center.x,
                             array[i].hitbox.center.y));
+            explosionParticle = new ParticleSystem(
+                                limit = 30,
+                                spread = 5,
+                                duration=100,
+                                speed = 20,
+                                color = "#FF0000",
+                                versor = new Versor(Math.random(), Math.random()), 
+                                position = new Point(array[i].hitbox.center.x, 
+                                                     array[i].hitbox.center.y),
+                                mode = "BURST"
+                        );
+            explosionParticle.formParticles();
+            explosionParticle.finished=false;
+            particles.push(explosionParticle);
+
 			array.splice(i, 1);
 		}
 	}
@@ -476,6 +491,7 @@ function selectShipLoop(){
         selectMusic.pause();
         calmMusic.play();
         explosions = [];
+        particles = [];
         player.throttle(true);
 
 		requestAnimationFrame(mainLoop);
@@ -622,6 +638,16 @@ function mainLoop(){
     for (var i = 0; i < explosions.length; i++){
         explosions[i].draw();
     }
+    for (var i = 0; i < particles.length; i++){
+        particles[i].update();
+        if (particles[i].duration == 0){
+            particles[i].finished=true;
+            particles.splice(i, 1);
+        }
+        else{
+            particles[i].draw(ctx);
+        }
+    }
 	
 	fps.calculateMean();
 	drawFPS(fps.mean, player.secondaryColor);
@@ -683,6 +709,7 @@ var grid = new Grid(10, 10, c.width, c.height);
 var objects = [];
 var enemies = [];
 var explosions = [];
+var particles = [];
 var portals = [];
 var maxSounds= 1;
 var startingVolume=5;
