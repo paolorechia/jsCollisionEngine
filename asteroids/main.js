@@ -610,6 +610,7 @@ function mainLoop(){
         player.draw();
     }
     player.engineParticles.draw(ctx);
+    player.turbo.particles.draw(ctx);
     collideShipsExplosions(enemies, explosions);
     collideHitboxesExplosions(objects, explosions);
 	score.draw(player.secondaryColor);

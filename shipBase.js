@@ -9,10 +9,18 @@ var Phases = function(){
 		this.current = 0;
 }
 
-var Turbo = function (versor, tier){
+var Turbo = function (versor, tier, hitbox, color){
+    this.particles = new ParticleSystem(limit = 60,
+                                        spread = 0.3,
+                                        duration=10,
+                                        speed=10,
+                                        color=color,
+                                        versor = versor,
+                                        position = hitbox.center,
+                                        mode = "BURST");
 //   functionalVector = function(versor, f, magnitude, rate, limit){
-    magnitude = 10 * tier;
-    rate = 0.4;
+    magnitude = 5 * tier;
+    rate = 0.2;
     if (rate > 0.9){
         rate = 0.9
     }
@@ -28,10 +36,12 @@ var Turbo = function (versor, tier){
             this.setStart();
             this.cooldown = this.cooldownLimit;
             this.requested=true;
+            this.particles.formParticles();
         }
     }
     // auxHitbox is a list of aux hitboxes
     this.update = function(hitbox, auxHitbox){
+        this.particles.update();
         this.apply(hitbox, auxHitbox);
         if (this.requested){
             var that = this;
@@ -418,7 +428,7 @@ var Ship = function(x, y, l1, primaryColor = "#0000FF", secondaryColor = "#00F0F
 	this.engineVector = new Vector(0, 0);
 	this.strafingVector = new Vector(0, 0);
 
-    this.turbo = new Turbo(this.engineVersor, 1);
+    this.turbo = new Turbo(this.engineVersor, 1, this.hitbox, this.secondaryColor);
     /*
 var ParticleSystem = function(limit = 30,
                         spread = 5,
@@ -433,8 +443,8 @@ var ParticleSystem = function(limit = 30,
     this.engineParticles = new ParticleSystem(
                                                     limit = 30,
                                                     spread = 0.5,
-                                                    duration=10,
-                                                    speed=5,
+                                                    duration=6,
+                                                    speed=2,
                                                     color = this.secondaryColor,
                                                     versor = this.engineVersor,
                                                     position = this.hitbox.center,
