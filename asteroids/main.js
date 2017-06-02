@@ -296,15 +296,15 @@ function killObjects(array){
 		if (array[i].dead == true){
             score.player += array[i].value * (level.current*level.current); 
             explosionParticle = new ParticleSystem(
-                                limit = 30,
-                                spread = 5,
-                                duration=80,
-                                speed = 10,
-                                color = "#FFFFFF",
-                                versor = new Versor(Math.random(), Math.random()), 
-                                position = new Point(array[i].center.x, 
-                                                     array[i].center.y),
-                                mode = "BURST"
+                           limit = Math.round(array[i].mass * 0.01),
+                           spread = 5,
+                           duration=80,
+                           speed = 10,
+                           color = "#FFFFFF",
+                           versor = new Versor(Math.random(), Math.random()), 
+                           position = new Point(array[i].center.x, 
+                                                array[i].center.y),
+                           mode = "BURST"
                         );
             explosionParticle.formParticles();
             explosionParticle.finished=false;
