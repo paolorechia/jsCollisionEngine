@@ -9,18 +9,36 @@ var Phases = function(){
 		this.current = 0;
 }
 
-function Turbo(versor, tier){
+var Turbo = function (versor, tier){
 //   functionalVector = function(versor, f, magnitude, rate, limit){
     magnitude = 10 * tier;
     rate = 0.4;
     if (rate > 0.9){
         rate = 0.9
     }
-    turbo = new functionalVector(versor, linearIncrement, magnitude, -rate);
-    turbo.setTier = function(tier){
-        turbo.tier=tier;
+    functionalVector.call(this,versor, linearIncrement, magnitude, -rate);
+    this.setTier = function(tier){
+        this.tier=tier;
     }
-    return turbo;
+    this.cooldownLimit = 5 - tier;
+    this.cooldown = 0;
+    this.requested = false;
+    this.activate = function(){
+        if (this.cooldown == 0){
+            this.setStart();
+            this.cooldown = this.cooldownLimit;
+            this.requested=true;
+        }
+    }
+    // auxHitbox is a list of aux hitboxes
+    this.update = function(hitbox, auxHitbox){
+        this.apply(hitbox, auxHitbox);
+        if (this.requested){
+            var that = this;
+            this.cooldownCounter= setTimeout(function(){that.cooldown = 0;}, 1000);
+            this.requested=false;
+        }
+    }
 }
 
 var TargetSystem = function(){
@@ -528,7 +546,7 @@ var ParticleSystem = function(limit = 30,
         }
 	}
 	this.updatePosition = function(){
-        this.turbo.apply(this.hitbox, [this.auxHitbox]);
+        this.turbo.update(this.hitbox, [this.auxHitbox]);
 		this.hitbox.update(); 
 		this.auxHitbox.update();
 		this.front.x = this.hitbox.vertices[2].x;

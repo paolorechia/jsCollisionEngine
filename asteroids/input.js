@@ -226,7 +226,7 @@ var coord = new Point(c.width/2, c.height/2);
             }
         }
         else if (event.which == 3){
-            player.turbo.setStart();
+            player.turbo.activate();
             /*
             player.throttle(false);
             player.brake(true);
