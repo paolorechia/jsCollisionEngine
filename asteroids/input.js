@@ -173,42 +173,6 @@ var coord = new Point(c.width/2, c.height/2);
 		}
 
     }
-	buttonModeClick = function(){
-        if (buttons == undefined){
-            return;
-        }
-		for (var i = 0; i < buttons.length; i++){
-			var bound = {left: buttons[i].x,
-						  right: buttons[i].x + buttons[i].width,
-						 up: buttons[i].y,
-						down: buttons[i].y + buttons[i].height};
-						
-			if (coord.x > bound.left && coord.x < bound.right){
-				if (coord.y > bound.up && coord.y < bound.down){
-					buttons[i].onClick();
-				}
-			}
-		}
-	}
-    buttonModeHover = function(){
-        if (buttons == undefined){
-            return;
-        }
-		for (var i = 0; i < buttons.length; i++){
-			var bound = {left: buttons[i].x,
-						  right: buttons[i].x + buttons[i].width,
-						 up: buttons[i].y,
-						down: buttons[i].y + buttons[i].height};
-						
-			if (coord.x > bound.left && coord.x < bound.right){
-				if (coord.y > bound.up && coord.y < bound.down){
-					buttons[i].onHover();
-                    continue;
-				}
-			}
-            buttons[i].reset();
-		}
-    }
     function mouseDown(event){
         if (player == undefined || player.mouseMode == false){
             return;

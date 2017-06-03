@@ -118,7 +118,6 @@ var BoxButton = function(x, y, width, height, string=" "){
     this.fontColor = "#000000";
     this.font="14px arial";
 	this.onClick = function(){
-			//console.log(this.string);
 	}
     this.onHover = function(){
         this.bgColor = "#666666";
@@ -163,5 +162,41 @@ var shipButton = function(name, position){
     }
     return button;
 } 
-bleep = document.getElementById("bleep");
-bleep.volume=0.2;
+buttonModeClick = function(){
+    if (buttons == undefined){
+        return;
+    }
+    for (var i = 0; i < buttons.length; i++){
+        var bound = {left: buttons[i].x,
+                      right: buttons[i].x + buttons[i].width,
+                     up: buttons[i].y,
+                    down: buttons[i].y + buttons[i].height};
+                    
+        if (coord.x > bound.left && coord.x < bound.right){
+            if (coord.y > bound.up && coord.y < bound.down){
+                buttons[i].onClick();
+            }
+        }
+    }
+}
+buttonModeHover = function(){
+    if (buttons == undefined){
+        return;
+    }
+    for (var i = 0; i < buttons.length; i++){
+        var bound = {left: buttons[i].x,
+                      right: buttons[i].x + buttons[i].width,
+                     up: buttons[i].y,
+                    down: buttons[i].y + buttons[i].height};
+                    
+        if (coord.x > bound.left && coord.x < bound.right){
+            if (coord.y > bound.up && coord.y < bound.down){
+                buttons[i].onHover();
+                continue;
+            }
+        }
+        buttons[i].reset();
+    }
+}
+//bleep = document.getElementById("bleep");
+//bleep.volume=0.2;
